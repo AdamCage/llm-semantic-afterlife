@@ -97,6 +97,98 @@ Deliberately not changed yet. Tuning a threshold so that the data one wants to
 keep passes is the failure mode this project's review contract exists to prevent,
 and the change should be argued from the reference rather than from the result.
 
+## S1.0e — temperature escapes the textual fixed point and tightens the semantic one
+
+**Run:** `s1-regime-hunt-20260830T203115Z-6ea352c7`, 15 of 18 trajectories
+complete, $1.10 against a $0.80 forecast (38% over; the cost model needs
+re-checking at high temperature, where completions run longer).
+
+Nine operating points on qwen3-8b, two stochastic replicates each, 12 turnovers.
+
+| T | seed | late-pair | at fixed point | novelty | entropy | TTR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1.0 | surreal | 0.0073 / 0.0405 | no / **yes** | 0.68 / 0.54 | 7.35 / 7.42 | 0.52 / 0.48 |
+| 1.0 | love | 0.0033 / 0.0763 | no / **yes** | 0.52 / 0.53 | 7.19 / 6.96 | 0.55 / 0.49 |
+| 1.0 | noise | 0.0470 / 0.1050 | **yes / yes** | 0.58 / 0.57 | 6.57 / 6.85 | 0.47 / 0.49 |
+| 1.3 | surreal | 0.0178 / 0.0842 | **yes / yes** | 0.89 / 0.26 | 7.01 / 5.07 | 0.45 / 0.76 |
+| 1.3 | love | 0.0352 / 0.0185 | **yes / yes** | 0.80 / 0.75 | 6.75 / 7.30 | 0.50 / 0.48 |
+| 1.3 | noise | 0.0214 / 0.0019 | **yes** / no | 0.85 / 0.85 | 6.85 / 7.93 | 0.48 / 0.62 |
+| **1.6** | surreal | 0.0011 / 0.0009 | no / no | 0.95 / **0.97** | 6.81 / 7.29 | 0.55 / 0.48 |
+| **1.6** | love | 0.0035 / 0.0013 | no / no | 0.96 / 0.96 | 7.05 / 7.17 | 0.51 / 0.48 |
+| **1.6** | noise | 0.0000 / 0.0021 | no / no | 0.93 / 0.94 | 6.86 / 6.69 | 0.53 / 0.53 |
+
+Natural prose reference: novelty 0.97, late-pair median 0.000, entropy 7.40,
+TTR 0.41.
+
+**At `T = 1.6` all six cells escape the textual fixed point**, across all three
+seeds and both replicates, at novelty indistinguishable from natural prose. At
+`T = 1.0` four of six are at a fixed point and at `T = 1.3` four of six. This is
+the only clean regime found.
+
+### Reading the text changed the conclusion
+
+The metrics say `T = 1.6` is healthy. The text says something else, and this is
+the second time in this stage that reading beat measuring.
+
+The **reviewer register persists at every temperature**. Step 1 of the surreal
+cell: "This passage is an imaginative and poetic exploration of a surreal
+commission... Let's unpack it paragraph by paragraph." The seed ends mid-sentence
+on "and"; the model still reframed it as a document to review. Temperature does
+not touch this.
+
+More importantly, **two trajectories from radically different seeds converged to
+the same semantic register**. From cartographers surveying the interior of a
+piano, and from a woman leaving a letter unopened on a windowsill, both arrive at:
+"the sacred stillness within us all", "silence and sacred stillness", "communion",
+"soul and soul", "breath and presence", "something ancient, profound, and
+intimate". By turnover 16 and 21 respectively they are indistinguishable in
+content while sharing almost no 5-grams.
+
+**The novelty measure cannot see this.** It detects lexical fixed points; this is a
+semantic one with lexical variation. The instrument built to catch the first
+failure mode is blind to the second, which is the same structural mistake as the
+original intra-chunk diagnostic, one level up.
+
+### Embedding space confirms it, and inverts the naive expectation
+
+Late-phase trajectory centroids in `bge-m3`, mean pairwise cosine distance:
+
+| T | within-seed | between-seed |
+| --- | --- | --- |
+| 1.0 | 0.2360 | 0.2679 |
+| 1.3 | 0.2219 | 0.2131 |
+| 1.6 | **0.0649** | **0.1130** |
+
+At `T = 1.6` the trajectories are three to four times *closer together* than at
+`T = 1.0`. Escaping the textual fixed point costs semantic spread: more sampling
+randomness drives the ensemble into a tighter region, not a broader one. Residual
+seed structure survives inside that region — within-seed pairs are closer than
+between-seed pairs at 0.065 against 0.113 — but the whole ensemble has collapsed
+towards one place.
+
+### The formal separation test, and why it says nothing yet
+
+`afterlife analyze separation` on all 18 trajectories, `bge-m3`:
+post-horizon mean gap **+0.0295**, trend **−0.0056 per turnover**, and at the last
+band the 95% bootstrap interval is **[−0.037, +0.091]** — it contains zero.
+
+Verdict: **no separation established**. This is the underpowered outcome the test
+`test_the_contrast_is_underpowered_at_the_pilot_replicate_count` predicted at two
+replicates, and it must be read as "cannot tell", not as "no effect". The negative
+trend is the more suggestive number, and it is equally unresolved.
+
+One confound in that pass: it pooled all three temperatures, whose geometries
+differ by a factor of four. A per-temperature contrast is the right analysis and
+needs more replicates than this probe has.
+
+### Three trajectories lost to a new protocol guard
+
+`WindowProtocolError: appending 2 characters produced 0 new tokens; re-tokenisation
+collapsed the block` — the model returned a two-character completion which, once
+appended and re-tokenised, added nothing to the window. The guard is correct to
+fail rather than silently spin, and the event rate is a reportable property of the
+high-temperature regime.
+
 ## What this means for the stage
 
 The stage's question — does semantic information about the seed survive the
