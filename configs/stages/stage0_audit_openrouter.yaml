@@ -27,11 +27,12 @@ description: >-
   measurement rather than by catalogue price.
 
 generators:
-  - or-mistral-nemo-12b
+  - or-llama31-8b-deepinfra
+  - or-llama31-8b-instruct
   - or-qwen3-8b
+  - or-mistral-nemo-12b
   - or-muse-glimmer-30b
   - or-deepseek-v4-flash
-  - or-llama31-8b-instruct
 
 embeddings: []
 

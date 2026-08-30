@@ -1,38 +1,42 @@
 # ===========================================================================
-# S1 core arm — the wide, cheap matrix
+# S1 core arm — the wide matrix
 # ---------------------------------------------------------------------------
-# Sized against MEASURED prices from S0.2, not estimates. Mistral Nemo at the
-# pinned Parasail endpoint costs $0.0417/M in and out -- roughly one fifth of
-# qwen3-8b per token -- and it is the only candidate with no reasoning at all
-# (reasoning_tokens = 0 under every configuration tried in S0.3b). It therefore
-# carries the wide part of the pilot, where the number of trajectories matters
-# more than model novelty.
+# Generator and endpoint chosen by measurement, not by catalogue price
+# (ADR-0007). `deepinfra/fp8` llama-3.1-8b-instruct was the only candidate that
+# measured:
 #
-# Why the matrix is shaped this way:
-#   W = 8192, T = 262144   -> 32 window turnovers, 256 chunk observations
-#                             (ADR-0004: turnovers, not absolute tokens, are
-#                             what makes a long-run claim defensible)
+#   block fill 1.000, minimum 1.000   -> the stride really is S = B
+#   stop rate  0.000                  -> no EOS interruptions
+#   prompt-token delta 0              -> no server-side template added
+#   reasoning tokens 0 (all switches) -> nothing hidden from the block
+#   fp8, status 0, cheapest endpoint on either provider
+#
+# The first three of those remove methodology 0.1's variable-stride caveat for
+# this arm, which is worth more than the 21x speedup Groq would have bought.
+#
+# Matrix rationale:
+#   W = 8192, T = 262144   -> 32 turnovers, 256 chunk observations (ADR-0004)
 #   2 temperatures         -> spans the expected confinement/diffusion contrast
 #   8 semantic seeds       -> the seed-identity probe needs class diversity
 #   3 stochastic seeds     -> minimum for a trajectory-level bootstrap
 #
-# Forecast: 48 trajectories, ~$4.65 (70% of it input tokens).
-# The cross-model replication arm is a separate config, because a single
-# factorial cannot give two models different matrices.
+# Forecast ~$2.5 for 48 trajectories. Wall clock is the real cost: ~1.3 h per
+# trajectory measured, so ~31 h at concurrency 2. Runs are resumable; re-invoking
+# the same command continues from the last completed step.
 # ===========================================================================
 
 include:
-  - configs/models/generators.yaml
+  - configs/models/generators_openrouter.yaml
   - configs/embeddings/embeddings.yaml
 
 stage: s1
 name: pilot-core
 description: >-
-  Does the phenomenon exist? Wide arm on the cheapest reasoning-free generator:
+  Does the phenomenon exist? Wide arm on the cleanest measured endpoint:
   32 turnovers per trajectory, two temperatures, eight maximally distant
   semantic seeds, three stochastic repetitions per cell.
 
-generators: [mistral-nemo-12b]
+generators: [or-llama31-8b-deepinfra]
 embeddings: [bge-m3, qwen3-embed-8b]
 
 windows:
@@ -53,13 +57,8 @@ semantic_seeds:
 
 stochastic_seeds: [1, 2, 3]
 
-# Four concurrent trajectories; each is internally sequential. Kept low because
-# S0.4 hit an upstream shared-pool rate limit on this endpoint under load.
-# Concurrency 2, not 4: S0.7 measured an upstream shared-pool 429 that ends a
-# trajectory after ~4 steps on the cheapest endpoint, and parallel trajectories
-# make it worse. Throughput, not price, is the binding constraint here.
+# This endpoint showed zero retries under sustained load, unlike every other
+# candidate. Concurrency 2 rather than 4 keeps it that way; raise it only after
+# S1 confirms the retry rate stays at zero.
 max_concurrent: 2
-
-# Forecast $9.68 with the S0.7-calibrated block-fill correction (0.88 for this
-# model) and the Io Net endpoint price. Headroom covers rate-limit retries.
-budget_usd: 12.0
+budget_usd: 6.0

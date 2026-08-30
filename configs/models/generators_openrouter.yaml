@@ -61,7 +61,10 @@ generator_library:
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.10): Alibaba, the only endpoint here as on RouterAI.
+    # Quantization `unknown` on both, which is a limitation to state rather than
+    # one we can design away.
+    provider_slug: alibaba
     allow_fallbacks: false
     native_context: 131072
     price_usd_per_m_input: 0.117
@@ -69,9 +72,12 @@ generator_library:
     extra_body:
       reasoning_effort: none
     notes: >-
-      Reasoning must be suppressed and verified per step; on RouterAI this model
-      overshot max_tokens by 9.96x without it (ADR-0005). The switch that works
-      may differ by provider, hence a separate reasoning audit here.
+      MEASURED (S0.12): reasons by default (653 tokens for a 96-token request,
+      a 7.8x overshoot). `reasoning_effort: none` suppresses it on BOTH
+      providers, which is why that switch is used everywhere. Confirms the
+      RouterAI trap independently: `include_reasoning: false` is accepted here
+      too and still leaves 575 reasoning tokens, hiding the trace rather than
+      preventing it (ADR-0005).
 
   or-muse-glimmer-30b:
     model_id: meta/muse-glimmer-30b

@@ -1,32 +1,36 @@
 # ===========================================================================
-# S1 replication arm — is the effect model-specific?
+# S1 replication arm — is the effect architecture-specific?
 # ---------------------------------------------------------------------------
-# A second architecture, deliberately narrow. qwen3-8b costs ~5x mistral-nemo
-# per token on RouterAI ($0.163/M in against $0.042/M) and has only one endpoint,
-# so the full core matrix on it would forecast $24 by itself -- more than the
-# whole pilot budget.
+# A second family at the same window and trajectory length as the core arm.
+# qwen3-8b costs ~6x llama per token ($0.117/$0.455 against $0.020/$0.040) and
+# has exactly one endpoint on either provider, so the matrix is narrowed rather
+# than the trajectory shortened.
 #
-# What is kept and what is given up, stated explicitly so the stage report can
-# be honest about the power lost:
-#   KEPT:  W = 8192, T = 262144 (32 turnovers). Non-negotiable: below ~10
-#          turnovers no long-run claim is supportable (risks.md R10).
-#   KEPT:  all 8 semantic seeds. The primary pilot measurement is whether seed
-#          identity survives the horizon, and that needs class diversity.
-#   KEPT:  2 stochastic seeds, the minimum that permits any variance estimate.
-#   GIVEN UP: the temperature contrast. Only T = 1.0 is run here; mapping
-#          temperature is Stage 4's job, and the pilot only needs to know
-#          whether the effect appears in a second architecture at all.
+# What is kept and what is given up, so the stage report can be explicit about
+# the power lost:
+#   KEPT:  W = 8192, T = 262144 (32 turnovers). Below ~16 turnovers no long-run
+#          claim is supportable (risks.md R10), so this is not negotiable.
+#   KEPT:  all 8 semantic seeds -- the primary pilot measurement is whether seed
+#          identity survives the horizon, which needs class diversity.
+#   KEPT:  2 stochastic seeds, the minimum permitting any variance estimate.
+#   GIVEN UP: the temperature contrast. Only T = 1.0 runs here; mapping
+#          temperature is Stage 4's job, and the pilot only needs to know whether
+#          the effect appears in a second architecture at all.
 #
-# Forecast: 16 trajectories, ~$8.02. Combined with the core arm: ~$12.7.
+# Reasoning (S0.12, measured on both providers): this model reasons by default --
+# 653 tokens for a 96-token request, a 7.8x block overshoot. `reasoning_effort:
+# none` is the only switch that suppresses generation on both providers;
+# `include_reasoning: false` is accepted and still leaves 575 reasoning tokens.
+# The per-step guard asserts zero regardless of what the switch claims
+# (ADR-0005).
 #
-# Note on reasoning: this model reasons by default and its reasoning tokens are
-# NOT charged against max_tokens (S0.3b measured a 9.96x block overshoot).
-# `reasoning_effort: none` is set in the generator config and the runtime guard
-# asserts zero reasoning tokens on every step (ADR-0005).
+# Expect a *variable* stride here, unlike the core arm: block fill has not been
+# measured at 1.000 for this endpoint, so the realised distribution must be
+# reported rather than assumed.
 # ===========================================================================
 
 include:
-  - configs/models/generators.yaml
+  - configs/models/generators_openrouter.yaml
   - configs/embeddings/embeddings.yaml
 
 stage: s1
@@ -35,7 +39,7 @@ description: >-
   Is the phenomenon architecture-specific? A second model family at the same
   window and trajectory length as the core arm, at a single temperature.
 
-generators: [qwen3-8b]
+generators: [or-qwen3-8b]
 embeddings: [bge-m3, qwen3-embed-8b]
 
 windows:
@@ -54,7 +58,7 @@ semantic_seeds:
 
 stochastic_seeds: [1, 2]
 
-# Single endpoint (Alibaba) with an 8192-token completion limit; S0.4 saw an
-# upstream rate limit here too, so concurrency stays low.
+# Single endpoint with an 8192-token completion cap; ample for B=1024, but a
+# single endpoint means no fallback if it throttles.
 max_concurrent: 2
-budget_usd: 10.0
+budget_usd: 8.0

@@ -1,0 +1,45 @@
+# ===========================================================================
+# S1.0 — one full-size trajectory before the batch
+# ---------------------------------------------------------------------------
+# The block fill of 1.000 that justifies treating the stride as constant
+# (ADR-0007) was measured at W = 2048. Stage 0's finding F8 was that a
+# measurement taken in one regime does not transfer to another -- block fill
+# depends on how much established context the model is given -- so it must be
+# re-measured at the W the pilot actually uses before 48 trajectories are
+# launched on the assumption.
+#
+# This is exit criterion E7 of the Stage 1 plan, run first and alone:
+# one cell of the core matrix, identical in every parameter.
+#
+#   ~$0.05, ~1.3 h expected. Resumable if interrupted.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: probe-single
+description: >-
+  One full-size trajectory at the pilot's exact settings, to verify block fill,
+  latency and protocol integrity at W = 8192 before committing the batch.
+
+generators: [or-llama31-8b-deepinfra]
+embeddings: [bge-m3]
+
+windows:
+  - W: 8192
+    block_size: 1024
+    target_tokens: 262144 # 32 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 1.0
