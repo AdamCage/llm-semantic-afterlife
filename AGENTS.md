@@ -57,6 +57,36 @@ invalidates the affected result, and a reviewer will find it.
 
 ---
 
+## 2a. Roles, and the gate between them
+
+Work is split between two roles, with a machine gate in the middle. Full contract
+in `.cursor/rules/70-roles-and-branches.mdc`; skills: `stage-execute`,
+`stage-review`.
+
+**Executor** carries out a stage's planned computations, produces artifacts, and
+keeps tests and the gate green. **Supervisor** decides whether the results mean
+what the report says — and deliberately does *not* re-derive anything the gate
+already checks.
+
+```bash
+afterlife review --stage N     # exit 0 = ready for scientific review
+```
+
+The gate checks what is objectively decidable: plan present with pre-registered
+predictions, runs complete, output hashes intact, artifact bundles
+self-contained, degeneracy labelled wherever confinement is claimed, budget
+reconciled, report scoring its own predictions, no unverified citations in the
+manuscript.
+
+The supervisor's attention goes to what no tool can decide: whether the
+conclusion follows, whether each threshold is calibrated rather than guessed,
+whether a measurement was taken in the regime it is applied to, whether a claim
+is generalised from one instance, whether every confound is named, and whether a
+negative result is being softened.
+
+**Never request review while the gate fails.** It spends the expensive reviewer
+on work a tool already did.
+
 ## 3. Stage discipline
 
 Work proceeds strictly stage by stage. Stages are defined in
@@ -64,9 +94,19 @@ Work proceeds strictly stage by stage. Stages are defined in
 computations, exit criteria, and a budget.
 
 ```
-plan  ->  execute  ->  produce artifacts  ->  write stage report
-      ->  compare against exit criteria    ->  re-plan next stage
+branch  ->  plan  ->  execute  ->  produce artifacts  ->  write stage report
+        ->  pass the gate  ->  scientific review  ->  merge  ->  re-plan
 ```
+
+**Each stage lives on its own branch**, cut from `main`, merged back with
+`--no-ff` when the stage closes, then deleted. The merge commit is the record of
+the stage as a unit of work. Stage branches are never rebased once pushed: the
+order in which things were tried, including the mistakes, is evidence. One stage
+branch open at a time.
+
+Project infrastructure that is not a stage result — harness changes, analysis
+modules several stages need, tooling fixes — goes to `main` directly rather than
+being held hostage to a stage.
 
 Rules:
 
@@ -158,10 +198,25 @@ afterlife audit determinism --model M    # seed-reproducibility measurement
 afterlife estimate --config configs/stages/stage1_pilot.yaml   # cost forecast
 afterlife generate --config <cfg>        # produce trajectories
 afterlife embed --run <run_id>           # embed chunks
-afterlife analyze <analysis> --run <id>  # analysis passes
+afterlife analyze degeneracy --run <id>  # repetition/entropy; run BEFORE geometry
+afterlife analyze geometry --run <id>    # displacement, MSD, recurrence
+afterlife analyze separation --run <id>  # does seed identity outlive the horizon
 afterlife report --stage N               # assemble stage artifacts + report
+afterlife review --stage N               # mechanical gate before review
+afterlife verify --stage N               # run status + output integrity
+afterlife compare <run_a> <run_b>        # scientific-content diff between runs
 afterlife reproduce <run_id>             # re-derive and diff against original
+afterlife ledger                         # spend by kind
+
+python scripts/summarise_run.py <id>     # protocol diagnostics per model
+python scripts/calibrate_degeneracy.py   # re-derive the degeneracy threshold
+python scripts/probe_endpoints.py <m>    # which endpoints actually serve
 ```
+
+Run `analyze degeneracy` before reading any geometry. A looping trajectory
+occupies one point in representation space and will report a confined MSD for
+reasons that have nothing to do with semantics; this project drew that wrong
+conclusion once already.
 
 **Cost safety.** Anything that spends money must (a) print an estimate and the
 remaining budget, (b) refuse to exceed `AFTERLIFE_BUDGET_USD_PER_RUN` /

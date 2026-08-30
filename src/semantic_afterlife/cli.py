@@ -12,6 +12,7 @@ import platform
 from pathlib import Path
 from typing import Annotated, Any
 
+import orjson
 import pandas as pd
 import typer
 from rich.panel import Panel
@@ -838,6 +839,54 @@ analyze_app = typer.Typer(help="Analysis passes over stored trajectories.")
 app.add_typer(analyze_app, name="analyze")
 
 
+def _source_chunks(run: Any) -> pd.DataFrame | None:
+    """Chunk texts for an embedding run, found via its manifest's source run.
+
+    Geometry needs them to label degenerate trajectories: a looping trajectory
+    occupies one point in representation space and will report a confined MSD for
+    reasons that have nothing to do with semantics. Reporting an exponent without
+    that label is the mistake S1.0 made by hand.
+    """
+    manifest = read_manifest(run.manifest)
+    source_id = (manifest.get("config_resolved") or {}).get("source_run_id") or (
+        manifest.get("totals") or {}
+    ).get("source_run_id")
+    if not source_id:
+        return None
+    try:
+        source = get_settings().paths.find_run(str(source_id))
+    except FileNotFoundError:
+        return None
+    return pd.read_parquet(source.chunks()) if source.chunks().is_file() else None
+
+
+def _degeneracy_labels(chunks: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Per-trajectory degeneracy verdicts and per-chunk diagnostics."""
+    from .analysis.degeneracy import DegeneracyParams, compute_degeneracy
+
+    params = DegeneracyParams()
+    per_chunk: list[pd.DataFrame] = []
+    verdicts: list[dict[str, Any]] = []
+    for trajectory_id, block in chunks.groupby("trajectory_id", sort=True):
+        block = block.sort_values("chunk_index")
+        result = compute_degeneracy(
+            block["text"].tolist(),
+            trajectory_id=str(trajectory_id),
+            token_ends=block["token_end"].to_numpy(),
+            W=int(block["W"].iloc[0]),
+            params=params,
+        )
+        per_chunk.append(result.per_chunk)
+        verdicts.append(
+            {
+                "trajectory_id": str(trajectory_id),
+                "degenerate": bool(result.is_degenerate),
+                **{k: v for k, v in result.scalars.items() if k != "degenerate"},
+            }
+        )
+    return pd.DataFrame(verdicts), pd.concat(per_chunk, ignore_index=True)
+
+
 @analyze_app.command("geometry")
 def analyze_geometry(
     run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
@@ -928,6 +977,48 @@ def analyze_geometry(
         acf_all = pd.concat(acf_frames, ignore_index=True)
         scalars = pd.DataFrame(scalar_rows)
         aggregate = aggregate_msd(results)
+
+        # Degeneracy labels are joined here, not left to the reader. An MSD
+        # exponent from a looping trajectory measures the loop; publishing it
+        # unlabelled is how a repetition artifact becomes a claim about
+        # semantic confinement.
+        chunks_source = _source_chunks(source)
+        if chunks_source is not None:
+            verdicts, degeneracy_chunks = _degeneracy_labels(chunks_source)
+            scalars = scalars.merge(verdicts, on="trajectory_id", how="left")
+            per_chunk = per_chunk.merge(
+                degeneracy_chunks[["trajectory_id", "chunk_index", "ngram_repetition", "looping"]],
+                on=["trajectory_id", "chunk_index"],
+                how="left",
+            )
+            degeneracy_chunks.to_parquet(
+                context.paths.data_dir / "degeneracy_per_chunk.parquet", index=False
+            )
+            n_degenerate = int(scalars["degenerate"].fillna(False).sum())
+            context.events.event(
+                "analysis.geometry.degeneracy_joined",
+                n_trajectories=len(scalars),
+                n_degenerate=n_degenerate,
+                mirror=f"{n_degenerate}/{len(scalars)} trajectories flagged degenerate",
+            )
+            if n_degenerate:
+                console().print(
+                    f"[yellow]{n_degenerate} of {len(scalars)} trajectories are degenerate. "
+                    "Their MSD exponents measure repetition, not semantics, and are labelled "
+                    "as such in geometry_scalars and in every figure caption.[/yellow]"
+                )
+                context.note(
+                    f"{n_degenerate}/{len(scalars)} trajectories degenerate; exponents from "
+                    "those trajectories are not evidence about semantic dynamics"
+                )
+        else:
+            scalars["degenerate"] = pd.NA
+            console().print(
+                "[yellow]source chunk texts not found, so trajectories could not be checked "
+                "for degeneracy. Any confinement result from this run is unqualified and must "
+                "not be reported.[/yellow]"
+            )
+            context.note("degeneracy labels unavailable: source chunks not found")
 
         for name, table in (
             ("per_chunk", per_chunk),
@@ -1048,10 +1139,19 @@ def analyze_geometry(
                     "Per-trajectory geometry summary: post-horizon displacement statistics, fitted "
                     "MSD exponent with its standard error and fit quality, plateau level, and "
                     "integrated autocorrelation time (the effective spacing between independent "
-                    "chunk observations)."
+                    "chunk observations). The `degenerate` column carries the calibrated "
+                    "degeneracy verdict for the same trajectory."
                 ),
                 run_ids=[run, context.run_id],
                 git_sha=git_sha,
+                limitations=(
+                    "An MSD exponent from a trajectory marked `degenerate` measures repetition, "
+                    "not semantic motion, and is not evidence of confinement. Exponents are "
+                    "fitted over a lag range bounded by the observed turnover count, so they "
+                    "cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the "
+                    "trajectory was too short to separate the post-horizon regime and the "
+                    "statistics mix forced and free segments."
+                ),
             ),
         )
 
@@ -1065,6 +1165,210 @@ def analyze_geometry(
             n_trajectories=int(scalars.shape[0]),
             mean_msd_alpha=float(scalars["msd_alpha"].mean()),
         )
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
+@analyze_app.command("degeneracy")
+def analyze_degeneracy(
+    run: Annotated[str, typer.Option("--run", "-r", help="generation run_id holding chunks")],
+) -> None:
+    """Repetition, lexical variety and entropy per chunk, with a per-trajectory verdict.
+
+    Degeneracy is measured and labelled, never filtered: a repetition loop is a
+    dynamical state, and its rate is an order parameter. But it also invalidates
+    any confinement claim drawn from the same trajectory, so it has to be known
+    before the geometry is read.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+    if not source.chunks().is_file():
+        raise typer.BadParameter(f"run {run} has no chunks.parquet")
+
+    from .analysis.degeneracy import DegeneracyParams
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta
+
+    params = DegeneracyParams()
+    config_resolved = {
+        "analysis": "degeneracy",
+        "source_run_id": run,
+        "params": params.model_dump(),
+    }
+    with run_context(
+        stage=str(manifest.get("stage", "s1")),
+        slug="degeneracy",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        chunks = pd.read_parquet(source.chunks())
+        verdicts, per_chunk = _degeneracy_labels(chunks)
+        verdicts.to_parquet(context.paths.data_dir / "degeneracy_verdicts.parquet", index=False)
+        per_chunk.to_parquet(context.paths.data_dir / "degeneracy_per_chunk.parquet", index=False)
+
+        _print_frame(
+            verdicts,
+            "degeneracy verdicts",
+            columns=[
+                "trajectory_id",
+                "degenerate",
+                "looping_fraction",
+                "mean_ngram_repetition",
+                "mean_type_token_ratio",
+                "mean_entropy_bits",
+                "entropy_trend_per_turnover",
+            ],
+        )
+        n_bad = int(verdicts["degenerate"].sum())
+        console().print(
+            f"[bold]{n_bad}/{len(verdicts)}[/bold] trajectories degenerate "
+            f"(threshold {params.loop_repetition_threshold:.3f} = 99th percentile of natural "
+            "prose; see scripts/calibrate_degeneracy.py)"
+        )
+
+        save_table(
+            verdicts,
+            context.artifacts_dir / "degeneracy",
+            FigureMeta(
+                name="degeneracy_verdicts",
+                caption=(
+                    "Per-trajectory degeneracy diagnostics. A chunk counts as looping when its "
+                    f"{params.ngram}-gram repetition rate exceeds "
+                    f"{params.loop_repetition_threshold:.3f}, the 99th percentile of natural "
+                    "English prose chunked by the same tokenizer at the same size. A trajectory "
+                    f"counts as degenerate when at least {params.loop_chunk_fraction:.0%} of its "
+                    "post-horizon chunks are looping."
+                ),
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=(
+                    "Degeneracy is a surface-form measure. A trajectory can be lexically varied "
+                    "and still semantically static, which is what the frozen-embedding check and "
+                    "the geometry pass are for."
+                ),
+            ),
+        )
+        context.finish(n_trajectories=len(verdicts), n_degenerate=n_bad)
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
+@analyze_app.command("separation")
+def analyze_separation(
+    run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
+    embedding: Annotated[str, typer.Option("--embedding", "-e")] = "",
+    turnover_bin: float = typer.Option(2.0, help="width of the turnover bands reported"),
+) -> None:
+    """Does seed identity survive the context horizon? The Stage 1 verdict pass.
+
+    Reports `D_between - D_within` per turnover band with a bootstrap CI over
+    trajectories. `D_within` -- same semantic seed, different stochastic seed --
+    is the control that makes the contrast interpretable; without it the pass
+    refuses to run.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+
+    candidates = sorted(source.data_dir.glob("embeddings_*.parquet"))
+    if not candidates:
+        raise typer.BadParameter(f"run {run} has no embeddings; run `afterlife embed` first")
+    chosen = source.embeddings(embedding) if embedding else candidates[0]
+    if not chosen.is_file():
+        raise typer.BadParameter(f"{chosen.name} not found in run {run}")
+    slug = chosen.stem.removeprefix("embeddings_")
+
+    from .analysis.separation import SeparationParams, compute_separation, trajectories_from_frame
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta, save_plotly_figure
+    from .viz.figures import separation_figure
+
+    params = SeparationParams(turnover_bin=turnover_bin)
+    config_resolved = {
+        "analysis": "separation",
+        "source_run_id": run,
+        "embedding": slug,
+        "params": params.model_dump(),
+    }
+    with run_context(
+        stage=str(manifest.get("stage", "s1")),
+        slug=f"separation-{slug}",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        frame = pd.read_parquet(chosen)
+        trajectories = trajectories_from_frame(frame)
+        result = compute_separation(trajectories, params=params)
+
+        result.per_band.to_parquet(
+            context.paths.data_dir / "separation_per_band.parquet", index=False
+        )
+        result.pairs.to_parquet(context.paths.data_dir / "separation_pairs.parquet", index=False)
+
+        _print_frame(
+            result.per_band,
+            f"seed separation ({slug})",
+            columns=[
+                "band",
+                "d_within",
+                "d_between",
+                "gap",
+                "gap_ci_low",
+                "gap_ci_high",
+                "separated",
+                "n_within_pairs",
+                "n_between_pairs",
+            ],
+        )
+        verdict = (
+            "seed identity persists past the horizon"
+            if result.scalars["separated_at_last_band"]
+            else "no separation detected at the last observed band"
+        )
+        console().print(
+            f"[bold]{verdict}[/bold]  |  post-horizon mean gap "
+            f"{result.scalars['gap_post_horizon_mean']:.4f}, trend "
+            f"{result.scalars['gap_trend_per_turnover']:+.5f} per turnover"
+        )
+
+        W = int(frame["W"].iloc[0])
+        figure, tidy, meta = separation_figure(
+            result.per_band,
+            W=W,
+            embedding=slug,
+            scalars=result.scalars,
+            run_ids=[run, context.run_id],
+        )
+        meta.git_sha = context.manifest.git.get("sha")
+        save_plotly_figure(figure, context.artifacts_dir / f"separation-{slug}", meta, data=tidy)
+
+        save_table(
+            result.per_band,
+            context.artifacts_dir / f"separation-{slug}",
+            FigureMeta(
+                name="separation_per_band",
+                caption=(
+                    "Seed-separation contrast per turnover band. `d_within` is the mean cosine "
+                    "distance between trajectories sharing a semantic seed and differing only in "
+                    "their stochastic seed; `d_between` is the same across different semantic "
+                    "seeds. `gap` is their difference, with a 95% bootstrap interval resampled "
+                    "over trajectories rather than over pairs."
+                ),
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=(
+                    "A positive gap shows the seed still shapes the trajectory; it does not say "
+                    "through what mechanism, nor that the information is recoverable. The probe "
+                    "in Stage 2 answers that. At the pilot's replicate count the contrast "
+                    "resolves a strong effect and not a marginal one, so a small gap should be "
+                    "read as underpowered rather than absent."
+                ),
+            ),
+        )
+        context.finish(separation={k: float(v) for k, v in result.scalars.items()})
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
 
 
@@ -1085,6 +1389,72 @@ def report(stage: Annotated[str, typer.Option("--stage", "-s")]) -> None:
         raise typer.BadParameter(f"no artifacts directory for stage {stage} at {out_dir}")
     path = write_index(out_dir, stage=stage, title=f"Stage {stage} artifacts")
     console().print(f"wrote {path}")
+
+
+@app.command()
+def review(
+    stage: Annotated[str, typer.Option("--stage", "-s")],
+    json_out: Annotated[
+        Path | None, typer.Option("--json", help="write the report as JSON")
+    ] = None,
+) -> None:
+    """Run the mechanical review gate for a stage.
+
+    Everything this checks is objectively decidable: plan present with
+    pre-registered predictions, runs complete, output hashes intact, artifact
+    bundles self-contained, degeneracy labelled wherever confinement is claimed,
+    budget reconciled, report scoring its own predictions, no unverified
+    citations in the manuscript.
+
+    An executing agent runs this and fixes what it reports. A reviewing agent's
+    judgement is then spent only on what no tool can decide -- whether the
+    conclusion follows from the evidence, whether a threshold is defensible,
+    whether a claim overreaches. Exit code 1 means not ready for review.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    from .reporting.stage_review import review_stage
+
+    report = review_stage(settings, stage)
+    frame = report.to_frame()
+
+    table = Table(title=f"stage {stage} review gate", title_justify="left", header_style="bold")
+    table.add_column("check")
+    table.add_column("verdict")
+    table.add_column("detail", overflow="fold", max_width=80)
+    styles = {"PASS": "green", "FAIL": "red", "WARN": "yellow", "SKIP": "dim"}
+    for _, row in frame.iterrows():
+        style = styles.get(row["verdict"], "")
+        table.add_row(row["check"], f"[{style}]{row['verdict']}[/{style}]", row["detail"])
+    console().print(table)
+
+    for check in report.failed:
+        console().print(
+            Panel(
+                f"{check.detail}\n\n[dim]Why this matters:[/dim] {check.why_it_matters}",
+                title=f"[red]FAIL {check.name}[/red]",
+                border_style="red",
+            )
+        )
+    for check in report.warned:
+        console().print(f"[yellow]WARN {check.name}:[/yellow] {check.detail}")
+
+    if json_out is not None:
+        json_out.parent.mkdir(parents=True, exist_ok=True)
+        json_out.write_bytes(orjson.dumps(report.as_dict(), option=orjson.OPT_INDENT_2))
+        console().print(f"wrote {json_out}")
+
+    if report.ready_for_review:
+        console().print(
+            "[green]gate passed — ready for scientific review.[/green] What remains is "
+            "judgement a tool cannot supply: does the conclusion follow, is each threshold "
+            "defensible, does any claim exceed its evidence."
+        )
+    else:
+        console().print(
+            f"[red]{len(report.failed)} blocking issue(s) — not ready for review.[/red]"
+        )
+        raise typer.Exit(code=1)
 
 
 @app.command()

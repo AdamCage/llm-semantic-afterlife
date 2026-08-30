@@ -511,6 +511,143 @@ def projection_figure(
     return figure, tidy, meta
 
 
+def separation_figure(
+    per_band: pd.DataFrame,
+    *,
+    W: int,
+    embedding: str,
+    scalars: dict[str, float],
+    run_ids: list[str],
+    name: str = "seed_separation",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """The Stage 1 verdict figure: does seed identity outlive the context horizon?
+
+    Plots both distances and their difference. Showing only the gap would hide
+    whether a small gap means "seeds converged" or "everything drifted apart";
+    the two component curves distinguish those.
+    """
+    figure = make_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        row_heights=[0.55, 0.45],
+        vertical_spacing=0.09,
+        subplot_titles=(
+            "cosine distance between trajectory pairs",
+            "contrast: D_between − D_within, with 95% bootstrap CI over trajectories",
+        ),
+    )
+
+    for column, label, colour in (
+        ("d_between", "different semantic seeds", PALETTE[0]),
+        ("d_within", "same seed, different sampling (control)", PALETTE[1]),
+    ):
+        figure.add_trace(
+            go.Scatter(
+                x=per_band["band"],
+                y=per_band[column],
+                mode="lines+markers",
+                name=label,
+                line={"width": 2.4, "color": colour},
+                marker={"size": 7},
+                hovertemplate=f"{label}<br>t/W=%{{x}}<br>d=%{{y:.4f}}<extra></extra>",
+            ),
+            row=1,
+            col=1,
+        )
+
+    figure.add_trace(
+        go.Scatter(
+            x=np.concatenate([per_band["band"], per_band["band"][::-1]]),
+            y=np.concatenate([per_band["gap_ci_high"], per_band["gap_ci_low"][::-1]]),
+            fill="toself",
+            fillcolor=_rgba(ROLE_COLORS["ci"], 0.18),
+            line={"width": 0},
+            name="95% CI",
+            hoverinfo="skip",
+        ),
+        row=2,
+        col=1,
+    )
+    figure.add_trace(
+        go.Scatter(
+            x=per_band["band"],
+            y=per_band["gap"],
+            mode="lines+markers",
+            name="gap",
+            line={"width": 2.8, "color": ROLE_COLORS["ci"]},
+            marker={
+                # Filled where the interval excludes zero, hollow where it does not:
+                # the reader should see at a glance which bands carry a claim.
+                "size": 9,
+                "symbol": ["circle" if s else "circle-open" for s in per_band["separated"]],
+                "color": ROLE_COLORS["ci"],
+            },
+            hovertemplate="t/W=%{x}<br>gap=%{y:.4f}<extra></extra>",
+        ),
+        row=2,
+        col=1,
+    )
+    figure.add_hline(
+        y=0.0,
+        line={"color": ROLE_COLORS["baseline"], "width": 1.4, "dash": "dash"},
+        row=2,
+        col=1,
+    )
+    figure.add_vline(
+        x=1.0,
+        line={"color": ROLE_COLORS["horizon"], "width": 1.8},
+        annotation={
+            "text": "context horizon",
+            "font": {"color": ROLE_COLORS["horizon"], "size": 10},
+        },
+    )
+
+    separated = bool(scalars.get("separated_at_last_band", 0.0))
+    figure.update_layout(
+        template=plotly_template(),
+        title=(
+            f"Does seed identity survive the context horizon? — {embedding}<br>"
+            f"<sub>W = {W:,} tokens. Post-horizon mean gap "
+            f"{scalars.get('gap_post_horizon_mean', float('nan')):.4f}, trend "
+            f"{scalars.get('gap_trend_per_turnover', float('nan')):+.5f} per turnover. "
+            f"{'Separated' if separated else 'Not separated'} at the last observed band.</sub>"
+        ),
+        height=760,
+    )
+    figure.update_xaxes(title_text="window turnovers t/W", row=2, col=1)
+    figure.update_yaxes(title_text="1 − cos", row=1, col=1)
+    figure.update_yaxes(title_text="gap", row=2, col=1)
+
+    meta = FigureMeta(
+        name=name,
+        caption=(
+            f"Seed-separation contrast in the {embedding} space, W={W:,}. Upper panel: mean "
+            "cosine distance between trajectory pairs from different semantic seeds, against the "
+            "control of pairs sharing a semantic seed and differing only in their stochastic "
+            "seed. Lower panel: the difference, with a 95% bootstrap interval resampled over "
+            "trajectories. Filled markers mark bands whose interval excludes zero. A positive "
+            "gap after the context horizon means the seed still shapes the trajectory once it "
+            "has physically left the model's input."
+        ),
+        run_ids=run_ids,
+        alt_text=(
+            "Two-panel figure: pairwise distances for same-seed and different-seed trajectory "
+            "pairs, and their difference with a confidence band, against window turnovers."
+        ),
+        limitations=(
+            "Shows that the seed still influences the trajectory, not by what mechanism nor "
+            "that the information is recoverable — the Stage 2 probe answers that. The contrast "
+            "resolves a strong effect at this replicate count and not a marginal one, so a small "
+            "gap is underpowered rather than absent. Degenerate trajectories inflate D_within "
+            "and D_between alike and must be labelled before this figure is read."
+        ),
+        units={"band": "window turnovers t/W", "gap": "cosine distance"},
+        extra={"W": W, "embedding": embedding, **{k: float(v) for k, v in scalars.items()}},
+    )
+    return figure, per_band, meta
+
+
 def cost_breakdown_figure(
     estimates: pd.DataFrame,
     *,

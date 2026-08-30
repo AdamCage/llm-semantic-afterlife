@@ -1,0 +1,106 @@
+---
+description: Agent roles (supervisor vs executor), the review gate, and the branch-per-stage workflow.
+alwaysApply: true
+---
+
+# Roles and branches
+
+## Two roles, one gate between them
+
+This project runs with a division of labour. Read which role you are in from the
+task you were given; if it is ambiguous, ask.
+
+**Executor.** Carries out a stage's planned computations: runs generation and
+analysis passes, implements planned measurement code, produces artifacts, drafts
+report sections, keeps tests and types green. Optimised for volume and
+throughput. May be a smaller or cheaper model.
+
+**Supervisor (scientific reviewer).** Decides whether a result means what the
+report says it means. Does *not* re-derive what the gate already checks.
+Optimised for judgement.
+
+Between them sits a machine gate:
+
+```bash
+afterlife review --stage N            # exit 0 = ready for review
+afterlife review --stage N --json review.json
+```
+
+**Executor contract.** Never request review while the gate fails. Fix what it
+reports, or — if a check is wrong — say so explicitly with an argument, rather
+than working around it. Requesting review on a failing gate wastes the expensive
+reviewer on work a tool already did.
+
+**Supervisor contract.** Assume everything the gate checks is true and spend no
+attention on it. Judge only what no tool can:
+
+1. **Does the conclusion follow from the evidence?** Not "is the number right"
+   but "does this number support this sentence".
+2. **Is every threshold calibrated or arbitrary?** A threshold chosen by
+   intuition is a defect. Ask what reference it was calibrated against. This
+   project has already shipped a threshold six times too high, which inverted
+   the reading of a whole trajectory.
+3. **Was the measurement taken in the regime it is applied to?** Block fill
+   measured at `W=2048` did not transfer to `W=8192`; a capability probe on a
+   28-token prompt did not predict behaviour on an 8192-token one. Assume
+   nothing transfers across regimes without a measurement in the target regime.
+4. **Is the claim generalised from one instance?** One generator, one seed, one
+   temperature, one embedding space. Three of four models in this project behave
+   differently from each other; a claim from one is a claim about one.
+5. **Is a confound named or hidden?** Degeneracy, provider identity,
+   quantization, template overhead, reasoning tokens, forced continuation past a
+   stop token. Each has already contaminated a result here.
+6. **Does the artifact say what it cannot establish?** A limitations line that
+   restates the caption is not a limitations line.
+7. **Is a negative result being softened?** A stage that falsifies its own
+   hypothesis and says so plainly is a successful stage. Hedging is worse than
+   failing.
+
+**Escalation.** The executor stops and asks the supervisor before: spending above
+a stage budget, changing a non-negotiable, dropping a planned experiment,
+changing a threshold, or writing prose into `paper/main.tex`. The executor does
+*not* need to ask before writing code, refactoring, adding tests, or producing
+artifacts.
+
+## Branch per stage
+
+Each stage lives on its own branch, cut from `main`, merged back when the stage
+closes, then deleted.
+
+```bash
+# opening stage N
+git switch main && git pull
+git switch -c stage-N
+
+# ... plan, execute, produce artifacts, write REPORT.md ...
+
+afterlife review --stage N            # must exit 0
+
+# closing stage N, after supervisor sign-off
+git switch main && git pull
+git merge --no-ff stage-N -m "Close stage N: <one-line finding>"
+git push origin main
+git branch -d stage-N
+git push origin --delete stage-N
+```
+
+Rules:
+
+- `--no-ff` always: a stage is a unit of work and its merge commit is the record
+  of that unit. A fast-forward loses the boundary.
+- **Never merge a stage branch while `afterlife review` fails.** The gate is the
+  merge criterion, not a suggestion.
+- Project *infrastructure* that is not a stage result — harness changes, new
+  analysis modules needed by several stages, tooling fixes — goes to `main`
+  directly or via a short-lived branch, not held hostage to a stage.
+- Stage branches are not rebased once pushed. The commit history of a stage is
+  evidence about what was tried and in what order, including the mistakes.
+- One stage branch open at a time. Stage discipline means finishing.
+
+## What a good executor commit looks like
+
+The commit message says what changed and *why it matters scientifically*, not
+what files moved. When a measurement drove the change, put the number in the
+message. When a bug is fixed, say what wrong conclusion it could have produced.
+The git log of this project is meant to read as a sequence of decisions with
+their evidence attached.
