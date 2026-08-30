@@ -224,10 +224,47 @@ class TestInterChunkNovelty:
         # Intra-chunk metrics see nothing wrong: each page is varied prose.
         assert result.scalars["mean_ngram_repetition"] < params.loop_repetition_threshold
         assert result.scalars["looping_fraction"] == pytest.approx(0.0)
-        # The verdict is still degenerate, via the inter-chunk route.
+        # The verdict is still degenerate, via the fixed-point route.
         assert result.is_degenerate
+        assert result.scalars["at_fixed_point"] == pytest.approx(1.0)
         assert result.scalars["degeneracy_mode"] == pytest.approx(2.0)
         assert result.scalars["late_pairwise_similarity_median"] == pytest.approx(1.0)
+
+    def test_low_productivity_alone_does_not_condemn_a_moving_trajectory(self) -> None:
+        """The disagreement that forced the two verdicts apart.
+
+        Observed on real data: a trajectory recycling phrasing far more than human
+        prose (novelty 0.675 against 0.97) whose late-phase pairwise median was
+        0.007, inside the natural range. It kept exploring, so it must not be
+        excluded from semantic analysis -- but its productivity is still a
+        reportable quantity.
+        """
+        # The real regime is hard to synthesise: with a constant shared block, low
+        # novelty and low pairwise similarity are mutually exclusive. It occurs on
+        # real data only because novelty is measured against the *cumulative*
+        # history, so a chunk can reuse a little from each of many earlier chunks
+        # and overlap any single one of them barely at all. What matters here is
+        # the verdict rule, so productivity is forced to fail by raising its
+        # threshold rather than by contriving that regime.
+        # A short shared tail: enough reused material to depress novelty below 1,
+        # far too little for any pair of chunks to look alike.
+        tail = "and so the argument returns to its starting premise again"
+        texts = [f"{t} {tail}" for t in varied_chunks(30, seed=11)]
+        ends = np.arange(1, len(texts) + 1) * 1024
+        params = DegeneracyParams(novelty_threshold=1.0)
+        result = compute_degeneracy(
+            texts, trajectory_id="recycling", token_ends=ends, W=4096, params=params
+        )
+        assert result.scalars["unproductive_fraction"] == pytest.approx(1.0)
+        assert result.scalars["late_pairwise_similarity_median"] < params.fixed_point_threshold
+        assert not result.is_degenerate
+        assert result.scalars["at_fixed_point"] == pytest.approx(0.0)
+
+    def test_the_fixed_point_threshold_is_above_natural_prose(self) -> None:
+        """Guards the calibration: natural prose has a late-phase median of 0.000
+        even when the whole text is on one topic, so the threshold must not be at
+        or below zero."""
+        assert DegeneracyParams().fixed_point_threshold > 0.0
 
     def test_a_varied_trajectory_is_not_degenerate_by_either_route(self) -> None:
         texts = varied_chunks(40, seed=7)

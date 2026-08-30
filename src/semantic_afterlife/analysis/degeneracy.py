@@ -75,6 +75,19 @@ class DegeneracyParams(BaseModel):
         description="word-shingle length for inter-chunk novelty. Long enough that natural prose "
         "almost never repeats a shingle by chance, so a low novelty score means real reuse",
     )
+    fixed_point_threshold: float = Field(
+        default=0.0122,
+        gt=0.0,
+        le=1.0,
+        description="median late-phase pairwise shingle Jaccard above which the trajectory is "
+        "judged to have reached a fixed point or a short cycle. CALIBRATED: the 99.9th percentile "
+        "of 20,730 individual chunk pairs from natural English prose, whose *median* is 0.000 for "
+        "both reference sources. Comparing a median against a far-tail quantile is deliberately "
+        "conservative -- it says the typical late pair is more similar than 99.9% of natural pairs "
+        "before anything is flagged. Note that a coherent single-topic book (Darwin, 201 chunks) "
+        "also has a median of 0.000, so topical consistency does not inflate this statistic and "
+        "the threshold is not penalising subject-matter focus",
+    )
     novelty_threshold: float = Field(
         default=0.872,
         gt=0.0,
@@ -277,19 +290,28 @@ def compute_degeneracy(
         "entropy_trend_per_turnover": _slope(
             post["turnover"].to_numpy(), post["unigram_entropy_bits"].to_numpy()
         ),
-        # Either route is sufficient. Intra-chunk looping and inter-chunk
-        # unproductivity are distinct collapse modes: the first repeats within a
-        # page, the second repeats the page. A trajectory can exhibit the second
-        # while scoring perfectly on every measure of the first.
-        "degenerate": float(
-            looping_fraction >= params.loop_chunk_fraction
-            or unproductive_fraction >= params.loop_chunk_fraction
-        ),
     }
-    scalars["degeneracy_mode"] = float(
-        (1 if looping_fraction >= params.loop_chunk_fraction else 0)
-        + (2 if unproductive_fraction >= params.loop_chunk_fraction else 0)
+
+    # Two verdicts, deliberately not one. They answer different questions and
+    # they disagreed on real data: a trajectory at 0.675 novelty -- far below
+    # human prose -- had a late-phase pairwise median of 0.007, inside the
+    # natural range, meaning it kept moving while recycling phrasing heavily.
+    #
+    # `degenerate` is the one that qualifies other measurements, so it fires only
+    # on evidence that the process has stopped exploring: repetition within a
+    # page, or the same page returning. Productivity is reported as a continuous
+    # order parameter with no threshold, because its natural-prose reference is
+    # arguably the wrong yardstick -- a human writing a book is not conditioned on
+    # a sliding window of their own output and has no reason to recycle phrasing
+    # the way a self-conditioned process must.
+    at_fixed_point = bool(
+        np.isfinite(scalars["late_pairwise_similarity_median"])
+        and scalars["late_pairwise_similarity_median"] >= params.fixed_point_threshold
     )
+    is_looping = looping_fraction >= params.loop_chunk_fraction
+    scalars["at_fixed_point"] = float(at_fixed_point)
+    scalars["degenerate"] = float(is_looping or at_fixed_point)
+    scalars["degeneracy_mode"] = float((1 if is_looping else 0) + (2 if at_fixed_point else 0))
     if "consecutive_cosine" in frame.columns:
         scalars["frozen_fraction"] = float(post["frozen"].mean())
         scalars["max_consecutive_cosine"] = float(post["consecutive_cosine"].max())
