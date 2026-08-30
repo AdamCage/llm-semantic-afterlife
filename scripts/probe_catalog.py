@@ -20,14 +20,19 @@ from semantic_afterlife.config import get_settings
 from semantic_afterlife.providers import build_client, close_clients
 
 
-def flatten(entry: dict[str, Any], usd_per_rub: float) -> dict[str, Any]:
+def flatten(entry: dict[str, Any], to_usd: float) -> dict[str, Any]:
+    """Normalise one catalogue entry.
+
+    ``to_usd`` converts the provider's native per-token price into USD: RouterAI
+    quotes roubles, OpenRouter already quotes USD.
+    """
     pricing = entry.get("pricing") or {}
 
     def price(*keys: str) -> float | None:
         for key in keys:
             if key in pricing:
                 try:
-                    return float(pricing[key]) * 1e6 * usd_per_rub
+                    return float(pricing[key]) * 1e6 * to_usd
                 except (TypeError, ValueError):
                     continue
         return None
@@ -63,7 +68,8 @@ async def main() -> None:
     finally:
         await close_clients()
 
-    frame = pd.DataFrame([flatten(m, settings.afterlife_usd_per_rub) for m in models])
+    to_usd = 1.0 if args.api == "openrouter" else settings.afterlife_usd_per_rub
+    frame = pd.DataFrame([flatten(m, to_usd) for m in models])
     print(f"catalogue: {len(frame)} models on {args.api}")
     print(
         f"models advertising a completions API: {frame['supported_apis'].str.contains('completion').sum()}"

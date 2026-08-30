@@ -41,13 +41,26 @@ characterise the dynamics quantitatively rather than to narrate a picture.
 
 > **H1.** After the initial context has been fully evicted, a freely generating
 > LLM does not perform unbounded random drift through semantic space. It
-> occupies and transitions between a *finite* set of model-specific metastable
-> semantic states.
+> occupies and transitions between a *finite* set of model-specific **metastable**
+> semantic states, whose escape times exceed the observation horizon.
+
+*Phrasing note, from literature verification.* Zekri et al. (arXiv:2410.02724)
+prove that an LLM with finite context is an ergodic unichain with a **unique**
+stationary distribution. H1 must therefore not be read as "several stationary
+states" — that would contradict established theory. Metastability is about
+timescale separation *on the way* to the stationary distribution: a unichain can
+contain long-lived almost-invariant sets whose escape times exceed any feasible
+observation window, and that is exactly what an MSM macrostate decomposition
+measures. Every claim in the paper is bounded by the observed turnover count.
 
 Subsidiary, individually falsifiable:
 
 - **H2 (semantic half-life).** Measurable information about the seed persists
   well past the context horizon: `T_½ > W`, plausibly `T_½ = c·W` with `c > 1`.
+  Stated in the long-horizon-agent literature's terms: does **long-term memory
+  emerge from long-context generation alone**, given that we supply no retrieval,
+  no scratchpad and no summarisation? Any persistence must come from the model
+  re-emitting information faster than the window evicts it.
 - **H3 (confinement).** Mean squared displacement in representation space grows
   sublinearly and saturates: `MSD(τ) ∝ τ^α` with `α < 1`, plateauing — the
   signature of a bounded basin rather than free diffusion.
@@ -57,15 +70,31 @@ Subsidiary, individually falsifiable:
 - **H5 (temperature transition).** There is a temperature region separating a
   *confinement* regime (low `T`: few states, long dwell times, small `α`) from
   a *diffusion* regime (high `T`: many states, short dwell, `α → 1`).
+
+  *Registered against a real tension.* Two verified adjacent papers disagree
+  about temperature in neighbouring regimes: Wang et al. (ACL 2025) find
+  paraphrasing limit cycles **robust to increasing temperature**, while Geng et
+  al. (arXiv:2603.11228) find higher temperature **lengthens transients** in
+  transformation chains. Zekri et al. derive temperature's effect on convergence
+  rate theoretically. So H5 is a genuine open question in our regime, not an
+  obvious expectation, and we may well be wrong.
 - **H6 (window scaling).** `T_½`, mixing time, and macrostate count scale with
   `W` non-trivially — not proportionally.
 
-**We do not claim** to be first to apply attractor language to LLMs, nor first
-to track embeddings over generation. See
-[`literature/related-work.md`](literature/related-work.md). Our contribution is
-the specific regime — *unbounded free-running generation under a finite sliding
-window, past the eviction of the initial condition* — together with a
-reproducible benchmark and a dynamics-first measurement suite.
+**We do not claim** to be first to apply attractor language to LLMs, nor first to
+track embeddings over generation, nor that temperature controls exploration. All
+three are established. The nearest work was verified in full on 2026-08-30; see
+[`literature/related-work.md`](literature/related-work.md) for the delta against
+each paper.
+
+Our contribution is the specific regime — *unbounded free-running generation
+under an **imposed** finite sliding window, past the eviction of the initial
+condition* — together with a reproducible benchmark and a dynamics-first
+measurement suite. No verified paper occupies that regime: the nearest either
+keep the whole history in context (multi-turn attractors), replace the state
+entirely at each step under a transformation instruction (successive paraphrasing,
+Markovian generation chains), or work analytically in token space without
+measuring the semantic approach (LLMs as Markov chains).
 
 ## 3. What the protocol actually is (and the cost law it implies)
 

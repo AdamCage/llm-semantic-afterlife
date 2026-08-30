@@ -15,7 +15,7 @@ corrupted the study, and one that changes the design.
 
 | # | Criterion | Verdict | Evidence |
 | --- | --- | --- | --- |
-| E1 | ≥3 generators produce coherent continuation via a documented mechanism | **PARTIAL** | 4 of 5 candidates available and continuing coherently via `raw_completion` (`s0_continuation_mechanisms.csv`). The threshold was written as "≥512 tokens" but probes ran at 160 tokens, so the stated bar was never tested. The live run then produced 8,196 tokens over 19 steps on one model, which does clear it. |
+| E1 | ≥3 generators produce coherent continuation via a documented mechanism | **PASS on substance; the stated threshold was mis-specified** | 4 of 5 candidates available and continuing coherently via `raw_completion`. Re-probed at `max_tokens=600` to test the literal "≥512 tokens" bar: only glimmer and deepseek clear it in a *single call* (600 each); qwen returns 99 and mistral 95. But the bar itself was the wrong measurement — see F8. Sustained free-running continuation is demonstrated by the live run: 8,196 tokens over 19 steps on mistral, the very model that stops at 95 in a single short-prompt call. |
 | E2 | ≥2 embedding models usable | **PASS** | 3 usable, all L2-normalised, all dimensions as documented: qwen3-embedding-8b (4096), bge-m3 (1024), gemini-embedding-001 (3072). `s0_embeddings.csv` |
 | E3 | End-to-end pipeline completes with a full manifest and non-empty artifacts | **PASS** | offline: `s0-smoke-…67a42230` → `s0-embed-smoke-…e99d7975` → `s0-geometry-mock-hash-…45f7e4b9`. live: `s0-live-smoke-…a395a78c` → `s0-embed-live-smoke-…fc3e80ed` → `s0-geometry-bge-m3-…0589329e` |
 | E4 | Bit-exact replay with zero network calls | **PASS** | `afterlife compare s0-live-smoke-…081709Z s0-live-smoke-…081713Z` → all scientific outputs bit-identical (31,697-byte trajectory text, 16-row chunk table), replay cost $0.00 |
@@ -26,9 +26,10 @@ corrupted the study, and one that changes the design.
 | E9 | Tests, ruff, mypy clean | **PASS** | 110 tests, ruff clean, mypy clean on 33 modules |
 | E10 | Tokenizer round-trip 100% | **PASS** | 5/5 models, 4 probes each (ASCII, Unicode, whitespace, long repetition), tail operation exact. **No `HF_TOKEN` required.** `s0_tokenizers.csv` |
 
-Eight pass, one partial, one failed-and-fixed. Stage 0 is closed; Stage 1 may open.
+Nine pass (one with a corrected criterion), one failed-and-fixed. Stage 0 is
+closed; Stage 1 may open.
 
-## 2. The seven findings
+## 2. The findings
 
 ### F1 — There are no base models. The primary arm is gone. *(design change)*
 
@@ -38,9 +39,21 @@ returns `400 Model not found`; a catalogue-wide search for `base$` matches only
 
 The plan designated Llama 3 8B Base as the primary arm precisely because free
 continuation is what a base model is trained for. That arm cannot be run here.
-[ADR-0006](../../decisions/ADR-0006-no-base-models-available.md) drops it and
+
+**Confirmed against OpenRouter** (the plan's stated prerequisite before Stage 1
+locks): 396 models, **also zero base models** — no `base`, no `v0.1` (which would
+catch Mistral 7B base), no `davinci`, and no `llama-3-8b`, only
+`llama-3.1-8b-instruct`. The five RouterAI `base` matches are all embedding models
+(`gte-base`, `e5-base-v2`, `all-mpnet-base-v2`, `bge-base-en-v1.5`,
+`multi-qa-mpnet-base-dot-v1`), each 512-token context with zero output price.
+
+So this is not a RouterAI quirk but a property of hosted-inference aggregators
+generally: they serve chat endpoints because that is what their customers call.
+[ADR-0006](../../decisions/ADR-0006-no-base-models-available.md) drops the arm and
 narrows the paper's scope claim: we study instruction-tuned models driven through
-a raw-completion interface with reasoning suppressed, not base language models.
+a raw-completion interface with reasoning suppressed, not base language models —
+and we frame that as a constraint of the ecosystem rather than of our provider
+choice.
 
 ### F2 — `/completions` works everywhere, though nothing advertises it *(mitigates F1)*
 
@@ -156,6 +169,39 @@ Found because Stage 0 measured rather than assumed:
 All four are now covered by tests (`tests/test_provider_client.py`) so a refactor
 cannot reintroduce them.
 
+### F8 — Single-call probes do not predict in-trajectory behaviour *(invalidates a criterion, not a result)*
+
+Re-running the continuation audit at `max_tokens=600` to test E1's literal bar
+produced this:
+
+| Model | raw_completion | assistant_prefill | chat_instructed |
+| --- | --- | --- | --- |
+| qwen3-8b | 99, `stop` | 164, `stop` | 28, `stop` |
+| mistral-nemo-12b | 95, `stop` | error | 18, `stop` |
+| muse-glimmer-30b | **600, `length`** | 600, `length` | 600, `length` |
+| deepseek-v4-flash | **600, `length`** | 3, `stop` | 117, `stop` |
+
+Taken at face value this says mistral cannot sustain 512 tokens. But the live
+trajectory on *the same model and mechanism* averaged 450 tokens per step (fill
+0.88) across 19 steps. The difference is the prompt: the probe supplies 28 tokens
+of a fragment, whereas a trajectory step supplies a full 2,048-token window of
+flowing text. **Block fill depends on how much established context the model is
+given**, so a short-prompt probe systematically understates it.
+
+Two consequences:
+
+- E1 was measuring the wrong thing. The criterion should have been "the process
+  sustains itself under re-prompting", which the live run demonstrates, not
+  "tokens returned per call", which is a function of the probe design.
+- Our `expected_block_fill = 0.88` for mistral was measured at `W = 2048`. At
+  `W = 8192` the prompt is richer still, so fill should be at least as high,
+  making the Stage 1 forecast conservative. Stage 1 must record the realised
+  distribution and update the parameter.
+
+The general lesson, and it generalises past this project: **a capability probe
+must run in the regime the experiment will run in.** Ours did not, and it took a
+live trajectory to notice.
+
 ## 3. Prediction vs. outcome
 
 Pre-registered in `PLAN.md` before any measurement.
@@ -235,6 +281,40 @@ Wall-clock was dominated by rate-limit backoff, not by generation: three live
 attempts spent roughly 20 minutes, of which two were spent waiting on a throttled
 endpoint before failing.
 
+## 6a. Literature verification (completed alongside the audits)
+
+All seven scoping citations exist and say what the notes claimed. Three say
+*more*, in ways that change our framing — full detail in
+[`literature/related-work.md`](../../literature/related-work.md):
+
+- **Zekri et al., arXiv:2410.02724** proves a **unique** stationary distribution
+  for an LLM as a finite-state Markov chain. So H1 must be phrased as
+  metastability — timescale separation on the way to that distribution — and not
+  as "multiple attractors", which would contradict established theory.
+- **Wang et al., ACL 2025** found paraphrasing limit cycles **robust to
+  increasing temperature**, while **Geng et al., arXiv:2603.11228** found higher
+  temperature *lengthens* transients. Two adjacent regimes, opposite temperature
+  effects. Our H5 is registered against that tension rather than presented as an
+  obvious expectation.
+- **Chen et al., arXiv:2608.06663** supplies terminology we adopt: long-context
+  (model), long-horizon (task), long-term memory (system) are independent axes.
+  This sharpens H2 into "does long-term memory emerge from long-context
+  generation alone, with no memory system?" — a cleaner claim, tied to a named
+  open problem.
+- **Wu & Noé, arXiv:1707.04659** confirms ADR-0002, but with a caveat the notes
+  missed: VAMP singular values are **not** relaxation timescales. Implied
+  timescales must come from MSM transition-matrix eigenvalues; VAMP scores are for
+  model selection only. `methodology.md` §3.5 corrected.
+- **arXiv:1811.12551** states TICA's detailed-balance requirement explicitly and
+  recommends VAMP as its replacement, and extends the Chapman–Kolmogorov test to
+  the reduced model — the validation procedure we now adopt verbatim.
+
+The novelty delta survives verification and is sharper for it. The three nearest
+papers either keep the full history in context (Ko & Geiping), replace the state
+entirely at each step under a transformation instruction (Wang et al.; Geng et
+al.), or work analytically in token space (Zekri et al.). None studies the regime
+after the initial condition has been evicted from a finite imposed window.
+
 ## 7. Implications for the plan
 
 Concrete changes, each already committed:
@@ -260,12 +340,20 @@ Concrete changes, each already committed:
 5. **Stage 1 must additionally report** the realised block-fill distribution, the
    stop-event rate, and the reasoning-guard failure rate per model. These are
    protocol diagnostics, not incidentals.
-6. **Before Stage 1 locks its matrix**: audit OpenRouter for a base model (F1
-   may be RouterAI-specific), and re-probe endpoints, since availability and
+6. ~~**Before Stage 1 locks its matrix**: audit OpenRouter for a base model.~~
+   **Done.** No base models there either; ADR-0006 stands and is strengthened.
+   Re-probing endpoints remains a per-stage step, since availability and
    throttling both drift.
-7. **New methodology paragraph required** on variable stride, stating that `S` is
-   model-determined within `[0, B]` and reporting its distribution rather than
-   claiming a constant.
+7. **Methodology amended** (§0, §0.1, §3.5): the three-axis terminology
+   discipline, the variable stride with its measured distribution, and the
+   correction that implied timescales come from MSM eigenvalues rather than VAMP
+   singular values.
+8. **H1 and H5 rephrased** in light of verification: H1 as metastability under a
+   unique stationary distribution, H5 registered against two adjacent papers with
+   opposite temperature findings.
+9. **Capability probes must run in the experiment's regime** (F8). Any future
+   audit that measures a per-call quantity must either use a
+   trajectory-realistic prompt or be labelled as a lower bound.
 
 ## 8. Reproducibility level achieved
 

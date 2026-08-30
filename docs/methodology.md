@@ -10,7 +10,39 @@ document disagree, one of them is a bug. Changes require an ADR.
 Let `V` be the generator's vocabulary, `θ` its fixed parameters, `W` the imposed
 sliding-window size in **generator tokens**, `B` the number of tokens requested
 per API call (the *block*), and `S` the stride by which the window advances.
-Throughout, `S = B`.
+
+### 0. Three axes not to conflate
+
+Following the long-horizon-agent literature, which names this confusion as
+endemic, we keep three logically independent properties distinct throughout:
+
+| Axis | Property of | Our variable |
+| --- | --- | --- |
+| **long-context** | the model — how many tokens it attends to at once | the imposed window `W` |
+| **long-horizon** | the process — how many steps it runs for | the turnover count `T/W` |
+| **long-term memory** | the system — whether information persists across steps | the object of H2 |
+
+The point of H2 is precisely that we provide **no memory system at all**: no
+retrieval, no scratchpad, no summarisation. If seed information survives past the
+context horizon, it does so only because the model re-emits it faster than the
+window evicts it. "Semantic half-life exceeds `W`" is a statement about long-term
+memory *emerging from* long-context generation alone.
+
+### 0.1 `S` is not a constant
+
+`S = B` is the *requested* stride. Measured behaviour (S0.7): models emit a stop
+token before filling the block, so the realised stride lies in `[0, B]` and is
+model- and context-dependent — mean fill 0.88 with range 0.04–1.00 for
+mistral-nemo at `W = 2048`, and fill measured on short prompts badly
+underestimates fill inside a trajectory, where the prompt is a full window of
+flowing text. Consequences that hold throughout:
+
+- The realised block-fill distribution is **reported per model per stage**, not
+  assumed.
+- Cost forecasts scale as `1/fill` on the input side (see the cost law below).
+- Any claim that depends on a fixed stride must instead be stated in terms of the
+  measured distribution, or shown insensitive to it via the Stage 6 stride
+  ablation.
 
 State at step `t` is the token sequence held in the model's input:
 
@@ -237,12 +269,27 @@ Ordered pipeline, per (model, `W`, temperature, embedding space):
 
 Validation, all mandatory before any macrostate is interpreted:
 
-- **VAMP score** cross-validated out-of-sample, to choose `K` and `n_vamp`.
-- **Implied timescales** `t_i = −τ / ln|λ_i|` plotted against `τ`; a usable model
-  requires a region where they are flat.
-- **Chapman–Kolmogorov**: `T(kτ) ≈ T(τ)^k` within error, for several `k`.
+- **VAMP-E / VAMP-2 score**, cross-validated out-of-sample, to choose `n_pca`,
+  `n_vamp` and `K`. **Used for model selection only.** VAMP works with singular
+  values of the Koopman operator rather than eigenvalues of a reversible transfer
+  operator, and those singular values cannot in general be read as relaxation
+  timescales — the price of its generality. Reading a timescale off a VAMP
+  singular value would be a category error.
+- **Implied timescales** `t_i = −τ / ln|λ_i|`, computed from the **MSM
+  transition-matrix eigenvalues**, plotted against `τ`; a usable model requires a
+  region where they are flat. For a non-reversible transition matrix these
+  eigenvalues may be complex: the timescale comes from `|λ_i|`, and any
+  rotational component (non-zero imaginary part) is itself evidence of
+  circulation and is reported rather than discarded.
+- **Chapman–Kolmogorov**: `T(kτ) ≈ T(τ)^k` within error, for several `k`, applied
+  both to the MSM and — following the non-equilibrium VAMP literature — to the
+  VAMP-reduced model itself.
 - **Stability**: macrostate count and assignment stable across `K`, `n_pca`, and
   across both embedding spaces (ARI).
+
+If clustering is performed in VAMP coordinates, `scaling="kinetic_map"` is used
+so that Euclidean distances in the projected space approximate kinetic distances;
+the choice is recorded, since it changes what k-means is minimising.
 
 Derived quantities: stationary distribution `π`, dwell/residence times,
 mean first-passage times, entropy rate, and

@@ -4,13 +4,28 @@ Single source of truth for terminology and notation. Code variable names,
 figure axes, stage reports, and the manuscript all use these. Introducing a new
 term means adding it here in the same commit.
 
+## Three axes not to conflate
+
+The long-horizon-agent literature names this confusion as endemic, so we keep the
+three properties distinct in every sentence we write:
+
+| Axis | Property of | Our variable |
+| --- | --- | --- |
+| **long-context** | the model — tokens attended at once | the imposed window `W` |
+| **long-horizon** | the process — steps it runs for | the turnover count `T/W` |
+| **long-term memory** | the system — persistence across steps | the object of H2 |
+
+We provide *no* memory system. If seed information survives the context horizon,
+it is long-term memory emerging from long-context generation alone.
+
 ## Protocol
 
 | Term | Symbol | Definition |
 | --- | --- | --- |
 | sliding window | `W` | number of **generator** tokens visible to the model. Always imposed by us, never the model's native context. |
-| block | `B` | tokens requested per API call. |
-| stride | `S` | tokens by which the window advances per step. `S = B` throughout. |
+| block | `B` | tokens *requested* per API call. |
+| stride | `S` | tokens by which the window actually advances per step. `S = B` is the request; the realised value lies in `[0, B]` because models emit stop tokens early, and its distribution is measured and reported (methodology §0.1). |
+| block fill | — | realised completion tokens divided by `B`. Model- and context-dependent; measured, never assumed. |
 | step | `t` (index `k`) | one API call: prompt `Tail_W`, receive ≤ `B` tokens. |
 | trajectory length | `T` | total generated tokens in one trajectory, excluding the seed. |
 | turnover | `R = T/W` | how many times the entire memory has been replaced. The honest measure of observation length. |

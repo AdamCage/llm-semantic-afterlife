@@ -21,6 +21,23 @@ VAMP (variational approach for Markov processes) is formulated for
 non-reversible and non-stationary processes and provides a cross-validatable
 score for model selection.
 
+**Citations verified 2026-08-30.** Wu & Noé, arXiv:1707.04659 (J. Nonlinear Sci.
+2019, doi:10.1007/s00332-019-09567-y), state VAMP is "valid for both reversible
+and nonreversible processes and for stationary and non-stationary processes".
+arXiv:1811.12551 (doi:10.1063/1.5083627) is more direct still: TICA "is only
+valid if the dynamics obeys detailed balance", and "we recommend VAMP as a
+replacement for the less general TICA method". It also extends the
+Chapman–Kolmogorov test to validate the VAMP-reduced model, which is the
+validation procedure we adopt rather than improvising one.
+
+**One caveat the scoping notes missed, and it constrains our validation.** VAMP
+operates on singular values of the Koopman operator rather than eigenvalues of a
+reversible transfer operator, so — as `deeptime` documents explicitly — its
+singular values can no longer be related to relaxation timescales. Generality is
+bought with interpretability. Implied timescales must therefore come from the MSM
+transition-matrix eigenvalues, and VAMP scores are for feature and hyperparameter
+selection only. `methodology.md` §3.5 was corrected accordingly.
+
 ## Decision
 
 Primary dynamics pipeline:

@@ -52,11 +52,20 @@ Two consolations came out of the same audit, and they change the severity:
 
 ## Alternatives considered
 
-- **Find a base model elsewhere.** OpenRouter historically carried
-  `meta-llama/llama-3-8b`; if the OpenRouter key materialises, S0's audit should
-  be re-run there before Stage 1 locks its matrix. Worth one cheap check, and it
-  would restore the arm outright — so this ADR is explicitly provisional on
-  that.
+- **Find a base model elsewhere.** ~~Provisional on an OpenRouter check.~~
+  **Checked 2026-08-30 and closed.** OpenRouter's catalogue holds **396 models
+  and zero base models**: no match for `base`, none for `v0.1` (which would catch
+  Mistral 7B base), none for `davinci`, and no `llama-3-8b` — only
+  `llama-3.1-8b-instruct`. RouterAI's five `base` matches are all embedding
+  models (`gte-base`, `e5-base-v2`, `all-mpnet-base-v2`, `bge-base-en-v1.5`,
+  `multi-qa-mpnet-base-dot-v1`), each with 512-token context and zero output
+  price.
+
+  So the absence is not a RouterAI quirk but a property of hosted-inference
+  aggregators generally: they serve chat endpoints because that is what their
+  customers call. This *strengthens* the decision rather than reversing it, and
+  it also means the limitation should be framed in the paper as a constraint of
+  the hosted-inference ecosystem, not of our provider choice.
 - **Run a base model locally for the whole experiment.** CPU-only, 4 cores. A
   256k-token trajectory would take days per trajectory. Infeasible as an arm.
 - **Proceed as if instruct models were base models.** Rejected: the confounds
