@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import platform
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -1389,6 +1390,55 @@ def report(stage: Annotated[str, typer.Option("--stage", "-s")]) -> None:
         raise typer.BadParameter(f"no artifacts directory for stage {stage} at {out_dir}")
     path = write_index(out_dir, stage=stage, title=f"Stage {stage} artifacts")
     console().print(f"wrote {path}")
+
+
+@app.command()
+def supersede(
+    run_id: Annotated[str, typer.Argument(help="run to retire")],
+    reason: Annotated[str, typer.Option("--reason", "-m", help="why it is superseded")],
+    by: Annotated[str, typer.Option("--by", help="run_id that replaces it")] = "",
+) -> None:
+    """Retire a run explicitly, without deleting it.
+
+    Results get superseded — a bug is fixed, a threshold is calibrated, an
+    estimator is corrected — and the record should say so. Deleting the old run
+    destroys the evidence of what was tried; letting the review gate silently
+    prefer the newest run hides the retirement. This writes a ``SUPERSEDED``
+    marker and a manifest note, so the run stays on disk, stops counting towards
+    the gate, and carries its own explanation.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    run = settings.paths.find_run(run_id)
+    manifest = read_manifest(run.manifest)
+    if not reason.strip():
+        raise typer.BadParameter("a reason is required; an unexplained retirement is deletion")
+
+    stamp = datetime.now(UTC).isoformat(timespec="seconds")
+    marker = f"superseded_at: {stamp}\nreason: {reason}\n" + (
+        f"superseded_by: {by}\n" if by else ""
+    )
+    (run.root / "SUPERSEDED").write_text(marker, encoding="utf-8")
+
+    notes = list(manifest.get("notes") or [])
+    notes.append(f"SUPERSEDED {stamp}: {reason}" + (f" (replaced by {by})" if by else ""))
+    manifest["notes"] = notes
+    manifest["superseded"] = {"at": stamp, "reason": reason, "by": by or None}
+    run.manifest.write_bytes(
+        orjson.dumps(manifest, option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS)
+    )
+
+    console().print(
+        Panel(
+            f"{run_id}\nreason: {reason}" + (f"\nreplaced by: {by}" if by else ""),
+            title="superseded",
+            border_style="yellow",
+        )
+    )
+    console().print(
+        "[dim]The run stays on disk and keeps its manifest. It no longer counts towards the "
+        "review gate, and the stage report should mention why it was retired.[/dim]"
+    )
 
 
 @app.command()

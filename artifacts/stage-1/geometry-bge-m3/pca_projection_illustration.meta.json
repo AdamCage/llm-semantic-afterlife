@@ -5,16 +5,16 @@
   "limitations": "A 2-D projection cannot establish the existence, number, or separation of clusters. Nothing in this figure may be used as evidence; see the Markov-state analysis.",
   "run_ids": [
     "s1-embed-probe-single-20260830T111512Z-048c779e",
-    "s1-geometry-bge-m3-20260830T111607Z-5dd0ee61"
+    "s1-geometry-bge-m3-20260830T131553Z-5dd0ee61"
   ],
-  "git_sha": "f8cedbd8f664c955f65fbbb01393cb83563a510f",
+  "git_sha": "a5d9b4fe1e1733b4a4eb1b753cde4d82f985e894",
   "config_sha256": "5dd0ee6193b1365354e4a72fbaf401ddb194b60cc5c1e72ece354de5a1ba3b2d",
   "units": {
     "pc1": "arbitrary",
     "pc2": "arbitrary",
     "turnover": "t/W"
   },
-  "generated_at": "2026-08-30T11:16:30+00:00",
+  "generated_at": "2026-08-30T13:16:15+00:00",
   "explained_variance_pc1": 0.48942572176803534,
   "explained_variance_pc2": 0.13831696683649228,
   "W": 8192

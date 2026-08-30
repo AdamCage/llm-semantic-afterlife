@@ -135,10 +135,16 @@ def check_runs_complete(settings: Settings, stage: str) -> Check:
         )
     bad: list[str] = []
     total = 0
+    superseded = 0
     for run_dir in sorted(p for p in stage_dir.iterdir() if p.is_dir()):
         manifest_path = run_dir / "manifest.json"
         if not manifest_path.is_file():
             bad.append(f"{run_dir.name}: no manifest")
+            continue
+        if (run_dir / "SUPERSEDED").is_file():
+            # Explicitly retired, with a recorded reason. Kept on disk because
+            # deleting a superseded result destroys the record of what was tried.
+            superseded += 1
             continue
         total += 1
         manifest = read_manifest(manifest_path)
@@ -264,7 +270,11 @@ def check_degeneracy_labelled(settings: Settings, stage: str) -> Check:
     if not stage_dir.is_dir():
         return Check("analysis.degeneracy_labelled", Verdict.SKIP, "no runs", "")
 
-    geometry_runs = [p for p in stage_dir.iterdir() if p.is_dir() and "geometry" in p.name]
+    geometry_runs = [
+        p
+        for p in stage_dir.iterdir()
+        if p.is_dir() and "geometry" in p.name and not (p / "SUPERSEDED").is_file()
+    ]
     if not geometry_runs:
         return Check(
             "analysis.degeneracy_labelled",

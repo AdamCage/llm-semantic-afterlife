@@ -1,14 +1,14 @@
 {
   "name": "geometry_scalars",
-  "caption": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations).",
-  "alt_text": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations).",
-  "limitations": null,
+  "caption": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.",
+  "alt_text": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.",
+  "limitations": "An MSD exponent from a trajectory marked `degenerate` measures repetition, not semantic motion, and is not evidence of confinement. Exponents are fitted over a lag range bounded by the observed turnover count, so they cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the trajectory was too short to separate the post-horizon regime and the statistics mix forced and free segments.",
   "run_ids": [
     "s1-embed-probe-single-20260830T111512Z-048c779e",
-    "s1-geometry-bge-m3-20260830T111607Z-5dd0ee61"
+    "s1-geometry-bge-m3-20260830T131553Z-5dd0ee61"
   ],
-  "git_sha": "f8cedbd8f664c955f65fbbb01393cb83563a510f",
+  "git_sha": "a5d9b4fe1e1733b4a4eb1b753cde4d82f985e894",
   "config_sha256": null,
   "units": {},
-  "generated_at": "2026-08-30T11:16:38+00:00"
+  "generated_at": "2026-08-30T13:16:22+00:00"
 }

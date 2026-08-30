@@ -5,14 +5,14 @@
   "limitations": "Descriptive only. None of these panels distinguishes metastability from a slowly mixing single state; that requires the Markov-state analysis.",
   "run_ids": [
     "s1-embed-probe-single-20260830T111512Z-048c779e",
-    "s1-geometry-bge-m3-20260830T111607Z-5dd0ee61"
+    "s1-geometry-bge-m3-20260830T131553Z-5dd0ee61"
   ],
-  "git_sha": "f8cedbd8f664c955f65fbbb01393cb83563a510f",
+  "git_sha": "a5d9b4fe1e1733b4a4eb1b753cde4d82f985e894",
   "config_sha256": null,
   "units": {
     "turnover": "t/W",
     "integrated_autocorr_time": "chunks"
   },
-  "generated_at": "2026-08-30T11:16:38+00:00",
+  "generated_at": "2026-08-30T13:16:22+00:00",
   "W": 8192
 }

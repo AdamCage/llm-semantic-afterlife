@@ -12,17 +12,19 @@ Cosine distance from each trajectory's first chunk. Saturation indicates a bound
 
 - formats: [`html`](geometry-bge-m3/drift_from_origin.html), [`png`](geometry-bge-m3/drift_from_origin.png), [`svg`](geometry-bge-m3/drift_from_origin.svg)
 - source data: [`parquet`](geometry-bge-m3/drift_from_origin.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## geometry_scalars
 
-Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations).
+Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.
+
+**Does not establish:** An MSD exponent from a trajectory marked `degenerate` measures repetition, not semantic motion, and is not evidence of confinement. Exponents are fitted over a lag range bounded by the observed turnover count, so they cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the trajectory was too short to separate the post-horizon regime and the statistics mix forced and free segments.
 
 - formats: [`html`](geometry-bge-m3/geometry_scalars.html), [`csv`](geometry-bge-m3/geometry_scalars.csv)
 - source data: [`parquet`](geometry-bge-m3/geometry_scalars.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## geometry_summary_panel
 
@@ -32,8 +34,8 @@ Geometry summary at W=8,192. (a) distribution of per-step cosine displacement; (
 
 - formats: [`png`](geometry-bge-m3/geometry_summary_panel.png), [`svg`](geometry-bge-m3/geometry_summary_panel.svg), [`pdf`](geometry-bge-m3/geometry_summary_panel.pdf)
 - source data: [`parquet`](geometry-bge-m3/geometry_summary_panel.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## msd_loglog
 
@@ -43,8 +45,8 @@ Mean squared displacement against lag, log–log, on L2-normalised chunk embeddi
 
 - formats: [`html`](geometry-bge-m3/msd_loglog.html), [`png`](geometry-bge-m3/msd_loglog.png), [`svg`](geometry-bge-m3/msd_loglog.svg)
 - source data: [`parquet`](geometry-bge-m3/msd_loglog.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## pca_projection_illustration
 
@@ -54,8 +56,8 @@ Chunk embeddings projected onto their first two principal components, coloured b
 
 - formats: [`html`](geometry-bge-m3/pca_projection_illustration.html), [`png`](geometry-bge-m3/pca_projection_illustration.png), [`svg`](geometry-bge-m3/pca_projection_illustration.svg)
 - source data: [`parquet`](geometry-bge-m3/pca_projection_illustration.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## recurrence_or-llama31-8b-instruct__W8192__T1__physics__s1
 
@@ -65,8 +67,8 @@ Recurrence plot for trajectory or-llama31-8b-instruct__W8192__T1__physics__s1 ov
 
 - formats: [`html`](geometry-bge-m3/recurrence_or-llama31-8b-instruct__W8192__T1__physics__s1.html), [`png`](geometry-bge-m3/recurrence_or-llama31-8b-instruct__W8192__T1__physics__s1.png), [`svg`](geometry-bge-m3/recurrence_or-llama31-8b-instruct__W8192__T1__physics__s1.svg)
 - source data: [`npz`](geometry-bge-m3/recurrence_or-llama31-8b-instruct__W8192__T1__physics__s1.data.npz)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
 
 ## semantic_velocity
 
@@ -76,5 +78,5 @@ Per-step cosine displacement between consecutive 1024-token chunks, for each tra
 
 - formats: [`html`](geometry-bge-m3/semantic_velocity.html), [`png`](geometry-bge-m3/semantic_velocity.png), [`svg`](geometry-bge-m3/semantic_velocity.svg)
 - source data: [`parquet`](geometry-bge-m3/semantic_velocity.data.parquet)
-- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T111607Z-5dd0ee61`
-- git: `f8cedbd8f664`
+- runs: `s1-embed-probe-single-20260830T111512Z-048c779e`, `s1-geometry-bge-m3-20260830T131553Z-5dd0ee61`
+- git: `a5d9b4fe1e17`
