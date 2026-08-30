@@ -1,32 +1,31 @@
 # ===========================================================================
 # S1 replication arm — is the effect architecture-specific?
 # ---------------------------------------------------------------------------
-# A second family at the same window and trajectory length as the core arm.
-# qwen3-8b costs ~6x llama per token ($0.117/$0.455 against $0.020/$0.040) and
-# has exactly one endpoint on either provider, so the matrix is narrowed rather
-# than the trajectory shortened.
+# muse-glimmer-30b at W = 4096, the other generator that survived the viability
+# sweep. Measured at this window:
 #
-# What is kept and what is given up, so the stage report can be explicit about
-# the power lost:
-#   KEPT:  W = 8192, T = 262144 (32 turnovers). Below ~16 turnovers no long-run
-#          claim is supportable (risks.md R10), so this is not negotiable.
-#   KEPT:  all 8 semantic seeds -- the primary pilot measurement is whether seed
-#          identity survives the horizon, which needs class diversity.
-#   KEPT:  2 stochastic seeds, the minimum permitting any variance estimate.
-#   GIVEN UP: the temperature contrast. Only T = 1.0 runs here; mapping
-#          temperature is Stage 4's job, and the pilot only needs to know whether
-#          the effect appears in a second architecture at all.
+#   block fill 1.000, stop rate 0.00  -> the stride is exactly S = B here
+#   repetition 0.9x natural prose     -> cleaner than the human reference corpus
+#   prompt-token delta 1              -> essentially no server-side scaffolding
+#   bf16, a known quantization        -> against `unknown` for the core arm
 #
-# Reasoning (S0.12, measured on both providers): this model reasons by default --
-# 653 tokens for a 96-token request, a 7.8x block overshoot. `reasoning_effort:
-# none` is the only switch that suppresses generation on both providers;
-# `include_reasoning: false` is accepted and still leaves 575 reasoning tokens.
-# The per-step guard asserts zero regardless of what the switch claims
-# (ADR-0005).
+# It is architecturally different in kind from qwen -- interleaved local/global
+# attention with a 2048-token local span against a dense decoder -- which is what
+# H1's model-specificity claim needs. Two decoder variants would not do.
 #
-# Expect a *variable* stride here, unlike the core arm: block fill has not been
-# measured at 1.000 for this endpoint, so the realised distribution must be
-# reported rather than assumed.
+# W = 4096 is not incidental for this model: it is exactly twice its local
+# attention window, and it is where glimmer is perfect. At 2048 it returns
+# empties and at 8192 it fails outright with a bare EOS at a full window. That
+# pattern is a hypothesis for Stage 4 to test on a finer W grid, not a finding.
+#
+# Narrower than the core arm because it costs ~2.5x per token ($0.30/$1.10
+# against $0.117/$0.455). What is kept and what is given up:
+#   KEPT:  W and T identical to the core arm, so the arms are comparable
+#   KEPT:  all 8 semantic seeds -- the pilot's primary measurement needs them
+#   KEPT:  2 stochastic seeds, the minimum permitting a variance estimate
+#   GIVEN UP: the temperature contrast; mapping temperature is Stage 4's job
+#
+# Forecast ~$4.8 for 16 trajectories, ~40 min each.
 # ===========================================================================
 
 include:
@@ -36,16 +35,16 @@ include:
 stage: s1
 name: pilot-replication
 description: >-
-  Is the phenomenon architecture-specific? A second model family at the same
-  window and trajectory length as the core arm, at a single temperature.
+  Is the phenomenon architecture-specific? A hybrid local/global attention model
+  at the same window and trajectory length as the core arm, at one temperature.
 
-generators: [or-qwen3-8b]
+generators: [or-muse-glimmer-30b]
 embeddings: [bge-m3, qwen3-embed-8b]
 
 windows:
-  - W: 8192
+  - W: 4096
     block_size: 1024
-    target_tokens: 262144 # 32 turnovers
+    target_tokens: 131072 # 32 turnovers
     chunk_size: 1024
     protocol: P1_reprompt
 
@@ -58,7 +57,5 @@ semantic_seeds:
 
 stochastic_seeds: [1, 2]
 
-# Single endpoint with an 8192-token completion cap; ample for B=1024, but a
-# single endpoint means no fallback if it throttles.
 max_concurrent: 2
-budget_usd: 8.0
+budget_usd: 7.0

@@ -167,10 +167,22 @@ class TestEstimates:
         assert total["output_tokens"] > 0
 
     @pytest.mark.parametrize("path", PILOT_CONFIGS)
-    def test_input_dominates_for_large_W_over_S(self, repo: Path, path: str) -> None:
+    def test_input_amplification_matches_the_cost_law(self, repo: Path, path: str) -> None:
+        """Input tokens should be about `W/S` times output, per ADR-0004.
+
+        Asserting a fixed multiple instead would silently encode one window size:
+        the first version of this test hardcoded 5x, which was right at W=8192
+        and wrong the moment the pilot moved to W=4096.
+        """
         config, _resolved, _sha = load_experiment_config(repo / path)
         for estimate in estimate_experiment(config):
-            assert estimate.input_tokens > 5 * estimate.output_tokens
+            window = config.window(estimate.W, estimate.block_size)
+            expected = window.W / window.stride
+            observed = estimate.input_tokens / estimate.output_tokens
+            # Below `expected` because the window ramps while it is still filling,
+            # and because a block-fill correction adds steps without adding output.
+            assert 0.5 * expected <= observed <= 1.5 * expected
+            assert observed > 1.0
 
     @pytest.mark.parametrize("path", PILOT_CONFIGS)
     def test_pilot_forecast_stays_within_its_declared_budget(self, repo: Path, path: str) -> None:

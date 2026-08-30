@@ -1,28 +1,28 @@
 # ===========================================================================
 # S1 core arm — the wide matrix
 # ---------------------------------------------------------------------------
-# Generator and endpoint chosen by measurement, not by catalogue price
-# (ADR-0007). `deepinfra/fp8` llama-3.1-8b-instruct was the only candidate that
-# measured:
+# Generator and window chosen by measurement (docs/stages/stage-1/
+# VIABILITY-SWEEP.md), after two earlier candidates were disqualified on output
+# quality rather than on price or speed.
 #
-#   block fill 1.000, minimum 1.000   -> the stride really is S = B
-#   stop rate  0.000                  -> no EOS interruptions
-#   prompt-token delta 0              -> no server-side template added
-#   reasoning tokens 0 (all switches) -> nothing hidden from the block
-#   fp8, status 0, cheapest endpoint on either provider
+# qwen3-8b at W = 4096, measured:
+#   block fill 0.942                  -> near-constant stride
+#   repetition 1.7x natural prose     -> not degenerate
+#   type-token 0.475, entropy 7.53    -> above the human reference
+#   stable across W in {2048,4096,8192}, completed every cell
 #
-# The first three of those remove methodology 0.1's variable-stride caveat for
-# this arm, which is worth more than the 21x speedup Groq would have bought.
+# Two families were dropped for producing degenerate text: mistral-nemo at
+# 2.5-7.2x natural repetition with block fill never above 0.20, and
+# llama-3.1-8b at 4.4-9.5x. Both were cheaper and one was 21x faster; neither
+# writes text worth analysing.
 #
-# Matrix rationale:
-#   W = 8192, T = 262144   -> 32 turnovers, 256 chunk observations (ADR-0004)
-#   2 temperatures         -> spans the expected confinement/diffusion contrast
-#   8 semantic seeds       -> the seed-identity probe needs class diversity
-#   3 stochastic seeds     -> minimum for a trajectory-level bootstrap
+# W = 4096 rather than 8192: it is the only window where both viable generators
+# are at their best, and it costs a quarter as much per turnover. 32 turnovers
+# are preserved by halving T with it (ADR-0004: turnovers, not absolute tokens,
+# are what make a long-run claim defensible).
 #
-# Forecast ~$2.5 for 48 trajectories. Wall clock is the real cost: ~1.3 h per
-# trajectory measured, so ~31 h at concurrency 2. Runs are resumable; re-invoking
-# the same command continues from the last completed step.
+# Forecast ~$6.0 for 48 trajectories, ~43 min each (~17 h at concurrency 2).
+# Runs are resumable; re-invoking continues from the last completed step.
 # ===========================================================================
 
 include:
@@ -32,17 +32,18 @@ include:
 stage: s1
 name: pilot-core
 description: >-
-  Does the phenomenon exist? Wide arm on the cleanest measured endpoint:
-  32 turnovers per trajectory, two temperatures, eight maximally distant
-  semantic seeds, three stochastic repetitions per cell.
+  Does the phenomenon exist? Wide arm on the generator measured to sustain
+  free-running generation with human-like text: 32 turnovers per trajectory,
+  two temperatures, eight maximally distant semantic seeds, three stochastic
+  repetitions per cell.
 
-generators: [or-llama31-8b-deepinfra]
+generators: [or-qwen3-8b]
 embeddings: [bge-m3, qwen3-embed-8b]
 
 windows:
-  - W: 8192
+  - W: 4096
     block_size: 1024
-    target_tokens: 262144 # 32 turnovers
+    target_tokens: 131072 # 32 turnovers
     chunk_size: 1024
     protocol: P1_reprompt
 
@@ -57,8 +58,7 @@ semantic_seeds:
 
 stochastic_seeds: [1, 2, 3]
 
-# This endpoint showed zero retries under sustained load, unlike every other
-# candidate. Concurrency 2 rather than 4 keeps it that way; raise it only after
-# S1 confirms the retry rate stays at zero.
+# Single endpoint (Alibaba), so there is no fallback if it throttles; keep the
+# concurrency low and rely on resumability.
 max_concurrent: 2
-budget_usd: 6.0
+budget_usd: 9.0
