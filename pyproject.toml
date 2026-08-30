@@ -128,7 +128,10 @@ ignore = [
 # mypy
 # ---------------------------------------------------------------------------
 [tool.mypy]
-python_version = "3.11"
+# Deliberately not pinning `python_version`: mypy then targets whichever
+# interpreter it runs under. Pinning 3.11 while running on 3.12 makes mypy
+# reject 3.12-only syntax inside third-party stubs (numpy's `type` statements),
+# which fails the CI matrix for a reason unrelated to our code.
 files = ["src"]
 warn_unused_configs = true
 warn_redundant_casts = true
