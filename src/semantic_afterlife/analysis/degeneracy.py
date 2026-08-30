@@ -65,7 +65,32 @@ class DegeneracyParams(BaseModel):
         gt=0.0,
         le=1.0,
         description="cosine between consecutive chunk embeddings above which the trajectory has "
-        "effectively stopped moving",
+        "effectively stopped moving. Applies only when embeddings are supplied, and only to "
+        "consecutive pairs, so it cannot see a two-page cycle -- the novelty measures below are "
+        "the primary instrument and this one is a cross-check",
+    )
+    shingle_n: int = Field(
+        default=5,
+        ge=2,
+        description="word-shingle length for inter-chunk novelty. Long enough that natural prose "
+        "almost never repeats a shingle by chance, so a low novelty score means real reuse",
+    )
+    novelty_threshold: float = Field(
+        default=0.872,
+        gt=0.0,
+        le=1.0,
+        description="fraction of a chunk's 5-word shingles that must be unseen earlier in the "
+        "trajectory for the chunk to count as productive. CALIBRATED, not chosen: the 1st "
+        "percentile of natural English prose chunked identically (237 chunks of Carroll and "
+        "Darwin; mean novelty 0.965-0.992, minimum 0.847, and a median late-phase pairwise "
+        "Jaccard of exactly 0.000). Re-derive with scripts/calibrate_degeneracy.py. "
+        "The healthy/collapsed gap is so wide that any threshold between 0.3 and 0.87 gives the "
+        "same verdict, so the exact value is not load-bearing -- what matters is that it is "
+        "derived from a reference rather than guessed. "
+        "This measure exists because n-gram repetition is computed *within* a chunk: a trajectory "
+        "whose successive pages were near-identical to each other scored clean at 0.4x natural "
+        "repetition with 0% looping chunks, while its late-phase pairwise Jaccard was 1.000. Every "
+        "intra-chunk metric called a textual fixed point healthy",
     )
 
 
@@ -107,6 +132,52 @@ def compression_ratio(text: str) -> float:
     if not raw:
         return 1.0
     return len(zlib.compress(raw, 6)) / len(raw)
+
+
+def shingles(words: list[str], n: int) -> set[tuple[str, ...]]:
+    if len(words) < n:
+        return set()
+    return {tuple(words[i : i + n]) for i in range(len(words) - n + 1)}
+
+
+def novelty_series(words_per_chunk: list[list[str]], n: int) -> np.ndarray:
+    """Fraction of each chunk's shingles never seen earlier in the trajectory.
+
+    This is the measure that separates a trajectory exploring a bounded region
+    from one reprinting the same page. Repetition rate cannot do it: it is
+    computed inside a chunk, so a sequence of near-identical but individually
+    varied pages scores as maximally healthy. That is not hypothetical -- it is
+    how a converged trajectory passed every other diagnostic here.
+
+    Runs in one pass over the trajectory against a cumulative shingle set, so it
+    is linear rather than all-pairs, and it is defined on raw text so it can be
+    read on a live run before any embedding exists.
+    """
+    seen: set[tuple[str, ...]] = set()
+    out = np.full(len(words_per_chunk), np.nan)
+    for i, words in enumerate(words_per_chunk):
+        current = shingles(words, n)
+        if not current:
+            continue
+        out[i] = len(current - seen) / len(current)
+        seen |= current
+    return out
+
+
+def pairwise_similarity(words_per_chunk: list[list[str]], n: int) -> np.ndarray:
+    """Upper-triangle shingle Jaccard between every pair of chunks.
+
+    Complements novelty: a trajectory alternating between two pages has low
+    novelty *and* a bimodal similarity distribution, which distinguishes a cycle
+    from a fixed point. Quadratic, but chunk counts here are in the hundreds.
+    """
+    grams = [shingles(w, n) for w in words_per_chunk]
+    values: list[float] = []
+    for i in range(len(grams)):
+        for j in range(i + 1, len(grams)):
+            union = grams[i] | grams[j]
+            values.append(len(grams[i] & grams[j]) / len(union) if union else 0.0)
+    return np.asarray(values, dtype=np.float64)
 
 
 @dataclass(slots=True)
@@ -157,6 +228,8 @@ def compute_degeneracy(
         }
     )
     frame["looping"] = frame["ngram_repetition"] >= params.loop_repetition_threshold
+    frame["novel_shingle_fraction"] = novelty_series(words_per_chunk, params.shingle_n)
+    frame["unproductive"] = frame["novel_shingle_fraction"] < params.novelty_threshold
 
     if embeddings is not None:
         Z = np.asarray(embeddings, dtype=np.float64)
@@ -174,11 +247,26 @@ def compute_degeneracy(
     if post.empty:
         post = frame
     looping_fraction = float(post["looping"].mean())
+    unproductive_fraction = float(post["unproductive"].mean())
+
+    # Pairwise similarity is summarised over the trajectory's second half, where a
+    # fixed point has had time to establish itself. The median is the diagnostic
+    # statistic: one repeated page lifts every late pair at once, so a high median
+    # cannot be produced by a few coincidental matches.
+    late = words_per_chunk[len(words_per_chunk) // 2 :]
+    late_similarity = (
+        pairwise_similarity(late, params.shingle_n) if len(late) >= 4 else np.asarray([np.nan])
+    )
 
     scalars: dict[str, float] = {
         "n_chunks": float(len(frame)),
         "n_chunks_post_horizon": float(len(post)),
         "looping_fraction": looping_fraction,
+        "unproductive_fraction": unproductive_fraction,
+        "mean_novel_shingle_fraction": float(post["novel_shingle_fraction"].mean()),
+        "min_novel_shingle_fraction": float(post["novel_shingle_fraction"].min()),
+        "late_pairwise_similarity_median": float(np.nanmedian(late_similarity)),
+        "late_pairwise_similarity_max": float(np.nanmax(late_similarity)),
         "mean_ngram_repetition": float(post["ngram_repetition"].mean()),
         "max_ngram_repetition": float(post["ngram_repetition"].max()),
         "mean_type_token_ratio": float(post["type_token_ratio"].mean()),
@@ -189,8 +277,19 @@ def compute_degeneracy(
         "entropy_trend_per_turnover": _slope(
             post["turnover"].to_numpy(), post["unigram_entropy_bits"].to_numpy()
         ),
-        "degenerate": float(looping_fraction >= params.loop_chunk_fraction),
+        # Either route is sufficient. Intra-chunk looping and inter-chunk
+        # unproductivity are distinct collapse modes: the first repeats within a
+        # page, the second repeats the page. A trajectory can exhibit the second
+        # while scoring perfectly on every measure of the first.
+        "degenerate": float(
+            looping_fraction >= params.loop_chunk_fraction
+            or unproductive_fraction >= params.loop_chunk_fraction
+        ),
     }
+    scalars["degeneracy_mode"] = float(
+        (1 if looping_fraction >= params.loop_chunk_fraction else 0)
+        + (2 if unproductive_fraction >= params.loop_chunk_fraction else 0)
+    )
     if "consecutive_cosine" in frame.columns:
         scalars["frozen_fraction"] = float(post["frozen"].mean())
         scalars["max_consecutive_cosine"] = float(post["consecutive_cosine"].max())

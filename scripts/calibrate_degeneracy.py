@@ -26,6 +26,8 @@ import pandas as pd
 
 from semantic_afterlife.analysis.degeneracy import (
     ngram_repetition_rate,
+    novelty_series,
+    pairwise_similarity,
     tokenize_words,
     type_token_ratio,
     unigram_entropy,
@@ -78,6 +80,12 @@ def main() -> None:
     parser.add_argument("--reference-dir", type=Path, default=Path(".cache/reference-texts"))
     parser.add_argument("--chunk-size", type=int, default=1024)
     parser.add_argument("--ngram", type=int, default=3)
+    parser.add_argument(
+        "--shingle-n",
+        type=int,
+        default=5,
+        help="word-shingle length for the inter-chunk novelty reference",
+    )
     parser.add_argument(
         "--tokenizer",
         default="NousResearch/Meta-Llama-3.1-8B",
@@ -137,6 +145,59 @@ def main() -> None:
     print(
         f"\nsuggested loop_repetition_threshold = {suggested:.3f}"
         f"  (99th percentile of natural prose; 1% false-positive rate by construction)"
+    )
+
+    # Inter-chunk novelty, calibrated the same way. This is a separate collapse
+    # mode from intra-chunk repetition, and the reference distribution for it has
+    # to come from the same prose at the same chunk size: a novel and a textbook
+    # both reuse phrasing across chapters, and the threshold must sit below that.
+    print(f"\n--- inter-chunk novelty (shingle length {args.shingle_n}) ---")
+    novelty_rows = []
+    for path in files:
+        text = strip_boilerplate(path.read_text(encoding="utf-8", errors="replace"))
+        chunks = chunk_by_tokenizer(text, tokenizer, args.chunk_size)
+        words = [tokenize_words(c) for c in chunks]
+        series = novelty_series(words, args.shingle_n)
+        late = words[len(words) // 2 :]
+        pair = pairwise_similarity(late, args.shingle_n) if len(late) >= 4 else np.asarray([np.nan])
+        novelty_rows.append(
+            {
+                "source": path.stem,
+                "chunks": len(chunks),
+                "novelty_mean": float(np.nanmean(series)),
+                "novelty_min": float(np.nanmin(series)),
+                "novelty_last": float(series[-1]) if series.size else float("nan"),
+                "late_pair_median": float(np.nanmedian(pair)),
+                "late_pair_max": float(np.nanmax(pair)),
+            }
+        )
+    novelty = pd.DataFrame(novelty_rows)
+    print(novelty.to_string(index=False))
+
+    pooled = np.concatenate(
+        [
+            novelty_series(
+                [
+                    tokenize_words(c)
+                    for c in chunk_by_tokenizer(
+                        strip_boilerplate(p.read_text(encoding="utf-8", errors="replace")),
+                        tokenizer,
+                        args.chunk_size,
+                    )
+                ],
+                args.shingle_n,
+            )
+            for p in files
+        ]
+    )
+    pooled = pooled[np.isfinite(pooled)]
+    print("\npooled reference quantiles for novel_shingle_fraction:")
+    for q in (0.0, 0.001, 0.01, 0.05, 0.5, 1.0):
+        print(f"  p{q * 100:>6.2f}  {float(np.quantile(pooled, q)):.4f}")
+    suggested_novelty = float(np.quantile(pooled, 0.01))
+    print(
+        f"\nsuggested novelty_threshold = {suggested_novelty:.3f}  (1st percentile of natural "
+        "prose: a chunk below this reuses more material than human writing ever does)"
     )
 
     if args.compare_text:
