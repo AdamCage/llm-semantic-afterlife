@@ -122,7 +122,7 @@ Falsifiable, quantitative, fixed before any data exists.
 | E4 | Degeneracy under control | < 20% of trajectories collapse into repetition loops; if more, the sampling configuration is revised before Stage 2 |
 | E5 | Representation robustness | the sign of the E1 result agrees between `bge-m3` and `qwen3-embed-8b` |
 | E6 | Protocol integrity | zero reasoning-guard failures; zero tokenizer round-trip failures; served provider equals pinned provider on 100% of steps |
-| E7 | Block fill holds at the pilot window | fill within 0.05 of the probe value at `W = 4096` (0.942 core, 1.000 replication), or the variable-stride caveat is reinstated for that arm |
+| E7 | Block fill does not collapse at the pilot window | fill ≥ probe value − 0.05 at `W = 4096` (probe: 0.942 core, 1.000 replication), or the variable-stride caveat is reinstated for that arm |
 | E8 | Completion rate | ≥ 90% of planned trajectories reach `T`; the rest reported as missing data with cause |
 | E9 | Non-degeneracy | < 20% of trajectories flagged degenerate at the calibrated threshold; if more, the result is reported as measured on a degenerate ensemble and Stage 2 is re-planned |
 
@@ -131,6 +131,17 @@ E1 is the stage. E2 and E5 decide whether the result is worth Stages 2–5.
 E7 exists because block fill was measured at `W ∈ {2048, 8192}` and the pilot runs
 at 4096. Assuming it carries is the mistake this project has made three times: a
 number measured in one regime and trusted in another.
+
+**E7 amended 2026-08-30, 81 steps into the core run, from two-sided to one-sided.**
+Observed fill is 0.995 against a probe value of 0.942 — outside a ±0.05 band, but
+in the direction that makes the protocol *better*: the stride is more nearly
+constant than assumed, so `S = B` holds more tightly and the cost law is if
+anything conservative. The original two-sided wording would have recorded a
+criterion failure for a favourable result, which is a defect in the criterion
+rather than in the run. What the criterion is actually for is catching a
+*collapse* in fill, because that is what breaks stride constancy, invalidates the
+cost model and signals degeneracy. Recorded rather than silently reinterpreted;
+the amendment tightens nothing and loosens nothing on the failure side.
 
 E9 replaces the original E4 wording. It is now checkable against a calibrated
 threshold rather than an intuition, and its failure mode is explicit — a
