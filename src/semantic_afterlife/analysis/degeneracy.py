@@ -40,18 +40,25 @@ class DegeneracyParams(BaseModel):
 
     ngram: int = Field(default=3, ge=1, description="n-gram order for the repetition rate")
     loop_repetition_threshold: float = Field(
-        default=0.5,
+        default=0.083,
         gt=0.0,
         lt=1.0,
-        description="n-gram repetition rate above which a chunk counts as looping. 0.5 means "
-        "half the n-grams in the chunk are repeats of an earlier one *within the same chunk*",
+        description="n-gram repetition rate above which a chunk counts as looping. CALIBRATED, "
+        "not chosen: the 99th percentile of natural English prose chunked by the same tokenizer "
+        "at the same 1024-token size (237 chunks of Carroll and Darwin; mean 0.033, p95 0.063, "
+        "max 0.149). An intuition-picked 0.5 was six times too high and scored a trajectory at "
+        "18x natural repetition as merely 'partly' degenerate. Re-derive with "
+        "scripts/calibrate_degeneracy.py if the chunk size or tokenizer changes",
     )
     loop_chunk_fraction: float = Field(
-        default=0.2,
+        default=0.5,
         gt=0.0,
         le=1.0,
-        description="fraction of post-horizon chunks that must be looping for the trajectory "
-        "to be labelled degenerate",
+        description="fraction of post-horizon chunks that must be looping for the trajectory to "
+        "be labelled degenerate. Raised from 0.2 to 0.5 once the per-chunk threshold was "
+        "calibrated: at a 1% false-positive rate per chunk, requiring half the chunks makes the "
+        "trajectory-level verdict essentially certain, and the healthy reference model sits at "
+        "8% of chunks flagged",
     )
     self_similarity_threshold: float = Field(
         default=0.98,
