@@ -66,7 +66,7 @@ async def main() -> None:
                 generator, sampling, prompt=prompt, max_tokens=args.max_tokens, seed=31337
             )
             request = replace(request, extra={**request.extra, **extra})
-            row: dict[str, Any] = {"switch": label, "requested_min": extra and 512 or None}
+            row: dict[str, Any] = {"switch": label, "requested_min": 512 if extra else None}
             try:
                 response = await client.complete(request)
             except Exception as exc:
