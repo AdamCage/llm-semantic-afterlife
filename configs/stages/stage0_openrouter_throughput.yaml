@@ -1,0 +1,47 @@
+# ===========================================================================
+# S0.11 — sustained-throughput probe (OpenRouter)
+# ---------------------------------------------------------------------------
+# Provider selection for Stage 1 cannot be decided on catalogue price. S0's
+# finding F5 was that the cheapest healthy RouterAI endpoint throttles after
+# roughly four consecutive steps and does not recover within ten exponential
+# retries, which makes a 256-step trajectory impossible at any price.
+#
+# A single-call probe cannot detect that (finding F8: probes must run in the
+# regime the experiment runs in), so this is a real multi-step trajectory --
+# identical in shape to the RouterAI live smoke, so the two are comparable
+# directly:
+#
+#   RouterAI / io-net:  19 steps, 8196 tokens, block fill 0.88, $0.0038
+#
+# Same W, same T, same seed, same mechanism. What differs is the provider.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s0
+name: or-throughput
+description: >-
+  Multi-step throughput and block-fill probe against OpenRouter, shaped
+  identically to the RouterAI live smoke so the two are directly comparable.
+
+generators: [or-mistral-nemo-12b, or-llama31-8b-instruct, or-llama31-8b-deepinfra]
+embeddings: [bge-m3]
+
+windows:
+  - W: 2048
+    block_size: 512
+    target_tokens: 8192 # 4 turnovers
+    chunk_size: 512
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.7
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 1.0

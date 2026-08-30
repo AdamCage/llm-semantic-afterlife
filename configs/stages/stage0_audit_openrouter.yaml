@@ -1,0 +1,50 @@
+# ===========================================================================
+# S0.10 — cross-provider audit (OpenRouter)
+# ---------------------------------------------------------------------------
+# Added after Stage 0 closed, because the OpenRouter key became available and
+# the plan requires re-probing endpoints whenever a stage locks its matrix.
+#
+# Two questions:
+#   1. Does the price advantage (mistral-nemo $0.019/$0.030 here against
+#      $0.061/$0.223 on RouterAI) survive sustained load? S0's finding F5 was
+#      that throughput, not price, binds under protocol P1.
+#   2. Do the reasoning-suppression switches behave the same way? They are
+#      provider-mediated, and S0.3b found one switch that is accepted while
+#      doing nothing, so this cannot be assumed to transfer.
+#
+# Windows/sampling/seeds are schema placeholders; audits never generate.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s0
+name: audit-openrouter
+description: >-
+  Cross-provider capability, pricing, reasoning-suppression and determinism
+  audit against OpenRouter, to settle provider selection for Stage 1 by
+  measurement rather than by catalogue price.
+
+generators:
+  - or-mistral-nemo-12b
+  - or-qwen3-8b
+  - or-muse-glimmer-30b
+  - or-deepseek-v4-flash
+  - or-llama31-8b-instruct
+
+embeddings: []
+
+windows:
+  - W: 2048
+    block_size: 512
+    target_tokens: 4096
+    chunk_size: 512
+
+sampling:
+  - temperature: 0.7
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+budget_usd: 2.0

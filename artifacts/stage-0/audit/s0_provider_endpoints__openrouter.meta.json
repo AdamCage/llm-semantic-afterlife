@@ -1,0 +1,13 @@
+{
+  "name": "s0_provider_endpoints__openrouter",
+  "caption": "Measured per-endpoint capabilities and prices for every candidate generator, as reported by the router. Availability, quantization and supported APIs are facts that later stage designs depend on; nothing here is taken from documentation. Prices are converted to USD with the provider's own currency multiplier.",
+  "alt_text": "Measured per-endpoint capabilities and prices for every candidate generator, as reported by the router. Availability, quantization and supported APIs are facts that later stage designs depend on; nothing here is taken from documentation. Prices are converted to USD with the provider's own currency multiplier.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-providers-20260830T090600Z-f2eca750"
+  ],
+  "git_sha": "652e11bd8da45056b6d7c3aa07951aa59fac356a",
+  "config_sha256": "f2eca750d0b30b989069f58ddc95e769ff6b40ed9a4ec3ebf3fe20088fc65362",
+  "units": {},
+  "generated_at": "2026-08-30T09:06:05+00:00"
+}

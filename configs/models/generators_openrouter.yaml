@@ -1,0 +1,170 @@
+# ===========================================================================
+# Generator library — OpenRouter
+# ---------------------------------------------------------------------------
+# Same model families as `generators.yaml`, reached through the second provider.
+# Kept in a separate file rather than as a flag on the RouterAI definitions,
+# because a generator is defined by (model, provider, endpoint, quantization) and
+# collapsing two of those into one entry is how endpoints silently diverge
+# between stages (ADR-0003).
+#
+# Two uses:
+#   1. Stage 6 cross-provider replication of headline results.
+#   2. Provider selection for Stage 1, since catalogue prices are markedly lower
+#      here (mistral-nemo $0.019/$0.030 against $0.061/$0.223 on RouterAI) --
+#      but price is not the binding constraint under protocol P1, sustained
+#      throughput is (S0 finding F5), so the choice is settled by measurement.
+#
+# `provider_slug` is null until the endpoint audit runs against this provider.
+# Prices are catalogue-level; per-endpoint prices come from the audit.
+# ===========================================================================
+
+generator_library:
+  or-mistral-nemo-12b:
+    model_id: mistralai/mistral-nemo
+    api: openrouter
+    tokenizer_repo: mistralai/Mistral-Nemo-Instruct-2407
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    # PINNED (S0.11): Io Net, fp16. OpenRouter slugs carry the quantization
+    # explicitly (`io-net/fp16`), pinning precision as well as provider --
+    # strictly better provenance than RouterAI's bare tag.
+    #
+    # Not the cheapest. `parasail/fp8` is $0.030 both ways against $0.044/$0.160
+    # here, and was tried first: it sustained 12 consecutive steps before an
+    # upstream 429 that ten exponential retries (~8 minutes) did not clear. The
+    # same provider throttled after ~4 steps through RouterAI, so the limit
+    # follows the upstream pool rather than the router. Io Net is the endpoint
+    # that completed the equivalent trajectory on RouterAI, and it is still ~28%
+    # cheaper here than there ($0.061/$0.223).
+    provider_slug: io-net/fp16
+    allow_fallbacks: false
+    native_context: 128000
+    price_usd_per_m_input: 0.044
+    price_usd_per_m_output: 0.160
+    expected_block_fill: 0.88
+    extra_body:
+      reasoning_effort: none
+    notes: >-
+      Catalogue price is ~3x cheaper on input and ~7x on output than the pinned
+      RouterAI endpoint. Whether that survives contact with sustained load is the
+      question the audit answers.
+
+  or-qwen3-8b:
+    model_id: qwen/qwen3-8b
+    api: openrouter
+    tokenizer_repo: Qwen/Qwen3-8B
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.117
+    price_usd_per_m_output: 0.455
+    extra_body:
+      reasoning_effort: none
+    notes: >-
+      Reasoning must be suppressed and verified per step; on RouterAI this model
+      overshot max_tokens by 9.96x without it (ADR-0005). The switch that works
+      may differ by provider, hence a separate reasoning audit here.
+
+  or-muse-glimmer-30b:
+    model_id: meta/muse-glimmer-30b
+    api: openrouter
+    tokenizer_repo: meta-models/Muse-Glimmer-30B
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.30
+    price_usd_per_m_output: 1.20
+    extra_body: {}
+    notes: >-
+      Reasons on chat but not on raw completion (S0.3), so the mechanism is not
+      a preference here. A `:batch` variant exists at a higher unit price; not
+      used, since batching would break the sequential dependency of a trajectory.
+
+  or-deepseek-v4-flash:
+    model_id: deepseek/deepseek-v4-flash
+    api: openrouter
+    tokenizer_repo: deepseek-ai/DeepSeek-V3
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 1048576
+    price_usd_per_m_input: 0.080640
+    price_usd_per_m_output: 0.161280
+    extra_body:
+      reasoning:
+        enabled: false
+    notes: >-
+      Reasons intermittently (S0.3b), so the per-step guard matters more here
+      than anywhere else. Dated and `-latest` variants exist; the undated,
+      pinned-quantization endpoint is used so a run names one fixed generator.
+
+  # Same model on a known-quantization endpoint, for the provenance-versus-speed
+  # comparison. Groq is fast but reports `unknown` quantization and adds 35
+  # tokens of server-side scaffolding to a raw completion; DeepInfra is fp8 and
+  # less than half the price. Which wins depends on its throughput.
+  or-llama31-8b-deepinfra:
+    model_id: meta-llama/llama-3.1-8b-instruct
+    api: openrouter
+    tokenizer_repo: NousResearch/Meta-Llama-3.1-8B
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: deepinfra/fp8
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.020
+    price_usd_per_m_output: 0.040
+    extra_body:
+      reasoning_effort: none
+    notes: >-
+      fp8, status 0, but `max_completion_tokens` is 16384 -- ample for B=1024.
+      Cheapest llama endpoint on either provider.
+
+  # A fifth family, available here and worth auditing while we are looking:
+  # a third architecture would strengthen the model-specificity claim in H1.
+  or-llama31-8b-instruct:
+    model_id: meta-llama/llama-3.1-8b-instruct
+    api: openrouter
+    tokenizer_repo: NousResearch/Meta-Llama-3.1-8B
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    # PINNED (S0.11): Groq. Deliberately not the cheapest -- deepinfra/fp8 and
+    # novita/fp8 are $0.020 against Groq's $0.050 -- but under protocol P1 the
+    # binding constraint is sustained throughput, and both cheaper endpoints cap
+    # completions at 16384/14745 tokens with shared pools that throttled every
+    # other model we tried. Groq offers 131072 context and 117964 max completion.
+    provider_slug: groq
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.05
+    price_usd_per_m_output: 0.08
+    extra_body:
+      reasoning_effort: none
+    notes: >-
+      Not in the original plan. The Llama family was to enter as a base model,
+      which does not exist on any provider (ADR-0006); this is the instruct
+      variant and would restore a third architecture to the comparison cheaply.
+      Quantization is reported as `unknown` for this endpoint, which is a
+      provenance cost to weigh against its throughput.

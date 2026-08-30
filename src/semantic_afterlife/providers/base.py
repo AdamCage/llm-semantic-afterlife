@@ -211,6 +211,18 @@ class InferenceClient(abc.ABC):
 
     name: str
 
+    @property
+    def native_price_to_usd(self) -> float:
+        """Multiplier converting this provider's quoted prices into USD.
+
+        Currency is a property of the provider, not a global setting: RouterAI
+        quotes roubles per token, OpenRouter quotes USD. Reading a single global
+        rate produced OpenRouter prices 80x too low in the first cross-provider
+        audit, which is exactly the sort of number that would have reached a
+        stage plan unchallenged.
+        """
+        return 1.0
+
     @abc.abstractmethod
     async def complete(self, request: CompletionRequest) -> CompletionResponse: ...
 

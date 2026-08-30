@@ -44,15 +44,20 @@ async def audit_providers(
     client: InferenceClient,
     generators: list[GeneratorConfig],
     *,
-    usd_per_rub: float,
     events: EventLogger,
+    price_to_usd: float | None = None,
 ) -> pd.DataFrame:
     """Per-endpoint capabilities and prices for every candidate generator.
 
     A model absent from the router yields a row with ``available=False`` rather
     than an exception: "not available" is a normal audit finding that the stage
     report has to state.
+
+    Prices are converted with the *client's own* currency multiplier rather than
+    a global setting, because providers quote in different currencies: RouterAI
+    in roubles, OpenRouter already in USD.
     """
+    rate = client.native_price_to_usd if price_to_usd is None else price_to_usd
     rows: list[dict[str, Any]] = []
     for generator in generators:
         try:
@@ -126,14 +131,14 @@ async def audit_providers(
                     "supports_logprobs": "logprobs" in supported_params,
                     "supported_apis": ",".join(map(str, supported_apis)),
                     "supported_parameters": ",".join(map(str, supported_params)),
-                    "price_rub_per_m_input": None if input_rub is None else input_rub * 1e6,
-                    "price_rub_per_m_output": None if output_rub is None else output_rub * 1e6,
-                    "price_usd_per_m_input": None
-                    if input_rub is None
-                    else input_rub * 1e6 * usd_per_rub,
+                    "provider_api": client.name,
+                    "price_native_per_m_input": None if input_rub is None else input_rub * 1e6,
+                    "price_native_per_m_output": None if output_rub is None else output_rub * 1e6,
+                    "price_to_usd": rate,
+                    "price_usd_per_m_input": None if input_rub is None else input_rub * 1e6 * rate,
                     "price_usd_per_m_output": None
                     if output_rub is None
-                    else output_rub * 1e6 * usd_per_rub,
+                    else output_rub * 1e6 * rate,
                     "error": None,
                 }
             )

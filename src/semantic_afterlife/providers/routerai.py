@@ -128,6 +128,11 @@ class RouterAIClient(HTTPInferenceClient):
 
     # -- pricing -------------------------------------------------------------
 
+    @property
+    def native_price_to_usd(self) -> float:
+        """RouterAI quotes roubles per token."""
+        return self._usd_per_rub
+
     def set_price_table(self, table: dict[str, dict[str, float]]) -> None:
         self._price_table = table
 

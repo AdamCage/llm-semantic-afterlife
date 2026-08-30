@@ -279,10 +279,26 @@ def _run_async(coro: Any) -> Any:
     return asyncio.run(wrapper())
 
 
-def _save_audit(context: Any, frame: pd.DataFrame, name: str, caption: str) -> None:
+def _save_audit(
+    context: Any,
+    frame: pd.DataFrame,
+    name: str,
+    caption: str,
+    *,
+    suffix: str = "",
+) -> None:
+    """Write an audit table into the stage artifacts.
+
+    ``suffix`` distinguishes the same audit run against different providers.
+    Without it a cross-provider audit silently overwrites the first one's table,
+    which is how a stage report ends up citing numbers from a provider it does
+    not name.
+    """
     from .reporting.tables import save_table
     from .viz.export import FigureMeta
 
+    if suffix:
+        name = f"{name}__{suffix}"
     out_dir = context.artifacts_dir / "audit"
     save_table(
         frame,
@@ -317,12 +333,7 @@ def audit_providers_cmd(
     ) as context:
         client = build_client(experiment.generators[0].api, settings, events=context.events)
         frame = _run_async(
-            audit_providers(
-                client,
-                list(experiment.generators),
-                usd_per_rub=settings.afterlife_usd_per_rub,
-                events=context.events,
-            )
+            audit_providers(client, list(experiment.generators), events=context.events)
         )
         _print_frame(
             frame,
@@ -348,7 +359,9 @@ def audit_providers_cmd(
             "s0_provider_endpoints",
             "Measured per-endpoint capabilities and prices for every candidate generator, as "
             "reported by the router. Availability, quantization and supported APIs are facts "
-            "that later stage designs depend on; nothing here is taken from documentation.",
+            "that later stage designs depend on; nothing here is taken from documentation. "
+            "Prices are converted to USD with the provider's own currency multiplier.",
+            suffix=client.name,
         )
         context.finish(n_rows=len(frame))
 
@@ -407,6 +420,7 @@ def audit_continuation_cmd(
             "model continues the text, its finish reason, the local-vs-API prompt token delta "
             "(which reveals a server-side chat template), and whether the output looks like "
             "meta-commentary rather than continuation.",
+            suffix=client.name,
         )
         context.finish(n_rows=len(frame))
 
@@ -466,6 +480,7 @@ def audit_reasoning_cmd(
             "the window would be only the visible part of what the model generated, max_tokens "
             "would stop bounding the block, and the reasoning text is meta-commentary rather "
             "than free continuation.",
+            suffix=client.name,
         )
         context.finish(n_rows=len(frame))
 
@@ -521,6 +536,7 @@ def audit_determinism_cmd(
             f"Exact-match and similarity rates over {repeats} identical seeded requests per model "
             f"at temperature {temperature}. This number, and not an assumption, determines the "
             "reproducibility level the paper may claim.",
+            suffix=client.name,
         )
         context.finish(n_rows=len(frame))
 
@@ -578,6 +594,7 @@ def audit_embeddings_cmd(
             "Measured dimension, whether the provider returns L2-normalised vectors, latency, "
             "cost, and the cosine similarity between three probe texts from unrelated domains. "
             "A space that cannot separate the probes cannot support anything downstream.",
+            suffix=client.name,
         )
         context.finish(n_rows=len(frame))
 
