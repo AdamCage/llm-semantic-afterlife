@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import orjson
+import pandas as pd
 
 from ..config import (
     EmbeddingConfig,
@@ -706,6 +707,23 @@ async def run_trajectories(
         else:
             results.append(outcome)
     return results, runners
+
+
+def results_to_frame(results: list[TrajectoryResult]) -> pd.DataFrame:
+    """Tidy the per-trajectory summary for parquet.
+
+    ``served_providers`` is a mapping, and a column of *empty* mappings has no
+    inferable struct type, so pyarrow refuses to write it. That happens exactly
+    when every trajectory failed before its first response -- the moment the
+    record matters most -- so the mapping is flattened to a JSON string here
+    rather than left to crash the write. The manifest keeps the structured form.
+    """
+    frame = pd.DataFrame([r.as_dict() for r in results])
+    if "served_providers" in frame.columns:
+        frame["served_providers"] = frame["served_providers"].map(
+            lambda value: orjson.dumps(value or {}).decode("utf-8")
+        )
+    return frame
 
 
 def collect_chunks(runners: list[TrajectoryRunner]) -> list[dict[str, Any]]:

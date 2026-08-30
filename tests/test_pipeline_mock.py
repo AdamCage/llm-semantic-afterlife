@@ -9,9 +9,11 @@ structure we know.
 from __future__ import annotations
 
 import asyncio
+import json
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import pytest
 
 from semantic_afterlife.config import (
@@ -136,6 +138,62 @@ class TestTrajectoryRunner:
             if event["event"] == "generation.trajectory.resumed"
         ]
         assert resumed and resumed[0]["steps_replayed"] == first_result.n_steps
+
+
+class TestResultsFrame:
+    """A batch where everything failed must still produce a readable summary.
+
+    Measured the hard way in S1.0: every trajectory failed before its first
+    response, so `served_providers` was an empty mapping in every row, pyarrow
+    could not infer a struct type, and the parquet write crashed -- losing the
+    record at the exact moment it was most needed.
+    """
+
+    def _result(self, tid: str, **overrides: object):  # type: ignore[no-untyped-def]
+        from semantic_afterlife.generation.trajectory import TrajectoryResult
+
+        base = {
+            "trajectory_id": tid,
+            "status": "FAILED",
+            "generated_tokens": 0,
+            "n_steps": 0,
+            "n_chunks": 0,
+            "stop_events": 0,
+            "empty_completions": 0,
+            "roundtrip_failures": 0,
+            "horizon_tokens": 0,
+            "seed_tokens": 0,
+            "cost_usd": 0.0,
+            "prompt_tokens_total": 0,
+            "completion_tokens_total": 0,
+        }
+        base.update(overrides)
+        return TrajectoryResult(**base)  # type: ignore[arg-type]
+
+    def test_all_failed_batch_is_writable(self, tmp_path: Path) -> None:
+        from semantic_afterlife.generation.trajectory import results_to_frame
+
+        frame = results_to_frame([self._result("a"), self._result("b")])
+        frame.to_parquet(tmp_path / "trajectories.parquet", index=False)
+        assert (tmp_path / "trajectories.parquet").is_file()
+        assert list(frame["served_providers"]) == ["{}", "{}"]
+
+    def test_mixed_batch_preserves_provider_counts(self, tmp_path: Path) -> None:
+        from semantic_afterlife.generation.trajectory import results_to_frame
+
+        frame = results_to_frame(
+            [
+                self._result("a"),
+                self._result("b", status="COMPLETED", served_providers={"DeepInfra": 3}),
+            ]
+        )
+        frame.to_parquet(tmp_path / "t.parquet", index=False)
+        recovered = pd.read_parquet(tmp_path / "t.parquet")
+        assert json.loads(recovered["served_providers"].iloc[1]) == {"DeepInfra": 3}
+
+    def test_stop_event_rate_is_defined_for_zero_steps(self) -> None:
+        """Division by the step count must not blow up on a failed trajectory."""
+        assert self._result("a").as_dict()["stop_event_rate"] == 0.0
 
 
 class TestRequestConstruction:

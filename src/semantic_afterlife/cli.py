@@ -673,7 +673,12 @@ def generate(
     if settings.afterlife_execution_mode is ExecutionMode.LIVE and not yes:
         typer.confirm("proceed?", abort=True)
 
-    from .generation.trajectory import collect_chunks, plan_trajectories, run_trajectories
+    from .generation.trajectory import (
+        collect_chunks,
+        plan_trajectories,
+        results_to_frame,
+        run_trajectories,
+    )
     from .providers import build_client
     from .tokenization import describe, load_tokenizer
 
@@ -727,7 +732,7 @@ def generate(
         if not chunks.empty:
             chunks.to_parquet(context.paths.chunks(), index=False)
 
-        summary = pd.DataFrame([r.as_dict() for r in results])
+        summary = results_to_frame(results)
         summary.to_parquet(context.paths.data_dir / "trajectories.parquet", index=False)
         context.manifest.trajectories = {r.trajectory_id: r.as_dict() for r in results}
         _print_frame(

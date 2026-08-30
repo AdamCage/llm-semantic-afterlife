@@ -24,7 +24,12 @@ description: >-
   One full-size trajectory at the pilot's exact settings, to verify block fill,
   latency and protocol integrity at W = 8192 before committing the batch.
 
-generators: [or-llama31-8b-deepinfra]
+# MEASURED (S1.0, first attempt): `deepinfra/fp8` returned HTTP 429 on all eight
+# retries and completed zero steps at W = 8192, having shown zero retries at
+# W = 2048. The shared-pool limit is sensitive to request *size*, not just
+# request count -- a four-fold larger prompt made a clean endpoint unusable.
+# Finding F8 again: a measurement taken in one regime does not transfer.
+generators: [or-llama31-8b-instruct]
 embeddings: [bge-m3]
 
 windows:
