@@ -1,0 +1,81 @@
+# ===========================================================================
+# S1.0d — does any generator avoid converging to a textual fixed point?
+# ---------------------------------------------------------------------------
+# The core arm was killed after 441 steps because all four in-flight
+# trajectories had reached near-exact textual fixed points: the same opening
+# sentence at step 40, step 80 and step 129, one word apart across 22 turnovers.
+# Novelty 0.001-0.076 against 0.97 for natural prose; median late-phase pairwise
+# 5-gram Jaccard 1.000 against 0.000 for natural prose.
+#
+# This config re-decides the model selection, because the earlier viability
+# sweep that chose qwen3-8b and muse-glimmer-30b was wrong twice over:
+#
+#   1. It scored degeneracy with intra-chunk repetition only, which reports a
+#      reprinted page as maximally healthy.
+#   2. It ran T = 1.5W. Convergence in the killed run established itself around
+#      turnover 10, so at 1.5 turnovers the failure mode was not merely
+#      mismeasured -- it was outside the observation window entirely.
+#
+# The second is the more instructive error: startup behaviour was measured and
+# long-run behaviour was concluded. That is the same regime-transfer mistake
+# this project has now made four times, so this config observes 12 turnovers --
+# past the point where the killed run had visibly converged.
+#
+# Temperature enters as an axis because the killed cells were all T = 0.3, and
+# low temperature is on its own a plausible sufficient cause of a fixed point.
+# If T = 1.0 does not converge, this is a sampling-regime result rather than a
+# statement about these generators.
+#
+# Two semantic seeds, because 'physics' drew the generator into a reviewer
+# register ("Your passage is a deep and insightful discussion of lattice field
+# theory") whose natural fixed point is praise plus restatement. A seed that
+# does not invite critique tests whether the register is the mechanism.
+#
+# W is held at 4096: the question here is whether a fixed point forms at all,
+# and adding the window axis back would triple the cost for a secondary
+# question. If a generator survives, its W dependence is measured next.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: convergence-probe
+description: >-
+  Inter-chunk novelty over 12 turnovers for four generator families at two
+  temperatures and two semantic seeds, to establish whether any generator
+  sustains genuinely productive free-running generation, or whether convergence
+  to a textual fixed point is universal under protocol P1.
+
+generators:
+  - or-qwen3-8b
+  - or-muse-glimmer-30b
+  - or-llama31-8b-instruct
+  - or-mistral-nemo-12b
+
+embeddings: [bge-m3]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers -- past where the killed run converged
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+# 'physics' is the seed the killed trajectories used, kept for comparability.
+# 'surreal' is expository-hostile: there is less for a reviewer register to
+# latch onto, so it separates the register hypothesis from the temperature one.
+semantic_seeds: [physics, surreal]
+stochastic_seeds: [1]
+
+# Sequential: these endpoints share upstream pools, so parallel cells would
+# measure our own contention rather than theirs.
+max_concurrent: 1
+budget_usd: 2.5
