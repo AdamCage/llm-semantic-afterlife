@@ -1,0 +1,71 @@
+# ===========================================================================
+# S1.0c — the free-running viability boundary in W
+# ---------------------------------------------------------------------------
+# At W = 8192, three of four generator families cannot free-run, and they fail
+# in three distinct ways:
+#
+#   muse-glimmer-30b   hard stop: a bare EOS token at prompt_tokens = 8193,
+#                      reproduced across five sampling seeds
+#   llama-3.1-8b       early stop plus loops: fill 0.248, repetition 10.6x natural
+#   mistral-nemo-12b   loops: fill 0.131, repetition 6.5x natural
+#   qwen3-8b           continues normally: fill 0.928, repetition 1.2x natural
+#
+# The obvious question is whether this is a property of *large* W. If the
+# failures appear only above some window size, then there is a viability
+# boundary, its location is model-specific, and that is a measurable result
+# bearing directly on H6 (how the dynamics scale with W) -- not merely an
+# operational constraint.
+#
+# T = 1.5W throughout, so every cell observes the same number of turnovers and
+# the comparison is across window size rather than across trajectory length.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: viability-sweep
+description: >-
+  Block fill, stop rate and degeneracy for four generator families at three
+  window sizes, to locate the window size above which free-running generation
+  breaks down and to establish whether that boundary is model-specific.
+
+generators:
+  - or-qwen3-8b
+  - or-muse-glimmer-30b
+  - or-llama31-8b-instruct
+  - or-mistral-nemo-12b
+
+embeddings: [bge-m3]
+
+# 1.5 turnovers at each window: enough to fill the window and observe the
+# post-full regime, matched across cells.
+windows:
+  - W: 2048
+    block_size: 1024
+    target_tokens: 3072
+    chunk_size: 1024
+    protocol: P1_reprompt
+  - W: 4096
+    block_size: 1024
+    target_tokens: 6144
+    chunk_size: 1024
+    protocol: P1_reprompt
+  - W: 8192
+    block_size: 1024
+    target_tokens: 12288
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+# Sequential: these endpoints share upstream pools, and running them in parallel
+# would measure our own contention rather than theirs.
+max_concurrent: 1
+budget_usd: 2.0

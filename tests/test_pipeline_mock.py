@@ -236,6 +236,23 @@ class TestStepSeed:
         assert step_seed(7, 3) != step_seed(7, 4)
         assert step_seed(7, 3) != step_seed(8, 3)
 
+    def test_retry_attempt_changes_the_seed(self) -> None:
+        """An empty completion must not be retried with an identical request.
+
+        Measured on muse-glimmer-30b: the model emitted a bare stop token, the
+        prompt did not change, so every retry was byte-identical and the response
+        cache replayed the same empty answer until the trajectory died.
+        """
+        assert step_seed(7, 3, attempt=0) != step_seed(7, 3, attempt=1)
+        assert step_seed(7, 3, attempt=1) != step_seed(7, 3, attempt=2)
+        assert step_seed(7, 3, attempt=0) == step_seed(7, 3)
+
+    def test_attempt_does_not_collide_with_the_next_step(self) -> None:
+        """Retrying step t must not reproduce the seed step t+1 would have used."""
+        for step in range(20):
+            for attempt in range(1, 6):
+                assert step_seed(7, step, attempt) != step_seed(7, step + 1)
+
     def test_stays_in_range(self) -> None:
         for step in range(0, 5000, 97):
             assert 0 <= step_seed(12345, step) < 2**31 - 1

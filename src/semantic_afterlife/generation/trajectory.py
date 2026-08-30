@@ -17,7 +17,7 @@ Two properties matter more than speed here:
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 import orjson
@@ -66,16 +66,22 @@ def trajectory_id(
     return f"{generator}__W{W}__T{temp}__{semantic_seed}__s{stochastic_seed}"
 
 
-def step_seed(stochastic_seed: int, step: int) -> int:
+def step_seed(stochastic_seed: int, step: int, attempt: int = 0) -> int:
     """Per-step sampling seed, derived deterministically from the trajectory seed.
 
     A single fixed seed for the whole trajectory would make any revisited prompt
     produce a byte-identical continuation, turning a near-recurrence into an
     exact cycle — a harness artifact indistinguishable from a real fixed point.
     Varying the seed per step removes that artifact while keeping the whole
-    trajectory reproducible from ``(stochastic_seed, step)``.
+    trajectory reproducible from ``(stochastic_seed, step, attempt)``.
+
+    ``attempt`` counts empty completions at the *same* step. Without it a model
+    that emits a bare stop token produces an identical request on every retry —
+    same prompt, same seed — which the response cache then answers identically
+    forever. Measured on muse-glimmer-30b, where one empty completion was
+    replayed from cache four times and killed the trajectory.
     """
-    return (stochastic_seed * 1_000_003 + step * 31 + 17) % (2**31 - 1)
+    return (stochastic_seed * 1_000_003 + step * 31 + attempt * 7_919 + 17) % (2**31 - 1)
 
 
 def build_request(
@@ -303,7 +309,7 @@ class TrajectoryRunner:
                 # step silently invalidated the token-accounting audit until S0.7
                 # exposed it as a systematic ~2x discrepancy.
                 prompt_tokens_sent = window.prompt_tokens
-                seed = step_seed(self.stochastic_seed, window.step)
+                seed = step_seed(self.stochastic_seed, window.step, attempt=consecutive_empty)
 
                 request = build_request(
                     self.generator,
@@ -312,6 +318,12 @@ class TrajectoryRunner:
                     max_tokens=max_tokens,
                     seed=seed,
                 )
+                if consecutive_empty:
+                    # Retrying an empty completion needs a genuinely different
+                    # request, not just a different seed: the prompt has not
+                    # changed, so a cached response would be replayed and the
+                    # trajectory could never recover.
+                    request = replace(request, cache_bust=consecutive_empty)
                 reserve = estimate_request_usd(
                     self.generator,
                     prompt_tokens=prompt_tokens_sent,
