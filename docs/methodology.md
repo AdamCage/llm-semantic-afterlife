@@ -99,14 +99,41 @@ The `system prompt` condition is orthogonal and explicit: `unforced` (none) or
 `fixed` (a recorded string). Stage 0 measures which mechanisms actually work per
 model, since provider support is not reliably documented.
 
-### 1.4 Stop events
+### 1.4 Stop events — a declared forcing, and an order parameter
 
-Base models rarely emit EOS; instruct models will. The process is *defined* as
-unbounded, so a stop is not the end of the trajectory: we log the
-`finish_reason`, count the event, and continue by re-prompting with the current
-`Tail_W`. The per-trajectory **stop-event rate** is reported — a model that
-constantly tries to terminate is behaving differently from one that runs on, and
-that difference is data.
+The process is *defined* as unbounded, so a stop token is not the end of a
+trajectory: we log the `finish_reason`, count it, and continue by re-prompting
+with the current `Tail_W`.
+
+**This is a forcing, and it is not a small one.** Measured at `W = 8192`
+(S1.0, llama-3.1-8b): block fill is 1.000 while the window is still filling and
+collapses to **0.087** once it is full, with a median completion of 48 tokens
+against a requested 1024. In other words, conditioned on a full window of its
+own output, the model tries to terminate on almost every step, and the process
+only continues because we override it.
+
+Three consequences, all binding:
+
+1. **The paper declares it alongside the re-prompt caveat**, in the method
+   section rather than the appendix. What we measure is not "a model generating
+   freely" but "a model repeatedly restarted from its own tail after each attempt
+   to stop". A reader must be able to see that from the method, not infer it.
+2. **The stop rate is an order parameter, not a diagnostic.** It is reported as a
+   function of `W`, temperature and model, on the same footing as the diffusion
+   exponent and the macrostate count. A model that tries to stop after 48 tokens
+   at `W = 8192` but runs on at `W = 2048` is telling us something about the
+   post-horizon regime, and it is measured rather than mentioned.
+3. **No provider-side suppression is used.** A minimum-token floor would change
+   the sampled distribution to `P_θ(· | X, no stop)`, a different process. Six
+   conventions were tested (`min_tokens`, `min_new_tokens`,
+   `provider.min_tokens`, `ignore_eos`, `skip_special_tokens`, and the
+   provider-nested form); Groq accepts four silently and honours none. Should a
+   floor become available, using it requires its own ADR and a separate arm — it
+   would not be a default.
+
+The realised **stride** is therefore the realised block length, and at large `W`
+it is far below `B`. See §0.1; the cost law and the turnover accounting both use
+the measured stride, never `B`.
 
 ### 1.5 Token accounting and the tokenizer round trip
 

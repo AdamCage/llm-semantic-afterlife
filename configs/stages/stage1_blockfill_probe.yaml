@@ -1,0 +1,60 @@
+# ===========================================================================
+# S1.0b — is the block-fill collapse a property of the model or of the regime?
+# ---------------------------------------------------------------------------
+# S1.0 measured llama-3.1-8b on Groq at W = 8192 and found block fill collapsing
+# from 1.000 while the window fills to 0.087 once it is full: conditioned on a
+# full window of its own output, the model emits a stop token after ~48 tokens.
+#
+# Two readings, and they lead to different projects:
+#
+#   MODEL-SPECIFIC -> another generator may sustain full blocks, the cost problem
+#                     disappears, and this is a quirk to note.
+#   REGIME-GENERAL -> every instruction-tuned model tries to terminate once
+#                     conditioned on a full window of self-generated text. That
+#                     is a finding about the post-horizon regime in its own
+#                     right, it makes the re-prompt an explicit forcing that the
+#                     paper must declare, and the budget has to absorb it.
+#
+# T = 12288 is 1.5 turnovers: just enough to fill the window and then observe
+# the post-full regime. If fill stays at 1.000 the run is 12 steps; if it
+# collapses it is ~110. Either way the answer arrives for a few cents.
+#
+# Sequential (concurrency 1): these endpoints share upstream rate-limit pools and
+# probing them in parallel would measure our own contention.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: blockfill-probe
+description: >-
+  Block-fill behaviour at W = 8192 across four generator families, to decide
+  whether the post-horizon early-stop collapse is model-specific or a property
+  of the regime.
+
+generators:
+  - or-llama31-8b-instruct # reference: the collapse was measured here
+  - or-qwen3-8b
+  - or-mistral-nemo-12b
+  - or-muse-glimmer-30b
+
+embeddings: [bge-m3]
+
+windows:
+  - W: 8192
+    block_size: 1024
+    target_tokens: 12288 # 1.5 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 1.5

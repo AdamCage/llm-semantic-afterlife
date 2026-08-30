@@ -88,11 +88,15 @@ generator_library:
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.10): Parasail, bf16 -- a known quantization (Phala, Together and
+    # Fireworks all report `unknown`), status 0, and a 117964-token completion
+    # cap. DeepInfra is also bf16 but caps completions at 16384 and prices output
+    # higher.
+    provider_slug: parasail/bf16
     allow_fallbacks: false
     native_context: 131072
     price_usd_per_m_input: 0.30
-    price_usd_per_m_output: 1.20
+    price_usd_per_m_output: 1.10
     extra_body: {}
     notes: >-
       Reasons on chat but not on raw completion (S0.3), so the mechanism is not
