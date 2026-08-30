@@ -32,7 +32,12 @@ generator_library:
       transitions, topic inferred from the tail of the prompt so that the
       sliding window genuinely affects the dynamics.
 
-  # -- pure autoregressive control ----------------------------------------
+  # -- UNAVAILABLE: kept as a record, not for use --------------------------
+  # RouterAI carries no base models at all: 468 catalogue entries, zero named
+  # `*-base` (only `thenlper/gte-base`, an embedder), and this slug returns
+  # `400 Model not found`. The clean base-model arm is therefore not available
+  # through this provider. Recorded in the S0 report rather than deleted, so the
+  # absence stays visible. See ADR-0006.
   llama3-8b-base:
     model_id: meta-llama/llama-3-8b
     api: routerai
@@ -42,84 +47,137 @@ generator_library:
     provider_slug: null
     allow_fallbacks: false
     native_context: 8192
-    price_usd_per_m_input: null
-    price_usd_per_m_output: null
     notes: >-
-      Base model, no chat template and no RLHF policy: the cleanest realisation
-      of "continue this text forever". Ungated tokenizer mirror is used because
-      the official repo is gated; Stage 0 verifies vocabulary equivalence.
+      NOT AVAILABLE on RouterAI (measured, S0.2/S0.3). Tokenizer loads fine from
+      the ungated Nous mirror, vocab 128256. Retained only so the audit table
+      keeps reporting its absence.
 
   # -- modern compact dense transformer ----------------------------------
   qwen3-8b:
     model_id: qwen/qwen3-8b
     api: routerai
     tokenizer_repo: Qwen/Qwen3-8B
-    continuation: chat_instructed
+    # `/completions` works despite not being advertised (S0.3), and adds only
+    # ~8 template tokens against 32 for chat. Purest available mechanism.
+    continuation: raw_completion
     continuation_instruction: >-
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.2): Alibaba, the only endpoint on the router for this model.
+    # Quantization reported as `unknown`, which is itself a limitation to state.
+    provider_slug: alibaba
     allow_fallbacks: false
-    native_context: 32768
-    price_usd_per_m_input: null
-    price_usd_per_m_output: null
-    notes: Instruct model; Stage 0 checks whether assistant prefill is available.
+    native_context: 131072
+    price_usd_per_m_input: 0.162748
+    price_usd_per_m_output: 0.632910
+    # MEASURED (S0.3b): this model reasons by default and its reasoning tokens
+    # are NOT charged against max_tokens -- baseline returned 956 tokens for a
+    # 96-token request, a 10x overshoot. `reasoning_effort: none` is the only
+    # switch that actually suppresses generation; `include_reasoning: false`
+    # merely hides the trace while 508 reasoning tokens are still produced.
+    extra_body:
+      reasoning_effort: none
+    notes: >-
+      Only one endpoint on RouterAI and comparatively expensive for its size
+      ($0.163/M in). Reasoning must be suppressed; the runtime guard asserts it
+      every step rather than trusting the flag.
 
   # -- cheap architecturally independent baseline ------------------------
   mistral-nemo-12b:
     model_id: mistralai/mistral-nemo
     api: routerai
     tokenizer_repo: mistralai/Mistral-Nemo-Instruct-2407
-    continuation: chat_instructed
+    # `/completions` verified working; adds only ~3 template tokens.
+    # `assistant_prefill` is NOT supported here (provider returned an error).
+    continuation: raw_completion
     continuation_instruction: >-
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.7): Io Net, fp16, status 0.
+    # Not the cheapest: Parasail is $0.0417/M both ways against Io Net's
+    # $0.0612 in / $0.2226 out. Parasail was tried first and rejected on
+    # measured grounds -- its shared rate-limit pool yields an upstream 429 after
+    # roughly four consecutive steps and does not recover within ten exponential
+    # retries (~10 min), which makes a 256-step trajectory impossible. Sustained
+    # throughput, not headline price, is the binding constraint under protocol P1.
+    # DeepInfra is cheaper still ($0.0264/M) and responds, but the router reports
+    # it deprioritised (status -5), so it is the documented fallback rather than
+    # the pin.
+    provider_slug: io-net
     allow_fallbacks: false
-    native_context: 131072
-    price_usd_per_m_input: null
-    price_usd_per_m_output: null
+    native_context: 128000
+    price_usd_per_m_input: 0.061205
+    price_usd_per_m_output: 0.222562
+    extra_body:
+      reasoning_effort: none
+    # MEASURED (S0.7, 19 steps): mean returned/requested = 0.88, range 0.04-1.00,
+    # with a stop token on 26% of steps. The stride S is therefore not constant,
+    # and the input forecast scales as 1/fill.
+    expected_block_fill: 0.88
     notes: >-
-      Cheapest candidate; intended to carry the wide part of the experiment
-      matrix where many trajectories matter more than model novelty.
+      The only candidate with no reasoning at all (reasoning_tokens = 0 under
+      every configuration tried) and by far the cheapest per token. Carries the
+      wide part of the matrix.
 
   # -- hybrid local/global attention -------------------------------------
   muse-glimmer-30b:
     model_id: meta/muse-glimmer-30b
     api: routerai
     tokenizer_repo: meta-models/Muse-Glimmer-30B
-    continuation: chat_instructed
+    # Reasons on /chat/completions (917 chars of trace, empty visible content)
+    # but NOT on /completions. That asymmetry makes raw completion mandatory
+    # here, not merely preferable.
+    continuation: raw_completion
     continuation_instruction: >-
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.2): Parasail, bf16 -- a *known* quantization, unlike Together
+    # and Fireworks which report `unknown` -- with seed, logprobs, and a
+    # 131072-token completion limit at the lowest output price.
+    provider_slug: parasail
     allow_fallbacks: false
     native_context: 131072
-    price_usd_per_m_input: null
-    price_usd_per_m_output: null
+    price_usd_per_m_input: 0.417303
+    price_usd_per_m_output: 1.530110
+    # Rejects both `reasoning_effort` and `reasoning.effort`, so no switch is
+    # sent; the runtime guard is what keeps this honest.
+    extra_body: {}
     notes: >-
       Interleaved local/global attention with a 2048-token local window. Its own
       research axis: does a characteristic semantic timescale appear near 2K
-      despite the global layers?
+      despite the global layers? Most expensive candidate, so used narrowly.
 
   # -- frontier MoE control ----------------------------------------------
   deepseek-v4-flash:
     model_id: deepseek/deepseek-v4-flash
     api: routerai
     tokenizer_repo: deepseek-ai/DeepSeek-V3
-    continuation: chat_instructed
+    continuation: raw_completion
     continuation_instruction: >-
       Continue the following text directly. Do not comment, summarise, explain
       or address the reader. Output only the continuation.
     is_base_model: false
-    provider_slug: null
+    # PINNED (S0.2): DeepInfra, fp8, status 0 -- the cheapest of the 17 endpoints
+    # that both supports `seed` and reports a known quantization. DigitalOcean is
+    # cheaper but does not support seed. Pinning matters most here: the unpinned
+    # determinism audit was served by four different providers across five calls.
+    provider_slug: deepinfra
     allow_fallbacks: false
     native_context: 1048576
-    price_usd_per_m_input: null
-    price_usd_per_m_output: null
+    price_usd_per_m_input: 0.137710
+    price_usd_per_m_output: 0.275420
+    # Reasons INTERMITTENTLY: one probe on /completions returned 160 reasoning
+    # tokens and empty visible text, a later identical-shaped probe returned
+    # zero. Intermittent reasoning is worse than consistent reasoning, because
+    # it would corrupt individual blocks mid-trajectory. Hence an explicit
+    # switch plus the per-step guard.
+    extra_body:
+      reasoning:
+        enabled: false
     notes: >-
-      Very large native context, imposed W far below it. Pre-empts the reviewer
-      objection that the effect is an artifact of small-context models.
+      17 endpoints with fp4/fp8/unknown quantization, so provider pinning
+      matters more here than anywhere else. Very large native context with W
+      imposed far below it: pre-empts the "artifact of small models" objection.

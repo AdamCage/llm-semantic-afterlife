@@ -1,0 +1,13 @@
+{
+  "name": "s0_embeddings",
+  "caption": "Measured dimension, whether the provider returns L2-normalised vectors, latency, cost, and the cosine similarity between three probe texts from unrelated domains. A space that cannot separate the probes cannot support anything downstream.",
+  "alt_text": "Measured dimension, whether the provider returns L2-normalised vectors, latency, cost, and the cosine similarity between three probe texts from unrelated domains. A space that cannot separate the probes cannot support anything downstream.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-embeddings-20260830T073440Z-9dcb0ef0"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "9dcb0ef0b9e8fc88737ce979788f467e469dc60e4a2399051fd81cbeca223e3c",
+  "units": {},
+  "generated_at": "2026-08-30T07:34:48+00:00"
+}

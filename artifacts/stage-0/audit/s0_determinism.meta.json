@@ -1,0 +1,13 @@
+{
+  "name": "s0_determinism",
+  "caption": "Exact-match and similarity rates over 5 identical seeded requests per model at temperature 0.7. This number, and not an assumption, determines the reproducibility level the paper may claim.",
+  "alt_text": "Exact-match and similarity rates over 5 identical seeded requests per model at temperature 0.7. This number, and not an assumption, determines the reproducibility level the paper may claim.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-determinism-20260830T074258Z-ffb8e887"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "ffb8e8870d71df49099092487bd683bd1c794719d334ce7c92570f18447a93d4",
+  "units": {},
+  "generated_at": "2026-08-30T07:43:02+00:00"
+}

@@ -76,12 +76,17 @@ class RouterAIClient(HTTPInferenceClient):
     # -- payload construction ------------------------------------------------
 
     def _provider_block(self, request: CompletionRequest) -> dict[str, Any] | None:
+        """Routing preferences, or ``None`` when there is nothing to constrain.
+
+        ``allow_fallbacks`` is only meaningful alongside a preference list: on its
+        own it would ask the router to fail rather than route, which is not what
+        an unpinned audit request wants. So it is sent only when a provider is
+        actually pinned -- and then it is what turns the pin from a preference
+        into a constraint (ADR-0003).
+        """
         block: dict[str, Any] = {}
         if request.provider_slug:
             block["only"] = [request.provider_slug]
-        if request.provider_slug or not request.allow_fallbacks:
-            # Sending allow_fallbacks alone is meaningful: it forbids the default
-            # provider from silently handling a request we could not place.
             block["allow_fallbacks"] = request.allow_fallbacks
         if request.country:
             block["country"] = request.country
@@ -248,7 +253,7 @@ class RouterAIClient(HTTPInferenceClient):
             from_cache=from_cache,
         )
         served = self._served_provider(body, headers)
-        if request.provider_slug and served and served.lower() != request.provider_slug.lower():
+        if request.provider_slug and served and not _same_provider(served, request.provider_slug):
             raise ProviderPinningError(
                 f"pinned provider {request.provider_slug!r} but request was served by {served!r}; "
                 "this changes the generator mid-experiment (ADR-0003)"
@@ -387,6 +392,25 @@ def parse_price_table(
             "output_rub_per_token": output_rub or 0.0,
         }
     return table
+
+
+def _normalise_provider(value: str) -> str:
+    return "".join(char for char in value.lower() if char.isalnum())
+
+
+def _same_provider(served: str, pinned: str) -> bool:
+    """Compare a served provider against a pinned slug.
+
+    The response reports a human-readable name (``"Io Net"``, ``"DeepInfra"``)
+    while the pin is a slug (``"io-net"``, ``"deepinfra"``), so a literal
+    comparison raises a false pinning violation and would discard perfectly valid
+    trajectories -- measured in S0. Names are also sometimes suffixed
+    (``"Mancer 2"`` for ``"mancer"``), hence the prefix allowance.
+    """
+    left, right = _normalise_provider(served), _normalise_provider(pinned)
+    if not left or not right:
+        return True
+    return left == right or left.startswith(right) or right.startswith(left)
 
 
 def _first_float(mapping: dict[str, Any], keys: tuple[str, ...]) -> float | None:

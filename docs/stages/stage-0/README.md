@@ -1,60 +1,72 @@
 # Stage 0 — dashboard
 
+**Status: CLOSED** 2026-08-30. Spend **$0.0128** of a $3 ceiling.
+
 **Question.** Can this experiment be run reproducibly on this infrastructure, at
 a cost that permits the full plan, and what are the *measured* facts about our
 providers?
 
-Full plan: [`PLAN.md`](PLAN.md) · Report (after execution): `REPORT.md`
-Ceiling: **$3** API spend. Hardware: 4-core CPU, 16 GB RAM, no GPU.
+Plan: [`PLAN.md`](PLAN.md) · **Report: [`REPORT.md`](REPORT.md)** ·
+Artifacts: [`artifacts/stage-0/`](../../../artifacts/stage-0/)
 
-## Progress
+## Passes
 
-| ID | Pass | Command | Status | run_id |
-| --- | --- | --- | --- | --- |
-| S0.0 | Repository, harness, library, CLI | — | done | — |
-| S0.1 | Environment check | `afterlife doctor` | done | — |
-| S0.7a | Offline end-to-end micro-trajectory | `afterlife generate/embed/analyze --config configs/stages/stage0_smoke.yaml` | done | `s0-smoke-*`, `s0-embed-smoke-*`, `s0-geometry-mock-hash-*` |
-| S0.2 | Provider capability audit | `afterlife audit providers` | pending — needs `ROUTERAI_API_KEY` | |
-| S0.6 | Tokenizer round-trip audit | `afterlife audit tokenizers` | pending — needs `HF_TOKEN` for gated repos | |
-| S0.3 | Continuation-mechanism audit | `afterlife audit continuation` | pending | |
-| S0.4 | Determinism audit | `afterlife audit determinism` | pending | |
-| S0.5 | Embedding audit | `afterlife audit embeddings` | pending | |
-| S0.7b | Live micro-trajectory | `afterlife generate --config configs/stages/stage0_live_smoke.yaml` | pending — after S0.2 fills in prices | |
-| S0.8 | Replay reproduction | `afterlife reproduce <run_id> --level replay` | pending | |
-| S0.9 | Cost calibration + S1 forecast | `afterlife estimate --config configs/stages/stage1_pilot.yaml` | pending | |
+| ID | Pass | Status | run_id |
+| --- | --- | --- | --- |
+| S0.0 | Repository, harness, library, CLI | done | — |
+| S0.1 | Environment check (`afterlife doctor`) | done | — |
+| S0.2 | Provider capability audit | done | `s0-audit-providers-20260830T072055Z-9787b3d3` |
+| S0.3 | Continuation-mechanism audit | done | `s0-audit-continuation-20260830T072553Z-9787b3d3` |
+| S0.3b | Reasoning-suppression audit *(added in response to S0.3)* | done | `s0-audit-reasoning-20260830T072812Z-9787b3d3` |
+| S0.4 | Determinism audit, unpinned then pinned | done | `s0-audit-determinism-20260830T073948Z-ffb8e887`, `…074258Z-ffb8e887` |
+| S0.5 | Embedding audit | done | `s0-audit-embeddings-20260830T073440Z-9dcb0ef0` |
+| S0.6 | Tokenizer audit | done | `s0-audit-tokenizers-20260830T071933Z-9787b3d3` |
+| S0.7a | Offline end-to-end micro-trajectory | done | `s0-smoke-…67a42230` → `s0-embed-smoke-…e99d7975` → `s0-geometry-mock-hash-…45f7e4b9` |
+| S0.7b | Live end-to-end micro-trajectory | done | `s0-live-smoke-…a395a78c` → `s0-embed-live-smoke-…fc3e80ed` → `s0-geometry-bge-m3-…0589329e` |
+| S0.8 | Bit-exact replay verification | done | `compare s0-live-smoke-…081709Z s0-live-smoke-…081713Z` → L3 confirmed |
+| S0.9 | Cost calibration + S1 forecast | done | input error −0.6% after correction; S1 forecast $17.70 |
 
-## What the offline pass already established
+Three live trajectories were attempted; the first two failed at step 4 on a
+throttled endpoint and are recorded as such rather than deleted.
 
-Not scientific findings — infrastructure facts, plus two things worth recording:
+## Headline results
 
-- The full pipeline runs end to end and emits the complete artifact bundle
-  (figure + `.data.parquet` + `.meta.json` + caption) for every figure.
-- The offline fixture (a five-topic hidden Markov chain with a non-reversible
-  transition matrix) produces visible metastable switching in the semantic
-  velocity trace, and the geometry pass detects it. The analysis therefore has a
-  known-ground-truth regression target, which is what Stage 3's Markov-state
-  estimators will be validated against.
-- 88 unit and property tests pass, including exhaustive sliding-window invariants
-  (window never exceeds `W`, prompt is exactly the detokenised tail, chunks are
-  contiguous and non-overlapping, resume replays without duplicating work) and
-  estimator recovery on synthetic spherical processes with known MSD exponents.
+- **No base models exist on RouterAI** (468 models, zero). The primary arm is
+  dropped; the paper studies instruction-tuned models driven through a
+  raw-completion interface. ([ADR-0006](../../decisions/ADR-0006-no-base-models-available.md))
+- **`/completions` works on every model** although nothing advertises it, and
+  adds 1–8 template tokens against 27–107 for chat.
+- **Three of four models emit hidden reasoning tokens**, and
+  `include_reasoning: false` is accepted while doing nothing (qwen3-8b still
+  produced 508). Suppression is configured per model and the zero-reasoning
+  invariant is asserted every step. ([ADR-0005](../../decisions/ADR-0005-reasoning-tokens-disqualify.md))
+- **Provider pinning raised exact-match reproducibility from 20% to 100%** on two
+  of three models. deepseek stays at 20% even pinned, so its claims must be
+  distributional.
+- **Throughput, not price, binds.** The cheapest endpoint throttles after ~4
+  steps; the next one up completed the trajectory.
+- **Cost model was 20.7% low on input** until block fill was measured (0.88
+  mean, 0.04–1.00 range). Now −0.6%. The stride `S` is not constant.
+- **Four of our own bugs found**, each of which would have produced confident
+  wrong numbers: off-by-one token accounting, false pinning violations, retries
+  that never fired on 429s wrapped in HTTP 200, and `difflib` autojunk corrupting
+  similarity scores. All now covered by tests.
 
-## Two bugs the tests caught, worth remembering
+## Tooling added because Stage 0 demanded it
 
-1. `difflib.SequenceMatcher` enables `autojunk` by default, which reports two
-   nearly identical long strings as ~0.19 similar. This silently affected the
-   determinism audit's near-match rate. Fixed by `autojunk=False`, and the
-   reason is recorded in the code.
-2. Editing UTF-8 sources with a tool that assumes a legacy code page corrupted
-   mathematical notation in two files, which showed up as mojibake in a rendered
-   figure axis. `scripts/check_encoding.py` now guards against BOMs and
-   mojibake in pre-commit and CI.
+| Command / script | Why |
+| --- | --- |
+| `afterlife audit reasoning` | S0.3 found hidden reasoning tokens; seven suppression switches had to be tested per model |
+| `afterlife compare A B` | file-hash comparison reports false failures on replay, since telemetry legitimately differs; this compares the scientific content |
+| `scripts/probe_endpoints.py` | endpoint choice is empirical: a `status: 0` endpoint can still throttle |
+| `scripts/probe_catalog.py` | answering "what *is* available" after the base-model discovery |
+| `scripts/check_encoding.py` | a UTF-8 file edited under a legacy code page corrupted figure labels silently |
+| `scripts/repair_mojibake.py` | reversing that corruption byte-exactly |
 
-## Blocked on
+## Next
 
-- `ROUTERAI_API_KEY` in `.env` — required for S0.2–S0.5, S0.7b.
-- `HF_TOKEN` in `.env` — required to download tokenizers for gated repos
-  (Llama). Ungated mirrors are configured where available; S0.6 verifies
-  vocabulary equivalence.
+Stage 1 is open. Two prerequisites from the report before its matrix locks:
 
-Everything else can proceed offline.
+1. Audit OpenRouter for a base model — finding F1 may be RouterAI-specific, and
+   an available base model would restore the cleanest arm outright.
+2. Re-probe endpoints, since availability and throttling both drift.

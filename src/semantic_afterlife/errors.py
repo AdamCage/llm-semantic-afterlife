@@ -60,6 +60,24 @@ class WindowProtocolError(AfterlifeError):
     """
 
 
+class ReasoningLeakError(AfterlifeError):
+    """The model generated hidden reasoning tokens.
+
+    Disqualifying rather than merely untidy: the block we append is only the
+    visible part of what the model generated, so the implemented recursion is not
+    the model's own, and ``max_tokens`` stops bounding the block. See ADR-0005.
+    """
+
+
+class BlockOvershootError(AfterlifeError):
+    """The model returned materially more tokens than the requested block size.
+
+    Means the window advances by an amount we did not choose, so ``S`` -- and
+    therefore the whole cost model and the step/chunk alignment -- is not what
+    the manifest claims.
+    """
+
+
 class TrajectoryFailure(AfterlifeError):
     """A single trajectory failed; the batch continues with the failure recorded."""
 

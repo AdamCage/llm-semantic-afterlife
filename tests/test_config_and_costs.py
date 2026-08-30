@@ -151,19 +151,53 @@ class TestSeedBank:
             bank.by_id("nope")
 
 
+PILOT_CONFIGS = (
+    "configs/stages/stage1_pilot_core.yaml",
+    "configs/stages/stage1_pilot_replication.yaml",
+)
+
+
 class TestEstimates:
-    def test_matrix_estimate_counts_trajectories(self, repo: Path) -> None:
-        config, _resolved, _sha = load_experiment_config(repo / "configs/stages/stage1_pilot.yaml")
+    @pytest.mark.parametrize("path", PILOT_CONFIGS)
+    def test_matrix_estimate_counts_trajectories(self, repo: Path, path: str) -> None:
+        config, _resolved, _sha = load_experiment_config(repo / path)
         estimates = estimate_experiment(config)
         total = summarise(estimates)
         assert total["n_trajectories"] == config.n_trajectories
         assert total["output_tokens"] > 0
 
-    def test_input_dominates_for_large_W_over_S(self, repo: Path) -> None:
-        config, _resolved, _sha = load_experiment_config(repo / "configs/stages/stage1_pilot.yaml")
-        estimates = estimate_experiment(config)
-        for estimate in estimates:
+    @pytest.mark.parametrize("path", PILOT_CONFIGS)
+    def test_input_dominates_for_large_W_over_S(self, repo: Path, path: str) -> None:
+        config, _resolved, _sha = load_experiment_config(repo / path)
+        for estimate in estimate_experiment(config):
             assert estimate.input_tokens > 5 * estimate.output_tokens
+
+    @pytest.mark.parametrize("path", PILOT_CONFIGS)
+    def test_pilot_forecast_stays_within_its_declared_budget(self, repo: Path, path: str) -> None:
+        """The budget guard is only meaningful if the committed configs satisfy it."""
+        config, _resolved, _sha = load_experiment_config(repo / path)
+        total = summarise(estimate_experiment(config))
+        assert config.budget_usd is not None
+        assert total["total_usd"] <= config.budget_usd
+
+    def test_block_fill_inflates_the_input_forecast(self) -> None:
+        """S0.7: models stop early, so reaching T costs more window re-sends.
+
+        Measured against the live micro-trajectory: assuming full blocks
+        underestimated input by 20.7%; the measured fill of 0.88 brings it to
+        -0.6%.
+        """
+        window = WindowConfig(W=2048, block_size=512, target_tokens=8192, chunk_size=512)
+        full_input, full_output = trajectory_tokens(window, block_fill=1.0)
+        real_input, real_output = trajectory_tokens(window, block_fill=0.88)
+
+        assert real_input > full_input
+        # Output is bounded by T either way; only the input side scales.
+        assert real_output == full_output == window.target_tokens
+
+        observed_input = 33375
+        assert abs(real_input / observed_input - 1.0) < 0.05
+        assert abs(full_input / observed_input - 1.0) > 0.15
 
 
 class TestLedger:

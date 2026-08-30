@@ -26,7 +26,7 @@ embeddings: [bge-m3]
 windows:
   - W: 2048
     block_size: 512
-    target_tokens: 16384      # 8 turnovers
+    target_tokens: 8192 # 4 turnovers
     chunk_size: 512
     protocol: P1_reprompt
 
@@ -34,8 +34,14 @@ sampling:
   - temperature: 0.7
     top_p: 1.0
 
-semantic_seeds: [physics, love]
+# One trajectory. Breadth was already validated offline against the fixture;
+# what this arm has to prove is that the *live* path behaves the same and that
+# the cost model matches an actual bill.
+semantic_seeds: [physics]
 stochastic_seeds: [1]
 
-max_concurrent: 2
+# Concurrency 1: S0.4 and the first live attempt both hit an upstream
+# shared-pool 429 on this endpoint, and parallel trajectories only make that
+# worse. Sustained throughput is a Stage 1 risk, tracked in the S0 report.
+max_concurrent: 1
 budget_usd: 1.0

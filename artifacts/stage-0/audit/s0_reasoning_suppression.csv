@@ -1,0 +1,36 @@
+generator,switch,accepted,error,reasoning_tokens,completion_tokens,visible_chars,reasoning_free,max_tokens_respected,overshoot_ratio,finish_reason,cost_usd,usable
+llama3-8b-base,baseline,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,reasoning.enabled=false,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,reasoning.exclude=true,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,reasoning.effort=none,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,reasoning_effort=none,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,include_reasoning=false,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+llama3-8b-base,chat_template_kwargs.enable_thinking=false,False,"ProviderError: routerai /completions -> 400: {""error"":""Model 'meta-llama/llama-3-8b' not found""}",,,,,,,,,
+qwen3-8b,baseline,True,,856,956,588,False,False,9.96,length,0.000611,False
+qwen3-8b,reasoning.enabled=false,False,"ProviderError: routerai returned no choices for qwen/qwen3-8b: {""error"":""{\""error\"":{\""message\"":\""Provider returned error\"",\""code\"":429,\""metadata\"":{\""raw\"":\""qwen/qwen3-8b is temporarily rate-limited upstream. P",,,,,,,,,
+qwen3-8b,reasoning.exclude=true,True,,653,753,539,False,False,7.84,length,0.000482,False
+qwen3-8b,reasoning.effort=none,True,,0,96,535,True,True,1,length,6.7e-05,True
+qwen3-8b,reasoning_effort=none,True,,0,96,535,True,True,1,length,6.7e-05,True
+qwen3-8b,include_reasoning=false,True,,508,608,519,False,False,6.33,length,0.000391,False
+qwen3-8b,chat_template_kwargs.enable_thinking=false,True,,578,678,580,False,False,7.06,length,0.000435,False
+mistral-nemo-12b,baseline,False,"ProviderError: routerai returned no choices for mistralai/mistral-nemo: {""error"":""\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n ",,,,,,,,,
+mistral-nemo-12b,reasoning.enabled=false,False,"ProviderError: routerai returned no choices for mistralai/mistral-nemo: {""error"":""\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n ",,,,,,,,,
+mistral-nemo-12b,reasoning.exclude=true,False,"ProviderError: routerai returned no choices for mistralai/mistral-nemo: {""error"":""\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n         \n\n ",,,,,,,,,
+mistral-nemo-12b,reasoning.effort=none,True,,0,96,416,True,True,1,length,2.3e-05,True
+mistral-nemo-12b,reasoning_effort=none,True,,0,96,527,True,True,1,length,2.3e-05,True
+mistral-nemo-12b,include_reasoning=false,True,,0,96,386,True,True,1,length,2.3e-05,True
+mistral-nemo-12b,chat_template_kwargs.enable_thinking=false,True,,0,18,94,True,True,0.19,stop,2e-06,True
+muse-glimmer-30b,baseline,True,,0,96,542,True,True,1,length,0.000149,True
+muse-glimmer-30b,reasoning.enabled=false,False,"ProviderError: routerai returned no choices for meta/muse-glimmer-30b: {""error"":""{\""error\"":{\""message\"":\""Reasoning is mandatory for this endpoint and cannot be disabled.\"",\""code\"":400,\""metadata\"":{\""provider_nam",,,,,,,,,
+muse-glimmer-30b,reasoning.exclude=true,True,,0,96,496,True,True,1,length,0.000214,True
+muse-glimmer-30b,reasoning.effort=none,False,"ProviderError: routerai returned no choices for meta/muse-glimmer-30b: {""error"":""{\""error\"":{\""message\"":\""Reasoning is mandatory for this endpoint and cannot be disabled.\"",\""code\"":400,\""metadata\"":{\""provider_nam",,,,,,,,,
+muse-glimmer-30b,reasoning_effort=none,False,"ProviderError: routerai returned no choices for meta/muse-glimmer-30b: {""error"":""{\""error\"":{\""message\"":\""Reasoning is mandatory for this endpoint and cannot be disabled.\"",\""code\"":400,\""metadata\"":{\""provider_nam",,,,,,,,,
+muse-glimmer-30b,include_reasoning=false,True,,0,96,532,True,True,1,length,0.000214,True
+muse-glimmer-30b,chat_template_kwargs.enable_thinking=false,True,,0,96,477,True,True,1,length,0.000159,True
+deepseek-v4-flash,baseline,True,,0,96,529,True,True,1,length,3e-05,True
+deepseek-v4-flash,reasoning.enabled=false,True,,0,96,406,True,True,1,length,3e-05,True
+deepseek-v4-flash,reasoning.exclude=true,True,,0,76,453,True,True,0.79,stop,2.3e-05,True
+deepseek-v4-flash,reasoning.effort=none,True,,0,21,132,True,True,0.22,stop,1.6e-05,True
+deepseek-v4-flash,reasoning_effort=none,True,,0,29,164,True,True,0.3,stop,1.1e-05,True
+deepseek-v4-flash,include_reasoning=false,True,,0,50,301,True,True,0.52,stop,1.6e-05,True
+deepseek-v4-flash,chat_template_kwargs.enable_thinking=false,True,,0,45,273,True,True,0.47,stop,1.5e-05,True

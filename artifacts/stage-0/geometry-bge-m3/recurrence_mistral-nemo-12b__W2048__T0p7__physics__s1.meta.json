@@ -1,0 +1,26 @@
+{
+  "name": "recurrence_mistral-nemo-12b__W2048__T0p7__physics__s1",
+  "caption": "Recurrence plot for trajectory mistral-nemo-12b__W2048__T0p7__physics__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.1078 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.",
+  "alt_text": "Square binary matrix showing which pairs of time points are close in embedding space.",
+  "limitations": "ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.",
+  "run_ids": [
+    "s0-embed-live-smoke-20260830T081507Z-fc3e80ed",
+    "s0-geometry-bge-m3-20260830T081523Z-0589329e"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "0589329eef3a41185bc43c6e3d015d8540223a1bb624d54e44381210d74d3456",
+  "units": {
+    "axes": "generator tokens"
+  },
+  "generated_at": "2026-08-30T08:15:51+00:00",
+  "epsilon": 0.10776760237393994,
+  "W": 2048,
+  "chunk_size": 512,
+  "recurrence_epsilon": 0.10776760237393994,
+  "recurrence_rate": 0.045454545454545456,
+  "determinism": 0.6666666666666666,
+  "mean_diagonal_line": 2.0,
+  "max_diagonal_line": 2.0,
+  "trapping_time": 2.2,
+  "data_format": "npz"
+}

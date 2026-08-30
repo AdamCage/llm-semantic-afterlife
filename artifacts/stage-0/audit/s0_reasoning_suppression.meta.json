@@ -1,0 +1,13 @@
+{
+  "name": "s0_reasoning_suppression",
+  "caption": "For each generator, several candidate ways of switching reasoning off are attempted and the resulting reasoning-token count, visible output length and max_tokens compliance recorded. Reasoning tokens are disqualifying here: the block appended to the window would be only the visible part of what the model generated, max_tokens would stop bounding the block, and the reasoning text is meta-commentary rather than free continuation.",
+  "alt_text": "For each generator, several candidate ways of switching reasoning off are attempted and the resulting reasoning-token count, visible output length and max_tokens compliance recorded. Reasoning tokens are disqualifying here: the block appended to the window would be only the visible part of what the model generated, max_tokens would stop bounding the block, and the reasoning text is meta-commentary rather than free continuation.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-reasoning-20260830T072812Z-9787b3d3"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "9787b3d35488c4c21aa9abaf426c73698d467a2d7ee530d4109136f053f9a899",
+  "units": {},
+  "generated_at": "2026-08-30T07:31:21+00:00"
+}

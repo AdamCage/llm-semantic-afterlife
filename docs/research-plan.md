@@ -106,7 +106,19 @@ Each stage has its own `PLAN.md` (written before execution) and `REPORT.md`
 (after), under `docs/stages/stage-N/`. Budgets are indicative ceilings that
 trigger a stop-and-ask, not targets.
 
-### S0 — Foundations and feasibility audit `← current`
+### S0 — Foundations and feasibility audit `✓ closed 2026-08-30`
+
+**Outcome:** 8 of 10 exit criteria passed, 1 partial, 1 failed-and-fixed. Actual
+spend **$0.0128** of a $3 ceiling. Full report:
+[`stages/stage-0/REPORT.md`](stages/stage-0/REPORT.md).
+
+Seven findings changed the design: no base models exist on the provider;
+`/completions` works everywhere despite not being advertised; three of four
+models emit hidden reasoning tokens and one suppression flag lies; provider
+pinning raises reproducibility from 20% to 100%; sustained throughput rather than
+price is the binding endpoint constraint; the cost model underestimated input by
+20.7% until block fill was measured; and four bugs in our own code would each
+have produced confident wrong numbers.
 
 **Question.** Can this experiment be run reproducibly at all, on this
 infrastructure, at a cost that permits the full plan? What are the *measured*
@@ -141,26 +153,44 @@ reported per model; (v) S1 cost forecast within the $50 pilot budget;
 
 **Budget.** ≤ $3.
 
-### S1 — Pilot: does the phenomenon exist?
+### S1 — Pilot: does the phenomenon exist? `← current`
 
-**Question.** Over ~16–32 window turnovers, is there any structure at all —
+**Question.** Over 32 window turnovers, is there any structure at all —
 seed-dependent separation, recurring regions, non-trivial MSD?
 
-Indicative matrix (final numbers come from S0's audit and cost model):
-4 models × `W ∈ {8k}` (plus a `32k` arm on 1–2 models) × `T ∈ {0.3, 1.0}` ×
-8 semantic seeds × 3 stochastic repetitions, `T = 256k`, `chunk = 1024`.
+Matrix, fixed by S0's measured prices and split into two configs because a single
+factorial cannot give two models different matrices:
+
+| Arm | Config | Model | Matrix | Trajectories | Forecast |
+| --- | --- | --- | --- | --- | --- |
+| core | `stage1_pilot_core.yaml` | mistral-nemo-12b | `W=8192`, `T=262144`, 2 temperatures × 8 semantic seeds × 3 stochastic | 48 | $9.68 |
+| replication | `stage1_pilot_replication.yaml` | qwen3-8b | same window and length, 1 temperature × 8 semantic seeds × 2 stochastic | 16 | $8.02 |
+
+Both at `chunk = 1024`, giving 32 turnovers and 256 chunk observations per
+trajectory. The replication arm gives up the temperature contrast — mapping
+temperature is S4's job; the pilot only needs to know whether the effect appears
+in a second architecture at all.
 
 Passes: generation → embedding (both spaces) → geometry (displacement,
 distance-from-seed, inter-trajectory distance, autocorrelation, recurrence) →
 first-look MSD → degeneracy diagnostics (repetition-loop detection, entropy
 collapse).
 
-**Exit criteria.** Seed-identity signal measurably above a shuffled baseline
-past `t = W` on ≥2 models; MSD exponent estimable with bootstrap CI narrower
-than 0.2; <20% of trajectories degenerate into repetition loops (if more,
-the sampling configuration is revised before proceeding).
+Passes: generation → embedding (both spaces) → geometry (displacement,
+distance-from-seed, inter-trajectory distance, autocorrelation, recurrence) →
+first-look MSD → degeneracy diagnostics.
 
-**Budget.** ≤ $25.
+**Exit criteria.** Seed-identity signal measurably above a shuffled baseline
+past `t = W` on both models; MSD exponent estimable with bootstrap CI narrower
+than 0.2; <20% of trajectories degenerate into repetition loops (if more, the
+sampling configuration is revised before proceeding).
+
+**Additionally required by S0's findings**, as protocol diagnostics rather than
+incidentals: realised block-fill distribution per model, stop-event rate per
+model, reasoning-guard failure rate, and the rate of trajectories lost to
+provider throttling.
+
+**Budget.** ≤ $22 declared across the two arms; $17.70 forecast.
 
 ### S2 — Semantic memory decay and diffusion
 
@@ -243,26 +273,43 @@ response cache for headline figures, trajectory bundles with provenance).
 
 **Budget.** $0 API.
 
-## 5. Models
+## 5. Models — as measured in S0, not as hoped
 
-The final list is decided by S0's audit, not by this table. Candidates and
-their role:
+**Revised 2026-08-30 after S0's provider audit.** The original table listed
+Llama 3 8B *Base* as the primary arm. RouterAI carries **no base models at all**
+— 468 catalogue entries, zero — and that slug returns `400 Model not found`. The
+base arm is dropped ([ADR-0006](decisions/ADR-0006-no-base-models-available.md)).
 
-| Model | Native context | Role |
-| --- | --- | --- |
-| Llama 3 8B **Base** | 8K | pure autoregressive control — no chat template, no RLHF policy |
-| Qwen3 8B | 32K (→131K YaRN) | modern compact dense transformer |
-| Mistral Nemo 12B | 131K | very cheap architecturally independent baseline; carries the wide matrix |
-| Muse Glimmer 30B | 131K | modern open-weight model with hybrid local/global attention (2048-token local window) — its own research axis |
-| DeepSeek V4 Flash | ~1M | frontier MoE control: answers "your effect is an artifact of small models" |
+| Model | Endpoint pinned | Quant. | USD/M in · out | Role |
+| --- | --- | --- | --- | --- |
+| Mistral Nemo 12B | Io Net | fp16 | 0.061 · 0.223 | **wide arm.** Only candidate with no reasoning at all. Chosen over the cheaper Parasail endpoint, which throttles after ~4 steps |
+| Qwen3 8B | Alibaba | unknown | 0.163 · 0.633 | **replication arm.** Second architecture; needs `reasoning_effort: none` (9.96× block overshoot without it) |
+| Muse Glimmer 30B | Parasail | bf16 | 0.417 · 1.530 | hybrid local/global attention, 2048-token local window — its own research axis (S4) |
+| DeepSeek V4 Flash | DeepInfra | fp8 | 0.138 · 0.275 | frontier MoE control (S5/S6). Intrinsically non-deterministic even when pinned |
+| ~~Llama 3 8B Base~~ | — | — | — | **unavailable.** Retained in config so audits keep reporting its absence |
 
 `W` is always **imposed by us**, never taken as the model's native context.
 That is what turns "compare five models" into "hold `θ` fixed and vary memory".
 
-Base models give the physically clean process (`continue this text forever`);
-instruct models give the production-relevant regime but introduce EOS, turn
-structure, and RLHF policy as confounds. Both are run, labelled, and never
-pooled.
+Every generator runs through **`raw_completion`** (`POST /completions`), which S0
+found works on all four despite no endpoint advertising it, and which adds 1–8
+template tokens against 27–107 for chat. `forcing = unforced` throughout: no
+system prompt, no instruction text. The `chat_instructed` variant is retained as
+a Stage 6 contrast condition, never pooled with unforced data.
+
+Two protocol facts follow from S0 and apply to every model:
+
+- **Reasoning is suppressed per model and verified per step.** Three of four
+  models emit hidden reasoning tokens, and one suppression flag
+  (`include_reasoning: false`) is accepted while doing nothing. A step with
+  non-zero reasoning tokens fails the trajectory
+  ([ADR-0005](decisions/ADR-0005-reasoning-tokens-disqualify.md)).
+- **The stride `S` is not constant.** Models emit a stop token before filling the
+  block: measured fill 0.88 mean, 0.04–1.00 range. `S` is model-determined within
+  `[0, B]`, its distribution is reported, and the cost model is calibrated on it.
+
+We do not claim to have measured base language models. That limitation belongs in
+the method section, not the appendix.
 
 ## 6. Representation spaces
 

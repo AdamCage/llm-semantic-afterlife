@@ -1,0 +1,13 @@
+{
+  "name": "s0_provider_endpoints",
+  "caption": "Measured per-endpoint capabilities and prices for every candidate generator, as reported by the router. Availability, quantization and supported APIs are facts that later stage designs depend on; nothing here is taken from documentation.",
+  "alt_text": "Measured per-endpoint capabilities and prices for every candidate generator, as reported by the router. Availability, quantization and supported APIs are facts that later stage designs depend on; nothing here is taken from documentation.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-providers-20260830T072055Z-9787b3d3"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "9787b3d35488c4c21aa9abaf426c73698d467a2d7ee530d4109136f053f9a899",
+  "units": {},
+  "generated_at": "2026-08-30T07:20:59+00:00"
+}

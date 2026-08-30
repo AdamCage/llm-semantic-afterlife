@@ -1,0 +1,4 @@
+embedding,model_id,architecture,available,dim,expected_dim,dim_matches_expected,provider_normalised,mean_norm,max_cross_domain_cosine,mean_cross_domain_cosine,prompt_tokens,latency_s,cost_usd,error
+qwen3-embed-8b,qwen/qwen3-embedding-8b,causal-decoder,True,4096,4096,True,True,1,0.279801,0.259398,61,1.598,0,
+bge-m3,baai/bge-m3,bidirectional-encoder,True,1024,1024,True,True,1,0.442168,0.367325,72,0.972,0,
+gemini-embed-001,google/gemini-embedding-001,closed,True,3072,,True,True,1,0.569098,0.522499,52,2.575,0,

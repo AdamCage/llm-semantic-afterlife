@@ -17,8 +17,12 @@ runs/
 .cache/
 scratch/
 
-# Embedding cache (content-addressed, regenerable)
-cache/embeddings/
+# Content-addressed caches: responses, embeddings and tokenizer files. All
+# regenerable, and large (a single tokenizer.json is ~2 MB; Stage 1 will produce
+# ~15k cached responses). The response cache IS the mechanism for level-L3
+# reproduction without an API key, but it ships as a versioned artifact release
+# alongside the paper, not in the working tree.
+cache/
 
 # ---------------------------------------------------------------------------
 # Python

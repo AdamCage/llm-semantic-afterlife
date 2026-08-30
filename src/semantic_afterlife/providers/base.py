@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import abc
 import asyncio
+import json
+import re
 from dataclasses import dataclass, field
 from time import perf_counter
 from typing import Any
@@ -33,6 +35,70 @@ RETRYABLE_STATUS = frozenset({408, 409, 425, 429, 500, 502, 503, 504, 522, 524})
 
 class RetryableProviderError(ProviderError):
     """A transient provider failure worth retrying."""
+
+
+def embedded_status_code(error: Any) -> int | None:
+    """Dig a status code out of a wrapped provider error.
+
+    The wrapped payload arrives as a dict, as a JSON *string*, or as a string
+    that merely contains JSON, so all three shapes are searched.
+    """
+    candidates: list[Any] = [error]
+    if isinstance(error, str):
+        try:
+            candidates.append(json.loads(error))
+        except (ValueError, TypeError):
+            match = re.search(r'"code"\s*:\s*(\d{3})', error)
+            if match:
+                return int(match.group(1))
+    while candidates:
+        current = candidates.pop()
+        if isinstance(current, dict):
+            for key in ("code", "status", "status_code"):
+                value = current.get(key)
+                if isinstance(value, int):
+                    return value
+                if isinstance(value, str) and value.isdigit():
+                    return int(value)
+            candidates.extend(v for v in current.values() if isinstance(v, (dict, str)))
+        elif isinstance(current, str):
+            match = re.search(r'"code"\s*:\s*(\d{3})', current)
+            if match:
+                return int(match.group(1))
+    return None
+
+
+def raise_for_embedded_error(provider: str, path: str, body: Any) -> None:
+    """Detect a provider error carried inside an HTTP 200 response body.
+
+    Routers wrap upstream failures instead of propagating the status code, so a
+    status-code check alone misses them. Measured in S0: an upstream 429 arrived
+    as 200 with an ``error`` field and no ``choices``, which surfaced as a hard
+    failure and would have killed a multi-hour trajectory instead of pausing it.
+
+    Retryable codes are raised as :class:`RetryableProviderError` so the caller's
+    backoff loop handles them; anything else is raised immediately, since
+    retrying a client error only burns budget.
+    """
+    if not isinstance(body, dict):
+        return
+    error = body.get("error")
+    if error is None or body.get("choices") or body.get("data"):
+        return
+
+    code = embedded_status_code(error)
+    text = str(error)[:1500]
+    if code in RETRYABLE_STATUS:
+        raise RetryableProviderError(
+            f"{provider} {path} -> HTTP 200 wrapping upstream {code}",
+            status_code=code,
+            body=text,
+        )
+    raise ProviderError(
+        f"{provider} {path} -> HTTP 200 wrapping provider error: {text}",
+        status_code=code,
+        body=text,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -96,6 +162,27 @@ class CompletionResponse:
     def logprobs(self) -> Any:
         choices = self.raw.get("choices") or [{}]
         return choices[0].get("logprobs")
+
+    @property
+    def reasoning_tokens(self) -> int:
+        """Hidden reasoning tokens the model generated but did not return as text.
+
+        Non-zero means the visible block is not the whole of what the model
+        produced, so appending it does not implement the intended recursion.
+        """
+        details = (self.raw.get("usage") or {}).get("completion_tokens_details") or {}
+        try:
+            return int(details.get("reasoning_tokens") or 0)
+        except (TypeError, ValueError):
+            return 0
+
+    @property
+    def reasoning_text(self) -> str | None:
+        """The reasoning trace, when the provider exposes it."""
+        choices = self.raw.get("choices") or [{}]
+        choice = choices[0]
+        value = choice.get("reasoning") or (choice.get("message") or {}).get("reasoning")
+        return value if isinstance(value, str) and value else None
 
 
 @dataclass(frozen=True, slots=True)
@@ -221,8 +308,15 @@ class HTTPInferenceClient(InferenceClient):
                         status_code=response.status_code,
                         body=response.text[:4000],
                     )
+                body = response.json()
+                # A transient upstream failure can arrive as an error object inside
+                # an HTTP 200, so status-code checks alone miss it. Measured in S0:
+                # an upstream 429 came back as 200 with an `error` field and no
+                # `choices`, which without this check surfaced as a hard failure
+                # and would have killed a multi-hour trajectory instead of pausing.
+                self._raise_if_embedded_error(path, body, attempts)
                 return (
-                    response.json(),
+                    body,
                     dict(response.headers),
                     perf_counter() - start,
                     attempts,
@@ -251,6 +345,13 @@ class HTTPInferenceClient(InferenceClient):
                     )
                 return response.json()
         raise ProviderError(f"{self.name} GET {path}: retries exhausted")
+
+    def _raise_if_embedded_error(self, path: str, body: Any, attempt: int) -> None:
+        try:
+            raise_for_embedded_error(self.name, path, body)
+        except RetryableProviderError as exc:
+            self._log_retry(path, attempt, reason=f"embedded {exc.status_code}", body=exc.body)
+            raise
 
     def _log_retry(self, path: str, attempt: int, *, reason: str, body: str | None = None) -> None:
         if self._events is not None:

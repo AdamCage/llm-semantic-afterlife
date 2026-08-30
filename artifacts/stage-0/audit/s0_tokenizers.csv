@@ -1,0 +1,6 @@
+generator,tokenizer_repo,loaded,type,vocab_size,fingerprint,roundtrip_all_ok,n_roundtrip_probes,n_roundtrip_failures,tail_exact,probe_tokens,tail_chars,error
+llama3-8b-base,NousResearch/Meta-Llama-3-8B,True,HFTokenizer,128256,sha256:e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7,True,4,0,True,28,815,
+qwen3-8b,Qwen/Qwen3-8B,True,HFTokenizer,151669,sha256:aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4,True,4,0,True,28,815,
+mistral-nemo-12b,mistralai/Mistral-Nemo-Instruct-2407,True,HFTokenizer,131072,sha256:e11c71726323d33da7b8d6f6f269f1988931c0a52b7122bcdd8c05042974e0db,True,4,0,True,28,815,
+muse-glimmer-30b,meta-models/Muse-Glimmer-30B,True,HFTokenizer,202048,sha256:c9dbee66967b58f31a7c27f723c3760da3526ccd0427578e8905b0abb0031c4d,True,4,0,True,28,815,
+deepseek-v4-flash,deepseek-ai/DeepSeek-V3,True,HFTokenizer,128815,sha256:621ac2e32d0dba658404412318818aaa8ce8cda492e59830109d8da6b517fb41,True,4,0,True,28,815,

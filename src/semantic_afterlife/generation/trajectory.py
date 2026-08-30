@@ -46,6 +46,11 @@ logger = get_logger("generation")
 #: A model that returns nothing this many times in a row is not free-running.
 MAX_CONSECUTIVE_EMPTY = 5
 
+#: Providers report token counts that occasionally exceed `max_tokens` by one or
+#: two (tokenizer edge cases at the boundary). A ratio above this is not an edge
+#: case but a model ignoring the limit, which breaks stride control.
+OVERSHOOT_TOLERANCE = 1.10
+
 
 def trajectory_id(
     *,
@@ -100,6 +105,8 @@ def build_request(
         "allow_fallbacks": generator.allow_fallbacks,
         "service_tier": generator.service_tier,
         "country": generator.country,
+        # Per-model protocol payload, e.g. the reasoning switch measured in S0.3b.
+        "extra": dict(generator.extra_body),
     }
 
     if generator.continuation == "raw_completion":
@@ -289,6 +296,12 @@ class TrajectoryRunner:
                 remaining = target - window.generated_tokens
                 max_tokens = min(self.window_config.block_size, remaining)
                 prompt = window.prompt_text
+                # Captured *before* appending: the window grows during this step,
+                # and comparing the post-append count against the provider's
+                # prompt count would compare step t+1 with step t. That off-by-one
+                # step silently invalidated the token-accounting audit until S0.7
+                # exposed it as a systematic ~2x discrepancy.
+                prompt_tokens_sent = window.prompt_tokens
                 seed = step_seed(self.stochastic_seed, window.step)
 
                 request = build_request(
@@ -300,7 +313,7 @@ class TrajectoryRunner:
                 )
                 reserve = estimate_request_usd(
                     self.generator,
-                    prompt_tokens=window.prompt_tokens,
+                    prompt_tokens=prompt_tokens_sent,
                     max_tokens=max_tokens,
                     price_table=self.price_table,
                 )
@@ -325,6 +338,7 @@ class TrajectoryRunner:
                     )
 
                 self._write_request_record(window.step, request, response, prompt_preview=prompt)
+                self._assert_block_invariants(response, step=window.step, max_tokens=max_tokens)
 
                 if not response.text.strip():
                     consecutive_empty += 1
@@ -350,7 +364,13 @@ class TrajectoryRunner:
                 state = accumulator.ingest(response.text, finish_reason=response.finish_reason)
                 new_chunks = accumulator.chunks[before_chunks:]
                 self._checkpoint(state.step, response, text=response.text)
-                self._log_step(state, response, new_chunks)
+                self._log_step(
+                    state,
+                    response,
+                    new_chunks,
+                    prompt_tokens_sent=prompt_tokens_sent,
+                    requested_max_tokens=max_tokens,
+                )
 
             status = "COMPLETED"
         except TrajectoryFailure as exc:
@@ -400,6 +420,53 @@ class TrajectoryRunner:
         )
         self.chunks = accumulator.chunks
         return result
+
+    def _assert_block_invariants(self, response: Any, *, step: int, max_tokens: int) -> None:
+        """Check per-step protocol invariants against the provider's own accounting.
+
+        A configured reasoning switch is not evidence that reasoning is off: S0.3b
+        found that ``include_reasoning=false`` merely *hides* the trace while the
+        model keeps generating it, and that one model reasons only sometimes. So
+        the invariant is asserted every step from ``usage``, not assumed once.
+        """
+        reasoning = response.reasoning_tokens
+        if reasoning > self.generator.max_reasoning_tokens:
+            self.events.event(
+                "generation.step.reasoning_leak",
+                level="ERROR",
+                trajectory_id=self.id,
+                step=step,
+                reasoning_tokens=reasoning,
+                tolerated=self.generator.max_reasoning_tokens,
+                completion_tokens=response.usage.completion_tokens,
+                visible_chars=len(response.text),
+                reasoning_head=(response.reasoning_text or "")[:300],
+            )
+            raise TrajectoryFailure(
+                self.id,
+                f"step {step} generated {reasoning} hidden reasoning tokens (tolerated "
+                f"{self.generator.max_reasoning_tokens}). The block we would append is only the "
+                f"visible part of what the model produced, so the recursion would not be the "
+                f"model's own. Fix the reasoning switch in the generator config (see ADR-0005).",
+            )
+
+        completion = response.usage.completion_tokens
+        if completion > OVERSHOOT_TOLERANCE * max_tokens:
+            self.events.event(
+                "generation.step.block_overshoot",
+                level="ERROR",
+                trajectory_id=self.id,
+                step=step,
+                requested_max_tokens=max_tokens,
+                completion_tokens=completion,
+                ratio=round(completion / max(max_tokens, 1), 3),
+            )
+            raise TrajectoryFailure(
+                self.id,
+                f"step {step} returned {completion} tokens for max_tokens={max_tokens} "
+                f"({completion / max(max_tokens, 1):.1f}x). The window would advance by an amount "
+                "we did not choose, so the stride S is not what the manifest claims.",
+            )
 
     # -- persistence --------------------------------------------------------
 
@@ -477,15 +544,33 @@ class TrajectoryRunner:
                         break
         path.write_text("".join(pieces), encoding="utf-8")
 
-    def _log_step(self, state: Any, response: Any, new_chunks: list[ChunkRecord]) -> None:
+    def _log_step(
+        self,
+        state: Any,
+        response: Any,
+        new_chunks: list[ChunkRecord],
+        *,
+        prompt_tokens_sent: int,
+        requested_max_tokens: int,
+    ) -> None:
         payload: dict[str, Any] = {
             "trajectory_id": self.id,
             "step": state.step,
             "generated_tokens": state.generated_tokens,
             "turnovers": round(state.turnovers, 4),
-            "prompt_tokens_local": state.prompt_tokens,
+            # What we sent, per our tokenizer, against what the provider counted.
+            # A stable non-zero gap is a template offset; a growing one means the
+            # window is not where the manifest claims.
+            "prompt_tokens_local": prompt_tokens_sent,
             "prompt_tokens_api": response.usage.prompt_tokens,
+            "prompt_token_delta": response.usage.prompt_tokens - prompt_tokens_sent,
+            "window_tokens_after_append": state.prompt_tokens,
+            "requested_max_tokens": requested_max_tokens,
             "completion_tokens_api": response.usage.completion_tokens,
+            "block_fill_ratio": round(
+                response.usage.completion_tokens / max(requested_max_tokens, 1), 3
+            ),
+            "reasoning_tokens": response.reasoning_tokens,
             "finish_reason": response.finish_reason,
             "seed_in_window": state.seed_in_window,
             "seed_tokens_in_window": state.seed_tokens_in_window,

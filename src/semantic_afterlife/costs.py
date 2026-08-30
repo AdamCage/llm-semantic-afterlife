@@ -60,14 +60,27 @@ class CellEstimate:
         }
 
 
-def trajectory_tokens(window: WindowConfig) -> tuple[int, int]:
+def trajectory_tokens(window: WindowConfig, *, block_fill: float = 1.0) -> tuple[int, int]:
     """``(input_tokens, output_tokens)`` for one trajectory.
 
-    The input side ramps while the window is still filling, so it is summed
-    step by step rather than approximated by ``T·W/S`` — at low turnover counts
-    the difference is material.
+    The input side ramps while the window is still filling, so it is summed step
+    by step rather than approximated by ``T·W/S`` -- at low turnover counts the
+    difference is material.
+
+    ``block_fill`` is the measured mean ratio of returned tokens to ``max_tokens``.
+    A model that stops early needs ``1/block_fill`` times as many steps to reach
+    ``T``, and each extra step re-sends the entire window, so input scales
+    accordingly. Output does not: it is bounded by ``T`` either way.
     """
-    return window.estimated_input_tokens, window.n_steps * window.block_size
+    fill = min(max(block_fill, 1e-3), 1.0)
+    effective_block = max(1, int(window.block_size * fill))
+    n_steps = -(-window.target_tokens // effective_block)
+    total_input = 0
+    produced = 0
+    for _ in range(n_steps):
+        total_input += min(produced, window.W)
+        produced += effective_block
+    return total_input, window.target_tokens
 
 
 def prices(
@@ -103,7 +116,9 @@ def estimate_experiment(
     for (generator_slug, W, block_size), n in sorted(counts.items()):
         generator = config.generator(generator_slug)
         window = config.window(W, block_size)
-        input_tokens, output_tokens = trajectory_tokens(window)
+        input_tokens, output_tokens = trajectory_tokens(
+            window, block_fill=generator.expected_block_fill
+        )
         input_price, output_price = prices(generator, price_table)
         out.append(
             CellEstimate(

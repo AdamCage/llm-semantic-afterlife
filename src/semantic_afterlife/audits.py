@@ -10,7 +10,7 @@ propagate silently into the paper.
 from __future__ import annotations
 
 import difflib
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 from typing import Any
 
 import pandas as pd
@@ -99,6 +99,11 @@ async def audit_providers(
             output_rub = _as_float(pricing.get("completion") or pricing.get("output"))
             supported_apis = endpoint.get("supported_apis") or []
             supported_params = endpoint.get("supported_parameters") or []
+            # Most endpoints leave `supported_apis` empty, so absence is
+            # "not advertised", not "not supported". Reporting it as False would
+            # be an unfounded negative claim, and the continuation audit exists
+            # precisely to settle the question by trying it.
+            advertised = bool(supported_apis)
             rows.append(
                 {
                     "generator": generator.slug,
@@ -112,8 +117,11 @@ async def audit_providers(
                     "max_completion_tokens": endpoint.get("max_completion_tokens"),
                     "max_prompt_tokens": endpoint.get("max_prompt_tokens"),
                     "status": endpoint.get("status"),
-                    "supports_completions": "completions" in supported_apis,
-                    "supports_chat": "chat" in supported_apis,
+                    "apis_advertised": advertised,
+                    "completions_advertised": ("completions" in supported_apis)
+                    if advertised
+                    else None,
+                    "chat_advertised": ("chat" in supported_apis) if advertised else None,
                     "supports_seed": "seed" in supported_params,
                     "supports_logprobs": "logprobs" in supported_params,
                     "supported_apis": ",".join(map(str, supported_apis)),
@@ -301,12 +309,124 @@ async def audit_continuation(
                 f"finish={response.finish_reason}",
             )
 
-    frame = pd.DataFrame([p.__dict__ for p in probes])
+    frame = pd.DataFrame([asdict(p) for p in probes])
     if not frame.empty:
         # A large gap between our token count and the provider's is the signature
         # of a chat template being added server-side; it is a protocol fact, not noise.
         frame["prompt_token_delta"] = frame["prompt_tokens_api"] - frame["prompt_tokens_local"]
     return frame
+
+
+# ---------------------------------------------------------------------------
+# S0.3b — reasoning-suppression audit
+# ---------------------------------------------------------------------------
+
+#: Candidate payload fragments for switching a model's reasoning off. The router
+#: advertises `reasoning` and `include_reasoning` in `supported_parameters` but
+#: documents neither, and different upstreams use different conventions, so the
+#: only way to know is to try each and read `usage.completion_tokens_details`.
+REASONING_SWITCHES: tuple[tuple[str, dict[str, Any]], ...] = (
+    ("baseline", {}),
+    ("reasoning.enabled=false", {"reasoning": {"enabled": False}}),
+    ("reasoning.exclude=true", {"reasoning": {"exclude": True}}),
+    ("reasoning.effort=none", {"reasoning": {"effort": "none"}}),
+    ("reasoning_effort=none", {"reasoning_effort": "none"}),
+    ("include_reasoning=false", {"include_reasoning": False}),
+    (
+        "chat_template_kwargs.enable_thinking=false",
+        {"chat_template_kwargs": {"enable_thinking": False}},
+    ),
+)
+
+
+async def audit_reasoning(
+    client: InferenceClient,
+    generators: list[GeneratorConfig],
+    *,
+    events: EventLogger,
+    ledger: Ledger,
+    max_tokens: int = 96,
+) -> pd.DataFrame:
+    """Measure whether reasoning can be switched off, per model.
+
+    Reasoning tokens break this experiment in three separate ways, so this is a
+    gate rather than a nicety:
+
+    * the block we append to the window is the *visible* text, while the model
+      also generated hidden reasoning tokens -- so the recursion we implement is
+      not the recursion the model performed;
+    * ``max_tokens`` stops bounding the block, because reasoning tokens are not
+      always charged against it, which destroys block-size control;
+    * the reasoning text is meta-commentary about the task, a different semantic
+      regime from free continuation.
+
+    A model that cannot be made to stop reasoning is unusable here, whatever its
+    other merits.
+    """
+    from .config import SamplingConfig
+
+    sampling = SamplingConfig(temperature=0.7, top_p=1.0)
+    rows: list[dict[str, Any]] = []
+
+    for generator in generators:
+        # `/completions` first: it is the purest mechanism and the one Stage 0
+        # found to add the fewest template tokens.
+        variant = generator.model_copy(update={"continuation": "raw_completion"})
+        for label, switch in REASONING_SWITCHES:
+            request = replace(
+                build_request(
+                    variant, sampling, prompt=PROBE_TEXT, max_tokens=max_tokens, seed=4242
+                ),
+                extra=switch,
+            )
+            try:
+                ledger.reserve(0.02, what=f"reasoning probe {generator.slug}/{label}")
+                response = await client.complete(request)
+            except AfterlifeError as exc:
+                rows.append(
+                    {
+                        "generator": generator.slug,
+                        "switch": label,
+                        "accepted": False,
+                        "error": f"{type(exc).__name__}: {str(exc)[:200]}",
+                    }
+                )
+                continue
+
+            ledger.record(response.usage, kind="audit.reasoning", generator=generator.slug)
+            details = (response.raw.get("usage") or {}).get("completion_tokens_details") or {}
+            reasoning_tokens = int(details.get("reasoning_tokens") or 0)
+            completion_tokens = response.usage.completion_tokens
+            rows.append(
+                {
+                    "generator": generator.slug,
+                    "switch": label,
+                    "accepted": True,
+                    "reasoning_tokens": reasoning_tokens,
+                    "completion_tokens": completion_tokens,
+                    "visible_chars": len(response.text),
+                    "reasoning_free": reasoning_tokens == 0,
+                    "max_tokens_respected": completion_tokens <= max_tokens,
+                    "overshoot_ratio": round(completion_tokens / max(max_tokens, 1), 2),
+                    "finish_reason": response.finish_reason,
+                    "cost_usd": round(response.usage.cost_usd, 6),
+                    "usable": reasoning_tokens == 0
+                    and completion_tokens <= max_tokens
+                    and bool(response.text.strip()),
+                    "error": None,
+                }
+            )
+            events.event(
+                "audit.reasoning.probe",
+                generator=generator.slug,
+                switch=label,
+                reasoning_tokens=reasoning_tokens,
+                completion_tokens=completion_tokens,
+                visible_chars=len(response.text),
+                mirror=f"{generator.slug} [{label}]: reasoning={reasoning_tokens} "
+                f"completion={completion_tokens} visible={len(response.text)}ch",
+            )
+    return pd.DataFrame(rows)
 
 
 # ---------------------------------------------------------------------------

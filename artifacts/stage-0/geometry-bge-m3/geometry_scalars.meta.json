@@ -1,0 +1,14 @@
+{
+  "name": "geometry_scalars",
+  "caption": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations).",
+  "alt_text": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations).",
+  "limitations": null,
+  "run_ids": [
+    "s0-embed-live-smoke-20260830T081507Z-fc3e80ed",
+    "s0-geometry-bge-m3-20260830T081523Z-0589329e"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-08-30T08:15:53+00:00"
+}

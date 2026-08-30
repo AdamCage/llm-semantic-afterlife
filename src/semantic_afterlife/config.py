@@ -183,6 +183,29 @@ class GeneratorConfig(StrictModel):
     price_usd_per_m_input: float | None = None
     price_usd_per_m_output: float | None = None
 
+    extra_body: dict[str, Any] = Field(
+        default_factory=dict,
+        description="provider payload fields merged into every request for this model, e.g. the "
+        "reasoning switch measured in S0.3b. Recorded in the manifest, since it is part of the "
+        "protocol rather than a convenience",
+    )
+    expected_block_fill: float = Field(
+        default=1.0,
+        gt=0.0,
+        le=1.0,
+        description="measured mean ratio of returned tokens to `max_tokens`. Models emit a stop "
+        "token before filling the block, so reaching T takes more steps than T/B -- and since "
+        "every extra step re-sends the whole window, the input-token forecast scales as 1/fill. "
+        "S0.7 measured 0.88 for mistral-nemo; leaving this at 1.0 underestimated input by 20.7%",
+    )
+    max_reasoning_tokens: int = Field(
+        default=0,
+        ge=0,
+        description="tolerated reasoning tokens per step. Reasoning breaks the recursion (we "
+        "would append only the visible part of what the model generated) and breaks block-size "
+        "control, so the default is zero tolerance and a step that exceeds it fails loudly",
+    )
+
     notes: str | None = None
 
     @model_validator(mode="after")

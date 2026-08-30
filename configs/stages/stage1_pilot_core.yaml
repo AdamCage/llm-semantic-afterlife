@@ -1,0 +1,65 @@
+# ===========================================================================
+# S1 core arm — the wide, cheap matrix
+# ---------------------------------------------------------------------------
+# Sized against MEASURED prices from S0.2, not estimates. Mistral Nemo at the
+# pinned Parasail endpoint costs $0.0417/M in and out -- roughly one fifth of
+# qwen3-8b per token -- and it is the only candidate with no reasoning at all
+# (reasoning_tokens = 0 under every configuration tried in S0.3b). It therefore
+# carries the wide part of the pilot, where the number of trajectories matters
+# more than model novelty.
+#
+# Why the matrix is shaped this way:
+#   W = 8192, T = 262144   -> 32 window turnovers, 256 chunk observations
+#                             (ADR-0004: turnovers, not absolute tokens, are
+#                             what makes a long-run claim defensible)
+#   2 temperatures         -> spans the expected confinement/diffusion contrast
+#   8 semantic seeds       -> the seed-identity probe needs class diversity
+#   3 stochastic seeds     -> minimum for a trajectory-level bootstrap
+#
+# Forecast: 48 trajectories, ~$4.65 (70% of it input tokens).
+# The cross-model replication arm is a separate config, because a single
+# factorial cannot give two models different matrices.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: pilot-core
+description: >-
+  Does the phenomenon exist? Wide arm on the cheapest reasoning-free generator:
+  32 turnovers per trajectory, two temperatures, eight maximally distant
+  semantic seeds, three stochastic repetitions per cell.
+
+generators: [mistral-nemo-12b]
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 8192
+    block_size: 1024
+    target_tokens: 262144 # 32 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds:
+  [physics, finance, biology, war, love, programming, surreal, noise]
+
+stochastic_seeds: [1, 2, 3]
+
+# Four concurrent trajectories; each is internally sequential. Kept low because
+# S0.4 hit an upstream shared-pool rate limit on this endpoint under load.
+# Concurrency 2, not 4: S0.7 measured an upstream shared-pool 429 that ends a
+# trajectory after ~4 steps on the cheapest endpoint, and parallel trajectories
+# make it worse. Throughput, not price, is the binding constraint here.
+max_concurrent: 2
+
+# Forecast $9.68 with the S0.7-calibrated block-fill correction (0.88 for this
+# model) and the Io Net endpoint price. Headroom covers rate-limit retries.
+budget_usd: 12.0

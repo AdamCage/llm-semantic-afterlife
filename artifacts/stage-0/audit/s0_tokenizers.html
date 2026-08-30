@@ -1,0 +1,143 @@
+<style type="text/css">
+#T_fd6fa caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0.4em 0;
+  font-size: 1.05em;
+}
+#T_fd6fa th {
+  background-color: #F2F4F7;
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 2px solid #4D4D4D;
+}
+#T_fd6fa td {
+  padding: 0.3em 0.6em;
+}
+#T_fd6fa tr:nth-child(even) {
+  background-color: #FAFBFC;
+}
+#T_fd6fa table {
+  border-collapse: collapse;
+  font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
+  font-size: 0.92em;
+}
+#T_fd6fa_row0_col4, #T_fd6fa_row0_col7, #T_fd6fa_row0_col8, #T_fd6fa_row0_col10, #T_fd6fa_row0_col11, #T_fd6fa_row1_col7, #T_fd6fa_row1_col8, #T_fd6fa_row1_col10, #T_fd6fa_row1_col11, #T_fd6fa_row2_col7, #T_fd6fa_row2_col8, #T_fd6fa_row2_col10, #T_fd6fa_row2_col11, #T_fd6fa_row3_col7, #T_fd6fa_row3_col8, #T_fd6fa_row3_col10, #T_fd6fa_row3_col11, #T_fd6fa_row4_col7, #T_fd6fa_row4_col8, #T_fd6fa_row4_col10, #T_fd6fa_row4_col11 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_fd6fa_row1_col4 {
+  background-color: #b0d2e7;
+  color: #000000;
+}
+#T_fd6fa_row2_col4 {
+  background-color: #f0f6fd;
+  color: #000000;
+}
+#T_fd6fa_row3_col4 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_fd6fa_row4_col4 {
+  background-color: #f6faff;
+  color: #000000;
+}
+</style>
+<table id="T_fd6fa">
+  <caption>Round-trip integrity (decode(encode(x)) == x) for every generator tokenizer across ASCII, Unicode, whitespace and long-repetition probes, plus exactness of the tail operation the sliding window relies on. A failure invalidates W for that model.</caption>
+  <thead>
+    <tr>
+      <th id="T_fd6fa_level0_col0" class="col_heading level0 col0" >generator</th>
+      <th id="T_fd6fa_level0_col1" class="col_heading level0 col1" >tokenizer_repo</th>
+      <th id="T_fd6fa_level0_col2" class="col_heading level0 col2" >loaded</th>
+      <th id="T_fd6fa_level0_col3" class="col_heading level0 col3" >type</th>
+      <th id="T_fd6fa_level0_col4" class="col_heading level0 col4" >vocab_size</th>
+      <th id="T_fd6fa_level0_col5" class="col_heading level0 col5" >fingerprint</th>
+      <th id="T_fd6fa_level0_col6" class="col_heading level0 col6" >roundtrip_all_ok</th>
+      <th id="T_fd6fa_level0_col7" class="col_heading level0 col7" >n_roundtrip_probes</th>
+      <th id="T_fd6fa_level0_col8" class="col_heading level0 col8" >n_roundtrip_failures</th>
+      <th id="T_fd6fa_level0_col9" class="col_heading level0 col9" >tail_exact</th>
+      <th id="T_fd6fa_level0_col10" class="col_heading level0 col10" >probe_tokens</th>
+      <th id="T_fd6fa_level0_col11" class="col_heading level0 col11" >tail_chars</th>
+      <th id="T_fd6fa_level0_col12" class="col_heading level0 col12" >error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_fd6fa_row0_col0" class="data row0 col0" >llama3-8b-base</td>
+      <td id="T_fd6fa_row0_col1" class="data row0 col1" >NousResearch/Meta-Llama-3-8B</td>
+      <td id="T_fd6fa_row0_col2" class="data row0 col2" >True</td>
+      <td id="T_fd6fa_row0_col3" class="data row0 col3" >HFTokenizer</td>
+      <td id="T_fd6fa_row0_col4" class="data row0 col4" >128256</td>
+      <td id="T_fd6fa_row0_col5" class="data row0 col5" >sha256:e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7</td>
+      <td id="T_fd6fa_row0_col6" class="data row0 col6" >True</td>
+      <td id="T_fd6fa_row0_col7" class="data row0 col7" >4</td>
+      <td id="T_fd6fa_row0_col8" class="data row0 col8" >0</td>
+      <td id="T_fd6fa_row0_col9" class="data row0 col9" >True</td>
+      <td id="T_fd6fa_row0_col10" class="data row0 col10" >28</td>
+      <td id="T_fd6fa_row0_col11" class="data row0 col11" >815</td>
+      <td id="T_fd6fa_row0_col12" class="data row0 col12" >—</td>
+    </tr>
+    <tr>
+      <td id="T_fd6fa_row1_col0" class="data row1 col0" >qwen3-8b</td>
+      <td id="T_fd6fa_row1_col1" class="data row1 col1" >Qwen/Qwen3-8B</td>
+      <td id="T_fd6fa_row1_col2" class="data row1 col2" >True</td>
+      <td id="T_fd6fa_row1_col3" class="data row1 col3" >HFTokenizer</td>
+      <td id="T_fd6fa_row1_col4" class="data row1 col4" >151669</td>
+      <td id="T_fd6fa_row1_col5" class="data row1 col5" >sha256:aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4</td>
+      <td id="T_fd6fa_row1_col6" class="data row1 col6" >True</td>
+      <td id="T_fd6fa_row1_col7" class="data row1 col7" >4</td>
+      <td id="T_fd6fa_row1_col8" class="data row1 col8" >0</td>
+      <td id="T_fd6fa_row1_col9" class="data row1 col9" >True</td>
+      <td id="T_fd6fa_row1_col10" class="data row1 col10" >28</td>
+      <td id="T_fd6fa_row1_col11" class="data row1 col11" >815</td>
+      <td id="T_fd6fa_row1_col12" class="data row1 col12" >—</td>
+    </tr>
+    <tr>
+      <td id="T_fd6fa_row2_col0" class="data row2 col0" >mistral-nemo-12b</td>
+      <td id="T_fd6fa_row2_col1" class="data row2 col1" >mistralai/Mistral-Nemo-Instruct-2407</td>
+      <td id="T_fd6fa_row2_col2" class="data row2 col2" >True</td>
+      <td id="T_fd6fa_row2_col3" class="data row2 col3" >HFTokenizer</td>
+      <td id="T_fd6fa_row2_col4" class="data row2 col4" >131072</td>
+      <td id="T_fd6fa_row2_col5" class="data row2 col5" >sha256:e11c71726323d33da7b8d6f6f269f1988931c0a52b7122bcdd8c05042974e0db</td>
+      <td id="T_fd6fa_row2_col6" class="data row2 col6" >True</td>
+      <td id="T_fd6fa_row2_col7" class="data row2 col7" >4</td>
+      <td id="T_fd6fa_row2_col8" class="data row2 col8" >0</td>
+      <td id="T_fd6fa_row2_col9" class="data row2 col9" >True</td>
+      <td id="T_fd6fa_row2_col10" class="data row2 col10" >28</td>
+      <td id="T_fd6fa_row2_col11" class="data row2 col11" >815</td>
+      <td id="T_fd6fa_row2_col12" class="data row2 col12" >—</td>
+    </tr>
+    <tr>
+      <td id="T_fd6fa_row3_col0" class="data row3 col0" >muse-glimmer-30b</td>
+      <td id="T_fd6fa_row3_col1" class="data row3 col1" >meta-models/Muse-Glimmer-30B</td>
+      <td id="T_fd6fa_row3_col2" class="data row3 col2" >True</td>
+      <td id="T_fd6fa_row3_col3" class="data row3 col3" >HFTokenizer</td>
+      <td id="T_fd6fa_row3_col4" class="data row3 col4" >202048</td>
+      <td id="T_fd6fa_row3_col5" class="data row3 col5" >sha256:c9dbee66967b58f31a7c27f723c3760da3526ccd0427578e8905b0abb0031c4d</td>
+      <td id="T_fd6fa_row3_col6" class="data row3 col6" >True</td>
+      <td id="T_fd6fa_row3_col7" class="data row3 col7" >4</td>
+      <td id="T_fd6fa_row3_col8" class="data row3 col8" >0</td>
+      <td id="T_fd6fa_row3_col9" class="data row3 col9" >True</td>
+      <td id="T_fd6fa_row3_col10" class="data row3 col10" >28</td>
+      <td id="T_fd6fa_row3_col11" class="data row3 col11" >815</td>
+      <td id="T_fd6fa_row3_col12" class="data row3 col12" >—</td>
+    </tr>
+    <tr>
+      <td id="T_fd6fa_row4_col0" class="data row4 col0" >deepseek-v4-flash</td>
+      <td id="T_fd6fa_row4_col1" class="data row4 col1" >deepseek-ai/DeepSeek-V3</td>
+      <td id="T_fd6fa_row4_col2" class="data row4 col2" >True</td>
+      <td id="T_fd6fa_row4_col3" class="data row4 col3" >HFTokenizer</td>
+      <td id="T_fd6fa_row4_col4" class="data row4 col4" >128815</td>
+      <td id="T_fd6fa_row4_col5" class="data row4 col5" >sha256:621ac2e32d0dba658404412318818aaa8ce8cda492e59830109d8da6b517fb41</td>
+      <td id="T_fd6fa_row4_col6" class="data row4 col6" >True</td>
+      <td id="T_fd6fa_row4_col7" class="data row4 col7" >4</td>
+      <td id="T_fd6fa_row4_col8" class="data row4 col8" >0</td>
+      <td id="T_fd6fa_row4_col9" class="data row4 col9" >True</td>
+      <td id="T_fd6fa_row4_col10" class="data row4 col10" >28</td>
+      <td id="T_fd6fa_row4_col11" class="data row4 col11" >815</td>
+      <td id="T_fd6fa_row4_col12" class="data row4 col12" >—</td>
+    </tr>
+  </tbody>
+</table>

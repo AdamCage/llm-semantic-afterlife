@@ -49,18 +49,37 @@ console = get_console
 ConfigOpt = Annotated[Path, typer.Option("--config", "-c", help="experiment config YAML")]
 
 
-def _print_frame(frame: pd.DataFrame, title: str, *, max_rows: int = 40) -> None:
+def _print_frame(
+    frame: pd.DataFrame,
+    title: str,
+    *,
+    columns: list[str] | None = None,
+    max_rows: int = 40,
+) -> None:
+    """Print a frame for a human.
+
+    ``columns`` selects a readable subset: audit frames carry 15-20 columns, and
+    rich wraps every one of them into an unreadable ribbon. The full frame always
+    goes to the artifact, so nothing is lost by narrowing the console view.
+    """
     if frame.empty:
         console().print(f"[yellow]{title}: no rows[/yellow]")
         return
+    view = frame[[c for c in columns if c in frame.columns]] if columns else frame
+    hidden = len(frame.columns) - len(view.columns)
     table = Table(title=title, title_justify="left", header_style="bold")
-    for column in frame.columns:
-        table.add_column(str(column), overflow="fold", max_width=42)
-    for _, row in frame.head(max_rows).iterrows():
+    for column in view.columns:
+        table.add_column(str(column), overflow="fold", max_width=30)
+    for _, row in view.head(max_rows).iterrows():
         table.add_row(*[("" if pd.isna(v) else str(v)) for v in row.tolist()])
     console().print(table)
+    notes: list[str] = []
     if len(frame) > max_rows:
-        console().print(f"[dim]… {len(frame) - max_rows} more rows[/dim]")
+        notes.append(f"{len(frame) - max_rows} more rows")
+    if hidden > 0:
+        notes.append(f"{hidden} more columns in the artifact")
+    if notes:
+        console().print(f"[dim]... {', '.join(notes)}[/dim]")
 
 
 # ---------------------------------------------------------------------------
@@ -305,7 +324,24 @@ def audit_providers_cmd(
                 events=context.events,
             )
         )
-        _print_frame(frame, "provider endpoints")
+        _print_frame(
+            frame,
+            "provider endpoints",
+            columns=[
+                "generator",
+                "available",
+                "provider_tag",
+                "quantization",
+                "context_length",
+                "max_completion_tokens",
+                "completions_advertised",
+                "supports_seed",
+                "price_usd_per_m_input",
+                "price_usd_per_m_output",
+                "status",
+                "error",
+            ],
+        )
         _save_audit(
             context,
             frame,
@@ -346,8 +382,22 @@ def audit_continuation_cmd(
                 max_tokens=max_tokens,
             )
         )
-        display = frame.drop(columns=["sample"], errors="ignore")
-        _print_frame(display, "continuation mechanisms")
+        _print_frame(
+            frame,
+            "continuation mechanisms",
+            columns=[
+                "generator",
+                "mechanism",
+                "ok",
+                "completion_tokens",
+                "finish_reason",
+                "prompt_tokens_api",
+                "prompt_tokens_local",
+                "prompt_token_delta",
+                "looks_like_meta",
+                "error",
+            ],
+        )
         _save_audit(
             context,
             frame,
@@ -357,6 +407,65 @@ def audit_continuation_cmd(
             "model continues the text, its finish reason, the local-vs-API prompt token delta "
             "(which reveals a server-side chat template), and whether the output looks like "
             "meta-commentary rather than continuation.",
+        )
+        context.finish(n_rows=len(frame))
+
+
+@audit_app.command("reasoning")
+def audit_reasoning_cmd(
+    config: ConfigOpt = Path("configs/stages/stage0_audit.yaml"),
+    max_tokens: int = typer.Option(96, help="tokens per probe"),
+) -> None:
+    """Can reasoning be switched off? A model that keeps reasoning is unusable here."""
+    settings, experiment, resolved, sha = _audit_setup(config)
+    from .audits import audit_reasoning
+    from .providers import build_client
+
+    with run_context(
+        stage=experiment.stage,
+        slug="audit-reasoning",
+        config_resolved=resolved,
+        config_sha256=sha,
+        settings=settings,
+        stage_budget_usd=experiment.budget_usd,
+    ) as context:
+        client = build_client(experiment.generators[0].api, settings, events=context.events)
+        frame = _run_async(
+            audit_reasoning(
+                client,
+                list(experiment.generators),
+                events=context.events,
+                ledger=context.ledger,
+                max_tokens=max_tokens,
+            )
+        )
+        _print_frame(
+            frame,
+            "reasoning suppression",
+            columns=[
+                "generator",
+                "switch",
+                "accepted",
+                "reasoning_tokens",
+                "completion_tokens",
+                "max_tokens_respected",
+                "overshoot_ratio",
+                "visible_chars",
+                "usable",
+                "error",
+            ],
+            max_rows=60,
+        )
+        _save_audit(
+            context,
+            frame,
+            "s0_reasoning_suppression",
+            "For each generator, several candidate ways of switching reasoning off are attempted "
+            "and the resulting reasoning-token count, visible output length and max_tokens "
+            "compliance recorded. Reasoning tokens are disqualifying here: the block appended to "
+            "the window would be only the visible part of what the model generated, max_tokens "
+            "would stop bounding the block, and the reasoning text is meta-commentary rather "
+            "than free continuation.",
         )
         context.finish(n_rows=len(frame))
 
@@ -391,7 +500,20 @@ def audit_determinism_cmd(
                 temperature=temperature,
             )
         )
-        _print_frame(frame, "determinism")
+        _print_frame(
+            frame,
+            "determinism",
+            columns=[
+                "generator",
+                "n_responses",
+                "exact_match_rate",
+                "mean_similarity",
+                "min_similarity",
+                "distinct_outputs",
+                "served_providers",
+                "errors",
+            ],
+        )
         _save_audit(
             context,
             frame,
@@ -432,7 +554,23 @@ def audit_embeddings_cmd(
                 ledger=context.ledger,
             )
         )
-        _print_frame(frame, "embedding models")
+        _print_frame(
+            frame,
+            "embedding models",
+            columns=[
+                "embedding",
+                "architecture",
+                "available",
+                "dim",
+                "dim_matches_expected",
+                "provider_normalised",
+                "mean_cross_domain_cosine",
+                "max_cross_domain_cosine",
+                "latency_s",
+                "cost_usd",
+                "error",
+            ],
+        )
         _save_audit(
             context,
             frame,
@@ -462,7 +600,21 @@ def audit_tokenizers_cmd(
         frame = audit_tokenizers(
             list(experiment.generators), settings=settings, events=context.events
         )
-        _print_frame(frame, "tokenizers")
+        _print_frame(
+            frame,
+            "tokenizers",
+            columns=[
+                "generator",
+                "tokenizer_repo",
+                "loaded",
+                "vocab_size",
+                "roundtrip_all_ok",
+                "n_roundtrip_failures",
+                "tail_exact",
+                "probe_tokens",
+                "error",
+            ],
+        )
         _save_audit(
             context,
             frame,
@@ -988,6 +1140,97 @@ def ledger(stage: str = typer.Option("", "--stage", "-s", help="filter by stage 
         f"total [bold]${total:.4f}[/bold] of ${settings.afterlife_budget_usd_total:.2f} "
         f"({total / max(settings.afterlife_budget_usd_total, 1e-9):.1%})"
     )
+
+
+@app.command()
+def compare(
+    run_a: Annotated[str, typer.Argument(help="baseline run_id")],
+    run_b: Annotated[str, typer.Argument(help="run_id to compare against it")],
+) -> None:
+    """Compare two runs on their scientific content.
+
+    Deliberately not a file-by-file hash comparison. A replayed run legitimately
+    differs in per-call telemetry -- cost is zero, latency is zero, ``from_cache``
+    is true -- so comparing every file would report a failure for a run that
+    reproduced perfectly. What must match is the generated text, the chunking,
+    and the embeddings; that is what any published number rests on.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    a = settings.paths.find_run(run_a)
+    b = settings.paths.find_run(run_b)
+    ma, mb = read_manifest(a.manifest), read_manifest(b.manifest)
+
+    console().print(
+        Panel(
+            f"A  {run_a}\n   mode={ma.get('execution_mode')} status={ma.get('status')} "
+            f"config={str(ma.get('config_sha256'))[:12]} git={str((ma.get('git') or {}).get('sha'))[:12]}\n"
+            f"B  {run_b}\n   mode={mb.get('execution_mode')} status={mb.get('status')} "
+            f"config={str(mb.get('config_sha256'))[:12]} git={str((mb.get('git') or {}).get('sha'))[:12]}",
+            title="runs",
+            border_style="blue",
+        )
+    )
+    if ma.get("config_sha256") != mb.get("config_sha256"):
+        console().print(
+            "[yellow]configs differ, so any difference below may simply be the config "
+            "change rather than a reproducibility failure[/yellow]"
+        )
+
+    from .hashing import sha256_file
+
+    rows: list[dict[str, Any]] = []
+
+    def add(kind: str, name: str, verdict: str, detail: str = "") -> None:
+        rows.append({"kind": kind, "name": name, "match": verdict, "detail": detail})
+
+    texts_a = {p.name: p for p in sorted((a.data_dir / "trajectories").glob("*.text"))}
+    texts_b = {p.name: p for p in sorted((b.data_dir / "trajectories").glob("*.text"))}
+    for name in sorted(set(texts_a) | set(texts_b)):
+        if name not in texts_a or name not in texts_b:
+            add("trajectory text", name, "MISSING", "present in only one run")
+        else:
+            identical = sha256_file(texts_a[name]) == sha256_file(texts_b[name])
+            add(
+                "trajectory text",
+                name,
+                "exact" if identical else "DIFFERS",
+                f"{texts_a[name].stat().st_size} vs {texts_b[name].stat().st_size} bytes",
+            )
+
+    for label, path_a, path_b in (
+        ("chunks", a.chunks(), b.chunks()),
+        *(
+            (f"embeddings:{p.stem.removeprefix('embeddings_')}", p, b.data_dir / p.name)
+            for p in sorted(a.data_dir.glob("embeddings_*.parquet"))
+        ),
+    ):
+        if not path_a.is_file() or not path_b.is_file():
+            add(label, path_a.name, "MISSING", "not present in both runs")
+            continue
+        fa, fb = pd.read_parquet(path_a), pd.read_parquet(path_b)
+        if fa.shape != fb.shape:
+            add(label, path_a.name, "DIFFERS", f"shape {fa.shape} vs {fb.shape}")
+            continue
+        common = [c for c in fa.columns if c in fb.columns]
+        mismatched = [c for c in common if not fa[c].equals(fb[c])]
+        add(
+            label,
+            path_a.name,
+            "exact" if not mismatched else "DIFFERS",
+            f"rows={len(fa)}" if not mismatched else f"columns differ: {mismatched[:6]}",
+        )
+
+    frame = pd.DataFrame(rows)
+    _print_frame(frame, "scientific content comparison")
+    failures = frame[frame["match"] != "exact"] if not frame.empty else frame
+    if frame.empty:
+        console().print("[yellow]nothing comparable found in these runs[/yellow]")
+    elif failures.empty:
+        console().print(f"[green]L3: all {len(frame)} scientific outputs are bit-identical[/green]")
+    else:
+        console().print(f"[red]{len(failures)} of {len(frame)} outputs differ[/red]")
+        raise typer.Exit(code=1)
 
 
 @app.command()

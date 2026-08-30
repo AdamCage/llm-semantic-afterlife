@@ -1,0 +1,60 @@
+# ===========================================================================
+# S1 replication arm — is the effect model-specific?
+# ---------------------------------------------------------------------------
+# A second architecture, deliberately narrow. qwen3-8b costs ~5x mistral-nemo
+# per token on RouterAI ($0.163/M in against $0.042/M) and has only one endpoint,
+# so the full core matrix on it would forecast $24 by itself -- more than the
+# whole pilot budget.
+#
+# What is kept and what is given up, stated explicitly so the stage report can
+# be honest about the power lost:
+#   KEPT:  W = 8192, T = 262144 (32 turnovers). Non-negotiable: below ~10
+#          turnovers no long-run claim is supportable (risks.md R10).
+#   KEPT:  all 8 semantic seeds. The primary pilot measurement is whether seed
+#          identity survives the horizon, and that needs class diversity.
+#   KEPT:  2 stochastic seeds, the minimum that permits any variance estimate.
+#   GIVEN UP: the temperature contrast. Only T = 1.0 is run here; mapping
+#          temperature is Stage 4's job, and the pilot only needs to know
+#          whether the effect appears in a second architecture at all.
+#
+# Forecast: 16 trajectories, ~$8.02. Combined with the core arm: ~$12.7.
+#
+# Note on reasoning: this model reasons by default and its reasoning tokens are
+# NOT charged against max_tokens (S0.3b measured a 9.96x block overshoot).
+# `reasoning_effort: none` is set in the generator config and the runtime guard
+# asserts zero reasoning tokens on every step (ADR-0005).
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: pilot-replication
+description: >-
+  Is the phenomenon architecture-specific? A second model family at the same
+  window and trajectory length as the core arm, at a single temperature.
+
+generators: [qwen3-8b]
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 8192
+    block_size: 1024
+    target_tokens: 262144 # 32 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds:
+  [physics, finance, biology, war, love, programming, surreal, noise]
+
+stochastic_seeds: [1, 2]
+
+# Single endpoint (Alibaba) with an 8192-token completion limit; S0.4 saw an
+# upstream rate limit here too, so concurrency stays low.
+max_concurrent: 2
+budget_usd: 10.0

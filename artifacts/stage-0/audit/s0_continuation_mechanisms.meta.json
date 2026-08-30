@@ -1,0 +1,13 @@
+{
+  "name": "s0_continuation_mechanisms",
+  "caption": "For each candidate generator, all three continuation mechanisms are attempted: raw text completion, assistant prefill, and instruction-framed chat. Records whether the model continues the text, its finish reason, the local-vs-API prompt token delta (which reveals a server-side chat template), and whether the output looks like meta-commentary rather than continuation.",
+  "alt_text": "For each candidate generator, all three continuation mechanisms are attempted: raw text completion, assistant prefill, and instruction-framed chat. Records whether the model continues the text, its finish reason, the local-vs-API prompt token delta (which reveals a server-side chat template), and whether the output looks like meta-commentary rather than continuation.",
+  "limitations": null,
+  "run_ids": [
+    "s0-audit-continuation-20260830T072553Z-9787b3d3"
+  ],
+  "git_sha": "61ccafc823b294033aa04c7f485da7078512af85",
+  "config_sha256": "9787b3d35488c4c21aa9abaf426c73698d467a2d7ee530d4109136f053f9a899",
+  "units": {},
+  "generated_at": "2026-08-30T07:26:01+00:00"
+}
