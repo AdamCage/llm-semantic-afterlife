@@ -7,6 +7,7 @@ process with a known answer before it touches real data.
 
 from __future__ import annotations
 
+from .degeneracy import DegeneracyParams, DegeneracyResult, compute_degeneracy
 from .geometry import (
     GeometryParams,
     GeometryResult,
@@ -17,14 +18,29 @@ from .geometry import (
     recurrence_matrix,
     recurrence_quantification,
 )
+from .separation import (
+    SeparationParams,
+    SeparationResult,
+    Trajectory,
+    compute_separation,
+    trajectories_from_frame,
+)
 
 __all__ = [
+    "DegeneracyParams",
+    "DegeneracyResult",
     "GeometryParams",
     "GeometryResult",
+    "SeparationParams",
+    "SeparationResult",
+    "Trajectory",
     "aggregate_msd",
+    "compute_degeneracy",
     "compute_geometry",
+    "compute_separation",
     "fit_msd_exponent",
     "mean_squared_displacement",
     "recurrence_matrix",
     "recurrence_quantification",
+    "trajectories_from_frame",
 ]
