@@ -1,0 +1,3 @@
+trajectory_id,semantic_seed,generator,temperature,stochastic_seed,W,n_chunks,n_chunks_post_horizon,mean_step_displacement,std_step_displacement,mean_distance_from_origin,final_distance_from_origin,msd_alpha,msd_alpha_se,msd_r_squared,msd_plateau,integrated_autocorr_time,recurrence_epsilon,recurrence_rate,determinism,mean_diagonal_line,max_diagonal_line,trapping_time,n_diagonal_lines
+mock-hmm__W2048__T0p7__love__s1,love,mock-hmm,0.7,1,2048,32,28,0.0456101,0.0142715,0.0477146,0.0357246,0.0307577,0.0231062,0.263538,0.100398,1,0.220132,0.0502646,0.210526,2,2,2,2
+mock-hmm__W2048__T0p7__physics__s1,physics,mock-hmm,0.7,1,2048,32,28,0.133399,0.238969,0.692293,0.925879,0.808348,0.0370842,0.989686,1.25596,1,0.281704,0.0502646,0.105263,2,2,2.16667,1

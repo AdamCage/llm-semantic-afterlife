@@ -1,0 +1,55 @@
+# ===========================================================================
+# S1 — pilot (DRAFT, pending Stage 0's audit)
+# ---------------------------------------------------------------------------
+# THIS FILE IS NOT YET APPROVED FOR EXECUTION.
+#
+# Provider slugs and prices are `null` until `afterlife audit providers` fills
+# them in, so `afterlife estimate` will currently report $0 and warn about the
+# missing prices. That is intentional: a fabricated price is worse than a
+# visible gap.
+#
+# Sizing follows ADR-0004. W = 8192, T = 262144 gives 32 window turnovers and
+# 256 chunk observations per trajectory, at one quarter of the input cost of the
+# equivalent W = 32k configuration. Under protocol P1 each trajectory costs
+# ~2.06M input tokens against 262k output tokens (8x input amplification), so
+# expensive models get their own narrow config rather than joining this
+# factorial.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: pilot-core
+description: >-
+  Does the phenomenon exist? Cheap-model arm of the pilot: 32 turnovers per
+  trajectory, two temperatures spanning the expected confinement/diffusion
+  contrast, eight maximally distant semantic seeds, three stochastic
+  repetitions per cell so that variance is estimable.
+
+generators: [mistral-nemo-12b, qwen3-8b]
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 8192
+    block_size: 1024
+    target_tokens: 262144     # 32 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds:
+  [physics, finance, biology, war, love, programming, surreal, noise]
+
+# Three stochastic repetitions is the minimum that permits a trajectory-level
+# bootstrap; the replicate unit for every CI in the paper is the trajectory.
+stochastic_seeds: [1, 2, 3]
+
+max_concurrent: 4
+budget_usd: 20.0

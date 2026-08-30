@@ -1,0 +1,41 @@
+# ===========================================================================
+# S0.7 (live) — the same micro-trajectory against a real model
+# ---------------------------------------------------------------------------
+# Runs after `afterlife audit` has filled in provider slugs and prices in
+# configs/models/generators.yaml. Keep it small: its job is to prove that the
+# real API path behaves like the offline one, not to measure anything.
+#
+# `generators` is intentionally a single cheap model. Widen only in Stage 1,
+# after `afterlife estimate` has been shown to the human.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s0
+name: live-smoke
+description: >-
+  Micro-trajectory against a real generator and real embedding models, to
+  confirm that the live path matches the offline path and to calibrate the cost
+  model against an actual bill.
+
+generators: [mistral-nemo-12b]
+embeddings: [bge-m3]
+
+windows:
+  - W: 2048
+    block_size: 512
+    target_tokens: 16384      # 8 turnovers
+    chunk_size: 512
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.7
+    top_p: 1.0
+
+semantic_seeds: [physics, love]
+stochastic_seeds: [1]
+
+max_concurrent: 2
+budget_usd: 1.0

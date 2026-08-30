@@ -1,0 +1,127 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # CI never touches a paid API. The offline generator is a hidden Markov chain
+  # with a known ground truth, so the full pipeline is still exercised.
+  AFTERLIFE_EXECUTION_MODE: mock
+  PYTHONUTF8: "1"
+
+jobs:
+  checks:
+    name: lint / types / tests (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install ${{ matrix.python }}
+
+      - name: Install
+        run: uv sync --extra dev
+
+      - name: Encoding guard
+        run: uv run python scripts/check_encoding.py .
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Ruff format
+        run: uv run ruff format --check .
+
+      - name: mypy
+        run: uv run mypy
+
+      - name: Tests
+        run: uv run pytest -q --cov=semantic_afterlife --cov-report=term-missing
+
+  config-validation:
+    name: every config loads and expands
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --extra dev
+
+      - name: doctor
+        run: uv run afterlife doctor
+
+      # A stage config that fails to expand is a broken experiment plan, and it
+      # should fail here rather than three hours into a generation run.
+      - name: plan and estimate every stage config
+        run: |
+          for cfg in configs/stages/*.yaml; do
+            echo "::group::$cfg"
+            uv run afterlife plan --config "$cfg"
+            uv run afterlife estimate --config "$cfg" || true
+            echo "::endgroup::"
+          done
+
+  pipeline-smoke:
+    name: end-to-end offline pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --extra dev
+
+      # Generation -> embedding -> geometry -> artifacts, entirely offline.
+      # This is the guard against a refactor that passes unit tests but breaks
+      # the pipeline the research actually runs on.
+      - name: generate / embed / analyze
+        run: |
+          set -euo pipefail
+          uv run afterlife generate --config configs/stages/stage0_smoke.yaml --yes
+          GEN=$(ls -1 runs/s0 | grep '^s0-smoke-' | tail -1)
+          echo "generation run: $GEN"
+          uv run afterlife embed --config configs/stages/stage0_smoke.yaml --run "$GEN"
+          EMB=$(ls -1 runs/s0 | grep '^s0-embed-smoke-' | tail -1)
+          echo "embedding run: $EMB"
+          uv run afterlife analyze geometry --run "$EMB"
+          uv run afterlife verify --stage s0
+          uv run afterlife ledger
+
+      - name: check the artifact bundle is complete
+        run: |
+          set -euo pipefail
+          dir=$(find artifacts/stage-0 -type d -name 'geometry-*' | head -1)
+          echo "artifacts in $dir"
+          # Every figure must ship with its tidy source data and metadata; a
+          # figure without them is not an artifact (rules: 30-visualization).
+          for f in "$dir"/*.html; do
+            base="${f%.html}"
+            test -f "$base.meta.json" || { echo "missing metadata for $base"; exit 1; }
+            test -f "$base.data.parquet" -o -f "$base.data.npz" || {
+              echo "missing source data for $base"; exit 1; }
+          done
+          test -f artifacts/stage-0/INDEX.md
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-0-offline-artifacts
+          path: artifacts/
+          retention-days: 14

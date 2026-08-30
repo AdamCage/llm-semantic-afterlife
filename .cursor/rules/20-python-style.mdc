@@ -1,0 +1,63 @@
+---
+description: Python conventions for src/, scripts/ and tests/.
+globs: ["**/*.py"]
+alwaysApply: false
+---
+
+# Python conventions
+
+## Shape of the code
+
+- Fully type-annotated; `mypy` with `disallow_untyped_defs` must stay clean.
+- Pydantic v2 models for anything crossing an I/O boundary (configs, API
+  payloads, manifests). Plain dataclasses for internal value objects.
+- Analysis code = pure functions `(arrays, params) -> arrays/DataFrame`.
+  Side effects (I/O, network, plotting to disk) live only in runners and
+  exporters. This is what makes analysis unit-testable without the network.
+- `pathlib.Path` only; no `os.path`. All layout knowledge in `paths.py`.
+- Numeric work vectorised with numpy; a Python loop over 10^6 tokens is a bug.
+- `float32` for stored embeddings, `float64` for statistics.
+
+## Configuration
+
+Any tunable value goes into `configs/**` and reaches code through a typed
+config object. A magic number inside a function body is a defect — even a
+"temporary" one. Defaults live in `configs/base.yaml`, not in Python.
+
+## Async and rate limits
+
+- API access is `httpx.AsyncClient`; concurrency bounded by a semaphore from
+  config, never unbounded `asyncio.gather` over trajectories.
+- Retries via `tenacity`: exponential backoff + jitter, retry on 408/409/429/
+  5xx and transport errors, never on 4xx client errors (except 429).
+  Every retry emits a log event with the attempt number and the reason.
+- A single trajectory is strictly sequential: step `t+1` consumes step `t`'s
+  output. Parallelism is *across* trajectories only.
+
+## Errors
+
+- Raise domain exceptions from `semantic_afterlife.errors`; do not raise bare
+  `Exception`.
+- Never swallow an exception. If a trajectory fails, mark it `FAILED` in the
+  manifest, log the full context, and let the batch continue with the failure
+  recorded — silently dropping a trajectory biases the statistics.
+
+## Comments and naming
+
+- Comment only what the code cannot say: a methodological constraint, a
+  provider quirk, a reason a formula deviates from the textbook. Never narrate
+  what the next line does.
+- Name variables after the paper's notation: `W`, `block_size`, `chunk_size`,
+  `tau`, `msd`, `z_t`. Consistency between code and manuscript is a feature.
+
+## Tests
+
+- Unit-test the sliding-window arithmetic exhaustively; it is the single most
+  correctness-critical piece of the project. Property tests: window never
+  exceeds `W`; chunks are exactly `chunk_size` and non-overlapping; total
+  emitted tokens are conserved; resume produces identical state.
+- Analysis functions get tests on synthetic processes with known answers
+  (pure Brownian motion → MSD exponent ≈ 1; a two-state generator → MSM
+  recovers the two states and the known transition rates).
+- Network tests are marked `@pytest.mark.network` and excluded from the default
+  run. CI runs with `AFTERLIFE_EXECUTION_MODE=mock`.

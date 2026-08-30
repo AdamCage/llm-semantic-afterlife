@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: >-
+  Semantic Afterlife: Long-Run Dynamics of Large Language Models Beyond the
+  Context Horizon
+message: >-
+  If you use this software or its artifacts, please cite it. Once the manuscript
+  is released, cite the paper instead and this repository as the software.
+type: software
+authors:
+  - name: llm-semantic-afterlife contributors
+repository-code: https://github.com/AdamCage/llm-semantic-afterlife
+license: MIT
+version: 0.1.0
+date-released: "2026-08-30"
+keywords:
+  - large language models
+  - dynamical systems
+  - Markov state models
+  - semantic drift
+  - context window
+  - metastability
+  - non-equilibrium dynamics
+abstract: >-
+  A reproducible experimental framework for studying the long-run semantic
+  dynamics of large language models generating freely under an imposed finite
+  sliding context window. Once the initial prompt has been evicted from the
+  window, the trajectory is characterised as a stochastic dynamical system:
+  semantic memory decay (semantic half-life), mean squared displacement scaling,
+  metastable macrostates from non-reversible Markov state models, probability
+  currents, and the dependence of all of these on window size, temperature and
+  model family.

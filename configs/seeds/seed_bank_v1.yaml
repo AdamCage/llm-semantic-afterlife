@@ -1,0 +1,215 @@
+# ===========================================================================
+# Semantic seed bank v1
+# ---------------------------------------------------------------------------
+# Initial conditions X_0. Design constraints:
+#
+# 1. Every seed is *continuation-shaped*: declarative prose mid-flow, never a
+#    question or an instruction. A base model must be able to continue it
+#    without being asked to, since asking is external forcing.
+# 2. Domains are maximally far apart, so that a probe distinguishing them past
+#    the horizon is measuring semantic content rather than register.
+# 3. Comparable length (~90-140 tokens), so the context horizon
+#    t_h = W - L_0 does not vary much between trajectories.
+# 4. No self-reference to models, AI, prompts or generation. Such text invites
+#    meta-commentary, which is a distinct dynamical attractor and would
+#    contaminate the seed contrast.
+# 5. Twin pairs differ in exactly one factual proposition, for the
+#    sensitivity-to-initial-conditions experiment (S5).
+# ===========================================================================
+
+version: v1
+description: >-
+  Ten maximally distant semantic domains plus two minimal-perturbation twin
+  pairs. Used from Stage 0 onwards; extended, never edited in place, so that
+  earlier runs remain interpretable.
+
+seeds:
+  - id: physics
+    domain: physics
+    language: en
+    text: >-
+      The lattice spacing sets the ultraviolet cutoff, and everything else in the
+      calculation follows from that single choice. When the coupling is tuned
+      towards the critical surface the correlation length grows without bound in
+      units of the spacing, and the discretisation artefacts that dominate the
+      short-distance behaviour begin to decouple from the observables we actually
+      care about. The gauge configurations then have to be generated with an
+      algorithm whose autocorrelation time does not itself diverge, which is why
+      the choice of update scheme is not a detail but the central practical
+      problem. In the deconfined phase the Polyakov loop acquires a nonzero
+      expectation value, and
+
+  - id: finance
+    domain: finance
+    language: en
+    text: >-
+      The basis had been negative for eleven consecutive sessions, which by
+      itself was unremarkable, but the funding leg had begun to move
+      independently of the cash market and that was the part the desk could not
+      explain. Collateral was scarce at the short end; repo rates printed above
+      the corridor twice in one week. When a dealer cannot finance a position at
+      the rate implied by the forward curve, the arbitrage that supposedly links
+      the two markets stops being an arbitrage and becomes a balance-sheet
+      decision. The risk manager's note that morning made the point plainly: the
+      spread would converge eventually, but
+
+  - id: biology
+    domain: biology
+    language: en
+    text: >-
+      Ribosome profiling of the mutant line showed the stall precisely at the
+      third codon of the signal peptide, which explained the accumulation of
+      truncated product in the cytosol rather than in the lumen. The chaperone
+      that would ordinarily hand the nascent chain to the translocon was present
+      at normal abundance, so the defect was not one of availability. What had
+      changed was the local charge of the emerging peptide, and with it the
+      residence time in the exit tunnel. Downstream, the unfolded protein
+      response was constitutively active at a low level, enough to reshape the
+      secretory programme without triggering apoptosis, and
+
+  - id: war
+    domain: military history
+    language: en
+    text: >-
+      The supply road ran through a single valley, and both commanders knew it.
+      Holding the ridge above it required more infantry than either side could
+      spare from the main line, so for three weeks the position changed hands at
+      night and reverted by morning without either army committing to a decision.
+      Logistics decided what tactics could not. Every additional mile of that
+      road cost fuel that the mechanised divisions in the south were also
+      claiming, and the staff appreciations from that period read less like
+      operational planning than like accountancy. By the second week of the
+      thaw the road was impassable to wheeled transport, and
+
+  - id: love
+    domain: intimate narrative
+    language: en
+    text: >-
+      She left the letter unopened on the windowsill for two days, which he took
+      as an answer and which was not one. It rained the second night, and the
+      envelope swelled and buckled against the glass. They had spent four years
+      developing a private language for avoiding exactly this conversation, a
+      vocabulary of errands and weather, and now that the words had arrived in
+      writing neither of them had a way to receive them. In the morning she moved
+      the letter to the kitchen table without reading it. He noticed, and said
+      nothing, and that was how the week began, and
+
+  - id: recipe
+    domain: culinary procedure
+    language: en
+    text: >-
+      Salt the sliced fennel and leave it in the colander for forty minutes; the
+      water it releases carries most of the raw anise bite with it. Meanwhile
+      render the pancetta over the lowest possible heat, so that the fat clarifies
+      rather than browns, and reserve it. The order matters here: if the fennel
+      goes into the pan while it is still wet it will steam instead of caramelise,
+      and the dish becomes something else entirely, not worse but not this. Deglaze
+      with the vermouth only after the edges have taken colour. Off the heat, fold
+      in the reserved fat and
+
+  - id: programming
+    domain: software engineering
+    language: en
+    text: >-
+      The deadlock only reproduced under load, which meant the ordering of the two
+      lock acquisitions was fine in the common path and inverted somewhere in the
+      retry logic. Static analysis had nothing to say, because the second
+      acquisition happened through a callback registered three modules away.
+      Instrumenting every acquisition with the owning thread and a monotonic
+      sequence number made the cycle obvious within an hour: the retry path
+      re-entered the cache before releasing the connection, and under contention
+      that re-entry occasionally raced a background eviction. The fix was a
+      single line, but the interesting part was
+
+  - id: philosophy
+    domain: philosophy
+    language: en
+    text: >-
+      If the criterion of identity over time is continuity of some psychological
+      relation, then the puzzle cases are not marginal but constitutive: they are
+      where the concept is doing its actual work. To say that the person who wakes
+      is the same as the person who slept is not to report a discovered fact but
+      to extend a practice of ascription whose point is practical, concerned with
+      commitment and desert rather than with metaphysics. The temptation is to
+      treat the practice as tracking something antecedently there. Once that
+      assumption is dropped, the question of what survives becomes a question
+      about what we are prepared to hold each other to, and
+
+  - id: surreal
+    domain: surreal fiction
+    language: en
+    text: >-
+      The cartographers had been instructed to survey the interior of the piano,
+      and they did so with the seriousness that all absurd commissions deserve.
+      The felt plains were mapped first, then the copper rivers, then the region
+      of sustained notes where the light behaved differently and instruments gave
+      readings that depended on who was reading them. One surveyor reported a
+      village. The others found nothing at those coordinates, but did not
+      contradict him, because the register of dissent had been sealed inside the
+      lowest octave at the beginning of the expedition, and
+
+  - id: noise
+    domain: low-structure text
+    language: en
+    text: >-
+      thirteen umbrella slate the corridor of seven ninety fourteen antler basin
+      quartz and then eleven brackish lamp forty two the sand not the sand pillar
+      six vermilion tract clatter of two hundred and one hinge water hinge water
+      the numeral again seventeen kettle furlong azimuth eighty three and the
+      third of nothing marmalade tessellate no fifty five gravel gravel oath and
+      the ninth column empty column empty seventy one syllable syllable
+
+  # -- twin pair A: a single reversed factual proposition -------------------
+  - id: waterloo-won
+    domain: counterfactual history
+    language: en
+    text: >-
+      Napoleon won at Waterloo, and the settlement that followed was negotiated
+      rather than imposed. The coalition armies withdrew east of the Rhine over
+      the summer, and the congress reconvened in an atmosphere that no one
+      involved described as peace. What the victory did not do was restore the
+      fiscal position of the empire, and the campaign of the following spring was
+      financed on terms that any earlier French administration would have refused.
+      Historians who treat the battle as the hinge of the century tend to
+      underrate this, because
+
+  - id: waterloo-lost
+    domain: counterfactual history
+    language: en
+    twin_of: waterloo-won
+    text: >-
+      Napoleon lost at Waterloo, and the settlement that followed was imposed
+      rather than negotiated. The coalition armies advanced west of the Rhine over
+      the summer, and the congress reconvened in an atmosphere that no one
+      involved described as peace. What the defeat did not do was resolve the
+      fiscal position of the restored monarchy, and the campaign of the following
+      spring was financed on terms that any earlier French administration would
+      have refused. Historians who treat the battle as the hinge of the century
+      tend to underrate this, because
+
+  # -- twin pair B: same, in a technical rather than historical register ----
+  - id: reactor-stable
+    domain: counterfactual engineering
+    language: en
+    text: >-
+      The void coefficient was negative across the operating range, so the power
+      excursion damped itself within four seconds and the shift supervisor's
+      decision not to scram was, in retrospect, defensible. The subsequent
+      inquiry concentrated instead on the instrumentation, which had reported the
+      transient with a lag long enough to make any operator response
+      approximately random. Design margin had absorbed the event; procedure had
+      not. What the report recommended was therefore not a change to the core but
+
+  - id: reactor-unstable
+    domain: counterfactual engineering
+    language: en
+    twin_of: reactor-stable
+    text: >-
+      The void coefficient was positive across the operating range, so the power
+      excursion amplified itself within four seconds and the shift supervisor's
+      decision not to scram was, in retrospect, indefensible. The subsequent
+      inquiry concentrated instead on the instrumentation, which had reported the
+      transient with a lag long enough to make any operator response
+      approximately random. Design margin had not absorbed the event; procedure
+      had not either. What the report recommended was therefore not a change to
+      the core but

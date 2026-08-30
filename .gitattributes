@@ -1,0 +1,28 @@
+# Normalise line endings in the repository; check out native on Windows.
+* text=auto
+
+*.py   text eol=lf
+*.md   text eol=lf
+*.mdc  text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.toml text eol=lf
+*.cff  text eol=lf
+*.txt  text eol=lf
+*.json text eol=lf
+*.tex  text eol=lf
+*.sh   text eol=lf
+
+# Binary artifacts: never diffed, never line-ending-converted.
+*.png     binary
+*.svg     text eol=lf
+*.pdf     binary
+*.parquet binary
+*.npz     binary
+*.npy     binary
+
+# Generated figure bundles: keep them out of diffs so a stage commit stays
+# reviewable. The tidy `.data.parquet` sidecar is the reviewable part.
+artifacts/**/*.html linguist-generated=true -diff
+artifacts/**/*.png  linguist-generated=true -diff
+artifacts/**/*.svg  linguist-generated=true -diff

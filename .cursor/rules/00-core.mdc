@@ -1,0 +1,52 @@
+---
+description: Project identity and the five non-negotiables. Applies to all work in this repository.
+alwaysApply: true
+---
+
+# Semantic Afterlife — core rule
+
+This repo studies **long-run semantic dynamics of LLMs under a finite sliding
+context window**. Deliverable: a peer-reviewable paper plus its reproducible
+computational record. `AGENTS.md` is the full contract; this rule is the part
+you must never forget.
+
+## Five non-negotiables
+
+1. **No number without a `run_id`.** Results live under `runs/<run_id>/` with a
+   manifest. Untraceable numbers do not exist.
+2. **Reproducible by construction.** run = `configs/**` + git SHA + seed.
+   No interactive state, no notebook-only results, no hand-edited outputs.
+3. **Over-log.** Append-only JSONL: raw request/response, token accounting,
+   timings, cost, provider identity + quantization, retries, tokenizer
+   round-trip checks.
+4. **Self-contained artifacts.** Every figure/table ships with tidy source data
+   (`.data.parquet`), metadata (`.meta.json`), and a caption stating what it
+   shows *and what it does not*.
+5. **Statistics in the original high-dimensional space.** UMAP/t-SNE are
+   illustrations only, always labelled as such. Never derive a cluster count or
+   a statistical claim from a 2-D projection.
+
+## Stage discipline
+
+Work strictly stage by stage (`S0`…`S7`, see `docs/research-plan.md`). Never
+begin stage N+1 before `docs/stages/stage-N/REPORT.md` exists with an explicit
+pass/fail/partial verdict on that stage's exit criteria. A negative result is a
+successful stage; record it, re-plan, move on.
+
+Plan changes require an ADR in `docs/decisions/` committed alongside the change.
+
+## Money
+
+Any code path that spends money must estimate first, enforce
+`AFTERLIFE_BUDGET_USD_PER_RUN` / `_TOTAL`, and append to
+`runs/_ledger/spend.jsonl`. Never bypass the ledger; never raise a ceiling
+without asking the human.
+
+## Terminology
+
+Use the exact terms from `docs/glossary.md`. In particular: `W` = sliding
+window (generator tokens), `B` = generation block, `chunk` = analysis unit
+(default 1024 generator tokens, **non-overlapping**), `turnover` = `T/W`,
+`horizon` = the step at which the seed has fully left the window.
+Do not write "context length" when you mean `W`, and do not call k-means
+microstates "semantic states" — only MSM macrostates earn that name.

@@ -1,0 +1,70 @@
+---
+description: Concrete reproducibility, logging and provenance requirements for any code that produces results.
+alwaysApply: true
+---
+
+# Reproducibility and logging requirements
+
+## Run identity
+
+Every result-producing invocation creates a run directory:
+
+```
+runs/<stage>/<run_id>/
+  manifest.json        # see below — written at start, finalised at end
+  config.resolved.yaml # fully resolved config, all defaults expanded
+  events.jsonl         # structured event log, append-only
+  requests/            # raw request+response bodies, one JSONL per trajectory
+  data/                # parquet/npz outputs
+  logs/run.log         # human-readable mirror
+  STATUS               # RUNNING | COMPLETED | FAILED | ABORTED
+```
+
+`run_id` format: `<stage>-<slug>-<UTC yyyymmddThhmmssZ>-<8-hex of config hash>`.
+Deterministic in everything except the timestamp, so two runs of the same
+config are recognisably siblings.
+
+## Manifest contents (mandatory)
+
+`git_sha`, `git_dirty` + diff if dirty, `command_line`, resolved config,
+`config_sha256`, python/platform/CPU, exact versions of every installed
+package, `api_key_fingerprint` (sha256 prefix, **never** the key), pinned
+`provider`/`quantization` per model as reported by the provider, RNG seeds,
+`usd_per_rub`, start/end timestamps, token and cost totals, and an integrity
+block hashing every output file.
+
+## Determinism rules
+
+- Randomness only via an explicitly passed seed; derive sub-seeds with
+  `numpy.random.SeedSequence.spawn`. Never call bare `np.random.*` or
+  `random.*` at module level.
+- Provider requests: pin `provider.only=[slug]` **and**
+  `provider.allow_fallbacks=false`, pass `seed`, and record the provider
+  actually served. LLM API determinism is not guaranteed — so *measure* it
+  (`afterlife audit determinism`) and report the observed reproducibility rate
+  rather than assuming it.
+- Cache every API response content-addressed by
+  `sha256(endpoint + canonical_json(payload))`. `AFTERLIFE_EXECUTION_MODE=replay`
+  must reproduce a whole run from cache with zero network calls.
+
+## Logging rules
+
+- Structured events via `logging_utils.get_logger()`; one JSON object per line.
+- Required event fields: `ts` (UTC ISO-8601), `level`, `event` (dotted name,
+  e.g. `generation.step.completed`), `run_id`, plus typed payload.
+- Log at every trajectory step: step index, cumulative generated tokens,
+  prompt token count, completion token count, `finish_reason`,
+  `tokenizer_roundtrip_ok`, latency, retries, cumulative cost, and whether the
+  seed is still inside the window.
+- Never log secrets. Never log a full prompt at INFO — prompts go to
+  `requests/` and to DEBUG only.
+- Errors are logged with full context and re-raised; no silent `except: pass`.
+
+## Long-run safety
+
+Generation runs last hours. Therefore:
+
+- Checkpoint after **every** step (append to JSONL); a killed run resumes from
+  the last completed step with byte-identical continuation state.
+- Idempotent resume: re-running an unfinished `run_id` must not duplicate work.
+- Cost ledger updated per request, not per run.

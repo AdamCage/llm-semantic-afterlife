@@ -1,0 +1,73 @@
+---
+description: How to plan, execute and close a research stage; required documents and their structure.
+globs: ["docs/stages/**", "configs/stages/**", "docs/research-plan*.md", "docs/decisions/**"]
+alwaysApply: false
+---
+
+# Stage protocol
+
+A stage is the unit of work in this project. It has a plan written before
+execution and a report written after, both committed.
+
+## `docs/stages/stage-N/PLAN.md`
+
+Sections, in order:
+
+1. **Question** — what this stage decides, in one or two sentences.
+2. **Entry state** — what previous stages established that this depends on.
+3. **Experiment matrix** — the exact factorial: models × W × temperature ×
+   seeds × repetitions, with total token count and cost estimate. Must match a
+   file in `configs/stages/`.
+4. **Computations** — the ordered list of passes, each naming the CLI command
+   and the artifacts it will produce.
+5. **Exit criteria** — falsifiable, quantitative, written *before* seeing data.
+   e.g. "half-life estimated with bootstrap CI width < 1.0 W on ≥3 models".
+6. **Pre-registered predictions** — what we expect, so that we can be wrong on
+   the record. This is the honest part; do not skip it.
+7. **Budget and wall-clock** — USD and hours, with the ceiling that triggers a
+   stop-and-ask.
+8. **Risks specific to this stage** and their mitigations.
+
+## `docs/stages/stage-N/REPORT.md`
+
+1. **Verdict per exit criterion** — `PASS` / `FAIL` / `PARTIAL`, each with the
+   artifact path that establishes it.
+2. **Results** — numbers with uncertainty, each linked to `artifacts/stage-N/…`
+   and to a `run_id`.
+3. **Prediction vs. outcome** — explicit table; note every place the
+   pre-registered prediction was wrong.
+4. **Surprises** — findings we did not plan for. Often the most valuable part.
+5. **Threats to validity** — what a reviewer would attack, and the current
+   state of the defence.
+6. **Cost actuals** vs. estimate.
+7. **Implications for the plan** — concrete changes to later stages, each with
+   an ADR reference if it alters the master plan.
+
+## Decision records
+
+`docs/decisions/ADR-NNNN-kebab-title.md`, append-only, never rewritten:
+
+```
+# ADR-NNNN: <title>
+Status: proposed | accepted | superseded by ADR-MMMM
+Date: YYYY-MM-DD
+Stage: SN
+
+## Context
+## Decision
+## Alternatives considered
+## Consequences
+## Reversal cost
+```
+
+Any of these requires an ADR: choice of models, embedding models, window
+protocol, chunk size, clustering method, statistical estimator, a change to the
+stage plan, or a deviation from a non-negotiable.
+
+## Stage configs
+
+`configs/stages/stageN_<name>.yaml` is the single source of truth for the
+matrix. It is loaded, resolved, hashed, and copied into every run manifest.
+Editing a stage config after runs exist means bumping its version and noting the
+change in the stage report — never silently mutating the config that past runs
+claim to have used.

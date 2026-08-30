@@ -1,0 +1,26 @@
+{
+  "name": "recurrence_mock-hmm__W2048__T0p7__love__s1",
+  "caption": "Recurrence plot for trajectory mock-hmm__W2048__T0p7__love__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.2201 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.",
+  "alt_text": "Square binary matrix showing which pairs of time points are close in embedding space.",
+  "limitations": "ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.",
+  "run_ids": [
+    "s0-embed-smoke-20260830T000247Z-e99d7975",
+    "s0-geometry-mock-hash-20260830T000331Z-45f7e4b9"
+  ],
+  "git_sha": null,
+  "config_sha256": "45f7e4b9eee330dd895a907bf028a556f2f6e866aba059a61a37764e80fb1d0d",
+  "units": {
+    "axes": "generator tokens"
+  },
+  "generated_at": "2026-08-30T00:05:03+00:00",
+  "epsilon": 0.22013187374167614,
+  "W": 2048,
+  "chunk_size": 512,
+  "recurrence_epsilon": 0.22013187374167614,
+  "recurrence_rate": 0.05026455026455026,
+  "determinism": 0.21052631578947367,
+  "mean_diagonal_line": 2.0,
+  "max_diagonal_line": 2.0,
+  "trapping_time": 2.0,
+  "data_format": "npz"
+}

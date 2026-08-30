@@ -1,0 +1,68 @@
+---
+description: Figure and table standards — plotly/seaborn theme, export formats, captions.
+globs: ["src/semantic_afterlife/viz/**", "src/semantic_afterlife/reporting/**", "**/*figure*.py", "**/*plot*.py"]
+alwaysApply: false
+---
+
+# Visualisation standard
+
+Figures are a primary scientific output here. Treat each one as a claim.
+
+## Library choice
+
+| Use | Library |
+| --- | --- |
+| Trajectories, phase portraits, transition graphs, recurrence plots, anything a reader would want to hover/zoom | **Plotly** |
+| Print panels for the manuscript: distributions, regressions, faceted comparisons, correlation matrices | **Seaborn / Matplotlib** |
+
+Both draw from `viz/theme.py`. Never set colours, fonts or sizes ad hoc in a
+figure function — extend the theme instead.
+
+## Mandatory export bundle
+
+`viz.export.save_figure()` writes, for figure `name`:
+
+```
+<name>.html            interactive (plotly only)
+<name>.png             200 dpi, white background, publication size
+<name>.svg             vector
+<name>.data.parquet    the exact tidy frame that was plotted
+<name>.meta.json       {run_ids, git_sha, config_sha, caption, alt_text, units, generated_at}
+```
+
+A figure without its `.data.parquet` is not an artifact. If the plotted object
+is not naturally tabular (e.g. a recurrence matrix), store it as `.data.npz`
+and say so in the metadata.
+
+## Design requirements
+
+- Colour-blind-safe qualitative palette; perceptually uniform sequential maps
+  (`viridis`/`magma`); diverging maps only for genuinely signed quantities,
+  always centred at zero.
+- Axis labels carry units: `lag τ (generator tokens)`, not `tau`. Where an axis
+  is naturally measured in window turnovers, show **both** `tokens` and `T/W`.
+- Uncertainty is not optional: bootstrap CI bands over trajectories, error bars
+  over seeds. A curve averaged over trajectories without a spread band is
+  incomplete.
+- Log axes for power laws (MSD, timescales), with the fitted exponent and its
+  CI annotated on the plot.
+- Mark the **context horizon** (`t = W`) on every time-axis figure — it is the
+  central landmark of this paper.
+- Distinguish per-trajectory traces (thin, low alpha) from the ensemble summary
+  (thick). Never show only the mean.
+- Every 2-D embedding projection (UMAP/t-SNE/PCA) must carry the words
+  "illustration only; all statistics computed in the full space" in its
+  caption, and must not be the basis of any claim.
+
+## Captions
+
+Written at figure-creation time, stored in `.meta.json`, reused verbatim in the
+stage report and manuscript. A caption states: what is plotted, over what data
+(models/W/temperature/n trajectories), what the reader should conclude, and
+what the figure cannot establish.
+
+## Tables
+
+`reporting/tables.py` emits every table in four forms: `.csv` (canonical),
+`.parquet` (typed), `.md` (readable in the report), `.html` (styled). Numbers
+carry uncertainty and explicit units; report `n` for every aggregate.

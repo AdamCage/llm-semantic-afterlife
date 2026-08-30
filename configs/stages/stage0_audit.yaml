@@ -1,0 +1,50 @@
+# ===========================================================================
+# S0.2 - S0.6 — capability audits
+# ---------------------------------------------------------------------------
+# The audit target list. Every candidate generator and every candidate
+# representation space is probed here, including ones we may end up dropping:
+# "not available on this router" is a Stage 0 finding that the report has to
+# state, not an error to route around.
+#
+# The audits do not generate trajectories, so `windows`, `sampling`,
+# `semantic_seeds` and `stochastic_seeds` are placeholders required by the
+# config schema. They are not used by any audit pass.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s0
+name: audit
+description: >-
+  Measured provider facts: availability, pinned endpoints, quantization,
+  context limits, supported parameters, prices, continuation mechanisms,
+  seed determinism, embedding dimensions and tokenizer integrity.
+
+generators:
+  - llama3-8b-base
+  - qwen3-8b
+  - mistral-nemo-12b
+  - muse-glimmer-30b
+  - deepseek-v4-flash
+
+embeddings:
+  - qwen3-embed-8b
+  - bge-m3
+  - gemini-embed-001
+
+# Placeholders — audits never generate.
+windows:
+  - W: 2048
+    block_size: 512
+    target_tokens: 4096
+    chunk_size: 512
+
+sampling:
+  - temperature: 0.7
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+budget_usd: 3.0

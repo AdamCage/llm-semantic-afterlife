@@ -1,0 +1,56 @@
+# ===========================================================================
+# Representation spaces
+# ---------------------------------------------------------------------------
+# The two primary spaces are architecturally different IN KIND — a causal
+# decoder and a bidirectional encoder. That is the whole point: agreement
+# between them is evidence about the generator, whereas agreement between two
+# decoder-derived embedders would be evidence about decoders.
+#
+# Prices and dimensions are verified by Stage 0's embedding audit.
+# ===========================================================================
+
+embedding_library:
+  mock-hash:
+    model_id: mock/hash-bow
+    api: mock
+    architecture: mock
+    expected_dim: 96
+    max_batch: 64
+    price_usd_per_m_input: 0.0
+    notes: >-
+      Hashing bag-of-words over the fixture's topic vocabularies, L2-normalised.
+      Topic structure is real, so downstream clustering has something to find.
+
+  qwen3-embed-8b:
+    model_id: qwen/qwen3-embedding-8b
+    api: routerai
+    architecture: causal-decoder
+    expected_dim: 4096
+    max_batch: 8
+    price_usd_per_m_input: null
+    notes: >-
+      Primary space. Derived from Qwen3ForCausalLM (36 layers, hidden 4096), so
+      its geometry is that of a causal decoder.
+
+  bge-m3:
+    model_id: baai/bge-m3
+    api: routerai
+    architecture: bidirectional-encoder
+    expected_dim: 1024
+    max_batch: 16
+    price_usd_per_m_input: null
+    notes: >-
+      Primary space. XLM-RoBERTa encoder (24 layers, hidden 1024), bidirectional
+      and encoder-only; needs no retrieval instruction, which suits raw chunks.
+
+  gemini-embed-001:
+    model_id: google/gemini-embedding-001
+    api: routerai
+    architecture: closed
+    expected_dim: null
+    max_batch: 16
+    price_usd_per_m_input: null
+    notes: >-
+      Stage 6 sanity check only. Closed architecture, so it cannot serve the
+      "independent architecture" argument on its own — but if all three spaces
+      agree, the embedding-artifact objection is largely answered.

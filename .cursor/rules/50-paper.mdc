@@ -1,0 +1,66 @@
+---
+description: Manuscript writing rules — only after stages complete, only from artifacts.
+globs: ["paper/**"]
+alwaysApply: false
+---
+
+# Manuscript rules
+
+## When
+
+`paper/main.tex` is written **after** the experimental stages close. Before
+that, only `paper/notes/` may accumulate: claim candidates, related-work
+summaries, phrasing drafts, figure shortlists. Ask the human before committing
+prose into `paper/main.tex`.
+
+## Evidence discipline
+
+- Every quantitative claim in the text carries, in a LaTeX comment on the same
+  line, the artifact path and `run_id` that establishes it:
+  `% artifacts/stage-2/half_life/table_half_life.csv @ s2-halflife-...`
+- Figures are included **from `artifacts/`**, never redrawn or hand-edited for
+  the paper. If a figure needs to change, change the code and re-run.
+- No claim may exceed what the artifact supports. Prefer "we observe" over
+  "we prove"; prefer a bounded statement with a CI over a headline.
+
+## Structure (target: TMLR / ICLR, ACL-family as fallback)
+
+1. Formalise free-running finite-context generation as a stochastic dynamical
+   system, with the re-prompt protocol stated precisely.
+2. Introduce the trajectory benchmark and the measurement suite.
+3. Semantic memory decay / semantic half-life vs. `W`.
+4. Diffusion analysis (MSD scaling exponent, confinement).
+5. Metastability: VAMP → microstates → non-reversible MSM → macrostates,
+   with Markovianity validation (implied timescales, Chapman–Kolmogorov).
+6. Probability currents and time-irreversibility.
+7. `temperature × W × model` phase behaviour.
+8. Cross-model basins of attraction.
+9. Robustness: multiple representation spaces, chunk sizes, independent
+   Leiden branch, tICA control.
+
+## Limitations section is mandatory and specific
+
+Name the real weaknesses, in this order of severity:
+
+- **Re-prompt vs. true sliding attention.** Our protocol re-encodes the last
+  `W` tokens each step (positions restart). This is not identical to KV-cache
+  eviction under a genuine sliding-attention mask. State it, quantify what is
+  known, and do not let the reader discover it in the appendix.
+- **Representation dependence.** Attractors could be artifacts of an embedding
+  space; report cross-embedding agreement (ARI/NMI) rather than asserting
+  independence.
+- **Provider non-determinism** and unknown quantization at the endpoint.
+- **Finite trajectories.** `T/W` turnovers observed; asymptotic claims must be
+  qualified accordingly.
+- **Metastability vs. true fixed points.** Prefer "metastable" unless
+  timescale separation is demonstrated.
+
+## Novelty positioning
+
+We are **not** first to apply attractor language to LLMs, nor first to track
+embeddings over time. Cite the successive-paraphrasing, Markov-chain, and
+multi-turn-attractor lines of work honestly and early
+(`docs/literature/related-work.md`). Our claim is the specific regime:
+*unbounded free-running autoregressive generation under a finite sliding
+context window, past the point where the initial condition has left the state*.
+Overclaiming here is the fastest route to rejection.

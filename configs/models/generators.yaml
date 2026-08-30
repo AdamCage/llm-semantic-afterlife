@@ -1,0 +1,125 @@
+# ===========================================================================
+# Generator library
+# ---------------------------------------------------------------------------
+# One definition per candidate generator, referenced by slug from stage configs.
+# Pinned endpoints live HERE and nowhere else (ADR-0003) so that two stages
+# cannot silently disagree about which endpoint they used.
+#
+# `provider_slug`, `native_context` and prices are PROVISIONAL until Stage 0's
+# provider audit fills them in from `GET /models/{author}/{slug}/endpoints`.
+# Until then they are marked `null` and `afterlife estimate` reports a zero
+# cost for them, which is visible rather than wrong.
+# ===========================================================================
+
+generator_library:
+  # -- offline fixture ----------------------------------------------------
+  # Known-ground-truth hidden Markov generator. Used by CI and by every test
+  # that needs the full pipeline without cost. Its transition matrix is
+  # deliberately non-reversible, so an analysis reporting zero probability
+  # currents on this generator is broken.
+  mock-hmm:
+    model_id: mock/hmm-5topic
+    api: mock
+    tokenizer_repo: mock
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: mock
+    allow_fallbacks: false
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    notes: >-
+      Offline fixture, not a scientific object. Five topics, asymmetric
+      transitions, topic inferred from the tail of the prompt so that the
+      sliding window genuinely affects the dynamics.
+
+  # -- pure autoregressive control ----------------------------------------
+  llama3-8b-base:
+    model_id: meta-llama/llama-3-8b
+    api: routerai
+    tokenizer_repo: NousResearch/Meta-Llama-3-8B
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 8192
+    price_usd_per_m_input: null
+    price_usd_per_m_output: null
+    notes: >-
+      Base model, no chat template and no RLHF policy: the cleanest realisation
+      of "continue this text forever". Ungated tokenizer mirror is used because
+      the official repo is gated; Stage 0 verifies vocabulary equivalence.
+
+  # -- modern compact dense transformer ----------------------------------
+  qwen3-8b:
+    model_id: qwen/qwen3-8b
+    api: routerai
+    tokenizer_repo: Qwen/Qwen3-8B
+    continuation: chat_instructed
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 32768
+    price_usd_per_m_input: null
+    price_usd_per_m_output: null
+    notes: Instruct model; Stage 0 checks whether assistant prefill is available.
+
+  # -- cheap architecturally independent baseline ------------------------
+  mistral-nemo-12b:
+    model_id: mistralai/mistral-nemo
+    api: routerai
+    tokenizer_repo: mistralai/Mistral-Nemo-Instruct-2407
+    continuation: chat_instructed
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: null
+    price_usd_per_m_output: null
+    notes: >-
+      Cheapest candidate; intended to carry the wide part of the experiment
+      matrix where many trajectories matter more than model novelty.
+
+  # -- hybrid local/global attention -------------------------------------
+  muse-glimmer-30b:
+    model_id: meta/muse-glimmer-30b
+    api: routerai
+    tokenizer_repo: meta-models/Muse-Glimmer-30B
+    continuation: chat_instructed
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: null
+    price_usd_per_m_output: null
+    notes: >-
+      Interleaved local/global attention with a 2048-token local window. Its own
+      research axis: does a characteristic semantic timescale appear near 2K
+      despite the global layers?
+
+  # -- frontier MoE control ----------------------------------------------
+  deepseek-v4-flash:
+    model_id: deepseek/deepseek-v4-flash
+    api: routerai
+    tokenizer_repo: deepseek-ai/DeepSeek-V3
+    continuation: chat_instructed
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    provider_slug: null
+    allow_fallbacks: false
+    native_context: 1048576
+    price_usd_per_m_input: null
+    price_usd_per_m_output: null
+    notes: >-
+      Very large native context, imposed W far below it. Pre-empts the reviewer
+      objection that the effect is an artifact of small-context models.
