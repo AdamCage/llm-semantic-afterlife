@@ -1,0 +1,69 @@
+# ===========================================================================
+# S1.2 — did the sub-seed defect contaminate the D_within control?
+# ---------------------------------------------------------------------------
+# The core arm was generated with per-step seeds derived arithmetically:
+#
+#     stochastic_seed * 1_000_003 + step * 31 + attempt * 7_919 + 17
+#
+# which put replicates exactly 1,000,003 apart at every step and consecutive
+# steps exactly 31 apart. Three parallel arithmetic progressions, not three
+# independent streams, and a violation of the project's own rule requiring
+# SeedSequence.spawn. Whether a provider's own initialisation washes that
+# structure out is not observable from here.
+#
+# This matters because `D_within` -- same semantic seed, different stochastic
+# seed -- is the control that makes `D_between` interpretable, and it carries
+# half of the stage's result. If the replicates were not independent, the
+# control is not a control.
+#
+# The suspicion also has a specific observable: all three non-degenerate
+# trajectories in the 48-cell core arm carried stochastic seed s2, across three
+# different semantic seeds. Under random assignment that is about 8% likely --
+# weak on its own, but it now has a mechanism.
+#
+# Design: the same three semantic seeds where s2 survived, the same three
+# stochastic seed *values*, the same generator, window and temperature. Only the
+# derivation function differs, so the comparison isolates it. Twelve turnovers
+# rather than thirty-two, at a third of the cost, compared against the core arm
+# truncated to its first twelve bands.
+#
+# Two outcomes, both informative. If `D_within` is unchanged, the defect was
+# harmless in practice and the core arm stands with a measurement rather than an
+# assumption behind it. If it moves, the stage's central contrast was measured
+# against a compromised control and has to be re-derived.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: seed-independence
+description: >-
+  Nine trajectories reproducing core-arm cells under SeedSequence-derived
+  per-step seeds, to measure whether the previous arithmetic derivation
+  contaminated the within-seed control that the stage's separation result
+  depends on.
+
+generators: [or-qwen3-8b]
+embeddings: [bge-m3]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers, matched to the core arm's first 12 bands
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+# T = 1.0 because that is where the core arm's three non-degenerate trajectories
+# appeared, and therefore where the s2 anomaly is observable.
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+# The three seeds whose s2 replicate survived in the core arm.
+semantic_seeds: [biology, surreal, war]
+stochastic_seeds: [1, 2, 3]
+
+max_concurrent: 2
+budget_usd: 1.0
