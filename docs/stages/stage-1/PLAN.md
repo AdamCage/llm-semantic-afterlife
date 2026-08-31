@@ -143,6 +143,15 @@ rather than in the run. What the criterion is actually for is catching a
 cost model and signals degeneracy. Recorded rather than silently reinterpreted;
 the amendment tightens nothing and loosens nothing on the failure side.
 
+**E7 FAILS on the completed run, and the amendment above was made on 5% of it.**
+See [CORE-ARM.md](CORE-ARM.md). Block fill over the full 8,257 steps is **0.748**,
+and **0.653** in the final quarter, against the probe's 0.942 — a collapse in
+exactly the direction the criterion exists to catch. The 0.995 reading came from
+the first 441 steps. The one-sided amendment stands as a criterion, but its
+justification transferred a number across *time within a run*, in a process whose
+defining feature is that it evolves. That is the same regime-transfer error made
+four times before, committed here with an argument for why it was safe.
+
 E9 replaces the original E4 wording. It is now checkable against a calibrated
 threshold rather than an intuition, and its failure mode is explicit — a
 degenerate ensemble is still reportable, but everything derived from it is a
