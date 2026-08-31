@@ -1,0 +1,5 @@
+{
+  "name": "Semantic Afterlife",
+  "user": "ubuntu",
+  "install": "bash .cursor/install.sh"
+}
