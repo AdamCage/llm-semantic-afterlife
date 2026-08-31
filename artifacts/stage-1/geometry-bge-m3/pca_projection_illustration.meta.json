@@ -1,21 +1,21 @@
 {
   "name": "pca_projection_illustration",
-  "caption": "Chunk embeddings projected onto their first two principal components, coloured by window turnover t/W and connected in generation order. W=8,192, chunk=1024 tokens. Illustration only: all statistics reported in this project are computed in the full high-dimensional space.",
+  "caption": "Chunk embeddings projected onto their first two principal components, coloured by window turnover t/W and connected in generation order. W=4,096, chunk=1024 tokens. Illustration only: all statistics reported in this project are computed in the full high-dimensional space.",
   "alt_text": "Scatter of chunk embeddings in two principal components, connected in time order.",
   "limitations": "A 2-D projection cannot establish the existence, number, or separation of clusters. Nothing in this figure may be used as evidence; see the Markov-state analysis.",
   "run_ids": [
-    "s1-embed-probe-single-20260830T111512Z-048c779e",
-    "s1-geometry-bge-m3-20260830T131553Z-5dd0ee61"
+    "s1-embed-pilot-core-20260831T064430Z-f05e6a68",
+    "s1-geometry-bge-m3-20260831T074420Z-d3c0204a"
   ],
-  "git_sha": "a5d9b4fe1e1733b4a4eb1b753cde4d82f985e894",
-  "config_sha256": "5dd0ee6193b1365354e4a72fbaf401ddb194b60cc5c1e72ece354de5a1ba3b2d",
+  "git_sha": "c008e143af63e973c3848cda7ae2e06056750334",
+  "config_sha256": "d3c0204ab9f846dde45b91c6f51be15d354a982675689cea4fe574426c97ba77",
   "units": {
     "pc1": "arbitrary",
     "pc2": "arbitrary",
     "turnover": "t/W"
   },
-  "generated_at": "2026-08-30T13:16:15+00:00",
-  "explained_variance_pc1": 0.48942572176803534,
-  "explained_variance_pc2": 0.13831696683649228,
-  "W": 8192
+  "generated_at": "2026-08-31T07:45:21+00:00",
+  "explained_variance_pc1": 0.18209036923660732,
+  "explained_variance_pc2": 0.067123261916298,
+  "W": 4096
 }

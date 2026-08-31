@@ -4,24 +4,24 @@
   "alt_text": "Two-panel figure: pairwise distances for same-seed and different-seed trajectory pairs, and their difference with a confidence band, against window turnovers.",
   "limitations": "Shows that the seed still influences the trajectory, not by what mechanism nor that the information is recoverable — the Stage 2 probe answers that. The contrast resolves a strong effect at this replicate count and not a marginal one, so a small gap is underpowered rather than absent. Degenerate trajectories inflate D_within and D_between alike and must be labelled before this figure is read.",
   "run_ids": [
-    "s1-embed-regime-hunt-20260830T230409Z-9cda92fb",
-    "s1-separation-bge-m3-20260830T230649Z-92fefd7e"
+    "s1-embed-pilot-core-20260831T064430Z-f05e6a68",
+    "s1-separation-bge-m3-20260831T074042Z-9bf54fbf"
   ],
-  "git_sha": "8081465c68b8aed38c941a7f2aa40c7758091165",
+  "git_sha": "c008e143af63e973c3848cda7ae2e06056750334",
   "config_sha256": null,
   "units": {
     "band": "window turnovers t/W",
     "gap": "cosine distance"
   },
-  "generated_at": "2026-08-30T23:07:00+00:00",
+  "generated_at": "2026-08-31T07:40:58+00:00",
   "W": 4096,
   "embedding": "bge-m3",
-  "n_trajectories": 18.0,
-  "n_semantic_seeds": 3.0,
-  "gap_post_horizon_mean": 0.029510010460582038,
-  "gap_first_post_horizon_band": 0.08036175197777462,
-  "gap_last_band": 0.016086410201845425,
-  "bands_separated_fraction": 0.3333333333333333,
-  "separated_at_last_band": 0.0,
-  "gap_trend_per_turnover": -0.005600940100399731
+  "n_trajectories": 48.0,
+  "n_semantic_seeds": 8.0,
+  "gap_post_horizon_mean": 0.1569490346584364,
+  "gap_first_post_horizon_band": 0.19552025605598655,
+  "gap_last_band": 0.18507763639434976,
+  "bands_separated_fraction": 1.0,
+  "separated_at_last_band": 1.0,
+  "gap_trend_per_turnover": -0.0007943299533022693
 }
