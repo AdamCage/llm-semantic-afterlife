@@ -32,7 +32,7 @@ from .costs import estimate_experiment, summarise
 from .errors import AfterlifeError
 from .hashing import sha256_obj
 from .logging_utils import configure_logging, get_console, get_logger
-from .provenance import read_manifest
+from .provenance import git_state, read_manifest
 from .runctx import run_context
 
 app = typer.Typer(
@@ -1390,6 +1390,103 @@ def report(stage: Annotated[str, typer.Option("--stage", "-s")]) -> None:
         raise typer.BadParameter(f"no artifacts directory for stage {stage} at {out_dir}")
     path = write_index(out_dir, stage=stage, title=f"Stage {stage} artifacts")
     console().print(f"wrote {path}")
+
+
+snapshot_app = typer.Typer(
+    help="Move runs/ and cache/ between machines, so a fresh clone is not a blank slate."
+)
+app.add_typer(snapshot_app, name="snapshot")
+
+
+@snapshot_app.command("create")
+def snapshot_create(
+    out: Annotated[Path, typer.Option("--out", "-o", help="where to write the archives")] = Path(
+        ".cache/snapshot"
+    ),
+    part: Annotated[
+        str | None, typer.Option("--part", help="build only this part (runs, cache)")
+    ] = None,
+) -> None:
+    """Archive runs/ and the response cache into verifiable tarballs.
+
+    Archives are deterministic -- sorted entries, zeroed timestamps -- so an
+    unchanged tree yields a byte-identical file. That is what makes the recorded
+    sha256 a statement about contents rather than about when it was built.
+    """
+    from .snapshot import PARTS, create_snapshot
+
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    root = settings.paths.root
+    selected = {part: PARTS[part]} if part else None
+    if part and part not in PARTS:
+        raise typer.BadParameter(f"unknown part {part!r}; known: {', '.join(PARTS)}")
+
+    console().print(f"archiving from [bold]{root}[/bold] -> {out}")
+    manifest = create_snapshot(
+        root,
+        out,
+        created_utc=datetime.now(UTC).isoformat(timespec="seconds"),
+        git_sha=git_state(root).get("sha"),
+        parts=selected,
+    )
+
+    table = Table(title="snapshot", title_justify="left", header_style="bold")
+    for column in ("part", "files", "size", "sha256"):
+        table.add_column(column)
+    for info in manifest.parts:
+        table.add_row(
+            info.name,
+            f"{info.n_files:,}",
+            f"{info.size_bytes / 1e6:.1f} MB",
+            info.sha256[:12] + "…",
+        )
+    console().print(table)
+    console().print(f"total [bold]{manifest.total_bytes / 1e6:.1f} MB[/bold] in {out}")
+
+
+@snapshot_app.command("restore")
+def snapshot_restore(
+    source: Annotated[
+        Path, typer.Option("--from", "-f", help="directory holding the archives + manifest")
+    ] = Path(".cache/snapshot"),
+    overwrite: Annotated[
+        bool, typer.Option("--overwrite", help="replace files that already exist locally")
+    ] = False,
+    part: Annotated[str | None, typer.Option("--part", help="restore only this part")] = None,
+    root: Annotated[
+        Path | None,
+        typer.Option("--root", help="tree to restore into; defaults to the detected repo root"),
+    ] = None,
+) -> None:
+    """Verify and extract a snapshot into a working tree.
+
+    Every archive is checked against its recorded digest before anything is
+    written: restoring a truncated archive would put unattributable data under
+    runs/, which is worse than having no data at all. Existing files are kept
+    unless ``--overwrite``, so a restore cannot silently replace a local run
+    with a stale copy.
+
+    The target is stated rather than inferred whenever ``--root`` is given.
+    Detection walks up from the installed package, which resolves to the wrong
+    tree when the command is invoked from another checkout's virtualenv — and
+    writing hundreds of run directories into an unintended repository is not a
+    mistake worth leaving implicit.
+    """
+    from .snapshot import restore_snapshot
+
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    target = (root or settings.paths.root).resolve()
+    console().print(f"restoring into [bold]{target}[/bold]")
+    written = restore_snapshot(source, target, overwrite=overwrite, only=part)
+    for name, count in written.items():
+        console().print(f"{name}: [bold]{count:,}[/bold] files written")
+    if not any(written.values()):
+        console().print(
+            "[yellow]nothing written — every file already existed. Pass --overwrite if the "
+            "snapshot is meant to replace local state.[/yellow]"
+        )
 
 
 @app.command()
