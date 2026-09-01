@@ -1,0 +1,72 @@
+# ===========================================================================
+# S2.2 — is the reviewer register removable, and does removing it matter?
+# ---------------------------------------------------------------------------
+# Stage 1's central confound. Under protocol P1 an instruction-tuned model
+# answers raw text as a document to critique: a trajectory seeded with physics
+# prose ending mid-sentence on "and" opened with "Your passage is a deep and
+# insightful discussion of lattice field theory. Let's break it down." The seed
+# bank was designed against exactly this -- constraint 4 excludes text inviting
+# meta-commentary, and every seed ends mid-sentence -- so the register is
+# imposed by instruction tuning rather than invited.
+#
+# Self-review has a natural fixed point: praise plus restatement. So the
+# question Stage 1 could not answer is whether it measured a property of
+# free-running generation under a sliding window, or a property of a chat
+# persona talking to itself.
+#
+# `assistant_prefill` puts the window in the assistant's own turn, so the model
+# continues its utterance instead of responding to a document. The two arms
+# differ in that and nothing else: same model, same pinned endpoint, same
+# sampling, same seeds.
+#
+# Two outcomes, both decisive:
+#
+#   register goes, fixed-point rate stays  -> the attractor belongs to the
+#                                             process; the original question
+#                                             survives (prediction Q4)
+#   register goes, fixed-point rate moves  -> Stage 1 measured a dialogue
+#                                             artifact, and the paper is about
+#                                             instruction tuning
+#   register stays                         -> prefill is not a lever, and the
+#                                             confound needs a base model
+#
+# qwen3-8b only. It is the sole generator with a 32-turnover baseline to compare
+# against, and Stage 0 found prefill accepted by it while mistral errored and
+# glimmer and deepseek returned empty content.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s2
+name: mechanism
+description: >-
+  Reviewer-register rate and fixed-point rate under assistant_prefill against
+  raw_completion on one generator, to establish whether Stage 1's convergence is
+  a property of the sliding-window process or of the chat persona it induces.
+
+generators:
+  - or-qwen3-8b
+  - or-qwen3-8b-prefill
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers, matched to S2.1 and to S1.0d
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics, surreal]
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+budget_usd: 2.0

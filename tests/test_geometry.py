@@ -219,6 +219,28 @@ class TestComputeGeometry:
         result = self._run(brownian(10, 8, seed=6), W=8192, chunk=1024)
         assert result.scalars["burn_in_applied"] == 0.0
 
+    def test_single_chunk_does_not_crash(self) -> None:
+        """S2.1 left 1-chunk failed trajectories (gpt-oss-20b, glimmer empty-EOS).
+
+        Concatenating a 2-element finite-difference onto a length-1
+        displacement used to raise ValueError and abort the whole run.
+        """
+        result = self._run(brownian(1, 8, seed=6), W=4096, chunk=1024)
+        assert result.scalars["n_chunks"] == 1
+        assert result.scalars["too_short_for_msd"] == 1.0
+        assert result.per_chunk.shape[0] == 1
+        assert np.isnan(result.per_chunk["step_displacement"].iloc[0])
+        assert result.msd.empty
+        assert result.autocorrelation.empty
+
+    def test_three_chunks_skip_msd(self) -> None:
+        result = self._run(brownian(3, 8, seed=6), W=4096, chunk=1024)
+        assert result.scalars["n_chunks"] == 3
+        assert result.scalars["too_short_for_msd"] == 1.0
+        assert result.msd.empty
+        # Early-return path skips ACF as well as MSD when n < 4.
+        assert result.autocorrelation.empty
+
     def test_mismatched_positions_are_rejected(self) -> None:
         with pytest.raises(AnalysisError):
             compute_geometry(

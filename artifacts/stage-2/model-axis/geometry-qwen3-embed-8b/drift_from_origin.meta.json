@@ -1,0 +1,19 @@
+{
+  "name": "drift_from_origin",
+  "caption": "Cosine distance from each trajectory's first chunk. Saturation indicates a bounded semantic region; continued growth indicates directed drift. The context horizon t = W is where the seed has fully left the model's input.",
+  "alt_text": "1 − cos(z_k, z_0) against generated tokens, per trajectory and ensemble mean with CI.",
+  "limitations": "Distance from a single reference chunk is not a measure of the number or separation of semantic states.",
+  "run_ids": [
+    "s2-embed-model-axis-20260901T125626Z-50d60286",
+    "s2-geometry-qwen3-embed-8b-20260901T132459Z-6d741e7d"
+  ],
+  "git_sha": "54f052e50aba03403e8db9b047a71a86f48a0598",
+  "config_sha256": "6d741e7dce689afb96e20f68095c86d63eee9b307b4ddf3b88ce261f27139182",
+  "units": {
+    "token_end": "generator tokens",
+    "distance_from_origin": "cosine distance"
+  },
+  "generated_at": "2026-09-01T13:25:05+00:00",
+  "W": 4096,
+  "n_trajectories": 39
+}

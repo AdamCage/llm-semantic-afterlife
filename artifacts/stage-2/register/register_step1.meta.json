@@ -1,0 +1,13 @@
+{
+  "name": "register_step1",
+  "caption": "F4 hand count: each step-1 completion is labelled register or continuation by RegisterCriterion reviewer_register_v1 (second-person evaluation of the seed as a document, or an opening evaluative/meta frame). The marker_prefilter column is the cheap string filter from analysis/rates.py and is not the verdict.",
+  "alt_text": "Per-trajectory step-1 register hand count",
+  "limitations": "Prefill has n=8, below the pre-registered bar of 20 per mechanism; the raw arm reaches n=40 only by pooling every S2.1 generator, which mixes models that almost never enter the register with qwen, which usually does. Mechanism comparisons must use the matched qwen S2.2 cells (n=8 vs 8). Step-1 is not the late-run register: some surreal prefill trajectories start as continuation and fall into the reviewer register later.",
+  "run_ids": [
+    "s2-model-axis-20260901T015457Z-ab59afc8",
+    "s2-mechanism-20260901T071519Z-dfbb173a"
+  ],
+  "git_sha": "0818c837ac9f06554b37d17353976e6418fcf65e",
+  "criterion": "reviewer_register_v1",
+  "criterion_description": "Step-1 is in the reviewer register if it addresses the seed as a document to evaluate or explain (second-person reference to the reader's text, or an opening evaluative/meta frame such as praise-plus-restatement or 'let me break this down'), rather than continuing the seed's last clause in the same grammatical person and tense."
+}

@@ -18,6 +18,13 @@ from .geometry import (
     recurrence_matrix,
     recurrence_quantification,
 )
+from .rates import (
+    grouped_rates,
+    parse_trajectory_id,
+    quarter_diagnostics,
+    rate_ci,
+    rate_difference_ci,
+)
 from .separation import (
     SeparationParams,
     SeparationResult,
@@ -39,7 +46,12 @@ __all__ = [
     "compute_geometry",
     "compute_separation",
     "fit_msd_exponent",
+    "grouped_rates",
     "mean_squared_displacement",
+    "parse_trajectory_id",
+    "quarter_diagnostics",
+    "rate_ci",
+    "rate_difference_ci",
     "recurrence_matrix",
     "recurrence_quantification",
     "trajectories_from_frame",

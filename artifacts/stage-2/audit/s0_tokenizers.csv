@@ -1,0 +1,6 @@
+generator,tokenizer_repo,loaded,type,vocab_size,fingerprint,roundtrip_all_ok,n_roundtrip_probes,n_roundtrip_failures,tail_exact,probe_tokens,tail_chars,error
+or-qwen3-8b,Qwen/Qwen3-8B,True,HFTokenizer,151669,sha256:aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4,True,4,0,True,28,815,
+or-gemma-4-31b,google/gemma-4-31b-it,True,HFTokenizer,262144,sha256:cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f,True,4,0,True,28,815,
+or-gpt-oss-20b,openai/gpt-oss-20b,True,HFTokenizer,200019,sha256:0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3,True,4,0,True,28,815,
+or-gpt-oss-120b,openai/gpt-oss-120b,True,HFTokenizer,200019,sha256:0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3,True,4,0,True,28,815,
+or-muse-glimmer-30b,meta-models/Muse-Glimmer-30B,True,HFTokenizer,202048,sha256:c9dbee66967b58f31a7c27f723c3760da3526ccd0427578e8905b0abb0031c4d,True,4,0,True,28,815,

@@ -1,0 +1,6 @@
+generator,ci_low,ci_high,n,n_positive,rate
+or-gemma-4-31b,0,0,8,0,0
+or-gpt-oss-120b,1,1,8,8,1
+or-gpt-oss-20b,0,0.571429,7,2,0.285714
+or-muse-glimmer-30b,0,0.625,8,2,0.25
+or-qwen3-8b,0.625,1,8,7,0.875

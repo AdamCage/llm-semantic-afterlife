@@ -1,0 +1,109 @@
+<style type="text/css">
+#T_720da caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0.4em 0;
+  font-size: 1.05em;
+}
+#T_720da th {
+  background-color: #F2F4F7;
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 2px solid #4D4D4D;
+}
+#T_720da td {
+  padding: 0.3em 0.6em;
+}
+#T_720da tr:nth-child(even) {
+  background-color: #FAFBFC;
+}
+#T_720da table {
+  border-collapse: collapse;
+  font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
+  font-size: 0.92em;
+}
+#T_720da_row0_col1, #T_720da_row0_col2, #T_720da_row0_col4, #T_720da_row0_col5, #T_720da_row2_col1, #T_720da_row2_col3, #T_720da_row3_col1 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_720da_row0_col3, #T_720da_row1_col1, #T_720da_row1_col2, #T_720da_row1_col3, #T_720da_row1_col4, #T_720da_row1_col5, #T_720da_row3_col3, #T_720da_row4_col2, #T_720da_row4_col3 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_720da_row2_col2 {
+  background-color: #539ecd;
+  color: #f1f1f1;
+}
+#T_720da_row2_col4, #T_720da_row3_col4, #T_720da_row3_col5 {
+  background-color: #c6dbef;
+  color: #000000;
+}
+#T_720da_row2_col5 {
+  background-color: #bad6eb;
+  color: #000000;
+}
+#T_720da_row3_col2, #T_720da_row4_col1 {
+  background-color: #4191c6;
+  color: #f1f1f1;
+}
+#T_720da_row4_col4, #T_720da_row4_col5 {
+  background-color: #08509b;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_720da">
+  <caption>Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.</caption>
+  <thead>
+    <tr>
+      <th id="T_720da_level0_col0" class="col_heading level0 col0" >generator</th>
+      <th id="T_720da_level0_col1" class="col_heading level0 col1" >ci_low</th>
+      <th id="T_720da_level0_col2" class="col_heading level0 col2" >ci_high</th>
+      <th id="T_720da_level0_col3" class="col_heading level0 col3" >n</th>
+      <th id="T_720da_level0_col4" class="col_heading level0 col4" >n_positive</th>
+      <th id="T_720da_level0_col5" class="col_heading level0 col5" >rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_720da_row0_col0" class="data row0 col0" >or-gemma-4-31b</td>
+      <td id="T_720da_row0_col1" class="data row0 col1" >0.0000</td>
+      <td id="T_720da_row0_col2" class="data row0 col2" >0.0000</td>
+      <td id="T_720da_row0_col3" class="data row0 col3" >8</td>
+      <td id="T_720da_row0_col4" class="data row0 col4" >0</td>
+      <td id="T_720da_row0_col5" class="data row0 col5" >0.0000</td>
+    </tr>
+    <tr>
+      <td id="T_720da_row1_col0" class="data row1 col0" >or-gpt-oss-120b</td>
+      <td id="T_720da_row1_col1" class="data row1 col1" >1.0000</td>
+      <td id="T_720da_row1_col2" class="data row1 col2" >1.0000</td>
+      <td id="T_720da_row1_col3" class="data row1 col3" >8</td>
+      <td id="T_720da_row1_col4" class="data row1 col4" >8</td>
+      <td id="T_720da_row1_col5" class="data row1 col5" >1.0000</td>
+    </tr>
+    <tr>
+      <td id="T_720da_row2_col0" class="data row2 col0" >or-gpt-oss-20b</td>
+      <td id="T_720da_row2_col1" class="data row2 col1" >0.0000</td>
+      <td id="T_720da_row2_col2" class="data row2 col2" >0.5714</td>
+      <td id="T_720da_row2_col3" class="data row2 col3" >7</td>
+      <td id="T_720da_row2_col4" class="data row2 col4" >2</td>
+      <td id="T_720da_row2_col5" class="data row2 col5" >0.2857</td>
+    </tr>
+    <tr>
+      <td id="T_720da_row3_col0" class="data row3 col0" >or-muse-glimmer-30b</td>
+      <td id="T_720da_row3_col1" class="data row3 col1" >0.0000</td>
+      <td id="T_720da_row3_col2" class="data row3 col2" >0.6250</td>
+      <td id="T_720da_row3_col3" class="data row3 col3" >8</td>
+      <td id="T_720da_row3_col4" class="data row3 col4" >2</td>
+      <td id="T_720da_row3_col5" class="data row3 col5" >0.2500</td>
+    </tr>
+    <tr>
+      <td id="T_720da_row4_col0" class="data row4 col0" >or-qwen3-8b</td>
+      <td id="T_720da_row4_col1" class="data row4 col1" >0.6250</td>
+      <td id="T_720da_row4_col2" class="data row4 col2" >1.0000</td>
+      <td id="T_720da_row4_col3" class="data row4 col3" >8</td>
+      <td id="T_720da_row4_col4" class="data row4 col4" >7</td>
+      <td id="T_720da_row4_col5" class="data row4 col5" >0.8750</td>
+    </tr>
+  </tbody>
+</table>

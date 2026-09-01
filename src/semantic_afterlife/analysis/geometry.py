@@ -304,8 +304,18 @@ def compute_geometry(
 
     turnover = token_positions / float(W)
     turnover_start = token_starts / float(W)
-    displacement = step_displacement(Z)
     from_origin = cosine_distance_to(Z, Z[0])
+    # Length-n columns. step_displacement is n-1; its first difference is n-2.
+    # A one-chunk fragment (failed early) used to crash here: concat([nan, nan],
+    # diff([])) has length 2. Dropping those fragments silently would hide that
+    # they exist; they stay in the table with NaN dynamics.
+    step_col = np.full(n, np.nan, dtype=np.float64)
+    accel_col = np.full(n, np.nan, dtype=np.float64)
+    if n >= 2:
+        displacement = step_displacement(Z)
+        step_col[1:] = displacement
+        if n >= 3:
+            accel_col[2:] = np.diff(displacement)
 
     per_chunk = pd.DataFrame(
         {
@@ -316,8 +326,8 @@ def compute_geometry(
             "turnover": turnover,
             "past_horizon": turnover_start >= 1.0,
             "distance_from_origin": from_origin,
-            "step_displacement": np.concatenate([[np.nan], displacement]),
-            "semantic_acceleration": np.concatenate([[np.nan, np.nan], np.diff(displacement)]),
+            "step_displacement": step_col,
+            "semantic_acceleration": accel_col,
         }
     )
     if seed_embedding is not None:
@@ -335,6 +345,52 @@ def compute_geometry(
     else:
         burn_in_applied = True
     Z_post = Z[keep]
+
+    if n < 4:
+        # MSD and ACF refuse n < 4 / n < 3. A failed-early trajectory is still
+        # a row in the ensemble; its exponent is undefined, not zero.
+        empty_msd = pd.DataFrame(
+            {
+                "trajectory_id": pd.Series(dtype=str),
+                "lag_chunks": pd.Series(dtype=np.int64),
+                "msd": pd.Series(dtype=np.float64),
+                "n_pairs": pd.Series(dtype=np.int64),
+            }
+        )
+        empty_acf = pd.DataFrame(
+            {
+                "trajectory_id": pd.Series(dtype=str),
+                "lag_chunks": pd.Series(dtype=np.int64),
+                "autocorrelation": pd.Series(dtype=np.float64),
+            }
+        )
+        scalars = {
+            "n_chunks": float(n),
+            "n_chunks_post_horizon": float(int((turnover_start >= 1.0).sum())),
+            "burn_in_applied": 0.0,
+            "too_short_for_msd": 1.0,
+            "mean_step_displacement": float("nan"),
+            "std_step_displacement": float("nan"),
+            "mean_distance_from_origin": float(np.mean(from_origin[keep])),
+            "final_distance_from_origin": float(from_origin[-1]),
+            "msd_alpha": float("nan"),
+            "msd_alpha_se": float("nan"),
+            "msd_r_squared": float("nan"),
+            "msd_plateau": float("nan"),
+            "integrated_autocorr_time": float("nan"),
+        }
+        if seed_embedding is not None:
+            seed_distance = cosine_distance_to(Z, seed_embedding)
+            scalars["mean_distance_from_seed"] = float(np.mean(seed_distance[keep]))
+            scalars["final_distance_from_seed"] = float(seed_distance[-1])
+        return GeometryResult(
+            trajectory_id=trajectory_id,
+            per_chunk=per_chunk,
+            msd=empty_msd,
+            autocorrelation=empty_acf,
+            scalars=scalars,
+            recurrence=None,
+        )
 
     max_lag = max(1, int(Z_post.shape[0] * params.msd_max_lag_fraction))
     lags, msd_values, pairs = mean_squared_displacement(Z_post, max_lag=max_lag)
@@ -358,7 +414,7 @@ def compute_geometry(
         }
     )
 
-    scalars: dict[str, float] = {
+    long_scalars: dict[str, float] = {
         "n_chunks": float(n),
         "n_chunks_post_horizon": float(int(keep.sum())),
         "burn_in_applied": float(burn_in_applied),
@@ -371,24 +427,27 @@ def compute_geometry(
         "msd_r_squared": fit["r_squared"],
         "msd_plateau": fit["plateau_msd"],
         "integrated_autocorr_time": integrated_autocorrelation_time(acf_lags, acf_values),
+        "too_short_for_msd": 0.0,
     }
     if seed_embedding is not None:
         seed_distance = cosine_distance_to(Z, seed_embedding)
-        scalars["mean_distance_from_seed"] = float(np.mean(seed_distance[keep]))
-        scalars["final_distance_from_seed"] = float(seed_distance[-1])
+        long_scalars["mean_distance_from_seed"] = float(np.mean(seed_distance[keep]))
+        long_scalars["final_distance_from_seed"] = float(seed_distance[-1])
 
     recurrence: np.ndarray | None = None
     if with_recurrence and Z_post.shape[0] >= 8:
         recurrence, epsilon = recurrence_matrix(Z_post, quantile=params.recurrence_quantile)
-        scalars["recurrence_epsilon"] = epsilon
-        scalars.update(recurrence_quantification(recurrence, min_line=params.recurrence_min_line))
+        long_scalars["recurrence_epsilon"] = epsilon
+        long_scalars.update(
+            recurrence_quantification(recurrence, min_line=params.recurrence_min_line)
+        )
 
     return GeometryResult(
         trajectory_id=trajectory_id,
         per_chunk=per_chunk,
         msd=msd,
         autocorrelation=autocorr,
-        scalars=scalars,
+        scalars=long_scalars,
         recurrence=recurrence,
     )
 
@@ -404,7 +463,9 @@ def aggregate_msd(
     """
     if not results:
         raise AnalysisError("no geometry results to aggregate")
-    frames = [r.msd.set_index("lag_chunks")["msd"] for r in results]
+    frames = [r.msd.set_index("lag_chunks")["msd"] for r in results if not r.msd.empty]
+    if not frames:
+        raise AnalysisError("no trajectory was long enough to form an MSD")
     wide = pd.concat(frames, axis=1, join="inner")
     if wide.empty:
         raise AnalysisError("trajectories share no common lag range")

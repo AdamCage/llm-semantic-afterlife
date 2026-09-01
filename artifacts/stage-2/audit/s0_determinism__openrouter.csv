@@ -1,0 +1,6 @@
+generator,n_attempts,n_responses,exact_match_rate,mean_similarity,min_similarity,distinct_outputs,served_providers,errors
+or-qwen3-8b,5,5,0.6,0.81633,0.566429,3,Alibaba,
+or-gemma-4-31b,5,5,0.2,0.635182,0.534944,5,Venice,
+or-gpt-oss-20b,5,5,0.2,0.240751,0.203219,5,DeepInfra,
+or-gpt-oss-120b,5,5,0.2,0.390408,0.3087,5,AkashML,
+or-muse-glimmer-30b,5,5,1,1,1,1,Parasail,

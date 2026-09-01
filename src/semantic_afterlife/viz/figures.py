@@ -713,6 +713,185 @@ def cost_breakdown_figure(
     return figure, estimates, meta
 
 
+def rate_bar_figure(
+    rates: pd.DataFrame,
+    *,
+    group_column: str,
+    run_ids: list[str],
+    name: str = "fixed_point_rate",
+    title: str = "Fixed-point rate per generator",
+    caption: str,
+    limitations: str,
+    reference: float | None = 0.5,
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Bernoulli rate with a precomputed trajectory-level bootstrap interval.
+
+    The interval must already live on the frame as ``ci_low`` / ``ci_high``.
+    This function does not re-estimate anything: a figure that recomputed the
+    CI would silently disagree with the table it sits next to.
+    """
+    required = {group_column, "rate", "ci_low", "ci_high", "n"}
+    missing = required - set(rates.columns)
+    if missing:
+        raise ValueError(f"rate frame missing {sorted(missing)}")
+    tidy = rates.loc[:, list(required | ({"n_positive"} & set(rates.columns)))].copy()
+    tidy = tidy.sort_values(group_column)
+    figure = go.Figure()
+    figure.add_trace(
+        go.Bar(
+            x=tidy[group_column],
+            y=tidy["rate"],
+            marker_color=PALETTE[0],
+            error_y={
+                "type": "data",
+                "symmetric": False,
+                "array": tidy["ci_high"] - tidy["rate"],
+                "arrayminus": tidy["rate"] - tidy["ci_low"],
+            },
+            name="rate",
+            customdata=np.stack([tidy["n"], tidy["ci_low"], tidy["ci_high"]], axis=1),
+            hovertemplate=(
+                "%{x}<br>rate=%{y:.2f}<br>95% CI [%{customdata[1]:.2f}, "
+                "%{customdata[2]:.2f}]<br>n=%{customdata[0]}<extra></extra>"
+            ),
+        )
+    )
+    if reference is not None:
+        figure.add_hline(
+            y=reference,
+            line={"color": ROLE_COLORS["baseline"], "dash": "dash", "width": 1},
+            annotation_text=f"reference {reference:g}",
+            annotation_position="top left",
+        )
+    figure.update_layout(
+        template=plotly_template(),
+        title=title,
+        xaxis={"title": group_column.replace("_", " ")},
+        yaxis={"title": "rate", "range": [0, 1]},
+        showlegend=False,
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={
+            "rate": "proportion of trajectories",
+            "ci_low": "proportion",
+            "ci_high": "proportion",
+        },
+    )
+    return figure, tidy, meta
+
+
+def quarter_protocol_figure(
+    per_traj: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    name: str = "protocol_by_quarter",
+    title: str = "Block fill and stop rate by quarter of the run",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Per-generator protocol diagnostics, never collapsed to a run mean.
+
+    Input is the per-trajectory-quarter frame from ``quarter_diagnostics``.
+    Ensemble mean and a trajectory bootstrap interval are computed here so the
+    plotted band matches the replicate unit used everywhere else.
+    """
+    from ..analysis.geometry import bootstrap_mean_ci
+
+    rows: list[dict[str, object]] = []
+    for (generator, quarter), block in per_traj.groupby(["generator", "quarter"], sort=True):
+        fill = bootstrap_mean_ci(block["block_fill"].to_numpy(), seed=int(quarter) + 17)
+        stop = bootstrap_mean_ci(block["stop_rate"].to_numpy(), seed=int(quarter) + 31)
+        rows.append(
+            {
+                "generator": generator,
+                "quarter": int(quarter),
+                "block_fill": fill["mean"],
+                "block_fill_ci_low": fill["ci_low"],
+                "block_fill_ci_high": fill["ci_high"],
+                "stop_rate": stop["mean"],
+                "stop_rate_ci_low": stop["ci_low"],
+                "stop_rate_ci_high": stop["ci_high"],
+                "n_trajectories": fill["n"],
+            }
+        )
+    tidy = pd.DataFrame(rows)
+    figure = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=("block fill", "stop rate"),
+        shared_xaxes=True,
+    )
+    generators = list(dict.fromkeys(tidy["generator"]))
+    for index, generator in enumerate(generators):
+        block = tidy[tidy["generator"] == generator]
+        colour = PALETTE[index % len(PALETTE)]
+        figure.add_trace(
+            go.Scatter(
+                x=block["quarter"],
+                y=block["block_fill"],
+                mode="lines+markers",
+                name=generator,
+                line={"color": colour},
+                legendgroup=generator,
+                error_y={
+                    "type": "data",
+                    "symmetric": False,
+                    "array": block["block_fill_ci_high"] - block["block_fill"],
+                    "arrayminus": block["block_fill"] - block["block_fill_ci_low"],
+                },
+            ),
+            row=1,
+            col=1,
+        )
+        figure.add_trace(
+            go.Scatter(
+                x=block["quarter"],
+                y=block["stop_rate"],
+                mode="lines+markers",
+                name=generator,
+                line={"color": colour},
+                legendgroup=generator,
+                showlegend=False,
+                error_y={
+                    "type": "data",
+                    "symmetric": False,
+                    "array": block["stop_rate_ci_high"] - block["stop_rate"],
+                    "arrayminus": block["stop_rate"] - block["stop_rate_ci_low"],
+                },
+            ),
+            row=1,
+            col=2,
+        )
+    figure.update_xaxes(title_text="quarter of the run", dtick=1, range=[0.5, 4.5])
+    figure.update_yaxes(title_text="mean block fill", range=[0, 1], row=1, col=1)
+    figure.update_yaxes(title_text="stop-token rate", range=[0, 1], row=1, col=2)
+    figure.update_layout(template=plotly_template(), title=title)
+    meta = FigureMeta(
+        name=name,
+        caption=(
+            "Block fill and stop-token rate by quarter of each trajectory, then averaged "
+            "across trajectories of the same generator with a 95% bootstrap CI. Quarters "
+            "are even bins over steps, not tokens: fill and stop are per-request properties, "
+            "and late steps shorten when the model starts hitting stop."
+        ),
+        run_ids=run_ids,
+        limitations=(
+            "A run-level mean is not shown and must not be read off the figure. Drift "
+            "inside a quarter is hidden. This is a protocol diagnostic, not a semantic "
+            "measurement: a falling fill does not by itself mean the trajectory has "
+            "reached a semantic fixed point."
+        ),
+        units={
+            "block_fill": "completion tokens / requested max_tokens",
+            "stop_rate": "fraction of steps with finish_reason ≠ length",
+            "quarter": "1–4, equal step counts",
+        },
+    )
+    return figure, tidy, meta
+
+
 def _rgba(hex_colour: str, alpha: float) -> str:
     hex_colour = hex_colour.lstrip("#")
     r, g, b = (int(hex_colour[i : i + 2], 16) for i in (0, 2, 4))

@@ -1,0 +1,14 @@
+{
+  "name": "protocol_by_quarter",
+  "caption": "Block fill and stop-token rate by quarter of each trajectory, then averaged across trajectories of the same generator with a 95% bootstrap CI. Quarters are even bins over steps, not tokens: fill and stop are per-request properties, and late steps shorten when the model starts hitting stop.",
+  "alt_text": "Block fill and stop-token rate by quarter of each trajectory, then averaged across trajectories of the same generator with a 95% bootstrap CI. Quarters are even bins over steps, not tokens: fill and stop are per-request properties, and late steps shorten when the model starts hitting stop.",
+  "limitations": "A run-level mean is not shown and must not be read off the figure. Drift inside a quarter is hidden. This is a protocol diagnostic, not a semantic measurement: a falling fill does not by itself mean the trajectory has reached a semantic fixed point.",
+  "run_ids": [
+    "s2-model-axis-20260901T015457Z-ab59afc8",
+    "s2-protocol-20260901T125458Z-fb34c759"
+  ],
+  "git_sha": "42ad63adbe22225cae2fc201edded0eab86fd4fb",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-01T12:55:01+00:00"
+}

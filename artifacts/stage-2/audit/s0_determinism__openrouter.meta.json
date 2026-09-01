@@ -1,0 +1,13 @@
+{
+  "name": "s0_determinism__openrouter",
+  "caption": "Exact-match and similarity rates over 5 identical seeded requests per model at temperature 0.7. This number, and not an assumption, determines the reproducibility level the paper may claim.",
+  "alt_text": "Exact-match and similarity rates over 5 identical seeded requests per model at temperature 0.7. This number, and not an assumption, determines the reproducibility level the paper may claim.",
+  "limitations": "Five identical seeded requests at temperature 0.7 and 128 tokens. This is not the reproducibility of a 12-turnover trajectory at T=0.3 or T=1.0. Exact-match rate is the level of seeded determinism an arm may claim for this probe; it does not make outputs interchangeable.",
+  "run_ids": [
+    "s2-audit-determinism-20260901T015221Z-ab59afc8"
+  ],
+  "git_sha": "4656b2ceda7bd86b6c213bc426d07e490d178405",
+  "config_sha256": "ab59afc89219f6176d141144935045ab0738dc0503bb99aa0bf53b240b6c222e",
+  "units": {},
+  "generated_at": "2026-09-01T01:53:51+00:00"
+}

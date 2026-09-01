@@ -1,0 +1,27 @@
+{
+  "name": "seed_separation",
+  "caption": "Seed-separation contrast in the bge-m3 space, W=4,096. Upper panel: mean cosine distance between trajectory pairs from different semantic seeds, against the control of pairs sharing a semantic seed and differing only in their stochastic seed. Lower panel: the difference, with a 95% bootstrap interval resampled over trajectories. Filled markers mark bands whose interval excludes zero. A positive gap after the context horizon means the seed still shapes the trajectory once it has physically left the model's input.",
+  "alt_text": "Two-panel figure: pairwise distances for same-seed and different-seed trajectory pairs, and their difference with a confidence band, against window turnovers.",
+  "limitations": "Shows that the seed still influences the trajectory, not by what mechanism nor that the information is recoverable — the Stage 2 probe answers that. The contrast resolves a strong effect at this replicate count and not a marginal one, so a small gap is underpowered rather than absent. Degenerate trajectories inflate D_within and D_between alike and must be labelled before this figure is read.",
+  "run_ids": [
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-separation-bge-m3-20260901T132622Z-226561aa"
+  ],
+  "git_sha": "54f052e50aba03403e8db9b047a71a86f48a0598",
+  "config_sha256": null,
+  "units": {
+    "band": "window turnovers t/W",
+    "gap": "cosine distance"
+  },
+  "generated_at": "2026-09-01T13:26:25+00:00",
+  "W": 4096,
+  "embedding": "bge-m3",
+  "n_trajectories": 16.0,
+  "n_semantic_seeds": 2.0,
+  "gap_post_horizon_mean": 0.24917848014092692,
+  "gap_first_post_horizon_band": 0.26237685743219497,
+  "gap_last_band": 0.231895974685145,
+  "bands_separated_fraction": 1.0,
+  "separated_at_last_band": 1.0,
+  "gap_trend_per_turnover": -0.003024122262889409
+}
