@@ -1,19 +1,19 @@
 {
   "name": "chapman_kolmogorov",
-  "caption": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. The dashed line is the pre-registered threshold 0.15. Every eligible cell is above it: the MSM is not Markovian at lag 1 on this sample.",
-  "alt_text": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. The dashed line is the pre-registered threshold 0.15. Every eligible cell is above it: the MSM is not Markovian at lag 1 on this sample.",
-  "limitations": "With ~44 post-horizon chunks, k=3 is a large fraction of the series. Failure here is expected for a textual fixed point / loop and is why no cell is given a macrostate interpretation.",
+  "caption": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. Bars are labelled micro (k-means, pre-registered F6 bar 0.15) or macro (spectral coarse-graining). A micro-MSM above the dashed line fails F6. That is a sparse count-matrix test, not a claim that the process is non-Markov.",
+  "alt_text": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. Bars are labelled micro (k-means, pre-registered F6 bar 0.15) or macro (spectral coarse-graining). A micro-MSM above the dashed line fails F6. That is a sparse count-matrix test, not a claim that the process is non-Markov.",
+  "limitations": "F6 is scored on the K-state micro-MSM only. Unused microstates get a self-loop; a single empty-versus-occupied discrepancy drives the max toward 1. The 0.15 bar is pre-registered, not calibrated to this K / n_frames regime, and is not scale-aware. Methodology's VAMP-reduced CK was not run. Macro CK is a different object: several F4 cells pass 0.15 after coarse-graining because a 2–4 state partition of a loop is easier to fit, not because H1 holds.",
   "run_ids": [
-    "s3-dynamics-20260901T184826Z-f21d5908",
-    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
     "s2-embed-mechanism-20260901T131051Z-55761049",
     "s2-embed-model-axis-20260901T125626Z-50d60286"
   ],
-  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "git_sha": "9f69127",
   "config_sha256": null,
   "units": {
     "k": "multiples of the MSM lag",
     "max_abs_error": "probability"
   },
-  "generated_at": "2026-09-01T18:53:29+00:00"
+  "generated_at": "2026-09-01T20:48:10+00:00"
 }

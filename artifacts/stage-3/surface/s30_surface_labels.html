@@ -1,131 +1,131 @@
 <style type="text/css">
-#T_464fe caption {
+#T_5463d caption {
   caption-side: top;
   text-align: left;
   font-weight: 600;
   padding: 0.4em 0;
   font-size: 1.05em;
 }
-#T_464fe th {
+#T_5463d th {
   background-color: #F2F4F7;
   text-align: left;
   padding: 0.35em 0.6em;
   border-bottom: 2px solid #4D4D4D;
 }
-#T_464fe td {
+#T_5463d td {
   padding: 0.3em 0.6em;
 }
-#T_464fe tr:nth-child(even) {
+#T_5463d tr:nth-child(even) {
   background-color: #FAFBFC;
 }
-#T_464fe table {
+#T_5463d table {
   border-collapse: collapse;
   font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
   font-size: 0.92em;
 }
-#T_464fe_row0_col1, #T_464fe_row1_col1, #T_464fe_row2_col1, #T_464fe_row3_col1, #T_464fe_row7_col1 {
+#T_5463d_row0_col1, #T_5463d_row1_col1, #T_5463d_row2_col1, #T_5463d_row3_col1, #T_5463d_row7_col1 {
   background-color: #f7fbff;
   color: #000000;
 }
-#T_464fe_row4_col1, #T_464fe_row5_col1, #T_464fe_row6_col1 {
+#T_5463d_row4_col1, #T_5463d_row5_col1, #T_5463d_row6_col1 {
   background-color: #08306b;
   color: #f1f1f1;
 }
 </style>
-<table id="T_464fe">
-  <caption>Hand labels of S3.0 step-1 and last-quarter text for local-gemma-3-1b-pt at W=256, 12 turnovers (run s3-local-base-20260901T184812Z-cc80633b). Reviewer register = self-review of the prompt ('you've provided', 'well-structured', 'comprehensive overview'). Silence = whitespace / recursion marks as in gemma-4-31b. Verbatim loop = a ≥40-character span repeats in the same completion. Continuation = none of those. Sliding seed-echo = last block is a rotation of the first. 0/8 open in the reviewer register; 8/8 are degenerate by the last quarter.</caption>
+<table id="T_5463d">
+  <caption>Hand labels of S3.0 step-1, last-quarter, and last-step text for local-gemma-3-1b-pt at W=256, 12 turnovers (run s3-local-base-20260901T184812Z-cc80633b). Reviewer register = self-review of the prompt ('you've provided', 'well-structured', 'comprehensive overview'). Silence = whitespace / recursion marks as in gemma-4-31b. Verbatim loop = a ≥40-character span repeats in the same completion. Token lock = a short repeated token or phrase that is not whitespace/recursion ('I I', 'Is This', '/1/1'). Continuation = none of those. Sliding seed-echo = last block is a rotation of the first. last_step uses the same criterion as last_quarter. 0/8 open in the reviewer register; 0/8 last-quarter silence; 8/8 degenerate by the last quarter.</caption>
   <thead>
     <tr>
-      <th id="T_464fe_level0_col0" class="col_heading level0 col0" >trajectory_id</th>
-      <th id="T_464fe_level0_col1" class="col_heading level0 col1" >n_steps</th>
-      <th id="T_464fe_level0_col2" class="col_heading level0 col2" >step1</th>
-      <th id="T_464fe_level0_col3" class="col_heading level0 col3" >last_quarter</th>
-      <th id="T_464fe_level0_col4" class="col_heading level0 col4" >last_step</th>
-      <th id="T_464fe_level0_col5" class="col_heading level0 col5" >sliding_seed_echo</th>
-      <th id="T_464fe_level0_col6" class="col_heading level0 col6" >step1_quote</th>
-      <th id="T_464fe_level0_col7" class="col_heading level0 col7" >last_quote</th>
+      <th id="T_5463d_level0_col0" class="col_heading level0 col0" >trajectory_id</th>
+      <th id="T_5463d_level0_col1" class="col_heading level0 col1" >n_steps</th>
+      <th id="T_5463d_level0_col2" class="col_heading level0 col2" >step1</th>
+      <th id="T_5463d_level0_col3" class="col_heading level0 col3" >last_quarter</th>
+      <th id="T_5463d_level0_col4" class="col_heading level0 col4" >last_step</th>
+      <th id="T_5463d_level0_col5" class="col_heading level0 col5" >sliding_seed_echo</th>
+      <th id="T_5463d_level0_col6" class="col_heading level0 col6" >step1_quote</th>
+      <th id="T_5463d_level0_col7" class="col_heading level0 col7" >last_quote</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td id="T_464fe_row0_col0" class="data row0 col0" >local-gemma-3-1b-pt__W256__T0p3__physics__s1</td>
-      <td id="T_464fe_row0_col1" class="data row0 col1" >96</td>
-      <td id="T_464fe_row0_col2" class="data row0 col2" >continuation</td>
-      <td id="T_464fe_row0_col3" class="data row0 col3" >verbatim_loop</td>
-      <td id="T_464fe_row0_col4" class="data row0 col4" >continuation</td>
-      <td id="T_464fe_row0_col5" class="data row0 col5" >True</td>
-      <td id="T_464fe_row0_col6" class="data row0 col6" > the choice of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
-      <td id="T_464fe_row0_col7" class="data row0 col7" > of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the choice of</td>
+      <td id="T_5463d_row0_col0" class="data row0 col0" >local-gemma-3-1b-pt__W256__T0p3__physics__s1</td>
+      <td id="T_5463d_row0_col1" class="data row0 col1" >96</td>
+      <td id="T_5463d_row0_col2" class="data row0 col2" >continuation</td>
+      <td id="T_5463d_row0_col3" class="data row0 col3" >verbatim_loop</td>
+      <td id="T_5463d_row0_col4" class="data row0 col4" >continuation</td>
+      <td id="T_5463d_row0_col5" class="data row0 col5" >True</td>
+      <td id="T_5463d_row0_col6" class="data row0 col6" > the choice of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
+      <td id="T_5463d_row0_col7" class="data row0 col7" > of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the choice of</td>
     </tr>
     <tr>
-      <td id="T_464fe_row1_col0" class="data row1 col0" >local-gemma-3-1b-pt__W256__T0p3__physics__s2</td>
-      <td id="T_464fe_row1_col1" class="data row1 col1" >96</td>
-      <td id="T_464fe_row1_col2" class="data row1 col2" >continuation</td>
-      <td id="T_464fe_row1_col3" class="data row1 col3" >verbatim_loop</td>
-      <td id="T_464fe_row1_col4" class="data row1 col4" >continuation</td>
-      <td id="T_464fe_row1_col5" class="data row1 col5" >True</td>
-      <td id="T_464fe_row1_col6" class="data row1 col6" > the choice of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
-      <td id="T_464fe_row1_col7" class="data row1 col7" > of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the choice of</td>
+      <td id="T_5463d_row1_col0" class="data row1 col0" >local-gemma-3-1b-pt__W256__T0p3__physics__s2</td>
+      <td id="T_5463d_row1_col1" class="data row1 col1" >96</td>
+      <td id="T_5463d_row1_col2" class="data row1 col2" >continuation</td>
+      <td id="T_5463d_row1_col3" class="data row1 col3" >verbatim_loop</td>
+      <td id="T_5463d_row1_col4" class="data row1 col4" >continuation</td>
+      <td id="T_5463d_row1_col5" class="data row1 col5" >True</td>
+      <td id="T_5463d_row1_col6" class="data row1 col6" > the choice of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
+      <td id="T_5463d_row1_col7" class="data row1 col7" > of update scheme is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the choice of</td>
     </tr>
     <tr>
-      <td id="T_464fe_row2_col0" class="data row2 col0" >local-gemma-3-1b-pt__W256__T0p3__surreal__s1</td>
-      <td id="T_464fe_row2_col1" class="data row2 col1" >96</td>
-      <td id="T_464fe_row2_col2" class="data row2 col2" >verbatim_loop</td>
-      <td id="T_464fe_row2_col3" class="data row2 col3" >verbatim_loop</td>
-      <td id="T_464fe_row2_col4" class="data row2 col4" >verbatim_loop</td>
-      <td id="T_464fe_row2_col5" class="data row2 col5" >True</td>
-      <td id="T_464fe_row2_col6" class="data row2 col6" > the register of dissent had been sealed inside the lowest octave of the expedition, and the register of dissent had been sealed inside the lowest octave of the expedition, and</td>
-      <td id="T_464fe_row2_col7" class="data row2 col7" > the register of dissent had been sealed inside the lowest octave of the expedition, and the register of dissent had been sealed inside the lowest octave of the expedition, and</td>
+      <td id="T_5463d_row2_col0" class="data row2 col0" >local-gemma-3-1b-pt__W256__T0p3__surreal__s1</td>
+      <td id="T_5463d_row2_col1" class="data row2 col1" >96</td>
+      <td id="T_5463d_row2_col2" class="data row2 col2" >verbatim_loop</td>
+      <td id="T_5463d_row2_col3" class="data row2 col3" >verbatim_loop</td>
+      <td id="T_5463d_row2_col4" class="data row2 col4" >verbatim_loop</td>
+      <td id="T_5463d_row2_col5" class="data row2 col5" >True</td>
+      <td id="T_5463d_row2_col6" class="data row2 col6" > the register of dissent had been sealed inside the lowest octave of the expedition, and the register of dissent had been sealed inside the lowest octave of the expedition, and</td>
+      <td id="T_5463d_row2_col7" class="data row2 col7" > the register of dissent had been sealed inside the lowest octave of the expedition, and the register of dissent had been sealed inside the lowest octave of the expedition, and</td>
     </tr>
     <tr>
-      <td id="T_464fe_row3_col0" class="data row3 col0" >local-gemma-3-1b-pt__W256__T0p3__surreal__s2</td>
-      <td id="T_464fe_row3_col1" class="data row3 col1" >96</td>
-      <td id="T_464fe_row3_col2" class="data row3 col2" >continuation</td>
-      <td id="T_464fe_row3_col3" class="data row3 col3" >verbatim_loop</td>
-      <td id="T_464fe_row3_col4" class="data row3 col4" >continuation</td>
-      <td id="T_464fe_row3_col5" class="data row3 col5" >True</td>
-      <td id="T_464fe_row3_col6" class="data row3 col6" > the register of dissent had been sealed inside the lowest octave at the beginning of the expedition. The felt plains were mapped first, then the copper rivers, then the</td>
-      <td id="T_464fe_row3_col7" class="data row3 col7" > of dissent had been sealed inside the lowest octave at the beginning of the expedition. One surveyor reported a village. The others found nothing at those coordinates, but did</td>
+      <td id="T_5463d_row3_col0" class="data row3 col0" >local-gemma-3-1b-pt__W256__T0p3__surreal__s2</td>
+      <td id="T_5463d_row3_col1" class="data row3 col1" >96</td>
+      <td id="T_5463d_row3_col2" class="data row3 col2" >continuation</td>
+      <td id="T_5463d_row3_col3" class="data row3 col3" >verbatim_loop</td>
+      <td id="T_5463d_row3_col4" class="data row3 col4" >continuation</td>
+      <td id="T_5463d_row3_col5" class="data row3 col5" >True</td>
+      <td id="T_5463d_row3_col6" class="data row3 col6" > the register of dissent had been sealed inside the lowest octave at the beginning of the expedition. The felt plains were mapped first, then the copper rivers, then the</td>
+      <td id="T_5463d_row3_col7" class="data row3 col7" > of dissent had been sealed inside the lowest octave at the beginning of the expedition. One surveyor reported a village. The others found nothing at those coordinates, but did</td>
     </tr>
     <tr>
-      <td id="T_464fe_row4_col0" class="data row4 col0" >local-gemma-3-1b-pt__W256__T1__physics__s1</td>
-      <td id="T_464fe_row4_col1" class="data row4 col1" >97</td>
-      <td id="T_464fe_row4_col2" class="data row4 col2" >continuation</td>
-      <td id="T_464fe_row4_col3" class="data row4 col3" >verbatim_loop</td>
-      <td id="T_464fe_row4_col4" class="data row4 col4" >continuation</td>
-      <td id="T_464fe_row4_col5" class="data row4 col5" >False</td>
-      <td id="T_464fe_row4_col6" class="data row4 col6" > in deconfined phase the Polyakov loop acquires a deconfined phase. In deconfined phase, Polyakov loop acquires a deconfined phases. In deconfinement</td>
-      <td id="T_464fe_row4_col7" class="data row4 col7" >. Deformation phase. Deformation phase. Deformation phase. Deformation phase.</td>
+      <td id="T_5463d_row4_col0" class="data row4 col0" >local-gemma-3-1b-pt__W256__T1__physics__s1</td>
+      <td id="T_5463d_row4_col1" class="data row4 col1" >97</td>
+      <td id="T_5463d_row4_col2" class="data row4 col2" >continuation</td>
+      <td id="T_5463d_row4_col3" class="data row4 col3" >verbatim_loop</td>
+      <td id="T_5463d_row4_col4" class="data row4 col4" >continuation</td>
+      <td id="T_5463d_row4_col5" class="data row4 col5" >False</td>
+      <td id="T_5463d_row4_col6" class="data row4 col6" > in deconfined phase the Polyakov loop acquires a deconfined phase. In deconfined phase, Polyakov loop acquires a deconfined phases. In deconfinement</td>
+      <td id="T_5463d_row4_col7" class="data row4 col7" >. Deformation phase. Deformation phase. Deformation phase. Deformation phase.</td>
     </tr>
     <tr>
-      <td id="T_464fe_row5_col0" class="data row5 col0" >local-gemma-3-1b-pt__W256__T1__physics__s2</td>
-      <td id="T_464fe_row5_col1" class="data row5 col1" >97</td>
-      <td id="T_464fe_row5_col2" class="data row5 col2" >continuation</td>
-      <td id="T_464fe_row5_col3" class="data row5 col3" >verbatim_loop</td>
-      <td id="T_464fe_row5_col4" class="data row5 col4" >continuation</td>
-      <td id="T_464fe_row5_col5" class="data row5 col5" >False</td>
-      <td id="T_464fe_row5_col6" class="data row5 col6" > the choice of coordinate update is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
-      <td id="T_464fe_row5_col7" class="data row5 col7" > Is This Is This Is This Is This Is This Is This Is This</td>
+      <td id="T_5463d_row5_col0" class="data row5 col0" >local-gemma-3-1b-pt__W256__T1__physics__s2</td>
+      <td id="T_5463d_row5_col1" class="data row5 col1" >97</td>
+      <td id="T_5463d_row5_col2" class="data row5 col2" >continuation</td>
+      <td id="T_5463d_row5_col3" class="data row5 col3" >verbatim_loop</td>
+      <td id="T_5463d_row5_col4" class="data row5 col4" >continuation</td>
+      <td id="T_5463d_row5_col5" class="data row5 col5" >False</td>
+      <td id="T_5463d_row5_col6" class="data row5 col6" > the choice of coordinate update is not a detail but the central practical problem. In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the</td>
+      <td id="T_5463d_row5_col7" class="data row5 col7" > Is This Is This Is This Is This Is This Is This Is This</td>
     </tr>
     <tr>
-      <td id="T_464fe_row6_col0" class="data row6 col0" >local-gemma-3-1b-pt__W256__T1__surreal__s1</td>
-      <td id="T_464fe_row6_col1" class="data row6 col1" >97</td>
-      <td id="T_464fe_row6_col2" class="data row6 col2" >continuation</td>
-      <td id="T_464fe_row6_col3" class="data row6 col3" >verbatim_loop</td>
-      <td id="T_464fe_row6_col4" class="data row6 col4" >silence</td>
-      <td id="T_464fe_row6_col5" class="data row6 col5" >True</td>
-      <td id="T_464fe_row6_col6" class="data row6 col6" > they had not contradicted him. They had not contradicted him, because that register of dissent had been sealed inside the lowest octave at the beginning of the expedition. The</td>
-      <td id="T_464fe_row6_col7" class="data row6 col7" > I I</td>
+      <td id="T_5463d_row6_col0" class="data row6 col0" >local-gemma-3-1b-pt__W256__T1__surreal__s1</td>
+      <td id="T_5463d_row6_col1" class="data row6 col1" >97</td>
+      <td id="T_5463d_row6_col2" class="data row6 col2" >continuation</td>
+      <td id="T_5463d_row6_col3" class="data row6 col3" >verbatim_loop</td>
+      <td id="T_5463d_row6_col4" class="data row6 col4" >token_lock</td>
+      <td id="T_5463d_row6_col5" class="data row6 col5" >True</td>
+      <td id="T_5463d_row6_col6" class="data row6 col6" > they had not contradicted him. They had not contradicted him, because that register of dissent had been sealed inside the lowest octave at the beginning of the expedition. The</td>
+      <td id="T_5463d_row6_col7" class="data row6 col7" > I I</td>
     </tr>
     <tr>
-      <td id="T_464fe_row7_col0" class="data row7 col0" >local-gemma-3-1b-pt__W256__T1__surreal__s2</td>
-      <td id="T_464fe_row7_col1" class="data row7 col1" >96</td>
-      <td id="T_464fe_row7_col2" class="data row7 col2" >continuation</td>
-      <td id="T_464fe_row7_col3" class="data row7 col3" >verbatim_loop</td>
-      <td id="T_464fe_row7_col4" class="data row7 col4" >continuation</td>
-      <td id="T_464fe_row7_col5" class="data row7 col5" >False</td>
-      <td id="T_464fe_row7_col6" class="data row7 col6" > the significance of the significance of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning</td>
-      <td id="T_464fe_row7_col7" class="data row7 col7" >/1/1/1/1/1/1/1/1/1/1/1/1/1/1/1/1</td>
+      <td id="T_5463d_row7_col0" class="data row7 col0" >local-gemma-3-1b-pt__W256__T1__surreal__s2</td>
+      <td id="T_5463d_row7_col1" class="data row7 col1" >96</td>
+      <td id="T_5463d_row7_col2" class="data row7 col2" >continuation</td>
+      <td id="T_5463d_row7_col3" class="data row7 col3" >verbatim_loop</td>
+      <td id="T_5463d_row7_col4" class="data row7 col4" >continuation</td>
+      <td id="T_5463d_row7_col5" class="data row7 col5" >False</td>
+      <td id="T_5463d_row7_col6" class="data row7 col6" > the significance of the significance of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning of the meaning</td>
+      <td id="T_5463d_row7_col7" class="data row7 col7" >/1/1/1/1/1/1/1/1/1/1/1/1/1/1/1/1</td>
     </tr>
   </tbody>
 </table>

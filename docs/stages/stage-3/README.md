@@ -8,5 +8,6 @@ Opened 2026-09-01. Plan: [`PLAN.md`](PLAN.md). Decision:
 - **S3.1** — VAMP / MSM / Leiden on existing Stage 2 embeddings,
   restricted sample, both representation spaces.
 
-Do not request scientific review while `afterlife review --stage 3`
-fails.
+Scientific review: [`REVIEW.md`](REVIEW.md) (APPROVED WITH CHANGES).
+Executor revision answers the six blocking findings. Do not merge until
+the human closes the branch. `afterlife review --stage s3` must exit 0.

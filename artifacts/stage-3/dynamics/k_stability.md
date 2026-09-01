@@ -1,16 +1,18 @@
-**k_stability** — n_macro at K=50 and K=100 on every F4 cell. No process keeps the same n_macro across K and both embedding spaces. F7 is instability, reported as the result.
+**k_stability** — n_macro at every K allowed by the plan's n_frames/3 cap, produced by afterlife analyze dynamics. No F4 process keeps the same n_macro across K and both embedding spaces. F7 is this instability.
 
-| generator           | embedding      |   K |   n_macro |   its_flat |   ck_pass |   validated |
-|:--------------------|:---------------|----:|----------:|-----------:|----------:|------------:|
-| or-qwen3-8b         | bge-m3         |  50 |         2 |          1 |         0 |           0 |
-| or-qwen3-8b         | bge-m3         | 100 |         4 |          0 |         0 |           0 |
-| or-qwen3-8b-prefill | bge-m3         |  50 |         4 |          0 |         0 |           0 |
-| or-qwen3-8b-prefill | bge-m3         | 100 |         2 |          1 |         0 |           0 |
-| or-qwen3-8b         | qwen3-embed-8b |  50 |         1 |          0 |         0 |           0 |
-| or-qwen3-8b         | qwen3-embed-8b | 100 |         4 |          1 |         0 |           0 |
-| or-qwen3-8b-prefill | qwen3-embed-8b |  50 |         1 |          0 |         0 |           0 |
-| or-qwen3-8b-prefill | qwen3-embed-8b | 100 |         2 |          1 |         0 |           0 |
-| or-gpt-oss-120b     | bge-m3         |  50 |         2 |          1 |         0 |           0 |
-| or-gpt-oss-120b     | bge-m3         | 100 |         4 |          0 |         0 |           0 |
-| or-gpt-oss-120b     | qwen3-embed-8b |  50 |         2 |          0 |         0 |           0 |
-| or-gpt-oss-120b     | qwen3-embed-8b | 100 |         1 |          1 |         0 |           0 |
+| group                              | generator           | embedding      |   K |   n_macro |   its_flat |   ck_pass |   ck_max_error |   ck_macro_max_error |   validated |   n_frames |   n_trajectories | source_run                            |
+|:-----------------------------------|:--------------------|:---------------|----:|----------:|-----------:|----------:|---------------:|---------------------:|------------:|-----------:|-----------------:|:--------------------------------------|
+| or-qwen3-8b/bge-m3                 | or-qwen3-8b         | bge-m3         |  50 |         2 |          1 |         0 |         0.9    |              0.02215 |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b/bge-m3                 | or-qwen3-8b         | bge-m3         | 100 |         4 |          0 |         0 |         0.9333 |              0       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b-prefill/bge-m3         | or-qwen3-8b-prefill | bge-m3         |  50 |         4 |          0 |         0 |         0.9722 |              0.04194 |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b-prefill/bge-m3         | or-qwen3-8b-prefill | bge-m3         | 100 |         2 |          1 |         0 |         1      |              0       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b/qwen3-embed-8b         | or-qwen3-8b         | qwen3-embed-8b |  50 |         1 |          0 |         0 |         0.8889 |            nan       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b/qwen3-embed-8b         | or-qwen3-8b         | qwen3-embed-8b | 100 |         4 |          1 |         0 |         0.875  |              0       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b-prefill/qwen3-embed-8b | or-qwen3-8b-prefill | qwen3-embed-8b |  50 |         1 |          0 |         0 |         1      |            nan       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-qwen3-8b-prefill/qwen3-embed-8b | or-qwen3-8b-prefill | qwen3-embed-8b | 100 |         2 |          1 |         0 |         1      |              0       |           0 |        359 |                8 | s3-dynamics-20260901T204521Z-f21d5908 |
+| or-gpt-oss-120b/bge-m3             | or-gpt-oss-120b     | bge-m3         |  50 |         2 |          1 |         0 |         0.75   |              0       |           0 |        352 |                8 | s3-dynamics-20260901T204549Z-b7c4d0c9 |
+| or-gpt-oss-120b/bge-m3             | or-gpt-oss-120b     | bge-m3         | 100 |         4 |          0 |         0 |         0.9184 |              0       |           0 |        352 |                8 | s3-dynamics-20260901T204549Z-b7c4d0c9 |
+| or-muse-glimmer-30b/bge-m3         | or-muse-glimmer-30b | bge-m3         |  30 |         3 |          0 |         0 |         0.7333 |              0.2353  |           0 |         90 |                2 | s3-dynamics-20260901T204549Z-b7c4d0c9 |
+| or-gpt-oss-120b/qwen3-embed-8b     | or-gpt-oss-120b     | qwen3-embed-8b |  50 |         2 |          0 |         0 |         0.9    |              0       |           0 |        352 |                8 | s3-dynamics-20260901T204549Z-b7c4d0c9 |
+| or-gpt-oss-120b/qwen3-embed-8b     | or-gpt-oss-120b     | qwen3-embed-8b | 100 |         1 |          1 |         0 |         0.9    |            nan       |           0 |        352 |                8 | s3-dynamics-20260901T204549Z-b7c4d0c9 |
+| or-muse-glimmer-30b/qwen3-embed-8b | or-muse-glimmer-30b | qwen3-embed-8b |  30 |         4 |          0 |         0 |         0.8    |              0.6066  |           0 |         90 |                2 | s3-dynamics-20260901T204549Z-b7c4d0c9 |

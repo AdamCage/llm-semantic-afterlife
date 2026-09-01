@@ -94,9 +94,10 @@ forced by the Stage 2 replicate count, not a finding.
    `--run s2-embed-model-axis-…`, both embedding spaces. Degeneracy
    labels joined from the source generation run before any confinement
    or timescale is read.
-5. Figures: implied timescales vs `τ`, Chapman–Kolmogorov error,
-   current heatmap, occupancy vs turnover, Leiden–MSM ARI table.
-   UMAP if drawn is an illustration and is labelled as such.
+5. Figures: implied timescales vs `τ`, Chapman–Kolmogorov error
+   (micro and macro assignments labelled), microstate current norm,
+   occupancy vs turnover, Leiden–MSM ARI table, and `k_stability` from
+   the CLI K-grid. UMAP if drawn is an illustration and is labelled as such.
 
 No `afterlife embed` this opening. No OpenRouter.
 

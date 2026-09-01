@@ -1,18 +1,18 @@
 {
   "name": "probability_currents",
-  "caption": "Frobenius norm of J_ij = π_i T_ij − π_j T_ji with a 95% trajectory-bootstrap CI. Intervals that reach ~0 are consistent with equilibrium-like currents on this sample. Glimmer's larger norm is an underpowered 2-trajectory cell and is not a circulation claim.",
-  "alt_text": "Frobenius norm of J_ij = π_i T_ij − π_j T_ji with a 95% trajectory-bootstrap CI. Intervals that reach ~0 are consistent with equilibrium-like currents on this sample. Glimmer's larger norm is an underpowered 2-trajectory cell and is not a circulation claim.",
-  "limitations": "The point estimate can sit slightly outside the bootstrap interval when a few trajectories dominate J. ‖J‖ is a scalar summary of a K×K matrix. Instruct-under-P1; almost every frame is degenerate.",
+  "caption": "Frobenius norm of the K×K microstate current J_ij = π_i T_ij − π_j T_ji, with a 95% trajectory-bootstrap CI. This is not H4 (macrostate currents). Prefill / bge-m3 excludes 0; the other qwen and 120b intervals reach ~0. That is not a claim that 'qwen is at equilibrium'.",
+  "alt_text": "Frobenius norm of the K×K microstate current J_ij = π_i T_ij − π_j T_ji, with a 95% trajectory-bootstrap CI. This is not H4 (macrostate currents). Prefill / bge-m3 excludes 0; the other qwen and 120b intervals reach ~0. That is not a claim that 'qwen is at equilibrium'.",
+  "limitations": "‖J‖_F summarises a K×K micro-MSM. A sliding loop chopped into k-means cells can carry a small directed current that is not semantic circulation. The point estimate can sit above the CI upper bound. Glimmer n=2 is underpowered. Bootstrap is over trajectories, not chunks.",
   "run_ids": [
-    "s3-dynamics-20260901T184826Z-f21d5908",
-    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
     "s2-embed-mechanism-20260901T131051Z-55761049",
     "s2-embed-model-axis-20260901T125626Z-50d60286"
   ],
-  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "git_sha": "9f69127",
   "config_sha256": null,
   "units": {
     "j_norm": "dimensionless current"
   },
-  "generated_at": "2026-09-01T18:53:32+00:00"
+  "generated_at": "2026-09-01T20:48:12+00:00"
 }
