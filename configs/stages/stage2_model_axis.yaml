@@ -1,0 +1,73 @@
+# ===========================================================================
+# S2.1 — is convergence a property of the model? (exit criterion F1/F2)
+# ---------------------------------------------------------------------------
+# Stage 1 could not assess E2 at all: every number came from qwen3-8b, because
+# the replication generator could not free-run and the two remaining candidates
+# lost every cell to HTTP 429. A stage resting on one model is a claim about one
+# model, and it is the first thing a reviewer will say.
+#
+# Five generators, spanning the two axes that could plausibly matter:
+#
+#   sparse vs dense   gpt-oss-20b/120b are MoE; qwen, gemma and glimmer are not
+#   scale             8B to 117B total, 3.6B to 30.7B active
+#
+# All five measured at a genuine 4096-token window before being admitted
+# (S2.0, ADR-0009), which is how gpt-oss was recovered after being wrongly
+# excluded and how glimmer was recovered after an over-generalisation from four
+# cells.
+#
+# Twelve turnovers, not thirty-two. Convergence in Stage 1 established itself by
+# turnover 10, so twelve observes the phenomenon while making this arm directly
+# comparable both to the Stage 1 convergence probe and to the first twelve bands
+# of the core arm.
+#
+# Two temperatures because Stage 1 showed they act strongly and compound: at
+# T=0.3 every trajectory converged, at T=1.0 most did. Two semantic seeds
+# because `physics` invites the reviewer register most and `surreal` least among
+# the seeds tested. Two stochastic replicates because one cannot separate "this
+# regime converges" from "this trajectory did", and S1.2 showed which cell
+# degenerates is not reproducible.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s2
+name: model-axis
+description: >-
+  Fixed-point rate across five generator families at two temperatures and two
+  semantic seeds, to establish whether the convergence Stage 1 measured on
+  qwen3-8b is a property of that model or of the protocol.
+
+generators:
+  - or-qwen3-8b
+  - or-gemma-4-31b
+  - or-gpt-oss-20b
+  - or-gpt-oss-120b
+  - or-muse-glimmer-30b
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers, matched to S1.0d and to the core arm
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics, surreal]
+stochastic_seeds: [1, 2]
+
+# Five generators on five different upstream pools, so concurrency is less
+# contended than in Stage 1 -- but glimmer and gpt-oss share providers with
+# other traffic and Stage 0's binding constraint was sustained throughput, not
+# price. Two is the value that completed the Stage 1 arms.
+max_concurrent: 2
+budget_usd: 4.0

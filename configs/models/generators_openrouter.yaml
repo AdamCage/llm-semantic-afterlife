@@ -115,6 +115,46 @@ generator_library:
       empty-completion guard fails the trajectory loudly either way, so the rate
       is observable rather than silent.
 
+  # Same model and endpoint as `or-qwen3-8b`, differing only in how the window
+  # is presented. Stage 1's headline confound is that an instruction-tuned model
+  # answers raw text as a document to review; prefilling the assistant turn with
+  # the window asks it to continue its own utterance instead. If the register
+  # goes away and the fixed-point rate does not, the convergence belongs to the
+  # process rather than to the chat persona -- which is the question Stage 2
+  # exists to answer (S2.2, prediction Q4).
+  #
+  # `continuation` is a property of the generator rather than of the run, so the
+  # contrast needs two entries. Keeping the endpoint and sampling identical
+  # means the pair differs in exactly one thing.
+  or-qwen3-8b-prefill:
+    model_id: qwen/qwen3-8b
+    api: openrouter
+    tokenizer_repo: Qwen/Qwen3-8B
+    continuation: assistant_prefill
+    is_base_model: false
+    provider_slug: alibaba
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.117
+    price_usd_per_m_output: 0.455
+    extra_body:
+      reasoning_effort: none
+    max_reasoning_tokens: 0
+    expected_block_fill: 0.75
+    notes: >-
+      MEASURED in Stage 0 only at a 28-token prompt, where qwen3-8b accepted a
+      prefill and returned 164 tokens with `finish_reason=stop` while mistral
+      errored and glimmer and deepseek returned empty content. That measurement
+      must not be trusted at W=4096: single-call probes failing to predict
+      in-trajectory behaviour is finding F8 of Stage 0 and the error this
+      project has now made five times. S2.2 re-measures it in the target regime
+      before any conclusion rests on it.
+      No `prefill_user_stub` is set: any non-empty stub is external forcing and
+      would be recorded as `forcing = fixed`, which would make this arm
+      incomparable with the unforced one it exists to be compared against.
+      `expected_block_fill` is inherited from the raw-completion arm as a
+      placeholder and is not a measurement.
+
   # -- Stage 2 model-diversity axis ----------------------------------------
   # Stage 1 could not assess E2: every number rested on qwen3-8b, because
   # glimmer cannot free-run at W=4096 and llama/mistral lost every cell to 429.
