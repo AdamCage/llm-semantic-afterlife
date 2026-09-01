@@ -6,7 +6,7 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S0` in progress. Last revised 2026-08-30.
+**Status.** `S2` closed PARTIAL (2026-09-01). `S3` is next. Last revised 2026-09-01.
 
 ---
 
@@ -182,7 +182,7 @@ reported per model; (v) S1 cost forecast within the $50 pilot budget;
 
 **Budget.** ≤ $3.
 
-### S1 — Pilot: does the phenomenon exist? `← current`
+### S1 — Pilot: does the phenomenon exist?
 
 **Question.** Over 32 window turnovers, is there any structure at all —
 seed-dependent separation, recurring regions, non-trivial MSD?
@@ -221,51 +221,71 @@ provider throttling.
 
 **Budget.** ≤ $22 declared across the two arms; $17.70 forecast.
 
-### S2 — Does the phenomenon survive removal of the reviewer register?
+### S2 — Is the convergence a property of the model, or of the protocol?
 
-**Re-planned after Stage 1** ([ADR-0008](decisions/ADR-0008-stage2-replan-after-convergence.md)).
-The original specification — semantic half-life `T½` on ≥3 models — is
-unreachable: there is one viable free-running generator across 864 surveyed
-models, and the gap it produces plateaus rather than decaying, so there is no
-half-life to fit. Stage 1 also exposed a confound upstream of everything: under
-protocol P1 an instruction-tuned model turns continuation into self-review, and
-self-review has a natural fixed point.
+**Closed PARTIAL, 2026-09-01.** Plan:
+[`docs/stages/stage-2/PLAN.md`](stages/stage-2/PLAN.md). Report:
+[`docs/stages/stage-2/REPORT.md`](stages/stage-2/REPORT.md). Re-plan:
+[ADR-0008](decisions/ADR-0008-stage2-replan-after-convergence.md),
+[ADR-0009](decisions/ADR-0009-bounded-reasoning-and-the-stage2-model-axis.md),
+[ADR-0010](decisions/ADR-0010-stage2-findings-replan-s3.md).
 
-- **S2.1** `assistant_prefill` against `raw_completion` at `W = 4096` on matched
-  cells. Does the register disappear, and does the fixed-point rate change? The
-  mechanism was verified in Stage 0 on a 28-token prompt only, and that must be
-  re-measured rather than assumed.
-- **S2.2** A small base model (1–3B) locally at reduced `W`, as an existence
-  check on whether convergence is instruction-tuning-specific. Not a full arm.
-- **S2.3** Convergence time and plateau level replace half-life: the turnover at
-  which a trajectory reaches its fixed point, reported as a rate with a CI rather
-  than per cell, since Stage 1 showed incidence is not reproducible.
+What actually ran (not the ADR-0008 sketch): S2.3 determinism on all five
+generators; S2.1 model axis 5 × 2 × 2 × 2 = 40 trajectories at `W = 4096`,
+12 turnovers; S2.2 mechanism axis, qwen3-8b only, `raw_completion` vs
+`assistant_prefill`, 16 trajectories. The local base-model arm of ADR-0008
+was not implemented.
 
-**Exit criteria.** Fixed-point rate under both continuation mechanisms with a CI;
-a base-model comparison at matched `W` and turnover count, or an explicit
-statement that it could not be obtained; convergence time with a CI on the one
-viable hosted generator.
+Headline measurements:
 
-**Budget.** ≤ $15. The `W` sweep moves to Stage 3 or later, conditional on the
-register question resolving favourably.
+- Convergence is **not universal**. Long-trajectory fixed-point rate is 0/8
+  on gemma-4-31b (CI 0–0; the process dies into silence glyphs) and 8/8 on
+  gpt-oss-120b almost-`T` (CI 1–1). Qwen3-8b is 8/8 under both mechanisms.
+  gpt-oss-20b produced no long trajectory (empty EOS). Glimmer: 2/8 reached
+  `T`, both fixed points, both `T = 0.3` physics.
+- Prefill does **not** remove the reviewer register (matched 4/8 vs 6/8 at
+  step 1; surreal prefill falls into the register later) and does **not**
+  change the qwen fixed-point rate (7/8 vs 8/8, difference CI [−0.375, 0.0]).
+- Exact-match determinism: glimmer 100%, qwen 60%, gemma 20%, both gpt-oss
+  20%. Q6's >90% on gemma was false.
+- S2.1 completion 11/40. F8 failed. Spend $2.54 of a $6 ceiling before
+  embeddings.
 
-### S3 — Metastability, Markov state models, and representation robustness
+The Stage 1 reading survives as a claim about qwen3-8b under P1, not about
+language models.
 
-Dynamics branch: `PCA → VAMP → k-means microstates → non-reversible MSM →
-macrostates (PCCA+)`, with full MSM validation — VAMP score cross-validation
-over `K`, implied timescales vs. `τ`, Chapman–Kolmogorov test. Then dwell
-times, first-passage times, entropy rate, and **probability currents** `J_ij`.
+**Budget.** ≤ $6 declared; $2.8 forecast; $2.54 actual plus embeddings.
+
+### S3 — Metastability, Markov state models, and representation robustness `← current`
+
+**Re-planned after Stage 2** ([ADR-0010](decisions/ADR-0010-stage2-findings-replan-s3.md)).
+Do not default to prefill. Do not pool gemma-silence, qwen-reviewer,
+glimmer-physics and 20b-fragments into one MSM.
+
+**S3.0 (unexecuted since ADR-0008; now blocking for interpretation).** A
+local 1–3B *base* model at reduced `W` and a matched turnover count. If this
+cannot be obtained, every later claim stays labelled as instruct-under-P1.
+
+**S3.1 Dynamics, restricted sample.** `PCA → VAMP → k-means microstates →
+non-reversible MSM → macrostates (PCCA+)`, with full MSM validation — VAMP
+score cross-validation over `K`, implied timescales vs. `τ`, Chapman–Kolmogorov
+test. Then dwell times, first-passage times, entropy rate, and **probability
+currents** `J_ij`. Eligible arms: qwen3-8b (both mechanisms), glimmer
+`T = 0.3` physics, gpt-oss-120b almost-complete. Fixed-point, looping and
+silence remain three labels.
 
 Independent geometry branch: `PCA → mutual-kNN → Leiden`, deliberately using no
 temporal information. Agreement between branches (ARI/NMI) and across both
 embedding spaces is the robustness argument. tICA is run as an ablation, and the
 tICA/VAMP discrepancy is itself reported as a measure of irreversibility.
 
-**Exit criteria.** Macrostate count stable across `K` and across both
-embedding spaces; implied timescales flat over a `τ` range; CK test passed;
+**Exit criteria.** Base-model comparison present or explicitly open; macrostate
+count stable across `K` and across both embedding spaces **on the restricted
+sample**; implied timescales flat over a `τ` range; CK test passed;
 ARI(Leiden, MSM) reported per model/embedding with a bootstrap CI.
 
-**Budget.** ≤ $10 (compute-bound, not API-bound).
+**Budget.** ≤ $10 (compute-bound once S3.0 is local; S3.0 itself must be
+estimated before any spend).
 
 ### S4 — Control parameters: the `temperature × W` phase portrait
 
