@@ -189,12 +189,26 @@ class TestLessonsFromStageOne:
     output they summarised.
     """
 
-    def _report(self, settings: Settings, body: str) -> Path:
-        docs = settings.paths.stage_docs(STAGE)
+    def _report(
+        self,
+        settings: Settings,
+        tmp_path: Path,
+        body: str,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> Settings:
+        """Write a stage report into a temporary tree, never the real one.
+
+        ``Settings.paths`` is derived from ``repo_root()`` and has no setter, so
+        the root is redirected at its source. This matters: the first version of
+        this fixture wrote ``docs/stages/stage-9/REPORT.md`` into the working copy
+        and committed it.
+        """
+        monkeypatch.setattr("semantic_afterlife.config.repo_root", lambda: tmp_path)
+        scoped = Settings()
+        docs = scoped.paths.stage_docs(STAGE)
         docs.mkdir(parents=True, exist_ok=True)
-        path = docs / "REPORT.md"
-        path.write_text(body, encoding="utf-8")
-        return path
+        (docs / "REPORT.md").write_text(body, encoding="utf-8")
+        return scoped
 
     def test_ledger_and_events_agreeing_passes(self, settings: Settings) -> None:
         run = settings.paths.run(STAGE, "gen").ensure()
@@ -235,41 +249,62 @@ class TestLessonsFromStageOne:
         assert check.verdict is Verdict.FAIL
         assert "disagree" in check.detail
 
-    def test_segmented_diagnostics_pass(self, settings: Settings) -> None:
-        self._report(
+    def test_segmented_diagnostics_pass(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        scoped = self._report(
             settings,
+            tmp_path,
             "# R\nBlock fill by quarter: 0.99, 0.88, 0.77, 0.65. Stop rate rises to 74%.\n",
+            monkeypatch,
         )
-        assert check_diagnostics_are_segmented(settings, STAGE).verdict is Verdict.PASS
+        assert check_diagnostics_are_segmented(scoped, STAGE).verdict is Verdict.PASS
 
-    def test_an_unsegmented_average_fails(self, settings: Settings) -> None:
-        self._report(settings, "# R\nMean block fill 0.748 and stop rate 54.5% over the run.\n")
-        check = check_diagnostics_are_segmented(settings, STAGE)
+    def test_an_unsegmented_average_fails(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        scoped = self._report(
+            settings,
+            tmp_path,
+            "# R\nMean block fill 0.748 and stop rate 54.5% over the run.\n",
+            monkeypatch,
+        )
+        check = check_diagnostics_are_segmented(scoped, STAGE)
         assert check.verdict is Verdict.FAIL
         assert "segmentation" in check.detail
 
-    def test_omitting_the_diagnostics_entirely_fails(self, settings: Settings) -> None:
-        self._report(settings, "# R\nEverything went fine.\n")
-        assert check_diagnostics_are_segmented(settings, STAGE).verdict is Verdict.FAIL
+    def test_omitting_the_diagnostics_entirely_fails(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        scoped = self._report(settings, tmp_path, "# R\nEverything went fine.\n", monkeypatch)
+        assert check_diagnostics_are_segmented(scoped, STAGE).verdict is Verdict.FAIL
 
-    def test_quoted_output_passes(self, settings: Settings) -> None:
+    def test_quoted_output_passes(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         body = "# R\n" + "".join(
             f"> sample {i}: the cartographers had been instructed to survey the piano\n\n"
             for i in range(3)
         )
-        self._report(settings, body)
-        assert check_report_quotes_generated_text(settings, STAGE).verdict is Verdict.PASS
+        scoped = self._report(settings, tmp_path, body, monkeypatch)
+        assert check_report_quotes_generated_text(scoped, STAGE).verdict is Verdict.PASS
 
-    def test_a_report_with_no_generated_text_fails(self, settings: Settings) -> None:
-        self._report(settings, "# R\nNovelty was 0.87 and the gap was 0.147.\n")
-        check = check_report_quotes_generated_text(settings, STAGE)
+    def test_a_report_with_no_generated_text_fails(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        scoped = self._report(
+            settings, tmp_path, "# R\nNovelty was 0.87 and the gap was 0.147.\n", monkeypatch
+        )
+        check = check_report_quotes_generated_text(scoped, STAGE)
         assert check.verdict is Verdict.FAIL
         assert "generated text" in check.detail
 
-    def test_fenced_blocks_count_as_samples(self, settings: Settings) -> None:
+    def test_fenced_blocks_count_as_samples(
+        self, settings: Settings, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
         body = "# R\n" + "".join(f"```\nsample {i}\n```\n" for i in range(3))
-        self._report(settings, body)
-        assert check_report_quotes_generated_text(settings, STAGE).verdict is Verdict.PASS
+        scoped = self._report(settings, tmp_path, body, monkeypatch)
+        assert check_report_quotes_generated_text(scoped, STAGE).verdict is Verdict.PASS
 
 
 class TestReportAssembly:
