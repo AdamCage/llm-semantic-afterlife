@@ -274,8 +274,9 @@ local 1–3B *base* model at reduced `W` and a matched turnover count. If this
 cannot be obtained, every later claim stays labelled as instruct-under-P1.
 The harness now has `api: local` ([ADR-0011](decisions/ADR-0011-local-base-provider.md));
 the S3.0-sized candidate is `google/gemma-3-1b-pt`. Gemma 4 E2B is a true
-pretrained checkpoint but a 10 GB multimodal weight file — too large for a
-16 GB CPU box unquantized. A two-turnover smoke is not S3.0.
+pretrained checkpoint (10 GB multimodal); it loads in bfloat16 on a 15 GB
+CPU box but a 16-token probe was degenerate, so it is not the default
+S3.0 object. A two-turnover smoke is not S3.0.
 
 **S3.1 Dynamics, restricted sample.** `PCA → VAMP → k-means microstates →
 non-reversible MSM → macrostates (PCCA+)`, with full MSM validation — VAMP
