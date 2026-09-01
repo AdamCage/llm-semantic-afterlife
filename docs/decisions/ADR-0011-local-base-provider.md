@@ -27,10 +27,13 @@ no GPU.
 | `google/gemma-4-E2B` | pretrained, multimodal | 10.2 GB | tight / no, unquantized |
 
 `google/gemma-4-E2B` is the small Gemma 4 the human named. It is a real
-base model and it is ungated, but the checkpoint is `Gemma4ForConditionalGeneration`
-at 10 GB — too large for a comfortable unquantized load on 15 GB, and it
-needs a newer multimodal transformers class. It stays in the generator
-library and is not in the default smoke matrix.
+base model and it is ungated. On this 15 GB CPU box it *does* load in
+bfloat16 via `AutoModelForCausalLM` (5.10B params,
+`Gemma4ForConditionalGeneration`) and a 16-token probe returned in 8 s.
+The continuation was degenerate (`<eos>` then `https://` spam). EOS ids
+live on `text_config`, not the multimodal wrapper — the client now reads
+both. E2B stays in the library and out of the default smoke: multimodal,
+10 GB, and not a clean S3.0 object on this evidence.
 
 ## Decision
 

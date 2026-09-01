@@ -291,13 +291,14 @@ class TransformersBackend:
         self._token = token
         self._extra = dict(extra)
         self._model: Any = None
-        self._eos_id: int | None = None
+        self._eos_ids: set[int] = set()
 
     def _load(self) -> Any:
         if self._model is not None:
             return self._model
         try:
             import torch
+            import transformers
             from transformers import AutoConfig, AutoModelForCausalLM
         except ImportError as exc:
             raise ProviderError(
@@ -342,16 +343,22 @@ class TransformersBackend:
             dtype_name,
             attn,
         )
+        load_kwargs: dict[str, Any] = {
+            "token": self._token,
+            "attn_implementation": str(attn),
+            "low_cpu_mem_usage": low_mem,
+            "local_files_only": local_only,
+            "trust_remote_code": trust,
+        }
+        # transformers 5 renamed torch_dtype -> dtype. The public signature is
+        # **kwargs, so we cannot inspect the name; branch on the package version.
+        major = int(str(transformers.__version__).split(".", 1)[0])
+        if major >= 5:
+            load_kwargs["dtype"] = dtype
+        else:
+            load_kwargs["torch_dtype"] = dtype
         try:
-            model = AutoModelForCausalLM.from_pretrained(
-                self.model_id,
-                token=self._token,
-                torch_dtype=dtype,
-                attn_implementation=str(attn),
-                low_cpu_mem_usage=low_mem,
-                local_files_only=local_only,
-                trust_remote_code=trust,
-            )
+            model = AutoModelForCausalLM.from_pretrained(self.model_id, **load_kwargs)
         except Exception as exc:
             raise ProviderError(
                 f"could not load local model {self.model_id!r} ({architecture or 'unknown'}): {exc}"
@@ -360,7 +367,7 @@ class TransformersBackend:
         if device != "cpu":
             placed = placed.to(device)
         placed.eval()
-        self._eos_id = getattr(placed.config, "eos_token_id", None)
+        self._eos_ids = _eos_token_ids(placed.config)
         self._model = placed
         return placed
 
@@ -384,12 +391,17 @@ class TransformersBackend:
             torch.manual_seed(int(seed))
         tensor = torch.tensor([input_ids], dtype=torch.long, device=device)
         do_sample = temperature > 1e-6
+        eos_ids = self._eos_ids or _eos_token_ids(model.config)
+        pad_id = _first_int(
+            getattr(model.config, "pad_token_id", None),
+            getattr(getattr(model.config, "text_config", None), "pad_token_id", None),
+            next(iter(eos_ids), None),
+        )
         kwargs: dict[str, Any] = {
             "max_new_tokens": max_tokens,
             "do_sample": do_sample,
-            "pad_token_id": getattr(model.config, "pad_token_id", None)
-            or getattr(model.config, "eos_token_id", None),
-            "eos_token_id": getattr(model.config, "eos_token_id", None),
+            "pad_token_id": pad_id,
+            "eos_token_id": next(iter(eos_ids), None) if eos_ids else None,
             "use_cache": True,
         }
         if do_sample:
@@ -406,17 +418,47 @@ class TransformersBackend:
 
         with torch.inference_mode():
             output = model.generate(tensor, **kwargs)
-        new_ids = output[0, tensor.shape[1] :].tolist()
-        finish = "length"
-        eos = self._eos_id
-        if eos is not None and new_ids and new_ids[-1] == eos:
-            new_ids = new_ids[:-1]
-            finish = "stop"
-        elif eos is not None and eos in new_ids:
-            cut = new_ids.index(eos)
-            new_ids = new_ids[:cut]
-            finish = "stop"
+        new_ids, finish = strip_eos(output[0, tensor.shape[1] :].tolist(), eos_ids)
         return LocalGeneration(token_ids=new_ids, finish_reason=finish)
+
+
+def _first_int(*values: Any) -> int | None:
+    for value in values:
+        if value is None:
+            continue
+        if isinstance(value, (list, tuple)) and value:
+            return int(value[0])
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            continue
+    return None
+
+
+def _eos_token_ids(config: Any) -> set[int]:
+    """Collect EOS ids from a causal or multimodal (text_config) HF config."""
+    ids: set[int] = set()
+    for value in (
+        getattr(config, "eos_token_id", None),
+        getattr(getattr(config, "text_config", None), "eos_token_id", None),
+    ):
+        if value is None:
+            continue
+        if isinstance(value, (list, tuple, set)):
+            ids.update(int(x) for x in value if x is not None)
+        else:
+            ids.add(int(value))
+    return ids
+
+
+def strip_eos(token_ids: list[int], eos_ids: set[int]) -> tuple[list[int], str]:
+    """Drop a leading-to-first EOS so decoded text does not contain ``<eos>``."""
+    if not eos_ids or not token_ids:
+        return token_ids, "length"
+    for index, token in enumerate(token_ids):
+        if token in eos_ids:
+            return token_ids[:index], "stop"
+    return token_ids, "length"
 
 
 def _cached_body(entry: dict[str, Any]) -> dict[str, Any]:

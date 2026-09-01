@@ -20,7 +20,12 @@ from semantic_afterlife.ledger import Ledger
 from semantic_afterlife.logging_utils import EventLogger
 from semantic_afterlife.paths import RunPaths
 from semantic_afterlife.providers.cache import ResponseCache
-from semantic_afterlife.providers.local import LocalClient, LocalGeneration
+from semantic_afterlife.providers.local import (
+    LocalClient,
+    LocalGeneration,
+    _eos_token_ids,
+    strip_eos,
+)
 from semantic_afterlife.providers.registry import build_client
 from semantic_afterlife.tokenization import WhitespaceTokenizer
 
@@ -187,6 +192,29 @@ def test_build_client_local_in_live_mode(
     settings = get_settings()
     client = build_client("local", settings, reuse=False)
     assert client.name == "local"
+
+
+def test_strip_eos_cuts_at_first_stop_id() -> None:
+    ids, reason = strip_eos([10, 11, 1, 12], {1})
+    assert ids == [10, 11]
+    assert reason == "stop"
+
+
+def test_strip_eos_without_match_is_length() -> None:
+    ids, reason = strip_eos([10, 11, 12], {1})
+    assert ids == [10, 11, 12]
+    assert reason == "length"
+
+
+def test_eos_ids_read_nested_text_config() -> None:
+    class Text:
+        eos_token_id = 1
+
+    class Config:
+        eos_token_id = None
+        text_config = Text()
+
+    assert _eos_token_ids(Config()) == {1}
 
 
 def test_local_smoke_config_loads(repo: Path) -> None:
