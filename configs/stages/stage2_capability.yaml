@@ -1,0 +1,64 @@
+# ===========================================================================
+# S2.0 — can the three candidate generators run this protocol at all?
+# ---------------------------------------------------------------------------
+# Cheap capability audit before any generation, because three properties could
+# each disqualify a model outright and each is measurable for cents:
+#
+#   1. Does /completions serve raw text, or does the endpoint only do chat?
+#   2. Can reasoning be driven to zero, and *verified* zero? ADR-0005 recorded
+#      a switch that providers accept while merely hiding the trace, so this is
+#      a measurement and not a configuration.
+#   3. What does the first step look like? gpt-oss is trained in the Harmony
+#      response format, which may emit scaffolding rather than continuation.
+#
+# Determinism is measured in the same pass. deepseek-v4-flash, the only MoE in
+# Stage 0's audit, held 20% exact-match reproducibility even pinned to a single
+# fp8 endpoint. Both gpt-oss arms are MoE and are expected to behave similarly;
+# gemma-4-31b is dense and is the control. The rate is recorded so that claims
+# about these models can be stated distributionally rather than as seeded
+# determinism.
+#
+# No trajectories are generated here. This config exists so the audit commands
+# have a generator list and a budget, and so the result is a run with a
+# manifest rather than a note in a chat log.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s2
+name: capability
+description: >-
+  Endpoint capability, reasoning suppression and determinism for the three
+  Stage 2 candidate generators, before any of them is trusted with a
+  trajectory.
+
+generators:
+  - or-gpt-oss-120b
+  - or-gpt-oss-20b
+  - or-gemma-4-31b
+
+embeddings: [bge-m3]
+
+# Present because the schema requires them; the audit passes do not generate
+# trajectories and ignore the window and the seed matrix. `target_tokens` is set
+# to a valid value rather than a token one, because the config validator
+# rightly refuses a target below W -- such a trajectory would never cross the
+# horizon and nothing this project measures would be defined for it.
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 8192
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 0.5

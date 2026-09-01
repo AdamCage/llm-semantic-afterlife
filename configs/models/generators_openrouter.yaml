@@ -98,10 +98,165 @@ generator_library:
     price_usd_per_m_input: 0.30
     price_usd_per_m_output: 1.10
     extra_body: {}
+    max_reasoning_tokens: 0
+    expected_block_fill: 1.0
     notes: >-
       Reasons on chat but not on raw completion (S0.3), so the mechanism is not
       a preference here. A `:batch` variant exists at a higher unit price; not
       used, since batching would break the sequential dependency of a trajectory.
+      RE-ADMITTED for Stage 2. It was dropped after the convergence probe, where
+      three of four cells died on five consecutive empty completions at W=4096
+      and `HANDOFF.md` recorded that as a property of the window. Probed again
+      at a genuine 4096-token window (S2.0): two calls, both `finish_reason=
+      length` with a full 1024-token block and zero reasoning. So the empty
+      completions are intermittent rather than a property of W, and the earlier
+      note generalised from four cells. Whether the intermittency is frequent
+      enough to make trajectories unviable is what S2.1 measures; the
+      empty-completion guard fails the trajectory loudly either way, so the rate
+      is observable rather than silent.
+
+  # -- Stage 2 model-diversity axis ----------------------------------------
+  # Stage 1 could not assess E2: every number rested on qwen3-8b, because
+  # glimmer cannot free-run at W=4096 and llama/mistral lost every cell to 429.
+  # These three restore generator diversity along two axes that matter:
+  # sparse Mixture-of-Experts against dense, and a 15x parameter range.
+  #
+  # All three are instruction-tuned, so they address "is convergence specific to
+  # one model" and NOT "is convergence specific to instruction tuning" -- that
+  # second question needs the local base model of ADR-0008 S2.2 and is not
+  # answered here.
+  #
+  # Endpoints pinned by tag, which on OpenRouter carries the quantization, so
+  # provider AND numerical precision are both fixed. Endpoints reporting
+  # `unknown` quantization are avoided where a declared alternative exists at a
+  # comparable price -- qwen3-8b's `unknown` is a provenance hole this stage
+  # does not need to repeat.
+
+  or-gpt-oss-120b:
+    model_id: openai/gpt-oss-120b
+    api: openrouter
+    tokenizer_repo: openai/gpt-oss-120b
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    # akashml/bf16: cheapest endpoint with a *declared* precision, status 0, and
+    # a 117964-token completion cap. coreweave/fp4 matches the price with more
+    # throughput but at fp4; bf16 is preferred because this model is the noisier
+    # of the two arms already (MoE routing) and adding quantization error to
+    # routing noise makes a negative result uninterpretable.
+    provider_slug: akashml/bf16
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.03
+    price_usd_per_m_output: 0.17
+    # Reasoning is ALLOWED and bounded, not disabled: every one of the 20
+    # endpoints refuses `reasoning.enabled=false` with an explicit
+    # "Reasoning is mandatory for this endpoint and cannot be disabled" (S2.0).
+    # See ADR-0009 for why a bounded budget is admissible where a hidden one is
+    # not.
+    extra_body:
+      reasoning:
+        effort: low
+        exclude: false
+    max_reasoning_tokens: 64
+    expected_block_fill: 1.0
+    notes: >-
+      117B MoE, 5.1B active. MEASURED at the real regime (S2.0, 4096-token
+      window of genuine trajectory prose, max_tokens=1024): reasoning 33-43
+      tokens, i.e. 3-4% of the block, and `finish_reason=length` on every call --
+      it fills the block, which qwen3-8b stopped doing by its final quarter.
+      The tolerance of 64 is roughly 1.5x the observed maximum, and the guard
+      still fails the step above it.
+      A short-prompt probe first showed only 8-9 reasoning tokens; the real
+      window shows 4x that, so the tolerance is set from the window measurement
+      and not from the cheap one.
+      PROVENANCE GAP: `/completions` reports `reasoning_tokens` but does not
+      return the trace text, while `/chat/completions` does. We therefore know
+      how many hidden tokens each step contained but not what they said. Bounded
+      and recorded, but it must be stated.
+      EXPECT NON-DETERMINISM: deepseek-v4-flash, the only MoE audited in Stage 0,
+      held 20% exact-match reproducibility even pinned to one endpoint,
+      plausibly batch-dependent expert routing. Claims are distributional;
+      `audit determinism` measures the rate rather than assuming it.
+
+  or-gpt-oss-20b:
+    model_id: openai/gpt-oss-20b
+    api: openrouter
+    tokenizer_repo: openai/gpt-oss-20b
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    # deepinfra/bf16: the cheapest declared-bf16 endpoint, status 0, ample
+    # completion cap. Same family as the 120b at a sixth of the active
+    # parameters, so the pair isolates scale within one architecture and one
+    # post-training recipe.
+    provider_slug: deepinfra/bf16
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.03
+    price_usd_per_m_output: 0.14
+    # Same refusal as the 120b: reasoning cannot be switched off on any of the
+    # 13 endpoints, so it is bounded instead (ADR-0009).
+    extra_body:
+      reasoning:
+        effort: low
+        exclude: false
+    max_reasoning_tokens: 32
+    expected_block_fill: 0.72
+    notes: >-
+      21B MoE, 3.6B active, Apache 2.0. Paired with gpt-oss-120b deliberately:
+      same family and response format, six times the active parameters apart, so
+      a difference between them is about scale rather than about training data.
+      MEASURED at the real regime (S2.0): reasoning tokens 0 on every call, even
+      though the endpoint refuses to disable reasoning -- at `effort: low` on a
+      continuation task it simply does not think. The tolerance of 32 is there
+      because "did not think this time" is not "cannot think".
+      Block fill is the concern here rather than reasoning: two calls gave 1024
+      and 454 tokens (`length` then `stop`), so it stops early some of the time.
+      0.72 is the midpoint of that pair and is a placeholder to be replaced by
+      the S2.1 measurement, not a result.
+
+  or-gemma-4-31b:
+    model_id: google/gemma-4-31b-it
+    api: openrouter
+    tokenizer_repo: google/gemma-4-31b-it
+    continuation: raw_completion
+    continuation_instruction: >-
+      Continue the following text directly. Do not comment, summarise, explain
+      or address the reader. Output only the continuation.
+    is_base_model: false
+    # venice/bf16: MEASURED usable (S2.0), declared bf16, status 0, reasoning
+    # tokens 0. Its 8192-token completion cap is ample for B=1024.
+    # novita/bf16 was pinned first on catalogue data and rejected the request
+    # body outright (400 INVALID_REQUEST_BODY) -- catalogue metadata does not
+    # predict whether an endpoint serves this protocol, which is why the
+    # capability probe runs before the plan is written.
+    provider_slug: venice/bf16
+    allow_fallbacks: false
+    native_context: 256000
+    price_usd_per_m_input: 0.12
+    price_usd_per_m_output: 0.36
+    extra_body:
+      reasoning:
+        enabled: false
+    max_reasoning_tokens: 0
+    expected_block_fill: 0.68
+    notes: >-
+      30.7B DENSE, released 2026-04. The control against the two MoE arms: if
+      convergence appears in a dense model with high seed-reproducibility as
+      well as under noisy MoE routing, "the fixed point is a determinism
+      artifact" is closed as an explanation.
+      MEASURED at the real regime (S2.0): reasoning 0 and the switch is
+      accepted, so the zero tolerance stands. But it stops early -- 803 and 598
+      tokens against a 1024 block, `finish_reason=stop` both times. That is the
+      qwen3-8b failure mode, and 0.68 is the midpoint of the observed pair, to
+      be replaced by the S2.1 measurement.
+      Tokenizer is gated on the Hub and needs HF_TOKEN; verified loading and
+      round-tripping 2026-09-01.
 
   or-deepseek-v4-flash:
     model_id: deepseek/deepseek-v4-flash

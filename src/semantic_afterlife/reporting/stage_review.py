@@ -404,6 +404,154 @@ def check_no_unverified_citations(settings: Settings, stage: str) -> Check:
     )
 
 
+def check_spend_matches_events(settings: Settings, stage: str) -> Check:
+    """The ledger and the per-step events must agree on what was spent.
+
+    Stage 1's cost was under-reported roughly thirtyfold, because
+    ``cumulative_cost_usd`` in the step events accumulates *per trajectory* and
+    its maximum was read as the run total. The ledger was correct throughout, so
+    the defect was in the reading rather than the recording — which is exactly
+    the kind of error a checklist cannot prevent and a comparison can.
+    """
+    stage_dir = settings.paths.runs / stage
+    if not stage_dir.is_dir():
+        return Check("budget.ledger_matches_events", Verdict.SKIP, "no runs", "")
+
+    entries = read_ledger(settings.paths.ledger)
+    if not entries:
+        return Check("budget.ledger_matches_events", Verdict.SKIP, "empty ledger", "")
+    frame = pd.DataFrame(entries)
+
+    mismatches: list[str] = []
+    compared = 0
+    for run_dir in sorted(p for p in stage_dir.iterdir() if p.is_dir()):
+        events_path = run_dir / "events.jsonl"
+        if not events_path.is_file() or (run_dir / "SUPERSEDED").is_file():
+            continue
+        stepwise = 0.0
+        found = False
+        with events_path.open("rb") as handle:
+            for line in handle:
+                if b"generation.step.completed" not in line:
+                    continue
+                try:
+                    payload = orjson.loads(line)
+                except orjson.JSONDecodeError:
+                    continue
+                if payload.get("event") == "generation.step.completed":
+                    stepwise += float(payload.get("cost_usd") or 0.0)
+                    found = True
+        if not found:
+            continue
+        compared += 1
+        ledger_total = float(frame[frame["run_id"] == run_dir.name]["cost_usd"].sum())
+        # Cached steps cost nothing and are ledgered as zero, so the two agree
+        # to rounding when both are read correctly.
+        if abs(ledger_total - stepwise) > max(0.01, 0.02 * max(ledger_total, stepwise)):
+            mismatches.append(
+                f"{run_dir.name}: ledger ${ledger_total:.4f} vs events ${stepwise:.4f}"
+            )
+    if not compared:
+        return Check("budget.ledger_matches_events", Verdict.SKIP, "no generation runs", "")
+    if mismatches:
+        return Check(
+            "budget.ledger_matches_events",
+            Verdict.FAIL,
+            f"{len(mismatches)} runs disagree: {mismatches[:3]}",
+            "A spend figure that differs between the ledger and the step events means one "
+            "of them is being read wrongly, and the reported cost of the stage is untrue.",
+        )
+    return Check(
+        "budget.ledger_matches_events",
+        Verdict.PASS,
+        f"{compared} runs agree between ledger and step events",
+        "Reported spend is the same quantity whichever record it is read from.",
+    )
+
+
+def check_diagnostics_are_segmented(settings: Settings, stage: str) -> Check:
+    """Protocol diagnostics must be reported over the run, not averaged over it.
+
+    Nothing in this protocol is stationary. Stage 1's block fill decayed from
+    0.995 to 0.653 and its stop rate rose from 4.5% to 74%, and a criterion was
+    amended on a reading taken from the first 5% of the run. A single mean hides
+    exactly the behaviour that matters.
+    """
+    report = settings.paths.stage_docs(stage) / "REPORT.md"
+    if not report.is_file():
+        return Check("report.diagnostics_segmented", Verdict.SKIP, "no REPORT.md yet", "")
+    text = report.read_text(encoding="utf-8").lower()
+    segmented = any(
+        marker in text
+        for marker in ("quarter", "per segment", "by segment", "first 25", "final quarter")
+    )
+    mentions = any(marker in text for marker in ("block fill", "stop rate"))
+    if not mentions:
+        return Check(
+            "report.diagnostics_segmented",
+            Verdict.FAIL,
+            "report does not mention block fill or stop rate",
+            "Both are order parameters of this protocol, not housekeeping: the stop rate "
+            "reaching 74% is what makes a 'free-running' trajectory mostly forced.",
+            [str(report)],
+        )
+    if not segmented:
+        return Check(
+            "report.diagnostics_segmented",
+            Verdict.FAIL,
+            "block fill and stop rate are reported without segmentation over the run",
+            "A run-level mean hides monotone drift. Stage 1's fill averaged 0.748 while "
+            "ending at 0.653, and a criterion was amended on a reading from its first 5%.",
+            [str(report)],
+        )
+    return Check(
+        "report.diagnostics_segmented",
+        Verdict.PASS,
+        "protocol diagnostics reported across the run rather than averaged",
+        "Drift in the diagnostics is itself a result.",
+        [str(report)],
+    )
+
+
+def check_report_quotes_generated_text(settings: Settings, stage: str) -> Check:
+    """The report must quote the model's own output, from several points.
+
+    Twice in Stage 1 reading the text beat reading the metrics. Every intra-chunk
+    diagnostic called a trajectory healthy while it reprinted the same page, and
+    the novelty measure built to catch that was in turn blind to two trajectories
+    converging to the same register in different words. No statistic yet devised
+    here has replaced looking at the output.
+    """
+    report = settings.paths.stage_docs(stage) / "REPORT.md"
+    if not report.is_file():
+        return Check("report.quotes_text", Verdict.SKIP, "no REPORT.md yet", "")
+    text = report.read_text(encoding="utf-8")
+    # Block quotes or fenced blocks, either of which can carry sample output.
+    quoted = [
+        line
+        for line in text.splitlines()
+        if line.lstrip().startswith(">") and len(line.strip()) > 40
+    ]
+    fenced = text.count("```") // 2
+    if len(quoted) + fenced < 3:
+        return Check(
+            "report.quotes_text",
+            Verdict.FAIL,
+            f"only {len(quoted)} block quotes and {fenced} fenced blocks; at least 3 "
+            "samples of generated text are required",
+            "Reading the output caught what every metric missed, twice in Stage 1. A report "
+            "with no generated text in it is a report nobody looked at.",
+            [str(report)],
+        )
+    return Check(
+        "report.quotes_text",
+        Verdict.PASS,
+        f"{len(quoted) + fenced} samples of generated text present",
+        "Somebody looked at what the model actually wrote.",
+        [str(report)],
+    )
+
+
 ALL_CHECKS = (
     check_plan_exists,
     check_runs_complete,
@@ -411,6 +559,9 @@ ALL_CHECKS = (
     check_artifact_bundles,
     check_degeneracy_labelled,
     check_budget,
+    check_spend_matches_events,
+    check_diagnostics_are_segmented,
+    check_report_quotes_generated_text,
     check_report_scores_predictions,
     check_no_unverified_citations,
 )

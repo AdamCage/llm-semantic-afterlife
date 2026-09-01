@@ -19,9 +19,12 @@ from semantic_afterlife.reporting.stage_review import (
     Verdict,
     check_artifact_bundles,
     check_degeneracy_labelled,
+    check_diagnostics_are_segmented,
     check_integrity,
     check_plan_exists,
+    check_report_quotes_generated_text,
     check_runs_complete,
+    check_spend_matches_events,
     review_stage,
 )
 
@@ -175,6 +178,98 @@ class TestPlanCheck:
         """The committed plans must satisfy the gate they will be judged by."""
         for stage in ("0", "1"):
             assert check_plan_exists(Settings(), stage).verdict is Verdict.PASS
+
+
+class TestLessonsFromStageOne:
+    """Three checks that exist because a checklist did not prevent the mistake.
+
+    Each corresponds to something Stage 1 got wrong in a way no amount of care
+    would reliably catch: a cost read from the wrong field, a diagnostic averaged
+    over a non-stationary run, and metrics trusted without anyone reading the
+    output they summarised.
+    """
+
+    def _report(self, settings: Settings, body: str) -> Path:
+        docs = settings.paths.stage_docs(STAGE)
+        docs.mkdir(parents=True, exist_ok=True)
+        path = docs / "REPORT.md"
+        path.write_text(body, encoding="utf-8")
+        return path
+
+    def test_ledger_and_events_agreeing_passes(self, settings: Settings) -> None:
+        run = settings.paths.run(STAGE, "gen").ensure()
+        run.manifest.write_text(json.dumps({"status": "COMPLETED"}), encoding="utf-8")
+        run.events.write_text(
+            "\n".join(
+                json.dumps({"event": "generation.step.completed", "cost_usd": 0.5})
+                for _ in range(4)
+            ),
+            encoding="utf-8",
+        )
+        settings.paths.ledger.parent.mkdir(parents=True, exist_ok=True)
+        settings.paths.ledger.write_text(
+            "\n".join(
+                json.dumps({"run_id": "gen", "kind": "completion", "cost_usd": 0.5})
+                for _ in range(4)
+            ),
+            encoding="utf-8",
+        )
+        assert check_spend_matches_events(settings, STAGE).verdict is Verdict.PASS
+
+    def test_a_thirtyfold_disagreement_fails(self, settings: Settings) -> None:
+        """The Stage 1 error, reproduced: per-trajectory read as per-run."""
+        run = settings.paths.run(STAGE, "gen").ensure()
+        run.manifest.write_text(json.dumps({"status": "COMPLETED"}), encoding="utf-8")
+        run.events.write_text(
+            "\n".join(
+                json.dumps({"event": "generation.step.completed", "cost_usd": 0.5})
+                for _ in range(12)
+            ),
+            encoding="utf-8",
+        )
+        settings.paths.ledger.parent.mkdir(parents=True, exist_ok=True)
+        settings.paths.ledger.write_text(
+            json.dumps({"run_id": "gen", "kind": "completion", "cost_usd": 0.2}), encoding="utf-8"
+        )
+        check = check_spend_matches_events(settings, STAGE)
+        assert check.verdict is Verdict.FAIL
+        assert "disagree" in check.detail
+
+    def test_segmented_diagnostics_pass(self, settings: Settings) -> None:
+        self._report(
+            settings,
+            "# R\nBlock fill by quarter: 0.99, 0.88, 0.77, 0.65. Stop rate rises to 74%.\n",
+        )
+        assert check_diagnostics_are_segmented(settings, STAGE).verdict is Verdict.PASS
+
+    def test_an_unsegmented_average_fails(self, settings: Settings) -> None:
+        self._report(settings, "# R\nMean block fill 0.748 and stop rate 54.5% over the run.\n")
+        check = check_diagnostics_are_segmented(settings, STAGE)
+        assert check.verdict is Verdict.FAIL
+        assert "segmentation" in check.detail
+
+    def test_omitting_the_diagnostics_entirely_fails(self, settings: Settings) -> None:
+        self._report(settings, "# R\nEverything went fine.\n")
+        assert check_diagnostics_are_segmented(settings, STAGE).verdict is Verdict.FAIL
+
+    def test_quoted_output_passes(self, settings: Settings) -> None:
+        body = "# R\n" + "".join(
+            f"> sample {i}: the cartographers had been instructed to survey the piano\n\n"
+            for i in range(3)
+        )
+        self._report(settings, body)
+        assert check_report_quotes_generated_text(settings, STAGE).verdict is Verdict.PASS
+
+    def test_a_report_with_no_generated_text_fails(self, settings: Settings) -> None:
+        self._report(settings, "# R\nNovelty was 0.87 and the gap was 0.147.\n")
+        check = check_report_quotes_generated_text(settings, STAGE)
+        assert check.verdict is Verdict.FAIL
+        assert "generated text" in check.detail
+
+    def test_fenced_blocks_count_as_samples(self, settings: Settings) -> None:
+        body = "# R\n" + "".join(f"```\nsample {i}\n```\n" for i in range(3))
+        self._report(settings, body)
+        assert check_report_quotes_generated_text(settings, STAGE).verdict is Verdict.PASS
 
 
 class TestReportAssembly:
