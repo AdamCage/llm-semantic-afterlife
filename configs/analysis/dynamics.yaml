@@ -1,0 +1,41 @@
+# ===========================================================================
+# S3.1 — VAMP / MSM / Leiden knobs (methodology §3.5–3.6)
+# ---------------------------------------------------------------------------
+# Loaded by `afterlife analyze dynamics`. New knobs live here, not as
+# literals in the estimator. Sample-size caps are part of the Stage 3
+# plan, not improvisation after seeing scores.
+# ===========================================================================
+
+analysis: dynamics
+burn_in_turnovers: 1.0
+n_pca: 128
+n_vamp: 10
+n_microstates: 50
+n_macrostates: 3
+lags: [1, 2, 4, 8]
+msm_lag: 1
+seed: 0
+min_frames: 40
+min_trajectories: 2
+min_lag_pairs: 20
+n_pca_grid: [64, 128]
+n_vamp_grid: [5, 10, 15]
+k_grid: [50, 100, 200, 400]
+k_max_fraction: 0.333
+n_macro_max: 4
+ck_ks: [2, 3]
+ck_max_error: 0.15
+its_flat_rel: 0.5
+leiden_n_pca: 50
+leiden_k: 30
+leiden_resolution: 1.0
+kinetic_map: true
+n_boot: 200
+min_chunks_per_trajectory: 40
+eligible_generators:
+  - or-qwen3-8b
+  - or-qwen3-8b-prefill
+  - or-gpt-oss-120b
+  - or-muse-glimmer-30b
+glimmer_temperature: 0.3
+glimmer_semantic_seed: physics

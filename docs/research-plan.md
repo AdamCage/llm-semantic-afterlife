@@ -269,14 +269,15 @@ language models.
 Do not default to prefill. Do not pool gemma-silence, qwen-reviewer,
 glimmer-physics and 20b-fragments into one MSM.
 
-**S3.0 (unexecuted since ADR-0008; now blocking for interpretation).** A
-local 1–3B *base* model at reduced `W` and a matched turnover count. If this
-cannot be obtained, every later claim stays labelled as instruct-under-P1.
-The harness now has `api: local` ([ADR-0011](decisions/ADR-0011-local-base-provider.md));
-the S3.0-sized candidate is `google/gemma-3-1b-pt`. Gemma 4 E2B is a true
-pretrained checkpoint (10 GB multimodal); it loads in bfloat16 on a 15 GB
-CPU box but a 16-token probe was degenerate, so it is not the default
-S3.0 object. A two-turnover smoke is not S3.0.
+**S3.0 (opened 2026-09-01; embeddings deferred).** A local 1–3B *base*
+model at reduced `W` and a matched turnover count. The harness has
+`api: local` ([ADR-0011](decisions/ADR-0011-local-base-provider.md));
+the object is `google/gemma-3-1b-pt` at `W = 256`, `T = 12W`
+([ADR-0012](decisions/ADR-0012-stage3-no-openrouter.md)). This opening
+does **not** call OpenRouter: S3.0 is generation + surface diagnostics
+only. Geometry of the base model waits for an embedding balance. Until
+then every S3.1 sentence is instruct-under-P1. Gemma 4 E2B stays out.
+A two-turnover smoke is not S3.0.
 
 **S3.1 Dynamics, restricted sample.** `PCA → VAMP → k-means microstates →
 non-reversible MSM → macrostates (PCCA+)`, with full MSM validation — VAMP
