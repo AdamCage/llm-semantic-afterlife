@@ -14,8 +14,10 @@ import pytest
 from semantic_afterlife.analysis.dynamics import (
     DynamicsParams,
     TrajectorySeries,
+    chapman_kolmogorov,
     choose_n_macro,
     compute_dynamics,
+    compute_k_stability,
     count_matrix,
     filter_eligible,
     implied_timescales,
@@ -252,3 +254,51 @@ class TestComputeDynamics:
         # A driven cycle should not look like equilibrium at this length.
         assert result.scalars["j_norm_ci_low"] >= 0
         assert result.scalars["j_norm"] > result.scalars["j_norm_ci_low"] * 0.5
+        assert set(result.ck["object"]) >= {"micro"}
+        assert "ck_macro_max_error" in result.scalars
+
+
+class TestChapmanKolmogorov:
+    def test_exact_two_state_alternation_has_zero_error(self) -> None:
+        assignments = [np.array([0, 1] * 80, dtype=np.int64) for _ in range(2)]
+        ck = chapman_kolmogorov(assignments, lag=1, ks=(2, 3), n_states=2, object_name="micro")
+        assert float(ck["max_abs_error"].max()) == pytest.approx(0.0, abs=1e-12)
+        assert set(ck["object"]) == {"micro"}
+
+    def test_sparse_unvisited_row_drives_max_to_one(self) -> None:
+        """A label that is a lag-1 source but never a lag-2 source gets T_ii=1 at 2τ.
+
+        That is the empty-versus-occupied discrepancy the Stage 3 review named:
+        max |T(kτ) − T(τ)^k| hits 1 without the process being non-Markov.
+        """
+        series = np.zeros(40, dtype=np.int64)
+        series[-2] = 5
+        ck = chapman_kolmogorov([series], lag=1, ks=(2, 3), n_states=20, object_name="micro")
+        # T(2τ)_55 = 1 (never a lag-2 source) vs T(τ)^2_5 = T_0 ≠ e_5.
+        assert float(ck["max_abs_error"].max()) > 0.9
+
+
+class TestKStability:
+    def test_grid_refits_each_allowed_k(self) -> None:
+        trajs = []
+        for i in range(3):
+            embeddings, _ = two_state_hmm(80, 16, p_stay=0.9, seed=30 + i)
+            trajs.append(_series(embeddings, trajectory_id=f"k-{i}", seed=i))
+        params = DynamicsParams(
+            n_pca=8,
+            n_vamp=4,
+            n_microstates=10,
+            k_grid=(8, 10),
+            lags=(1, 2),
+            msm_lag=1,
+            min_frames=40,
+            min_lag_pairs=20,
+            n_boot=20,
+            leiden_n_pca=6,
+            leiden_k=6,
+            eligible_generators=("synthetic",),
+        )
+        frame = compute_k_stability(trajs, params=params, group="hmm")
+        assert set(frame["K"].astype(int)) >= {8, 10}
+        assert "n_macro" in frame.columns
+        assert "ck_macro_max_error" in frame.columns

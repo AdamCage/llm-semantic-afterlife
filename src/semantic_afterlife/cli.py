@@ -1589,6 +1589,7 @@ def analyze_dynamics(
     from .analysis.dynamics import (
         DynamicsParams,
         compute_dynamics,
+        compute_k_stability,
         filter_eligible,
         series_from_frame,
     )
@@ -1600,6 +1601,7 @@ def analyze_dynamics(
         ck_error_figure,
         current_norm_figure,
         implied_timescales_figure,
+        occupancy_vs_turnover_figure,
     )
 
     params = DynamicsParams.from_yaml(config)
@@ -1628,6 +1630,7 @@ def analyze_dynamics(
         settings=settings,
     ) as context:
         results = []
+        k_stability_frames: list[pd.DataFrame] = []
         skipped: list[str] = []
         for parquet in chosen:
             slug = parquet.stem.removeprefix("embeddings_")
@@ -1650,6 +1653,12 @@ def analyze_dynamics(
                     skipped.append(f"{group}: {exc}")
                     continue
                 results.append(result)
+                try:
+                    k_stability_frames.append(
+                        compute_k_stability(series, params=params, group=group)
+                    )
+                except AnalysisError as exc:
+                    skipped.append(f"{group} k-stability: {exc}")
                 context.events.event(
                     "analysis.dynamics.group",
                     group=group,
@@ -1685,6 +1694,11 @@ def analyze_dynamics(
         occupancy = pd.concat([item.occupancy for item in results], ignore_index=True)
         agreement = pd.concat([item.agreement for item in results], ignore_index=True)
         vamp_scores = pd.concat([item.vamp_scores for item in results], ignore_index=True)
+        k_stability = (
+            pd.concat(k_stability_frames, ignore_index=True)
+            if k_stability_frames
+            else pd.DataFrame()
+        )
 
         for name, table in (
             ("scalars", scalars),
@@ -1694,7 +1708,10 @@ def analyze_dynamics(
             ("occupancy", occupancy),
             ("agreement", agreement),
             ("vamp_scores", vamp_scores),
+            ("k_stability", k_stability),
         ):
+            if table.empty and not len(table.columns):
+                continue
             table.to_parquet(context.paths.data_dir / f"dynamics_{name}.parquet", index=False)
 
         out_dir = context.artifacts_dir / "dynamics"
@@ -1731,16 +1748,19 @@ def analyze_dynamics(
                 run_ids=run_ids,
                 threshold=params.ck_max_error,
                 caption=(
-                    "Chapman–Kolmogorov test: max absolute deviation between T(kτ) "
-                    f"estimated directly and T(τ)^k. The dashed line is the "
-                    f"pre-registered threshold {params.ck_max_error}. A cell above "
-                    "the line is not given a macrostate interpretation."
+                    "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. "
+                    "Each bar is labelled micro (k-means assignment, pre-registered "
+                    f"F6 bar {params.ck_max_error}) or macro (spectral coarse-graining). "
+                    "A micro-MSM above the dashed line fails F6. That is a sparse "
+                    "count-matrix test, not a claim that the process is non-Markov."
                 ),
                 limitations=(
-                    "The test is applied to the MSM, not to the VAMP-reduced model. "
-                    "With ~40 post-horizon chunks, k=3 is already a large fraction "
-                    "of the series; failure can mean a short sample rather than a "
-                    "wrong lag."
+                    "F6 is scored on the K-state micro-MSM only. Unused microstates "
+                    "get a self-loop; a single empty-versus-occupied discrepancy "
+                    "drives the max toward 1. The 0.15 bar is pre-registered, not "
+                    "calibrated to this K / n_frames regime, and is not scale-aware. "
+                    "Methodology's VAMP-reduced CK was not run. Macro CK is reported "
+                    "beside the micro bar and does not inherit the F6 interpretation."
                 ),
             )
         )
@@ -1749,16 +1769,18 @@ def analyze_dynamics(
                 scalars,
                 run_ids=run_ids,
                 caption=(
-                    "Frobenius norm of the probability current J_ij = π_i T_ij − "
-                    "π_j T_ji, with a 95% trajectory-bootstrap CI. An interval "
-                    "that includes 0 is consistent with equilibrium-like detailed "
-                    "balance on this sample; it does not prove the process is reversible."
+                    "Frobenius norm of the K×K *microstate* current "
+                    "J_ij = π_i T_ij − π_j T_ji, with a 95% trajectory-bootstrap "
+                    "CI. This is not H4 (macrostate currents). An interval that "
+                    "includes 0 is consistent with a near-zero microstate current "
+                    "on that cell; it is not a claim that 'qwen is at equilibrium'."
                 ),
                 limitations=(
-                    "‖J‖ is a scalar summary of a K×K matrix. A small norm on a "
-                    "process that has already reached a textual fixed point is "
-                    "the expected Q7 outcome, not evidence of a rich circulating "
-                    "attractor. Bootstrap is over trajectories, not chunks."
+                    "‖J‖_F summarises a K×K micro-MSM. A sliding loop chopped into "
+                    "k-means cells can carry a small directed current that is not "
+                    "semantic circulation. The point estimate can sit above the "
+                    "CI upper bound (frozen-label bootstrap pathology). Bootstrap "
+                    "is over trajectories, not chunks."
                 ),
             )
         )
@@ -1787,18 +1809,63 @@ def analyze_dynamics(
                 name="dynamics_scalars",
                 caption=(
                     "Per-process MSM summary. validated_macrostates=1 only when "
-                    "implied timescales are flat, CK passes, n_macro≥2, and not "
-                    "every trajectory is degenerate. n_macro=1 means H1 is "
-                    "unsupported on that cell."
+                    "implied timescales are flat, the *microstate* CK passes, "
+                    "n_macro≥2, and not every trajectory is degenerate. "
+                    "ck_max_error is the micro-MSM; ck_macro_max_error is the "
+                    "spectral coarse-graining. n_macro=1 means H1 is unsupported "
+                    "on that cell."
                 ),
                 run_ids=run_ids,
                 git_sha=git_sha,
                 limitations=(
                     "Instruct-under-P1 only this opening (ADR-0012). Glimmer is "
-                    "underpowered by construction. K is capped at n_frames/3."
+                    "underpowered by construction. K is capped at n_frames/3. "
+                    "mean_dwell_chunks drops unvisited self-loop states. "
+                    "VAMP-2 out-of-sample CV for n_pca / n_vamp / K was not run."
                 ),
             ),
         )
+        if not k_stability.empty:
+            save_table(
+                k_stability,
+                out_dir,
+                FigureMeta(
+                    name="k_stability",
+                    caption=(
+                        "n_macro at every K allowed by the plan's n_frames/3 cap. "
+                        "F7 is this table: instability across K or across spaces "
+                        "is the result when no process keeps the same n_macro."
+                    ),
+                    run_ids=run_ids,
+                    git_sha=git_sha,
+                    limitations=(
+                        "Each row is a full refit at that K, produced by "
+                        "afterlife analyze dynamics, so reproduce regenerates it. "
+                        "A changing n_macro under a failed micro-CK is not a "
+                        "disagreement about semantic states — there are no "
+                        "validated semantic states to disagree about."
+                    ),
+                ),
+            )
+        if not occupancy.empty:
+            export(
+                occupancy_vs_turnover_figure(
+                    occupancy,
+                    run_ids=run_ids,
+                    caption=(
+                        "Occupancy of the spectral coarse-graining versus window "
+                        "turnover. Bins are floor(t/W). This is the occupancy "
+                        "curve promised in the Stage 3 plan; it is not a "
+                        "validated macrostate trajectory."
+                    ),
+                    limitations=(
+                        "Assignments come from the same fit as n_macro. On a "
+                        "looping series the coarse-graining is a partition of "
+                        "the loop. Do not read a dwell or a basin from this "
+                        "figure when validated_macrostates=0."
+                    ),
+                )
+            )
         if skipped:
             context.note("skipped: " + "; ".join(skipped))
             console().print("[yellow]skipped groups:[/yellow] " + "; ".join(skipped))

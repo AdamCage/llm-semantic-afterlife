@@ -958,7 +958,16 @@ def ck_error_figure(
     figure = go.Figure()
     tidy = frame.copy()
     if not tidy.empty:
-        tidy["series"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        if "object" in tidy.columns:
+            tidy["series"] = (
+                tidy["generator"].astype(str)
+                + " / "
+                + tidy["embedding"].astype(str)
+                + " / "
+                + tidy["object"].astype(str)
+            )
+        else:
+            tidy["series"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
         for i, (label, block) in enumerate(tidy.groupby("series", sort=True)):
             figure.add_trace(
                 go.Bar(
@@ -971,7 +980,7 @@ def ck_error_figure(
     figure.add_hline(y=threshold, line={"color": ROLE_COLORS["horizon"], "dash": "dash"})
     figure.update_layout(
         template=plotly_template(),
-        title="Chapman–Kolmogorov error: max |T(kτ) − T(τ)^k|",
+        title="Chapman–Kolmogorov error: max |T(kτ) − T(τ)^k| (object labelled)",
         xaxis={"title": "k", "dtick": 1},
         yaxis={"title": "max absolute deviation of T"},
         barmode="group",
@@ -1015,9 +1024,9 @@ def current_norm_figure(
     figure.add_hline(y=0.0, line={"color": ROLE_COLORS["baseline"], "dash": "dot"})
     figure.update_layout(
         template=plotly_template(),
-        title="Probability-current norm ‖J‖_F",
+        title="Microstate probability-current norm ‖J‖_F",
         xaxis={"title": "process × representation space"},
-        yaxis={"title": "‖π_i T_ij − π_j T_ji‖_F"},
+        yaxis={"title": "‖π_i T_ij − π_j T_ji‖_F of the K×K micro-MSM"},
     )
     meta = FigureMeta(
         name=name,
@@ -1068,6 +1077,59 @@ def agreement_figure(
         run_ids=run_ids,
         limitations=limitations,
         units={"ari": "adjusted Rand index"},
+    )
+    return figure, tidy, meta
+
+
+def occupancy_vs_turnover_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    name: str = "occupancy_vs_turnover",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Fraction of frames in each spectral coarse-graining, vs turnover."""
+    figure = go.Figure()
+    tidy = frame.copy()
+    if not tidy.empty and {"turnover", "macrostate", "generator", "embedding"}.issubset(
+        tidy.columns
+    ):
+        tidy["bin"] = np.floor(tidy["turnover"].astype(float)).astype(int)
+        tidy["process"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        counts = (
+            tidy.groupby(["process", "bin", "macrostate"], sort=True)
+            .size()
+            .rename("n")
+            .reset_index()
+        )
+        totals = counts.groupby(["process", "bin"], sort=True)["n"].transform("sum")
+        counts["occupancy"] = counts["n"] / totals
+        for colour_i, ((process, macro), block) in enumerate(
+            counts.groupby(["process", "macrostate"], sort=True)
+        ):
+            figure.add_trace(
+                go.Scatter(
+                    x=block["bin"],
+                    y=block["occupancy"],
+                    mode="lines+markers",
+                    name=f"{process} / m{int(macro)}",
+                    marker={"color": PALETTE[colour_i % len(PALETTE)]},
+                )
+            )
+        tidy = counts
+    figure.update_layout(
+        template=plotly_template(),
+        title="Macrostate occupancy versus window turnover",
+        xaxis={"title": "turnover floor (t/W)"},
+        yaxis={"title": "fraction of frames in spectral coarse-graining", "range": [0, 1.05]},
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"bin": "turnovers", "occupancy": "fraction of frames"},
     )
     return figure, tidy, meta
 

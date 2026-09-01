@@ -410,11 +410,16 @@ def chapman_kolmogorov(
     lag: int,
     ks: tuple[int, ...],
     n_states: int,
+    object_name: str = "micro",
 ) -> pd.DataFrame:
-    """``T(kτ) ≈ T(τ)^k``. Applied to the MSM, not to VAMP singular values."""
+    """``T(kτ) ≈ T(τ)^k``. Applied to a labelled assignment, not to VAMP.
+
+    ``object_name`` records *which* assignment was tested. The pre-registered
+    Stage 3 bar (F6) is the k-means micro-MSM. A coarse-grained assignment is
+    a different object and must not inherit that bar's interpretation.
+    """
     base = transition_matrix(count_matrix(assignments, lag=lag, n_states=n_states))
-    rows: list[dict[str, float]] = []
-    power = np.eye(n_states)
+    rows: list[dict[str, float | str]] = []
     for k in ks:
         power = np.linalg.matrix_power(base, int(k))
         direct = transition_matrix(count_matrix(assignments, lag=lag * int(k), n_states=n_states))
@@ -425,6 +430,8 @@ def chapman_kolmogorov(
                 "k": float(k),
                 "lag_k": float(lag * k),
                 "max_abs_error": error,
+                "object": object_name,
+                "n_states": float(n_states),
             }
         )
     return pd.DataFrame(rows)
@@ -690,13 +697,22 @@ def compute_dynamics(
     flat = its_is_flat(its, rel=params.its_flat_rel)
 
     try:
-        ck = chapman_kolmogorov(assignments, lag=params.msm_lag, ks=params.ck_ks, n_states=n_states)
+        ck_micro = chapman_kolmogorov(
+            assignments,
+            lag=params.msm_lag,
+            ks=params.ck_ks,
+            n_states=n_states,
+            object_name="micro",
+        )
     except AnalysisError as exc:
-        ck = pd.DataFrame(columns=["lag", "k", "lag_k", "max_abs_error"])
+        ck_micro = pd.DataFrame(
+            columns=["lag", "k", "lag_k", "max_abs_error", "object", "n_states"]
+        )
         notes.append(f"CK skipped: {exc}")
-    ck_pass = bool(len(ck) and float(ck["max_abs_error"].max()) < params.ck_max_error)
+    ck_pass = bool(len(ck_micro) and float(ck_micro["max_abs_error"].max()) < params.ck_max_error)
 
-    primary = transition_matrix(count_matrix(assignments, lag=params.msm_lag, n_states=n_states))
+    counts = count_matrix(assignments, lag=params.msm_lag, n_states=n_states)
+    primary = transition_matrix(counts)
     pi = stationary_distribution(primary)
     currents = probability_currents(pi, primary)
     current_ci = _bootstrap_current_norm(
@@ -713,6 +729,27 @@ def compute_dynamics(
     if n_macro <= 1:
         notes.append("no spectral gap; n_macro=1 — H1 is unsupported on this cell")
     macros = pcca_assign(primary, assignments, n_macro=n_macro, seed=params.seed)
+    n_macro_states = int(max((int(np.max(lab)) + 1) for lab in macros)) if macros else 1
+    try:
+        ck_macro = (
+            chapman_kolmogorov(
+                macros,
+                lag=params.msm_lag,
+                ks=params.ck_ks,
+                n_states=max(n_macro_states, 1),
+                object_name="macro",
+            )
+            if n_macro >= 2
+            else pd.DataFrame(columns=["lag", "k", "lag_k", "max_abs_error", "object", "n_states"])
+        )
+    except AnalysisError as exc:
+        ck_macro = pd.DataFrame(
+            columns=["lag", "k", "lag_k", "max_abs_error", "object", "n_states"]
+        )
+        notes.append(f"macro CK skipped: {exc}")
+    ck = pd.concat([ck_micro, ck_macro], ignore_index=True)
+    ck_macro_max = float(ck_macro["max_abs_error"].max()) if len(ck_macro) else float("nan")
+    ck_macro_pass = bool(len(ck_macro) and ck_macro_max < params.ck_max_error)
 
     try:
         leiden = leiden_partition(
@@ -780,6 +817,10 @@ def compute_dynamics(
             "timescales on those frames measure the loop"
         )
 
+    visited = counts.sum(axis=1) > 0
+    dwells = mean_dwell(primary, lag=params.msm_lag)
+    mean_dwell_visited = float(np.mean(dwells[visited])) if bool(visited.any()) else float("nan")
+
     scalars = {
         "n_trajectories": float(len(trajectories)),
         "n_frames": float(n_frames),
@@ -792,10 +833,12 @@ def compute_dynamics(
         "leading_singular": float(singular[0]) if singular.size else float("nan"),
         "leading_tica": float(tica_vals[0]) if tica_vals.size else float("nan"),
         "entropy_rate": entropy_rate(pi, primary),
-        "mean_dwell_chunks": float(np.mean(mean_dwell(primary, lag=params.msm_lag))),
+        "mean_dwell_chunks": mean_dwell_visited,
         "its_flat": float(flat),
         "ck_pass": float(ck_pass),
-        "ck_max_error": float(ck["max_abs_error"].max()) if len(ck) else float("nan"),
+        "ck_max_error": float(ck_micro["max_abs_error"].max()) if len(ck_micro) else float("nan"),
+        "ck_macro_max_error": ck_macro_max,
+        "ck_macro_pass": float(ck_macro_pass),
         "validated_macrostates": float(validated),
         "n_degenerate": float(n_degenerate),
         "underpowered": float(n_frames < 120 or len(trajectories) < 4),
@@ -834,3 +877,44 @@ def compute_dynamics(
         transition=primary,
         notes=notes,
     )
+
+
+def compute_k_stability(
+    trajectories: list[TrajectorySeries],
+    *,
+    params: DynamicsParams,
+    group: str,
+) -> pd.DataFrame:
+    """Refit the MSM at every K that the plan's one-third cap allows.
+
+    F7 is this table, not a single-K ``n_macro``. Each row is a full
+    ``compute_dynamics`` so ``afterlife reproduce`` of the dynamics run
+    regenerates it.
+    """
+    n_frames = int(sum(item.embeddings.shape[0] for item in trajectories))
+    ks = list(valid_k_grid(n_frames, params))
+    if params.n_microstates not in ks:
+        fallback = int(min(params.n_microstates, max(n_frames // 3, 2)))
+        if fallback >= 2 and fallback not in ks:
+            ks.append(fallback)
+    rows: list[dict[str, float | str]] = []
+    for k in sorted(ks):
+        varied = params.model_copy(update={"n_microstates": int(k)})
+        result = compute_dynamics(trajectories, params=varied, group=group)
+        rows.append(
+            {
+                "group": group,
+                "generator": result.generator,
+                "embedding": result.embedding,
+                "K": result.scalars["K"],
+                "n_macro": result.scalars["n_macro"],
+                "its_flat": result.scalars["its_flat"],
+                "ck_pass": result.scalars["ck_pass"],
+                "ck_max_error": result.scalars["ck_max_error"],
+                "ck_macro_max_error": result.scalars["ck_macro_max_error"],
+                "validated": result.scalars["validated_macrostates"],
+                "n_frames": result.scalars["n_frames"],
+                "n_trajectories": result.scalars["n_trajectories"],
+            }
+        )
+    return pd.DataFrame(rows)
