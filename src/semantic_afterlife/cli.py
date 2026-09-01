@@ -993,7 +993,11 @@ def analyze_geometry(
         chunks_source = _source_chunks(source)
         if chunks_source is not None:
             verdicts, degeneracy_chunks = _degeneracy_labels(chunks_source)
-            scalars = scalars.merge(verdicts, on="trajectory_id", how="left")
+            # Degeneracy scalars reuse names (n_chunks, …). Drop the overlap so
+            # the geometry columns keep their names; a merge suffix of
+            # n_chunks_x / n_chunks_y made the published table unreadable.
+            overlap = [c for c in verdicts.columns if c in scalars.columns and c != "trajectory_id"]
+            scalars = scalars.merge(verdicts.drop(columns=overlap), on="trajectory_id", how="left")
             per_chunk = per_chunk.merge(
                 degeneracy_chunks[["trajectory_id", "chunk_index", "ngram_repetition", "looping"]],
                 on=["trajectory_id", "chunk_index"],

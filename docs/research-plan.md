@@ -248,13 +248,20 @@ Headline measurements:
   change the qwen fixed-point rate (7/8 vs 8/8, difference CI [−0.375, 0.0]).
 - Exact-match determinism: glimmer 100%, qwen 60%, gemma 20%, both gpt-oss
   20%. Q6's >90% on gemma was false.
-- S2.1 completion 11/40. F8 failed. Spend $2.54 of a $6 ceiling before
-  embeddings.
+- S2.1 completion 11/40. F8 failed. Spend **$2.54 / $6**. Embeddings and
+  geometry charged $0 (cache).
+- MSD on long trajectories is subdiffusive in both embedding spaces.
+  Degenerate rows (120b, qwen, glimmer-physics, gemma-physics) do not
+  support a confinement claim. Gemma surreal is subdiffusive *and*
+  non-degenerate while writing silence glyphs.
+- On qwen3-8b (S2.2) the seed-separation gap stays positive through 12
+  turnovers in both spaces (band-12 CI excludes 0). S2.1 separation is
+  mixed-generator and is not a half-life.
 
 The Stage 1 reading survives as a claim about qwen3-8b under P1, not about
 language models.
 
-**Budget.** ≤ $6 declared; $2.8 forecast; $2.54 actual plus embeddings.
+**Budget.** ≤ $6 declared; $2.8 forecast; **$2.54** actual.
 
 ### S3 — Metastability, Markov state models, and representation robustness `← current`
 

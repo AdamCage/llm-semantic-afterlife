@@ -17,6 +17,16 @@ Generation runs:
 `s2-model-axis-20260901T015457Z-ab59afc8` (S2.1),
 `s2-mechanism-20260901T071519Z-dfbb173a` (S2.2, 16/16).
 Determinism: `s2-audit-determinism-20260901T015221Z-ab59afc8`.
+Embeddings: `s2-embed-model-axis-20260901T125626Z-50d60286`,
+`s2-embed-mechanism-20260901T131051Z-55761049` ($0; cache).
+Geometry (bge-m3 / qwen3-embed-8b):
+`s2-geometry-bge-m3-20260901T132435Z-88f96cdb`,
+`s2-geometry-qwen3-embed-8b-20260901T132459Z-6d741e7d` (S2.1);
+`s2-geometry-bge-m3-20260901T132533Z-823e2b2b`,
+`s2-geometry-qwen3-embed-8b-20260901T132556Z-6533ad1e` (S2.2).
+The first S2.1 geometry attempt
+`s2-geometry-bge-m3-20260901T131856Z-88f96cdb` crashed on 1-chunk
+empty-EOS fragments and is marked SUPERSEDED.
 
 ---
 
@@ -79,7 +89,7 @@ glimmer cells do.**
 
 Gemma's physics cells are looping-degenerate (intra-chunk repetition) without
 being textual fixed points (late pairwise median ≈ 0). They are not reprinting
-one page. They are collapsing into marks. See §6.
+one page. They are collapsing into marks. See §7.
 
 ---
 
@@ -112,7 +122,79 @@ The cheap marker filter and the hand verdict agreed on every S2.2 cell.
 
 ---
 
-## 5. Prediction vs outcome
+## 5. Geometry and seed separation
+
+Both embedding spaces, degeneracy labelled first. Long trajectories here
+are those with ≥ 40 chunks (~10 turnovers at `W = 4096`, chunk = 1024) —
+the regime the exit criteria are about. Seven of 39 S2.1 embeddings are
+flagged `too_short_for_msd` (1–3 chunks). One planned cell,
+`or-gpt-oss-20b__W4096__T1__surreal__s1`, produced no chunk at all and
+is absent from the embedding tables. S2.2 is 16/16 long.
+
+Median MSD exponent α on the long subset
+(`artifacts/stage-2/model-axis/geometry-*/`,
+`mechanism/geometry-*/`):
+
+| arm | n long | degenerate | α (bge-m3) | α (qwen3-embed-8b) | plateau (bge) |
+| --- | --- | --- | --- | --- | --- |
+| gemma-4-31b | 8 | 4/8 (physics only) | 0.295 | 0.419 | 0.538 |
+| gpt-oss-120b | 8 | 8/8 | 0.224 | 0.303 | 0.302 |
+| glimmer T=0.3 physics | 2 | 2/2 | −0.098 | −0.102 | 0.145 |
+| qwen S2.1 T=1 surreal | 2 | 2/2 | 0.183 | 0.332 | 0.241 |
+| qwen S2.2 raw | 8 | 8/8 | 0.190 | 0.332 | 0.241 |
+| qwen S2.2 prefill | 8 | 7/8 | 0.115 | 0.178 | 0.225 |
+
+Every α is subdiffusive (≪ 1). That is **not** a confinement claim for
+the degenerate rows: 120b, qwen, and glimmer-physics occupy one lexical
+neighbourhood, and the exponent measures the loop. Gemma physics is the
+same warning in a different costume (looping marks, not a reviewer page).
+
+Gemma **surreal** is the row that is *not* n-gram degenerate and is
+still not a textual fixed point. Its four long cells have α 0.11–0.30
+(bge-m3) and 0.13–0.40 (qwen3-embed-8b). The trajectory is subdiffusive
+in both spaces while the text dies into silence glyphs. Reading that α
+as semantic memory would repeat the S1.0 mistake without the loop: a
+low exponent from a process that has stopped saying anything.
+
+One prefill outlier is named, not averaged away:
+`or-qwen3-8b-prefill__W4096__T0p3__physics__s1` has α = 0.80 (bge) /
+0.82 (qwen-embed). Its pair at the same seed and temperature is
+α = −0.07 / −0.10. Mechanism-level medians hide that split.
+
+The published `geometry_scalars` tables join degeneracy onto geometry
+and, on these runs, suffix colliding columns (`n_chunks_x` from
+geometry, `n_chunks_y` from degeneracy). The two counts agree. Chunk
+counts in this section come from `geometry_per_chunk.parquet`.
+
+**Seed separation** (`artifacts/stage-2/*/separation-*/`).
+
+S2.2 is the clean reading: one generator, two seeds, both mechanisms,
+12 turnovers. The gap `D_between − D_within` stays positive with a
+bootstrap CI that excludes 0 in **every** turnover band, including
+band 12, in **both** embedding spaces:
+
+| band | gap bge-m3 | 95% CI | gap qwen3-embed-8b | 95% CI |
+| --- | --- | --- | --- | --- |
+| 0 | 0.317 | 0.292–0.347 | 0.690 | 0.653–0.725 |
+| 10 | 0.242 | 0.174–0.312 | 0.475 | 0.358–0.589 |
+| 12 | 0.232 | 0.157–0.312 | 0.455 | 0.330–0.580 |
+
+That is the Stage 1 sentence, now measured at 12 turnovers on qwen3-8b:
+the process freezes **and** still carries seed identity. Prefill is in
+this pool; it does not wash the gap out.
+
+S2.1 separation is a **mixed-generator** contrast (gemma silence, 120b
+fixed points, qwen fragments, glimmer, 20b). The gap decays (bge-m3
+0.190 → 0.062 at band 10; band 12 CI includes 0 on 25 within-pairs).
+That decay is not a half-life of any one process. It is not used as
+one.
+
+PCA panels in the geometry directories are 2-D illustrations. No
+cluster count or statistical claim is taken from them.
+
+---
+
+## 6. Prediction vs outcome
 
 | # | Prediction | Conf. | Observed | Score |
 | --- | --- | --- | --- | --- |
@@ -137,7 +219,7 @@ for the instruction-tuning confound is the **base-model check** of ADR-0008
 
 ---
 
-## 6. What the models actually wrote
+## 7. What the models actually wrote
 
 Every claim below rests on these. Trajectory identifiers are S2.1 unless
 marked S2.2.
@@ -227,7 +309,7 @@ into `FAILED`.
 
 ---
 
-## 7. Protocol diagnostics, by quarter
+## 8. Protocol diagnostics, by quarter
 
 From `artifacts/stage-2/model-axis/protocol/protocol_by_quarter.md` and
 `mechanism/protocol/`. Quarters are even bins over **steps**, not tokens.
@@ -257,7 +339,7 @@ AkashML, Parasail.
 
 ---
 
-## 8. Surprises
+## 9. Surprises
 
 **Gemma's attractor is silence, not self-review.** Stage 1's reviewer-page
 story does not transfer. A 31B dense instruct model under the same P1, same
@@ -281,9 +363,19 @@ that it works.** Two cells live; six die the way Stage 1 said. Only rates.
 **Determinism on gemma is 20%, not the >90% Q6 guessed.** Claims for gemma
 are distributional, same as the MoE arms.
 
+**Gemma surreal is subdiffusive in both embedding spaces without being
+n-gram degenerate.** α 0.11–0.30 (bge-m3) while the text is silence
+glyphs and the fixed-point flag is false. Degeneracy-first does not by
+itself prevent a confinement misread; the text still has to be read.
+
+**On qwen3-8b the seed-separation gap survives 12 turnovers** in both
+spaces, CI excluding 0 at band 12. The Stage 1 "freezes while still
+carrying the seed" sentence is now a 12-turnover measurement on this
+generator, not a 10-turnover one.
+
 ---
 
-## 9. Threats to validity
+## 10. Threats to validity
 
 **Almost-`T` is not `T`.** 120b's 8/8 fixed-point rate is measured on 47-chunk
 trajectories that the harness marked FAILED. If the last 10–18 tokens were
@@ -312,13 +404,22 @@ clean qwen rate is S2.2's 8/8 raw.
 wrapper, not the window arithmetic. A base model, or a true sliding
 decode, is a different experiment.
 
-**Embedding-space geometry is reported only after both spaces are scored.**
-Rates and register counts do not use the embedders. Confinement claims from
-MSD still require the geometry pass and its degeneracy labels.
+**Embedding-space geometry is now scored in both spaces.** Confinement
+claims from MSD on degenerate rows are refused. Gemma surreal's low α
+is reported with the silence reading, not as semantic memory. S2.1
+seed-separation is a mixed-generator contrast and is not a half-life.
+S2.2 (qwen only) is the separation result the paper may cite.
+
+**The joined `geometry_scalars` tables on these runs carry
+`n_chunks_x` / `n_chunks_y`.** The merge suffixed colliding columns.
+The two counts agree; later runs drop the overlap before joining.
+
+**S2.1 embeddings cover 39 of 40 planned cells.**
+`or-gpt-oss-20b__W4096__T1__surreal__s1` never produced a chunk.
 
 ---
 
-## 10. Money
+## 11. Money
 
 From `runs/_ledger/spend.jsonl`, never from `cumulative_cost_usd`.
 
@@ -327,18 +428,18 @@ From `runs/_ledger/spend.jsonl`, never from `cumulative_cost_usd`.
 | S2.3 determinism + tokenizers | $0.05 | **$0.0015** |
 | S2.1 model axis | $1.87 | **$1.8000** |
 | S2.2 mechanism | $0.77 | **$0.7378** |
-| embeddings (both generation runs, both spaces) | (in stage ceiling) | running; $0.00 charged at report draft |
-| **stage total** | $2.8 / $6 ceiling | **$2.54** plus embed |
+| embeddings (both generation runs, both spaces) | (in stage ceiling) | **$0.0000** (cache) |
+| geometry + separation (4 + 4 runs) | $0 | **$0.0000** |
+| **stage total** | $2.8 / $6 ceiling | **$2.54** |
 
-Project spend **$11.57 of $50** before embeddings complete. S2.1 came in
-under forecast because 29 trajectories died early; S2.2 hit its forecast
-because it finished.
+Project spend **$11.57 of $50**. S2.1 came in under forecast because 29
+trajectories died early; S2.2 hit its forecast because it finished.
 
 No ceiling was raised. Sampling was not changed.
 
 ---
 
-## 11. Implications for the plan
+## 12. Implications for the plan
 
 See [ADR-0010](../../decisions/ADR-0010-stage2-findings-replan-s3.md).
 
@@ -357,14 +458,25 @@ See [ADR-0010](../../decisions/ADR-0010-stage2-findings-replan-s3.md).
   accepted as the sample.
 - **Q6 is closed:** no arm except glimmer may claim seeded determinism.
 
+**Gemma surreal is subdiffusive in both embedding spaces without being
+n-gram degenerate.** α 0.11–0.30 (bge-m3) while the text is silence
+glyphs and the fixed-point flag is false. Degeneracy-first does not
+by itself prevent a confinement misread; the text still has to be
+read.
+
+**On qwen3-8b the seed-separation gap survives 12 turnovers** in both
+spaces, CI excluding 0 at band 12. The Stage 1 "freezes while still
+carrying the seed" sentence is now a 12-turnover measurement on this
+generator, not a 10-turnover one.
+
 ---
 
-## 12. Definition of done
+## 13. Definition of done
 
 - [x] S2.1 and S2.2 generated, per-trajectory status recorded
 - [x] Degeneracy, rates, protocol, F4 hand count
-- [ ] Both embedding spaces + geometry + separation (in flight after this draft)
+- [x] Both embedding spaces + geometry + separation
 - [x] `REPORT.md` with a verdict per exit criterion and the prediction table scored
-- [ ] `afterlife review --stage s2` exits 0
+- [x] `afterlife review --stage s2` exits 0 (WARN: 1 LEAD citation)
 - [x] Master plan amendment drafted (ADR-0010)
 - [x] Spend reconciled from the ledger
