@@ -144,6 +144,12 @@ def doctor() -> None:
             row(f"{module} (dynamics extra)", getattr(imported, "__version__", "?"), True)
         except ImportError:
             row(f"{module} (dynamics extra)", "not installed (needed from Stage 3)", None)
+    for module in ("torch", "transformers"):
+        try:
+            imported = __import__(module)
+            row(f"{module} (local extra)", getattr(imported, "__version__", "?"), True)
+        except ImportError:
+            row(f"{module} (local extra)", "not installed (needed for api: local)", None)
 
     console().print(table)
 

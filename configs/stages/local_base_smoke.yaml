@@ -1,0 +1,45 @@
+# ===========================================================================
+# Harness smoke — local pretrained Gemma (ADR-0011)
+# ---------------------------------------------------------------------------
+# Not a research stage. Validates that `api: local` can drive P1
+# `raw_completion` on a true base model: window arithmetic, tokenizer
+# identity, $0 ledger, replay cache. Two turnovers at tiny W; nothing
+# here is a half-life, a fixed-point rate, or an S3.0 result.
+#
+# Requires the `local` extra and HF_TOKEN (Gemma 3 is gated):
+#     uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+#     uv pip install 'transformers>=4.51' accelerate
+#     afterlife generate --config configs/stages/local_base_smoke.yaml --yes
+#
+# Gemma 4 E2B is in the generator library but is not in this matrix:
+# its 10 GB multimodal checkpoint does not fit comfortably on a 16 GB
+# CPU box.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+
+stage: harness
+name: local-base-smoke
+description: >-
+  Existence check that a local pretrained Gemma 3 runs through the
+  sliding-window engine. Not Stage 3.
+
+generators: [local-gemma-3-270m, local-gemma-3-1b-pt]
+
+windows:
+  - W: 128
+    block_size: 32
+    target_tokens: 256
+    chunk_size: 64
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.7
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 0.0

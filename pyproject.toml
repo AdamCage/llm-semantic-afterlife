@@ -73,6 +73,15 @@ dev = [
     "types-pyyaml>=6.0",
     "pre-commit>=3.8",
 ]
+# Local CPU/GPU generation for the base-model existence check (ADR-0011).
+# Prefer the CPU torch wheel on machines without NVIDIA:
+#   uv pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   uv pip install 'transformers>=4.51' accelerate
+local = [
+    "torch>=2.4",
+    "transformers>=4.51",
+    "accelerate>=1.0",
+]
 
 [project.scripts]
 afterlife = "semantic_afterlife.cli:app"

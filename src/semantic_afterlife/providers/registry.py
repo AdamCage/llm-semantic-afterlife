@@ -12,6 +12,7 @@ from ..errors import ConfigError
 from ..logging_utils import EventLogger
 from .base import InferenceClient
 from .cache import ResponseCache
+from .local import LocalClient
 from .mock import MockClient
 from .openrouter import OpenRouterClient
 from .routerai import RouterAIClient
@@ -51,8 +52,12 @@ def build_client(
         client = RouterAIClient(settings, events=events, cache=cache, price_table=price_table)
     elif api == "openrouter":
         client = OpenRouterClient(settings, events=events, cache=cache, price_table=price_table)
+    elif api == "local":
+        client = LocalClient(settings, events=events, cache=cache)
     else:
-        raise ConfigError(f"unknown api {api!r}; expected 'routerai', 'openrouter' or 'mock'")
+        raise ConfigError(
+            f"unknown api {api!r}; expected 'routerai', 'openrouter', 'local' or 'mock'"
+        )
 
     if reuse:
         _CLIENTS[key] = client
