@@ -1,0 +1,19 @@
+{
+  "name": "implied_timescales",
+  "caption": "Implied timescales t_i = −τ / ln|λ_i| from the non-reversible MSM, not from VAMP singular values. Eligible processes: qwen3-8b raw and prefill (S2.2), gpt-oss-120b, glimmer T=0.3 physics. A usable model needs a flat slowest timescale. Source runs s3-dynamics-20260901T184826Z-f21d5908 and s3-dynamics-20260901T184929Z-b7c4d0c9.",
+  "alt_text": "Implied timescales t_i = −τ / ln|λ_i| from the non-reversible MSM, not from VAMP singular values. Eligible processes: qwen3-8b raw and prefill (S2.2), gpt-oss-120b, glimmer T=0.3 physics. A usable model needs a flat slowest timescale. Source runs s3-dynamics-20260901T184826Z-f21d5908 and s3-dynamics-20260901T184929Z-b7c4d0c9.",
+  "limitations": "7/8 or 8/8 trajectories in the qwen and 120b cells are degenerate; a long timescale on those frames measures the loop. Reading a timescale off a VAMP singular value would be a category error. Instruct-under-P1 only (ADR-0012).",
+  "run_ids": [
+    "s3-dynamics-20260901T184826Z-f21d5908",
+    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {
+    "lag": "chunks",
+    "timescale_chunks": "chunks"
+  },
+  "generated_at": "2026-09-01T18:53:26+00:00"
+}

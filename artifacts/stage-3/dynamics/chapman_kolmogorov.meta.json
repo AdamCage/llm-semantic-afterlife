@@ -1,0 +1,19 @@
+{
+  "name": "chapman_kolmogorov",
+  "caption": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. The dashed line is the pre-registered threshold 0.15. Every eligible cell is above it: the MSM is not Markovian at lag 1 on this sample.",
+  "alt_text": "Chapman–Kolmogorov max |T(kτ) − T(τ)^k| at the primary lag. The dashed line is the pre-registered threshold 0.15. Every eligible cell is above it: the MSM is not Markovian at lag 1 on this sample.",
+  "limitations": "With ~44 post-horizon chunks, k=3 is a large fraction of the series. Failure here is expected for a textual fixed point / loop and is why no cell is given a macrostate interpretation.",
+  "run_ids": [
+    "s3-dynamics-20260901T184826Z-f21d5908",
+    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {
+    "k": "multiples of the MSM lag",
+    "max_abs_error": "probability"
+  },
+  "generated_at": "2026-09-01T18:53:29+00:00"
+}

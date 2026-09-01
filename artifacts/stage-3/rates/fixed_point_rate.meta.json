@@ -1,0 +1,18 @@
+{
+  "name": "fixed_point_rate",
+  "caption": "Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.",
+  "alt_text": "Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.",
+  "limitations": "The verdict is the calibrated late-phase shingle Jaccard, not a semantic state. Eight trajectories per generator make the interval wide on purpose. Incidence is not reproducible across seed derivations (S1.2); only the rate is.",
+  "run_ids": [
+    "s3-degeneracy-20260901T193542Z-f76d2086",
+    "s3-rates-20260901T193554Z-328e191e"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {
+    "rate": "proportion of trajectories",
+    "ci_low": "proportion",
+    "ci_high": "proportion"
+  },
+  "generated_at": "2026-09-01T19:35:57+00:00"
+}

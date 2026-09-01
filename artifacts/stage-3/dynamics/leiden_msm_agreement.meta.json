@@ -1,0 +1,18 @@
+{
+  "name": "leiden_msm_agreement",
+  "caption": "Adjusted Rand index between Leiden communities (time-blind) and MSM macrostate assignments, trajectory-bootstrap CI. High ARI with n_macro=1 is agreement that both methods collapsed, not discovery of the same rich state set.",
+  "alt_text": "Adjusted Rand index between Leiden communities (time-blind) and MSM macrostate assignments, trajectory-bootstrap CI. High ARI with n_macro=1 is agreement that both methods collapsed, not discovery of the same rich state set.",
+  "limitations": "The CI resamples trajectories on frozen labels. Cross-space ARI of MSM labels (bge-m3 vs qwen3-embed-8b) on qwen is 0 because one space chose n_macro=1. UMAP is not used for any number here.",
+  "run_ids": [
+    "s3-dynamics-20260901T184826Z-f21d5908",
+    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {
+    "ari": "adjusted Rand index"
+  },
+  "generated_at": "2026-09-01T18:53:35+00:00"
+}

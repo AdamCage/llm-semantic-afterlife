@@ -1,0 +1,16 @@
+{
+  "name": "dynamics_scalars",
+  "caption": "Per-process MSM summary on the restricted Stage 2 sample. validated_macrostates is 0 for every cell: CK failed everywhere, and n_macro is unstable across K and across embedding spaces (see k_stability). H1 is unsupported on this instruct-under-P1 sample.",
+  "alt_text": "Per-process MSM summary on the restricted Stage 2 sample. validated_macrostates is 0 for every cell: CK failed everywhere, and n_macro is unstable across K and across embedding spaces (see k_stability). H1 is unsupported on this instruct-under-P1 sample.",
+  "limitations": "S2.1 leftover qwen (2 traj) excluded; S2.2 is the qwen cell. Glimmer is underpowered by construction. Degeneracy is 7–8/8 on qwen and 8/8 on 120b. No OpenRouter this opening (ADR-0012).",
+  "run_ids": [
+    "s3-dynamics-20260901T184826Z-f21d5908",
+    "s3-dynamics-20260901T184929Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-01T18:53:35+00:00"
+}

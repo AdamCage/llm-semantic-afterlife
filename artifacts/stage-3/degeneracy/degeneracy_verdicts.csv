@@ -1,0 +1,9 @@
+trajectory_id,degenerate,n_chunks,n_chunks_post_horizon,looping_fraction,unproductive_fraction,mean_novel_shingle_fraction,min_novel_shingle_fraction,late_pairwise_similarity_median,late_pairwise_similarity_max,mean_ngram_repetition,max_ngram_repetition,mean_type_token_ratio,mean_entropy_bits,mean_compression_ratio,entropy_trend_per_turnover,at_fixed_point,degeneracy_mode
+local-gemma-3-1b-pt__W256__T0p3__physics__s1,True,12,11,1,1,0.00649351,0,0.964286,1,0.877004,0.878378,0.103955,4.38636,0.102229,0.00143061,1,3
+local-gemma-3-1b-pt__W256__T0p3__physics__s2,True,12,11,1,1,0.00649351,0,0.964286,1,0.877004,0.878378,0.103955,4.38636,0.102229,0.00143061,1,3
+local-gemma-3-1b-pt__W256__T0p3__surreal__s1,True,12,11,1,1,0,0,1,1,0.936975,0.936975,0.05,3.45656,0.0625,0,1,3
+local-gemma-3-1b-pt__W256__T0p3__surreal__s2,True,12,11,1,1,0,0,1,1,0.846307,0.846491,0.126237,4.68091,0.115395,-0.000293205,1,3
+local-gemma-3-1b-pt__W256__T1__physics__s1,True,12,11,1,0.909091,0.0909091,0,1,1,0.98204,0.988166,0.0136906,1.0614,0.030142,-0.0275488,1,3
+local-gemma-3-1b-pt__W256__T1__physics__s2,True,12,11,1,1,0.202256,0,0.244898,1,0.839672,0.984252,0.124337,3.99239,0.113713,-0.339549,1,3
+local-gemma-3-1b-pt__W256__T1__surreal__s1,True,12,11,1,1,0.19967,0,0.0285714,1,0.837466,0.996063,0.107343,3.303,0.113251,-0.58802,1,3
+local-gemma-3-1b-pt__W256__T1__surreal__s2,True,12,11,1,0.818182,0.235931,0,1,1,0.978075,0.992063,0.0117046,0.292025,0.0515838,-0.13292,1,3

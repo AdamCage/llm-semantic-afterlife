@@ -1,0 +1,13 @@
+{
+  "name": "s30_surface_labels",
+  "caption": "Hand labels of S3.0 step-1 and last-quarter text for local-gemma-3-1b-pt at W=256, 12 turnovers (run s3-local-base-20260901T184812Z-cc80633b). Reviewer register = self-review of the prompt ('you've provided', 'well-structured', 'comprehensive overview'). Silence = whitespace / recursion marks as in gemma-4-31b. Verbatim loop = a ≥40-character span repeats in the same completion. Continuation = none of those. Sliding seed-echo = last block is a rotation of the first. 0/8 open in the reviewer register; 8/8 are degenerate by the last quarter.",
+  "alt_text": "Hand labels of S3.0 step-1 and last-quarter text for local-gemma-3-1b-pt at W=256, 12 turnovers (run s3-local-base-20260901T184812Z-cc80633b). Reviewer register = self-review of the prompt ('you've provided', 'well-structured', 'comprehensive overview'). Silence = whitespace / recursion marks as in gemma-4-31b. Verbatim loop = a ≥40-character span repeats in the same completion. Continuation = none of those. Sliding seed-echo = last block is a rotation of the first. 0/8 open in the reviewer register; 8/8 are degenerate by the last quarter.",
+  "limitations": "Labels are a stated criterion applied to quoted text, not a classifier. The degeneracy threshold was calibrated at 1024-token chunks; S3.0 chunks are 256 tokens. 8/8 have n-gram repetition 0.84–0.98, so the calibration mismatch cannot flip the looping verdict. W=256 does not transfer to W=4096.",
+  "run_ids": [
+    "s3-local-base-20260901T184812Z-cc80633b"
+  ],
+  "git_sha": "7d46d28630bdcbc9c356849e6966f6bc6a3ea163",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-01T19:36:31+00:00"
+}
