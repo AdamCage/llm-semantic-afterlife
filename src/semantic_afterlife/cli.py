@@ -311,6 +311,13 @@ def _save_audit(
             run_ids=[context.run_id],
             git_sha=context.manifest.git.get("sha"),
             config_sha256=context.manifest.config_sha256,
+            limitations=(
+                "Audit tables are measured on short probes, not on the stage's generation "
+                "regime. A passing tokenizer probe does not certify in-trajectory W "
+                "arithmetic; an exact-match rate at 128 tokens and T=0.7 is the "
+                "reproducibility the paper may claim for that probe, not for a 12-turnover "
+                "trajectory."
+            ),
         ),
     )
     frame.to_parquet(context.paths.data_dir / f"{name}.parquet", index=False)

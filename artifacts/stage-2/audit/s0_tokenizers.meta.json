@@ -1,0 +1,13 @@
+{
+  "name": "s0_tokenizers",
+  "caption": "Round-trip integrity (decode(encode(x)) == x) for every generator tokenizer across ASCII, Unicode, whitespace and long-repetition probes, plus exactness of the tail operation the sliding window relies on. A failure invalidates W for that model.",
+  "alt_text": "Round-trip integrity (decode(encode(x)) == x) for every generator tokenizer across ASCII, Unicode, whitespace and long-repetition probes, plus exactness of the tail operation the sliding window relies on. A failure invalidates W for that model.",
+  "limitations": "Short-probe round-trip (ASCII, Unicode, whitespace, long-repetition) does not certify in-trajectory W arithmetic at 4096 tokens. A failure here invalidates W; a pass does not replace per-step tokenizer_roundtrip_ok on the generation run.",
+  "run_ids": [
+    "s2-audit-tokenizers-20260901T015206Z-ab59afc8"
+  ],
+  "git_sha": "4656b2ceda7bd86b6c213bc426d07e490d178405",
+  "config_sha256": "ab59afc89219f6176d141144935045ab0738dc0503bb99aa0bf53b240b6c222e",
+  "units": {},
+  "generated_at": "2026-09-01T01:52:13+00:00"
+}
