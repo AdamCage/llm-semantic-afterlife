@@ -1380,6 +1380,166 @@ def analyze_separation(
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
 
 
+@analyze_app.command("rates")
+def analyze_rates(
+    run: Annotated[str, typer.Option("--run", "-r", help="degeneracy or generation run_id")],
+    group_by: Annotated[str, typer.Option(help="comma-separated grouping columns")] = "generator",
+) -> None:
+    """Fixed-point rate with a trajectory-level bootstrap CI.
+
+    Reads ``at_fixed_point`` from a degeneracy run, or computes degeneracy from
+    a generation run's chunks. The replicate unit is the trajectory.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+    groups = [part.strip() for part in group_by.split(",") if part.strip()]
+
+    from .analysis.rates import grouped_rates, parse_trajectory_id
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta, save_plotly_figure
+    from .viz.figures import rate_bar_figure
+
+    verdicts_path = source.data_dir / "degeneracy_verdicts.parquet"
+    if verdicts_path.is_file():
+        verdicts = pd.read_parquet(verdicts_path)
+    elif source.chunks().is_file():
+        verdicts, _ = _degeneracy_labels(pd.read_parquet(source.chunks()))
+    else:
+        raise typer.BadParameter(
+            f"run {run} has neither degeneracy_verdicts.parquet nor chunks.parquet"
+        )
+    if "at_fixed_point" not in verdicts.columns:
+        raise typer.BadParameter("verdicts have no at_fixed_point column")
+    parsed = pd.DataFrame(verdicts["trajectory_id"].map(parse_trajectory_id).tolist())
+    frame = verdicts.merge(parsed, on="trajectory_id", how="left")
+    for column in groups:
+        if column not in frame.columns:
+            raise typer.BadParameter(f"unknown group column {column!r}")
+
+    config_resolved = {
+        "analysis": "rates",
+        "source_run_id": run,
+        "group_by": groups,
+    }
+    with run_context(
+        stage=str(manifest.get("stage", "s2")),
+        slug="rates",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        rates = grouped_rates(frame, flag_column="at_fixed_point", group_columns=groups)
+        rates.to_parquet(context.paths.data_dir / "fixed_point_rates.parquet", index=False)
+        _print_frame(rates, "fixed-point rates")
+        figure, tidy, meta = rate_bar_figure(
+            rates,
+            group_column=groups[0],
+            run_ids=[run, context.run_id],
+            caption=(
+                "Fraction of trajectories at a textual fixed point, with a 95% bootstrap "
+                "CI over trajectories. The dashed line is 0.5, the Stage 2 direction "
+                "threshold (F2). A cell whose interval includes 0.5 does not decide a "
+                "direction."
+            ),
+            limitations=(
+                "The verdict is the calibrated late-phase shingle Jaccard, not a semantic "
+                "state. Eight trajectories per generator make the interval wide on purpose. "
+                "Incidence is not reproducible across seed derivations (S1.2); only the rate is."
+            ),
+        )
+        meta.git_sha = context.manifest.git.get("sha")
+        save_plotly_figure(figure, context.artifacts_dir / "rates", meta, data=tidy)
+        save_table(
+            rates,
+            context.artifacts_dir / "rates",
+            FigureMeta(
+                name="fixed_point_rates",
+                caption=meta.caption,
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=meta.limitations,
+            ),
+        )
+        context.finish(n_groups=len(rates), n_trajectories=len(frame))
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
+@analyze_app.command("protocol")
+def analyze_protocol(
+    run: Annotated[str, typer.Option("--run", "-r", help="generation run_id")],
+) -> None:
+    """Block fill and stop rate by quarter of the run, per generator.
+
+    Refuses a run-level mean. Stage 1 hid monotone drift behind one number;
+    this pass exists so that cannot recur.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+    events_path = source.events
+    if not events_path.is_file():
+        raise typer.BadParameter(f"run {run} has no events.jsonl")
+
+    from .analysis.rates import quarter_diagnostics
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta, save_plotly_figure
+    from .viz.figures import quarter_protocol_figure
+
+    rows: list[dict[str, Any]] = []
+    with events_path.open("rb") as handle:
+        for raw in handle:
+            if b"generation.step.completed" not in raw:
+                continue
+            payload = orjson.loads(raw)
+            if payload.get("event") != "generation.step.completed":
+                continue
+            rows.append(
+                {
+                    "trajectory_id": payload["trajectory_id"],
+                    "generated_tokens": payload["generated_tokens"],
+                    "block_fill_ratio": payload["block_fill_ratio"],
+                    "finish_reason": payload.get("finish_reason"),
+                    "reasoning_tokens": payload.get("reasoning_tokens") or 0,
+                    "tokenizer_roundtrip_ok": payload.get("tokenizer_roundtrip_ok"),
+                    "served_provider": payload.get("served_provider"),
+                }
+            )
+    if not rows:
+        raise typer.BadParameter(f"run {run} has no completed generation steps")
+
+    config_resolved = {"analysis": "protocol", "source_run_id": run}
+    with run_context(
+        stage=str(manifest.get("stage", "s2")),
+        slug="protocol",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        per_traj = quarter_diagnostics(pd.DataFrame(rows))
+        per_traj.to_parquet(context.paths.data_dir / "protocol_per_traj_quarter.parquet", index=False)
+        figure, tidy, meta = quarter_protocol_figure(per_traj, run_ids=[run, context.run_id])
+        tidy.to_parquet(context.paths.data_dir / "protocol_by_quarter.parquet", index=False)
+        meta.git_sha = context.manifest.git.get("sha")
+        save_plotly_figure(figure, context.artifacts_dir / "protocol", meta, data=tidy)
+        save_table(
+            tidy,
+            context.artifacts_dir / "protocol",
+            FigureMeta(
+                name="protocol_by_quarter",
+                caption=meta.caption,
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=meta.limitations,
+            ),
+        )
+        _print_frame(tidy, "protocol by quarter")
+        context.finish(n_trajectories=int(per_traj["trajectory_id"].nunique()))
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
 # ---------------------------------------------------------------------------
 # report / verify / ledger / reproduce
 # ---------------------------------------------------------------------------
