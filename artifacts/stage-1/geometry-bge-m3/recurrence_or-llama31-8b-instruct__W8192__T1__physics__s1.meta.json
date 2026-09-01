@@ -5,14 +5,14 @@
   "limitations": "ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.",
   "run_ids": [
     "s1-embed-probe-single-20260830T111512Z-048c779e",
-    "s1-geometry-bge-m3-20260830T111607Z-5dd0ee61"
+    "s1-geometry-bge-m3-20260830T131553Z-5dd0ee61"
   ],
-  "git_sha": "f8cedbd8f664c955f65fbbb01393cb83563a510f",
+  "git_sha": "a5d9b4fe1e1733b4a4eb1b753cde4d82f985e894",
   "config_sha256": "5dd0ee6193b1365354e4a72fbaf401ddb194b60cc5c1e72ece354de5a1ba3b2d",
   "units": {
     "axes": "generator tokens"
   },
-  "generated_at": "2026-08-30T11:16:35+00:00",
+  "generated_at": "2026-08-30T13:16:20+00:00",
   "epsilon": 0.25009141896547404,
   "W": 8192,
   "chunk_size": 1024,

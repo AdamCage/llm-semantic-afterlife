@@ -2,7 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    # Stage branches are where the work actually happens, and a stage may run for
+    # days before it is merged. Leaving them unchecked means discovering a broken
+    # analysis pass at merge time, after the results were already produced with it.
+    branches: [main, 'stage-*']
   pull_request:
   workflow_dispatch:
 

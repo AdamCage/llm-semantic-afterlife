@@ -1,0 +1,14 @@
+{
+  "name": "separation_per_band",
+  "caption": "Seed-separation contrast per turnover band. `d_within` is the mean cosine distance between trajectories sharing a semantic seed and differing only in their stochastic seed; `d_between` is the same across different semantic seeds. `gap` is their difference, with a 95% bootstrap interval resampled over trajectories rather than over pairs.",
+  "alt_text": "Seed-separation contrast per turnover band. `d_within` is the mean cosine distance between trajectories sharing a semantic seed and differing only in their stochastic seed; `d_between` is the same across different semantic seeds. `gap` is their difference, with a 95% bootstrap interval resampled over trajectories rather than over pairs.",
+  "limitations": "A positive gap shows the seed still shapes the trajectory; it does not say through what mechanism, nor that the information is recoverable. The probe in Stage 2 answers that. At the pilot's replicate count the contrast resolves a strong effect and not a marginal one, so a small gap should be read as underpowered rather than absent.",
+  "run_ids": [
+    "s1-embed-pilot-core-20260831T064430Z-f05e6a68",
+    "s1-separation-bge-m3-20260831T074042Z-9bf54fbf"
+  ],
+  "git_sha": "c008e143af63e973c3848cda7ae2e06056750334",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-08-31T07:40:58+00:00"
+}

@@ -1,0 +1,83 @@
+# ===========================================================================
+# S1.0e — is there an operating point where generation stays productive?
+# ---------------------------------------------------------------------------
+# S1.0d found that five of six full-length cells reach a textual fixed point,
+# and exactly one does not: qwen3-8b at T = 1.0 with the `surreal` seed, whose
+# median late-phase pairwise Jaccard is 0.007 against a threshold of 0.0122
+# calibrated on natural prose. That single cell is the lead this config follows.
+#
+# Two axes, because S1.0d showed both matter and that they compound:
+#
+#   temperature  1.0 (the surviving anchor), 1.3, 1.6
+#   seed         surreal (the survivor), love, noise
+#
+# Seed choice is not arbitrary. Every seed in the bank is continuation-shaped --
+# they end mid-sentence on "and" or "because" -- and design constraint 4 of the
+# bank explicitly excludes text that invites meta-commentary. The generators
+# produced it anyway: the killed run's first step answered a sentence ending in
+# "and" with "Your passage is a deep and insightful discussion of lattice field
+# theory". So the register is not being invited by the seed; it is being imposed
+# by the model. What varies across these three seeds is how much *expository
+# surface* a reviewer register can attach to:
+#
+#   surreal   fiction, no claims to evaluate       -- survived at T = 1.0
+#   love      intimate narrative, no claims at all -- should resist more strongly
+#   noise     low-structure text, nothing to review at all
+#
+# `noise` also serves as an internal control on the measure itself. Raising
+# temperature raises novelty trivially if it degrades into gibberish, and noise
+# shows what low-structure text scores on every diagnostic. If a high-temperature
+# cell approaches the noise cell's profile, the novelty was bought with
+# coherence rather than earned.
+#
+# Two stochastic replicates per cell. One replicate cannot distinguish "this
+# regime is productive" from "this trajectory was lucky", and the point of this
+# probe is to choose the operating point for a $10 arm.
+#
+# Coherence is not directly measured -- there is no coherence metric in this
+# project yet -- so entropy, type-token ratio and compression ratio act as
+# proxies, and the winning cell's text is read by hand before anything is
+# committed to it.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s1
+name: regime-hunt
+description: >-
+  Nine (temperature, seed) operating points on qwen3-8b at two stochastic
+  replicates each, over 12 turnovers, to find whether any regime sustains
+  productive free-running generation without a textual fixed point -- and to
+  check, against a low-structure control seed, that novelty gained at high
+  temperature is not simply incoherence.
+
+# qwen3-8b only: it is the sole generator that both serves reliably on its
+# pinned endpoint and produced a non-fixed-point cell. glimmer cannot free-run
+# at W = 4096 (3 of 4 cells died on bare stop tokens) and llama and mistral lost
+# every cell to 429 on this endpoint.
+generators: [or-qwen3-8b]
+
+embeddings: [bge-m3]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers, matched to S1.0d for comparability
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 1.0
+    top_p: 1.0
+  - temperature: 1.3
+    top_p: 1.0
+  - temperature: 1.6
+    top_p: 1.0
+
+semantic_seeds: [surreal, love, noise]
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+budget_usd: 1.5

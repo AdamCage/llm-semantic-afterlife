@@ -221,18 +221,33 @@ provider throttling.
 
 **Budget.** ≤ $22 declared across the two arms; $17.70 forecast.
 
-### S2 — Semantic memory decay and diffusion
+### S2 — Does the phenomenon survive removal of the reviewer register?
 
-Seed-identity probes (linear + kNN on held-out trajectories) as a function of
-generated tokens ⇒ **semantic half-life** `T_½` and its ratio to `W`.
-MSD scaling with fitted `α` and CI, confinement radius, velocity and
-acceleration statistics, autocorrelation times, recurrence quantification.
+**Re-planned after Stage 1** ([ADR-0008](decisions/ADR-0008-stage2-replan-after-convergence.md)).
+The original specification — semantic half-life `T½` on ≥3 models — is
+unreachable: there is one viable free-running generator across 864 surveyed
+models, and the gap it produces plateaus rather than decaying, so there is no
+half-life to fit. Stage 1 also exposed a confound upstream of everything: under
+protocol P1 an instruction-tuned model turns continuation into self-review, and
+self-review has a natural fixed point.
 
-**Exit criteria.** `T_½` with CI on ≥3 models; the `T_½` vs `W` relation
-estimated on ≥2 windows; `α` distinguishable from 1.0 at 95% or explicitly
-reported as indistinguishable.
+- **S2.1** `assistant_prefill` against `raw_completion` at `W = 4096` on matched
+  cells. Does the register disappear, and does the fixed-point rate change? The
+  mechanism was verified in Stage 0 on a 28-token prompt only, and that must be
+  re-measured rather than assumed.
+- **S2.2** A small base model (1–3B) locally at reduced `W`, as an existence
+  check on whether convergence is instruction-tuning-specific. Not a full arm.
+- **S2.3** Convergence time and plateau level replace half-life: the turnover at
+  which a trajectory reaches its fixed point, reported as a rate with a CI rather
+  than per cell, since Stage 1 showed incidence is not reproducible.
 
-**Budget.** ≤ $40 (mostly the `W`-sweep generation).
+**Exit criteria.** Fixed-point rate under both continuation mechanisms with a CI;
+a base-model comparison at matched `W` and turnover count, or an explicit
+statement that it could not be obtained; convergence time with a CI on the one
+viable hosted generator.
+
+**Budget.** ≤ $15. The `W` sweep moves to Stage 3 or later, conditional on the
+register question resolving favourably.
 
 ### S3 — Metastability, Markov state models, and representation robustness
 

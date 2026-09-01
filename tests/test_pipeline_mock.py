@@ -257,6 +257,27 @@ class TestStepSeed:
         for step in range(0, 5000, 97):
             assert 0 <= step_seed(12345, step) < 2**31 - 1
 
+    def test_replicates_are_not_a_fixed_offset_apart(self) -> None:
+        """The defect this derivation replaced.
+
+        The previous arithmetic form put replicates exactly 1,000,003 apart at
+        every step and consecutive steps exactly 31 apart -- three parallel
+        progressions rather than three independent streams. Whether a provider's
+        own initialisation washes that out is not observable from here, and the
+        `D_within` control that carries half of Stage 1's result assumes the
+        replicates are independent.
+        """
+        offsets = {step_seed(2, step) - step_seed(1, step) for step in range(50)}
+        assert len(offsets) > 40, "replicate seeds move together"
+
+    def test_consecutive_steps_are_not_a_fixed_offset_apart(self) -> None:
+        strides = {step_seed(1, step + 1) - step_seed(1, step) for step in range(50)}
+        assert len(strides) > 40, "successive step seeds move together"
+
+    def test_seeds_do_not_collide_across_the_matrix(self) -> None:
+        seeds = [step_seed(s, step) for s in range(1, 4) for step in range(300)]
+        assert len(set(seeds)) == len(seeds)
+
     def test_trajectory_ids_are_unique_per_cell(self) -> None:
         ids = {
             trajectory_id(

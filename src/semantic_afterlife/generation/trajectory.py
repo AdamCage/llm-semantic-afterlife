@@ -20,6 +20,7 @@ import asyncio
 from dataclasses import dataclass, field, replace
 from typing import Any
 
+import numpy as np
 import orjson
 import pandas as pd
 
@@ -80,8 +81,24 @@ def step_seed(stochastic_seed: int, step: int, attempt: int = 0) -> int:
     same prompt, same seed — which the response cache then answers identically
     forever. Measured on muse-glimmer-30b, where one empty completion was
     replayed from cache four times and killed the trajectory.
+
+    Derived through ``SeedSequence`` rather than arithmetic. The previous form,
+    ``stochastic_seed * 1_000_003 + step * 31 + attempt * 7_919 + 17``, made
+    replicates differ by exactly 1,000,003 at every step and consecutive steps
+    differ by exactly 31 — three parallel arithmetic progressions rather than
+    three independent streams. Whether a provider's own initialisation washes
+    that out is not observable from here, so it cannot be assumed: the
+    ``D_within`` control that carries half of Stage 1's result rests on
+    replicates being independent, and "probably fine" is not a basis for it.
+    This also brings the code in line with the project's own rule
+    (``10-reproducibility.mdc``), which requires ``SeedSequence.spawn``.
+
+    ``spawn_key`` is the documented way to address a specific child
+    deterministically without carrying spawn state, so ``(stochastic_seed, step,
+    attempt)`` still reproduces a trajectory exactly.
     """
-    return (stochastic_seed * 1_000_003 + step * 31 + attempt * 7_919 + 17) % (2**31 - 1)
+    sequence = np.random.SeedSequence(entropy=stochastic_seed, spawn_key=(step, attempt))
+    return int(sequence.generate_state(1, dtype=np.uint32)[0]) % (2**31 - 1)
 
 
 def build_request(

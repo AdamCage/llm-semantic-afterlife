@@ -17,6 +17,9 @@ from semantic_afterlife.analysis.degeneracy import (
     compression_ratio,
     compute_degeneracy,
     ngram_repetition_rate,
+    novelty_series,
+    pairwise_similarity,
+    shingles,
     tokenize_words,
     type_token_ratio,
     unigram_entropy,
@@ -31,6 +34,28 @@ VARIED = (
     "time does not itself diverge across the sampled ensemble."
 )
 LOOPED = "goodbye and thank you for the conversation " * 40
+
+
+def varied_chunks(n: int, *, words: int = 320, seed: int = 0) -> list[str]:
+    """A trajectory that genuinely keeps producing new material.
+
+    Deliberately not "one paragraph with the last four words changed". That was
+    the previous fixture for a healthy trajectory, and it was itself a reprinted
+    page -- it passed only because the sole diagnostic measured repetition inside
+    a chunk. The blind spot lived in the test data as well as in the code, so a
+    healthy fixture now has to be varied *between* chunks to earn the name.
+    """
+    rng = np.random.default_rng(seed)
+    connectives = ["therefore", "however", "in that regime", "which implies", "by contrast"]
+    out = []
+    for index in range(n):
+        content = [f"term{index}x{rng.integers(0, 10**6)}" for _ in range(words)]
+        sentence = " ".join(
+            word if position % 7 else rng.choice(connectives)
+            for position, word in enumerate(content)
+        )
+        out.append(f"Section {index}. {sentence}.")
+    return out
 
 
 class TestPrimitives:
@@ -93,33 +118,33 @@ class TestComputeDegeneracy:
         assert result.scalars["looping_fraction"] == pytest.approx(1.0)
 
     def test_varied_trajectory_is_not_flagged(self) -> None:
-        result = self._run([VARIED + f" Iteration {i} differed." for i in range(20)])
+        result = self._run(varied_chunks(20))
         assert not result.is_degenerate
         assert result.scalars["looping_fraction"] < 0.2
 
     def test_partial_collapse_is_flagged_by_fraction(self) -> None:
         """Half looped is well past the 20% threshold, even though half is clean."""
-        texts = [VARIED] * 10 + [LOOPED] * 10
+        texts = varied_chunks(10) + [LOOPED] * 10
         assert self._run(texts).is_degenerate
 
     def test_verdict_uses_only_the_post_horizon_segment(self) -> None:
         """Pre-horizon chunks still carry the seed and belong to a different process."""
         # W = 2048, chunks of 1024, so only the first two chunks are pre-horizon.
-        texts = [LOOPED, LOOPED] + [VARIED + f" {i}" for i in range(18)]
+        texts = [LOOPED, LOOPED, *varied_chunks(18, seed=1)]
         result = self._run(texts)
         assert result.scalars["n_chunks_post_horizon"] == 18
         assert not result.is_degenerate
 
     def test_frozen_embeddings_are_detected(self) -> None:
         """A trajectory can stop moving even while its surface forms vary."""
-        texts = [VARIED + f" Iteration {i} differed." for i in range(20)]
+        texts = varied_chunks(20)
         frozen = np.tile(np.array([1.0, 0.0, 0.0]), (20, 1))
         result = self._run(texts, embeddings=frozen)
         assert result.scalars["frozen_fraction"] == pytest.approx(1.0)
         assert result.is_degenerate
 
     def test_moving_embeddings_are_not_frozen(self) -> None:
-        texts = [VARIED + f" Iteration {i} differed." for i in range(20)]
+        texts = varied_chunks(20)
         rng = np.random.default_rng(0)
         result = self._run(texts, embeddings=rng.normal(size=(20, 8)))
         assert result.scalars["frozen_fraction"] == pytest.approx(0.0)
@@ -144,6 +169,120 @@ class TestComputeDegeneracy:
             compute_degeneracy(
                 [], trajectory_id="t", token_ends=np.array([]), W=2048, params=DegeneracyParams()
             )
+
+
+class TestInterChunkNovelty:
+    """The collapse mode that every intra-chunk metric missed.
+
+    A trajectory can reprint the same varied page forever: each chunk is lexically
+    healthy, so repetition rate, type-token ratio and entropy all report a clean
+    trajectory, while the process has in fact reached a fixed point. This happened
+    on real data -- four trajectories at 0.9-2.0x natural repetition and 0% looping
+    chunks, with a late-phase pairwise Jaccard of 1.000.
+    """
+
+    def test_shingles_are_empty_below_their_own_length(self) -> None:
+        assert shingles(["a", "b"], 5) == set()
+
+    def test_novelty_is_high_for_distinct_chunks(self) -> None:
+        chunks = [tokenize_words(t) for t in varied_chunks(6, seed=3)]
+        series = novelty_series(chunks, 5)
+        assert np.all(series > DegeneracyParams().novelty_threshold)
+
+    def test_novelty_falls_when_a_chunk_reuses_an_earlier_one(self) -> None:
+        """Reuse of an earlier page shows up even when neighbours differ."""
+        varied = varied_chunks(4, seed=5)
+        chunks = [tokenize_words(t) for t in [*varied, varied[0]]]
+        series = novelty_series(chunks, 5)
+        assert series[-1] == pytest.approx(0.0)
+
+    def test_novelty_collapses_for_a_reprinted_page(self) -> None:
+        chunks = [tokenize_words(VARIED) for _ in range(8)]
+        series = novelty_series(chunks, 5)
+        assert series[0] == pytest.approx(1.0)
+        assert np.all(series[1:] == pytest.approx(0.0))
+
+    def test_pairwise_similarity_is_one_for_identical_chunks(self) -> None:
+        chunks = [tokenize_words(VARIED) for _ in range(4)]
+        assert np.nanmedian(pairwise_similarity(chunks, 5)) == pytest.approx(1.0)
+
+    def test_pairwise_similarity_is_near_zero_for_distinct_chunks(self) -> None:
+        chunks = [
+            tokenize_words(f"chunk {i} " + " ".join(f"w{i}{j}" for j in range(40)))
+            for i in range(4)
+        ]
+        assert float(np.nanmedian(pairwise_similarity(chunks, 5))) == pytest.approx(0.0)
+
+    def test_a_reprinted_trajectory_is_degenerate_despite_clean_intra_chunk_metrics(self) -> None:
+        """The regression test for the failure that motivated this measure."""
+        texts = [VARIED] * 40
+        ends = np.arange(1, 41) * 1024
+        params = DegeneracyParams()
+        result = compute_degeneracy(
+            texts, trajectory_id="reprint", token_ends=ends, W=4096, params=params
+        )
+        # Intra-chunk metrics see nothing wrong: each page is varied prose.
+        assert result.scalars["mean_ngram_repetition"] < params.loop_repetition_threshold
+        assert result.scalars["looping_fraction"] == pytest.approx(0.0)
+        # The verdict is still degenerate, via the fixed-point route.
+        assert result.is_degenerate
+        assert result.scalars["at_fixed_point"] == pytest.approx(1.0)
+        assert result.scalars["degeneracy_mode"] == pytest.approx(2.0)
+        assert result.scalars["late_pairwise_similarity_median"] == pytest.approx(1.0)
+
+    def test_low_productivity_alone_does_not_condemn_a_moving_trajectory(self) -> None:
+        """The disagreement that forced the two verdicts apart.
+
+        Observed on real data: a trajectory recycling phrasing far more than human
+        prose (novelty 0.675 against 0.97) whose late-phase pairwise median was
+        0.007, inside the natural range. It kept exploring, so it must not be
+        excluded from semantic analysis -- but its productivity is still a
+        reportable quantity.
+        """
+        # The real regime is hard to synthesise: with a constant shared block, low
+        # novelty and low pairwise similarity are mutually exclusive. It occurs on
+        # real data only because novelty is measured against the *cumulative*
+        # history, so a chunk can reuse a little from each of many earlier chunks
+        # and overlap any single one of them barely at all. What matters here is
+        # the verdict rule, so productivity is forced to fail by raising its
+        # threshold rather than by contriving that regime.
+        # A short shared tail: enough reused material to depress novelty below 1,
+        # far too little for any pair of chunks to look alike.
+        tail = "and so the argument returns to its starting premise again"
+        texts = [f"{t} {tail}" for t in varied_chunks(30, seed=11)]
+        ends = np.arange(1, len(texts) + 1) * 1024
+        params = DegeneracyParams(novelty_threshold=1.0)
+        result = compute_degeneracy(
+            texts, trajectory_id="recycling", token_ends=ends, W=4096, params=params
+        )
+        assert result.scalars["unproductive_fraction"] == pytest.approx(1.0)
+        assert result.scalars["late_pairwise_similarity_median"] < params.fixed_point_threshold
+        assert not result.is_degenerate
+        assert result.scalars["at_fixed_point"] == pytest.approx(0.0)
+
+    def test_the_fixed_point_threshold_is_above_natural_prose(self) -> None:
+        """Guards the calibration: natural prose has a late-phase median of 0.000
+        even when the whole text is on one topic, so the threshold must not be at
+        or below zero."""
+        assert DegeneracyParams().fixed_point_threshold > 0.0
+
+    def test_a_varied_trajectory_is_not_degenerate_by_either_route(self) -> None:
+        texts = varied_chunks(40, seed=7)
+        ends = np.arange(1, 41) * 1024
+        result = compute_degeneracy(
+            texts, trajectory_id="varied", token_ends=ends, W=4096, params=DegeneracyParams()
+        )
+        assert not result.is_degenerate
+        assert result.scalars["degeneracy_mode"] == pytest.approx(0.0)
+
+    def test_intra_and_inter_modes_are_distinguished(self) -> None:
+        """Both collapse modes at once must be reported as both, not as one."""
+        texts = [LOOPED] * 40
+        ends = np.arange(1, 41) * 1024
+        result = compute_degeneracy(
+            texts, trajectory_id="both", token_ends=ends, W=4096, params=DegeneracyParams()
+        )
+        assert result.scalars["degeneracy_mode"] == pytest.approx(3.0)
 
 
 class TestCompareSegments:
