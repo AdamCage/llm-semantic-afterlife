@@ -1557,6 +1557,14 @@ def analyze_dynamics(
     run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
     embedding: Annotated[str, typer.Option("--embedding", "-e")] = "",
     config: Annotated[Path, typer.Option("--config")] = Path("configs/analysis/dynamics.yaml"),
+    stage: Annotated[
+        str,
+        typer.Option(
+            "--stage",
+            "-s",
+            help="stage directory for this analysis run (default: the source run's stage)",
+        ),
+    ] = "",
 ) -> None:
     """VAMP → k-means → non-reversible MSM → Leiden, restricted sample.
 
@@ -1595,10 +1603,12 @@ def analyze_dynamics(
     )
 
     params = DynamicsParams.from_yaml(config)
+    stage_name = stage or str(manifest.get("stage", "s3"))
     config_resolved = {
         "analysis": "dynamics",
         "source_run_id": run,
         "embedding": embedding or "all",
+        "stage": stage_name,
         "params": params.model_dump(),
     }
 
@@ -1611,7 +1621,7 @@ def analyze_dynamics(
         }
 
     with run_context(
-        stage=str(manifest.get("stage", "s3")),
+        stage=stage_name,
         slug="dynamics",
         config_resolved=config_resolved,
         config_sha256=sha256_obj(config_resolved),
@@ -1810,7 +1820,9 @@ def analyze_dynamics(
             ],
         )
         write_index(
-            context.artifacts_dir, stage=str(manifest.get("stage", "s3")), title="Stage 3 artifacts"
+            context.artifacts_dir,
+            stage=stage_name,
+            title=f"Stage {stage_name.lstrip('sS')} artifacts",
         )
         context.finish(n_groups=len(results), n_skipped=len(skipped))
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
