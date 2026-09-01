@@ -1552,6 +1552,270 @@ def analyze_protocol(
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
 
 
+@analyze_app.command("dynamics")
+def analyze_dynamics(
+    run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
+    embedding: Annotated[str, typer.Option("--embedding", "-e")] = "",
+    config: Annotated[Path, typer.Option("--config")] = Path("configs/analysis/dynamics.yaml"),
+) -> None:
+    """VAMP → k-means → non-reversible MSM → Leiden, restricted sample.
+
+    k-means cells are microstates. Macrostates are interpreted only after
+    implied timescales are flat and the Chapman–Kolmogorov test passes.
+    Degeneracy labels are joined first: a looping trajectory's timescales
+    measure the loop.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+
+    candidates = sorted(source.data_dir.glob("embeddings_*.parquet"))
+    if not candidates:
+        raise typer.BadParameter(f"run {run} has no embeddings; this pass does not call an API")
+    chosen = [source.embeddings(embedding)] if embedding else candidates
+    missing = [path for path in chosen if not path.is_file()]
+    if missing:
+        raise typer.BadParameter(f"missing embedding files: {[p.name for p in missing]}")
+
+    from .analysis.dynamics import (
+        DynamicsParams,
+        compute_dynamics,
+        filter_eligible,
+        series_from_frame,
+    )
+    from .errors import AnalysisError
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta, save_plotly_figure, write_index
+    from .viz.figures import (
+        agreement_figure,
+        ck_error_figure,
+        current_norm_figure,
+        implied_timescales_figure,
+    )
+
+    params = DynamicsParams.from_yaml(config)
+    config_resolved = {
+        "analysis": "dynamics",
+        "source_run_id": run,
+        "embedding": embedding or "all",
+        "params": params.model_dump(),
+    }
+
+    chunks_source = _source_chunks(source)
+    degenerate: dict[str, bool] = {}
+    if chunks_source is not None:
+        verdicts, _per_chunk = _degeneracy_labels(chunks_source)
+        degenerate = {
+            str(row.trajectory_id): bool(row.degenerate) for row in verdicts.itertuples(index=False)
+        }
+
+    with run_context(
+        stage=str(manifest.get("stage", "s3")),
+        slug="dynamics",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        results = []
+        skipped: list[str] = []
+        for parquet in chosen:
+            slug = parquet.stem.removeprefix("embeddings_")
+            frame = pd.read_parquet(parquet)
+            eligible = filter_eligible(frame, params)
+            if eligible.empty:
+                skipped.append(f"{slug}: no eligible trajectories")
+                continue
+            for generator, block in eligible.groupby("generator", sort=True):
+                series = series_from_frame(
+                    block, embedding=slug, params=params, degenerate=degenerate
+                )
+                group = f"{generator}/{slug}"
+                if not series:
+                    skipped.append(f"{group}: no post-horizon frames")
+                    continue
+                try:
+                    result = compute_dynamics(series, params=params, group=group)
+                except AnalysisError as exc:
+                    skipped.append(f"{group}: {exc}")
+                    continue
+                results.append(result)
+                context.events.event(
+                    "analysis.dynamics.group",
+                    group=group,
+                    scalars={k: float(v) for k, v in result.scalars.items()},
+                    notes=result.notes,
+                )
+                for note in result.notes:
+                    context.note(f"{group}: {note}")
+
+        if not results:
+            raise typer.BadParameter(
+                "no eligible process produced an MSM. " + "; ".join(skipped[:8])
+            )
+
+        scalars = pd.DataFrame(
+            [
+                {
+                    "group": item.group,
+                    "generator": item.generator,
+                    "embedding": item.embedding,
+                    **item.scalars,
+                }
+                for item in results
+            ]
+        )
+        its = pd.concat([item.its for item in results], ignore_index=True)
+        ck = pd.concat([item.ck for item in results], ignore_index=True)
+        currents = (
+            pd.concat([item.currents for item in results if len(item.currents)], ignore_index=True)
+            if any(len(item.currents) for item in results)
+            else pd.DataFrame()
+        )
+        occupancy = pd.concat([item.occupancy for item in results], ignore_index=True)
+        agreement = pd.concat([item.agreement for item in results], ignore_index=True)
+        vamp_scores = pd.concat([item.vamp_scores for item in results], ignore_index=True)
+
+        for name, table in (
+            ("scalars", scalars),
+            ("implied_timescales", its),
+            ("chapman_kolmogorov", ck),
+            ("currents", currents),
+            ("occupancy", occupancy),
+            ("agreement", agreement),
+            ("vamp_scores", vamp_scores),
+        ):
+            table.to_parquet(context.paths.data_dir / f"dynamics_{name}.parquet", index=False)
+
+        out_dir = context.artifacts_dir / "dynamics"
+        git_sha = context.manifest.git.get("sha")
+        run_ids = [run, context.run_id]
+
+        def export(bundle: tuple[Any, Any, FigureMeta]) -> None:
+            figure, data, meta = bundle
+            meta.git_sha = git_sha
+            meta.config_sha256 = context.manifest.config_sha256
+            save_plotly_figure(figure, out_dir, meta, data=data)
+
+        export(
+            implied_timescales_figure(
+                its,
+                run_ids=run_ids,
+                caption=(
+                    "Implied timescales t_i = −τ / ln|λ_i| from the non-reversible MSM "
+                    "transition matrix, not from VAMP singular values. A usable model "
+                    "needs a region where the slowest real timescale is flat in τ. "
+                    f"Source embeddings: {run}."
+                ),
+                limitations=(
+                    "A singular value of the Koopman operator is not a relaxation "
+                    "time. Reading a timescale off VAMP would be a category error. "
+                    "A looping trajectory produces a long timescale that measures "
+                    "the loop. Cells with n_macro=1 have no validated semantic state."
+                ),
+            )
+        )
+        export(
+            ck_error_figure(
+                ck,
+                run_ids=run_ids,
+                threshold=params.ck_max_error,
+                caption=(
+                    "Chapman–Kolmogorov test: max absolute deviation between T(kτ) "
+                    f"estimated directly and T(τ)^k. The dashed line is the "
+                    f"pre-registered threshold {params.ck_max_error}. A cell above "
+                    "the line is not given a macrostate interpretation."
+                ),
+                limitations=(
+                    "The test is applied to the MSM, not to the VAMP-reduced model. "
+                    "With ~40 post-horizon chunks, k=3 is already a large fraction "
+                    "of the series; failure can mean a short sample rather than a "
+                    "wrong lag."
+                ),
+            )
+        )
+        export(
+            current_norm_figure(
+                scalars,
+                run_ids=run_ids,
+                caption=(
+                    "Frobenius norm of the probability current J_ij = π_i T_ij − "
+                    "π_j T_ji, with a 95% trajectory-bootstrap CI. An interval "
+                    "that includes 0 is consistent with equilibrium-like detailed "
+                    "balance on this sample; it does not prove the process is reversible."
+                ),
+                limitations=(
+                    "‖J‖ is a scalar summary of a K×K matrix. A small norm on a "
+                    "process that has already reached a textual fixed point is "
+                    "the expected Q7 outcome, not evidence of a rich circulating "
+                    "attractor. Bootstrap is over trajectories, not chunks."
+                ),
+            )
+        )
+        export(
+            agreement_figure(
+                agreement,
+                run_ids=run_ids,
+                caption=(
+                    "Adjusted Rand index between Leiden communities (time-blind "
+                    "mutual-kNN on PCA of raw embeddings) and MSM macrostate "
+                    "assignments, with a 95% CI from resampling trajectories. "
+                    "High agreement can mean both methods found the same states "
+                    "or that both collapsed to one region — read next to n_macro."
+                ),
+                limitations=(
+                    "The CI resamples trajectories on frozen labels; it is not a "
+                    "refit CI. Leiden is not run in VAMP coordinates. UMAP is not "
+                    "used for any number on this figure."
+                ),
+            )
+        )
+        save_table(
+            scalars,
+            out_dir,
+            FigureMeta(
+                name="dynamics_scalars",
+                caption=(
+                    "Per-process MSM summary. validated_macrostates=1 only when "
+                    "implied timescales are flat, CK passes, n_macro≥2, and not "
+                    "every trajectory is degenerate. n_macro=1 means H1 is "
+                    "unsupported on that cell."
+                ),
+                run_ids=run_ids,
+                git_sha=git_sha,
+                limitations=(
+                    "Instruct-under-P1 only this opening (ADR-0012). Glimmer is "
+                    "underpowered by construction. K is capped at n_frames/3."
+                ),
+            ),
+        )
+        if skipped:
+            context.note("skipped: " + "; ".join(skipped))
+            console().print("[yellow]skipped groups:[/yellow] " + "; ".join(skipped))
+        _print_frame(
+            scalars,
+            "dynamics scalars",
+            columns=[
+                "generator",
+                "embedding",
+                "n_trajectories",
+                "n_frames",
+                "K",
+                "n_macro",
+                "its_flat",
+                "ck_pass",
+                "validated_macrostates",
+                "j_norm",
+                "agreement_ari",
+            ],
+        )
+        write_index(
+            context.artifacts_dir, stage=str(manifest.get("stage", "s3")), title="Stage 3 artifacts"
+        )
+        context.finish(n_groups=len(results), n_skipped=len(skipped))
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
 # ---------------------------------------------------------------------------
 # report / verify / ledger / reproduce
 # ---------------------------------------------------------------------------
