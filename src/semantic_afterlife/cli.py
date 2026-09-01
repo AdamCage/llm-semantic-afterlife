@@ -1519,7 +1519,9 @@ def analyze_protocol(
         settings=settings,
     ) as context:
         per_traj = quarter_diagnostics(pd.DataFrame(rows))
-        per_traj.to_parquet(context.paths.data_dir / "protocol_per_traj_quarter.parquet", index=False)
+        per_traj.to_parquet(
+            context.paths.data_dir / "protocol_per_traj_quarter.parquet", index=False
+        )
         figure, tidy, meta = quarter_protocol_figure(per_traj, run_ids=[run, context.run_id])
         tidy.to_parquet(context.paths.data_dir / "protocol_by_quarter.parquet", index=False)
         meta.git_sha = context.manifest.git.get("sha")

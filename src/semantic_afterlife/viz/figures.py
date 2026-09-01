@@ -775,7 +775,11 @@ def rate_bar_figure(
         caption=caption,
         run_ids=run_ids,
         limitations=limitations,
-        units={"rate": "proportion of trajectories", "ci_low": "proportion", "ci_high": "proportion"},
+        units={
+            "rate": "proportion of trajectories",
+            "ci_low": "proportion",
+            "ci_high": "proportion",
+        },
     )
     return figure, tidy, meta
 
