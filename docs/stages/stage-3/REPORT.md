@@ -3,7 +3,10 @@
 **Status.** Computations finished 2026-09-01. Overall verdict: **PARTIAL**.
 S3.0 answered the base-model question from generated text. S3.1 found no
 validated MSM macrostate on the restricted instruct sample. S3.0 embeddings
-remain deferred (ADR-0012). OpenRouter was not called. Hosted spend: **$0.00**.
+were deferred at opening (ADR-0012). A 2026-09-02 RouterAI follow-up
+embedded them ([§8](#8-follow-up-2026-09-02--s30-embeddings)); geometry
+is still unrun and this verdict is unchanged. OpenRouter was not called.
+Hosted spend at close: **$0.00**.
 
 This revision answers the six blocking findings in
 [`REVIEW.md`](REVIEW.md) (APPROVED WITH CHANGES). It does not upgrade the
@@ -274,11 +277,31 @@ Wall clock: S3.0 ≈ 46 min (18:48–19:34 UTC). S3.1 refit with K-grid ≈ 1 mi
 - **H4 is not answered.** Reported `‖J‖` is microstate. Prefill/bge's CI
   excludes 0. Equilibrium-like on "qwen" is not a claim the table
   supports.
-- **S3.0 embeddings** wait for an embedding balance (configured API is
-  RouterAI; OpenRouter is still empty). Until then there is no geometry
-  of the base-model loop. That is a follow-up run_id, not a rewrite of
-  this opening (ADR-0012).
+- **S3.0 embeddings** were deferred at opening (ADR-0012). The
+  follow-up ran 2026-09-02; see [§8](#8-follow-up-2026-09-02--s30-embeddings).
+  Geometry is still unrun. That is a later pass on the new `run_id`,
+  not a rewrite of this opening.
 - **Stage 4** still needs a temperature × `W` sweep, but S3.0 already
   says T=1.0 is not a diffusion regime for this base model at `W=256`.
   Do not assume H5 from Stage 3.
 - No change to the non-negotiables. No ADR beyond ADR-0012.
+
+## 8. Follow-up 2026-09-02 — S3.0 embeddings
+
+Dated addendum, not a restatement of the opening. Full note:
+[`FOLLOWUP-embed.md`](FOLLOWUP-embed.md).
+
+`run_id`: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`.
+96 chunks of `s3-local-base-20260901T184812Z-cc80633b` in `bge-m3`
+(96×1024) and `qwen3-embed-8b` (96×4096) via RouterAI. Cache 0/96
+each. COMPLETED. OpenRouter not called.
+
+Ledger recorded `$0.00` because `usage.cost` and
+`price_usd_per_m_input` were both empty. Reconstructed spend is
+**~$0.0008** (56,363 billed tokens at the live ~$0.014/M catalog;
+RouterAI credits 597.69 → 597.629, ≈ 0.061 RUB). Ceiling was $0.50.
+
+**Does not establish** geometry, MSD, or seed-separation. 8/8 source
+trajectories are loops. A later `$0` CPU pass must join
+`s3-degeneracy-20260901T193542Z-f76d2086` before any confinement
+sentence. `W = 256` still does not transfer to `W = 4096`.
