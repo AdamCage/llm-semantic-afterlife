@@ -1,0 +1,16 @@
+{
+  "name": "k_stability",
+  "caption": "n_macro at every K allowed by the plan's n_frames/3 cap, produced by afterlife analyze dynamics. No F4 process keeps the same n_macro across K and both embedding spaces. F7 is this instability.",
+  "alt_text": "n_macro at every K allowed by the plan's n_frames/3 cap, produced by afterlife analyze dynamics. No F4 process keeps the same n_macro across K and both embedding spaces. F7 is this instability.",
+  "limitations": "Each row is a full refit at that K. A changing n_macro under a failed micro-CK is not a disagreement about semantic states — there are no validated semantic states to disagree about. Glimmer only admits K=30.",
+  "run_ids": [
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "9f69127",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-01T20:48:17+00:00"
+}

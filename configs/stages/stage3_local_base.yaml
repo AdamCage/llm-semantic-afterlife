@@ -1,0 +1,41 @@
+# ===========================================================================
+# S3.0 — local pretrained Gemma 3 1B, 12 turnovers, no embeddings
+# ---------------------------------------------------------------------------
+# The base-model existence check (ADR-0010, ADR-0011, ADR-0012). True
+# pretrained weights, P1 raw_completion, reduced W, matched turnover
+# count. OpenRouter is empty this opening: this config lists no
+# embedding models. Geometry waits.
+#
+# A two-turnover smoke at W=128 is not this run.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+
+stage: s3
+name: local-base
+description: >-
+  Twelve-turnover P1 trajectory of google/gemma-3-1b-pt at W=256.
+  Surface diagnostics only; no hosted embedding.
+
+generators:
+  - local-gemma-3-1b-pt
+
+windows:
+  - W: 256
+    block_size: 32
+    target_tokens: 3072 # 12 turnovers
+    chunk_size: 256
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+  - temperature: 1.0
+    top_p: 1.0
+
+semantic_seeds: [physics, surreal]
+stochastic_seeds: [1, 2]
+
+max_concurrent: 1
+budget_usd: 0.0

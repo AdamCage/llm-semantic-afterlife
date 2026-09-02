@@ -1,0 +1,19 @@
+{
+  "name": "occupancy_vs_turnover",
+  "caption": "Occupancy of the spectral coarse-graining versus window turnover. Bins are floor(t/W). This is the occupancy curve promised in the Stage 3 plan; it is not a validated macrostate trajectory.",
+  "alt_text": "Occupancy of the spectral coarse-graining versus window turnover. Bins are floor(t/W). This is the occupancy curve promised in the Stage 3 plan; it is not a validated macrostate trajectory.",
+  "limitations": "Assignments come from the same fit as n_macro. On a looping series the coarse-graining is a partition of the loop. Do not read a dwell or a basin from this figure when validated_macrostates=0.",
+  "run_ids": [
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "9f69127",
+  "config_sha256": null,
+  "units": {
+    "bin": "turnovers",
+    "occupancy": "fraction of frames"
+  },
+  "generated_at": "2026-09-01T20:48:17+00:00"
+}

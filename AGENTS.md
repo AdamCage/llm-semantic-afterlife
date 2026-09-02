@@ -166,7 +166,7 @@ paper's evidence base → committed. Keep that boundary sharp.
 | `logging_utils.py` | structured JSONL + rich console; `get_logger()` |
 | `provenance.py` | run manifests, git SHA, env capture, content hashing |
 | `ledger.py` | append-only cost/token ledger and budget enforcement |
-| `providers/` | RouterAI / OpenRouter / mock clients; identical interface |
+| `providers/` | RouterAI / OpenRouter / local HF / mock clients; identical interface |
 | `tokenization.py` | generator tokenizers; exact `Tail_W` arithmetic |
 | `generation/` | seed bank, sliding-window engine, trajectory runner |
 | `embeddings/` | representation models + content-addressed cache |
@@ -191,6 +191,7 @@ Conventions:
 ```bash
 uv sync                                  # core env
 uv sync --extra dynamics --extra dev     # + Stage 3 dynamics + tooling
+uv sync --extra local                    # + torch/transformers for api: local (ADR-0011)
 
 afterlife doctor                         # environment & key check, no cost
 afterlife audit providers                # capability/pricing audit (cheap)

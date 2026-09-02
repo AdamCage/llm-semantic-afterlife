@@ -181,3 +181,71 @@ generator_library:
       17 endpoints with fp4/fp8/unknown quantization, so provider pinning
       matters more here than anywhere else. Very large native context with W
       imposed far below it: pre-empts the "artifact of small models" objection.
+
+  # -- local base models (ADR-0011) ---------------------------------------
+  # Routers still host zero pretrained LMs (re-measured 2026-09-01). These
+  # entries run on this machine through `api: local`. They are the S3.0
+  # existence-check candidates, not a hosted arm.
+  local-gemma-3-270m:
+    model_id: google/gemma-3-270m
+    api: local
+    tokenizer_repo: google/gemma-3-270m
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: local
+    allow_fallbacks: false
+    native_context: 32768
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    extra_body:
+      device: cpu
+      dtype: float32
+      attn_implementation: eager
+      tokenizer_repo: google/gemma-3-270m
+    notes: >-
+      Pretrained Gemma 3 270M (the -it checkpoint is a different repo).
+      Fast CPU smoke for the local client. Below the 1–3B S3.0 target;
+      not a substitute for the 1B-pt arm.
+
+  local-gemma-3-1b-pt:
+    model_id: google/gemma-3-1b-pt
+    api: local
+    tokenizer_repo: google/gemma-3-1b-pt
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: local
+    allow_fallbacks: false
+    native_context: 32768
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    extra_body:
+      device: cpu
+      dtype: float32
+      attn_implementation: eager
+      tokenizer_repo: google/gemma-3-1b-pt
+    notes: >-
+      True pretrained Gemma 3 1B. Gated on Hugging Face; needs HF_TOKEN
+      with the Gemma licence accepted. The S3.0-sized local control:
+      1–3B, no instruction tune, P1 raw_completion.
+
+  local-gemma-4-e2b:
+    model_id: google/gemma-4-E2B
+    api: local
+    tokenizer_repo: google/gemma-4-E2B
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: local
+    allow_fallbacks: false
+    native_context: 131072
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    extra_body:
+      device: cpu
+      dtype: bfloat16
+      attn_implementation: eager
+      tokenizer_repo: google/gemma-4-E2B
+    notes: >-
+      Gemma 4 E2B *pretrained* (not -it): 2.3B effective / 5.1B with
+      per-layer embeddings, multimodal checkpoint ~10 GB. Ungated.
+      Too tight for an unquantized 16 GB CPU box; reserved for machines
+      with more RAM. Architecture is Gemma4ForConditionalGeneration.

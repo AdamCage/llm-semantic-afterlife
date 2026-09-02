@@ -1,0 +1,16 @@
+{
+  "name": "dynamics_scalars",
+  "caption": "Per-process MSM summary on the restricted Stage 2 sample. validated_macrostates is 0 for every cell: 7–8/8 F4 trajectories are degenerate and n_macro is unstable across K and spaces. ck_max_error is the micro-MSM (F6); ck_macro_max_error is the spectral coarse-graining. H1 is unsupported on this instruct-under-P1 sample.",
+  "alt_text": "Per-process MSM summary on the restricted Stage 2 sample. validated_macrostates is 0 for every cell: 7–8/8 F4 trajectories are degenerate and n_macro is unstable across K and spaces. ck_max_error is the micro-MSM (F6); ck_macro_max_error is the spectral coarse-graining. H1 is unsupported on this instruct-under-P1 sample.",
+  "limitations": "Instruct-under-P1 only (ADR-0012). Glimmer is underpowered by construction. S2.1 leftover qwen (2 traj) excluded. K capped at n_frames/3. mean_dwell_chunks drops unvisited self-loop states. VAMP-2 out-of-sample CV for n_pca / n_vamp / K was not run.",
+  "run_ids": [
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "9f69127",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-01T20:48:17+00:00"
+}

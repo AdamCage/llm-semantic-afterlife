@@ -152,7 +152,7 @@ class GeneratorConfig(StrictModel):
 
     slug: str = Field(description="short identifier used in run ids and figures")
     model_id: str = Field(description="provider-side model id, e.g. 'qwen/qwen3-8b'")
-    api: Literal["routerai", "openrouter", "mock"] = "routerai"
+    api: Literal["routerai", "openrouter", "local", "mock"] = "routerai"
 
     provider_slug: str | None = Field(
         default=None,

@@ -1,0 +1,5 @@
+generator,quarter,block_fill,block_fill_ci_low,block_fill_ci_high,stop_rate,stop_rate_ci_low,stop_rate_ci_high,n_trajectories
+local-gemma-3-1b-pt,1,0.99922,0.99766,1,0.005,0,0.015,8
+local-gemma-3-1b-pt,2,0.999188,0.997563,1,0.00520833,0,0.015625,8
+local-gemma-3-1b-pt,3,0.997396,0.992833,1,0.0104167,0,0.0260417,8
+local-gemma-3-1b-pt,4,1,1,1,0,0,0,8

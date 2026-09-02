@@ -1,0 +1,18 @@
+{
+  "name": "leiden_msm_agreement",
+  "caption": "Adjusted Rand index between Leiden communities (time-blind mutual-kNN on PCA of raw embeddings) and MSM macrostate assignments, with a 95% CI from resampling trajectories. High agreement can mean both methods found the same states or that both collapsed to one region — read next to n_macro.",
+  "alt_text": "Adjusted Rand index between Leiden communities (time-blind mutual-kNN on PCA of raw embeddings) and MSM macrostate assignments, with a 95% CI from resampling trajectories. High agreement can mean both methods found the same states or that both collapsed to one region — read next to n_macro.",
+  "limitations": "The CI resamples trajectories on frozen labels; it is not a refit CI. Leiden is not run in VAMP coordinates. UMAP is not used for any number. Cross-space ARI is 0 on qwen-raw because one space chose n_macro=1; that is arithmetic, not disagreement between two rich partitions.",
+  "run_ids": [
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "9f69127",
+  "config_sha256": null,
+  "units": {
+    "ari": "adjusted Rand index"
+  },
+  "generated_at": "2026-09-01T20:48:14+00:00"
+}

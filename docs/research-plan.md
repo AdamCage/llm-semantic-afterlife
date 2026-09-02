@@ -6,7 +6,10 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S2` closed PARTIAL (2026-09-01). `S3` is next. Last revised 2026-09-01.
+**Status.** `S3` computations PARTIAL (2026-09-01): no validated MSM
+macrostate on the restricted instruct sample; a 1B base model at `W=256`
+loops the seed and does not become a reviewer. S3.0 embeddings remain
+deferred. `S4` is next. Last revised 2026-09-01.
 
 ---
 
@@ -263,38 +266,39 @@ language models.
 
 **Budget.** ≤ $6 declared; $2.8 forecast; **$2.54** actual.
 
-### S3 — Metastability, Markov state models, and representation robustness `← current`
+### S3 — Metastability, Markov state models, and representation robustness
+
+**Closed PARTIAL on computations, 2026-09-01** (scientific review:
+APPROVED WITH CHANGES; human merge still required). Plan:
+[`docs/stages/stage-3/PLAN.md`](stages/stage-3/PLAN.md). Report:
+[`docs/stages/stage-3/REPORT.md`](stages/stage-3/REPORT.md).
 
 **Re-planned after Stage 2** ([ADR-0010](decisions/ADR-0010-stage2-findings-replan-s3.md)).
 Do not default to prefill. Do not pool gemma-silence, qwen-reviewer,
 glimmer-physics and 20b-fragments into one MSM.
 
-**S3.0 (unexecuted since ADR-0008; now blocking for interpretation).** A
-local 1–3B *base* model at reduced `W` and a matched turnover count. If this
-cannot be obtained, every later claim stays labelled as instruct-under-P1.
+**S3.0 (embeddings still deferred).** Local `google/gemma-3-1b-pt` at
+`W = 256`, `T = 12W` ([ADR-0011](decisions/ADR-0011-local-base-provider.md),
+[ADR-0012](decisions/ADR-0012-stage3-no-openrouter.md)). 0/8 reviewer
+register; 8/8 degenerate (seed-echo at T=0.3, token lock at T=1.0).
+Fill 1.00. $0. Geometry waits for an embedding balance. This is an
+existence check at reduced `W`, not a transfer to `W = 4096`, and not
+an isolation of instruction-tuning.
 
-**S3.1 Dynamics, restricted sample.** `PCA → VAMP → k-means microstates →
-non-reversible MSM → macrostates (PCCA+)`, with full MSM validation — VAMP
-score cross-validation over `K`, implied timescales vs. `τ`, Chapman–Kolmogorov
-test. Then dwell times, first-passage times, entropy rate, and **probability
-currents** `J_ij`. Eligible arms: qwen3-8b (both mechanisms), glimmer
-`T = 0.3` physics, gpt-oss-120b almost-complete. Fixed-point, looping and
-silence remain three labels.
+**S3.1 Dynamics, restricted sample.** `validated_macrostates = 0` on every
+eligible cell. The 50-state micro-MSM fails the pre-registered CK bar
+(0.73–1.00 per cell); that is a sparse count-matrix test, not a claim
+that the process is non-Markov. `n_macro` is unstable across `K` and
+across spaces. 7–8/8 F4 trajectories are degenerate. Reported `‖J‖` is
+microstate, not H4. Do not name MSM cells semantic states from this
+sample. VAMP-2 out-of-sample CV was not run.
 
-Independent geometry branch: `PCA → mutual-kNN → Leiden`, deliberately using no
-temporal information. Agreement between branches (ARI/NMI) and across both
-embedding spaces is the robustness argument. tICA is run as an ablation, and the
-tICA/VAMP discrepancy is itself reported as a measure of irreversibility.
+**Exit criteria (scored).** F6 FAIL (micro-CK). F1–F5, F7–F10 PASS.
+H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 
-**Exit criteria.** Base-model comparison present or explicitly open; macrostate
-count stable across `K` and across both embedding spaces **on the restricted
-sample**; implied timescales flat over a `τ` range; CK test passed;
-ARI(Leiden, MSM) reported per model/embedding with a bootstrap CI.
+**Budget.** ≤ $10 declared; **$0.00** actual this opening.
 
-**Budget.** ≤ $10 (compute-bound once S3.0 is local; S3.0 itself must be
-estimated before any spend).
-
-### S4 — Control parameters: the `temperature × W` phase portrait
+### S4 — Control parameters: the `temperature × W` phase portrait `← current`
 
 Sweep `T ∈ {0.0, 0.2, 0.5, 0.7, 1.0, 1.2, 1.5}` × `W ∈ {4k, 8k, 16k, 32k}` on
 2–3 models; locate any transition between confinement and diffusion using

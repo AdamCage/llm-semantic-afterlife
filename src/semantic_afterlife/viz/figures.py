@@ -892,6 +892,248 @@ def quarter_protocol_figure(
     return figure, tidy, meta
 
 
+def implied_timescales_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    name: str = "implied_timescales",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Implied timescales vs lag, one trace per (process, timescale index).
+
+    A usable MSM needs a region where the slowest real timescale is flat in
+    ``τ``. Timescales are in chunks; the paper also states them in tokens
+    via the chunk size recorded in the metadata.
+    """
+    figure = go.Figure()
+    tidy = frame.copy()
+    if tidy.empty:
+        figure.update_layout(template=plotly_template(), title="Implied timescales (empty)")
+    else:
+        tidy["series"] = (
+            tidy["generator"].astype(str)
+            + " / "
+            + tidy["embedding"].astype(str)
+            + " t"
+            + tidy["timescale_index"].astype(int).astype(str)
+        )
+        for i, (label, block) in enumerate(tidy.groupby("series", sort=True)):
+            colour = PALETTE[i % len(PALETTE)]
+            figure.add_trace(
+                go.Scatter(
+                    x=block["lag"],
+                    y=block["timescale_chunks"],
+                    mode="lines+markers",
+                    name=str(label),
+                    line={"color": colour},
+                )
+            )
+        figure.update_layout(
+            template=plotly_template(),
+            title="Implied timescales from the MSM (not from VAMP singular values)",
+            xaxis={"title": "lag τ (chunks)", "type": "log"},
+            yaxis={"title": "t_i = −τ / ln|λ_i| (chunks)", "type": "log"},
+        )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"lag": "chunks", "timescale_chunks": "chunks"},
+    )
+    return figure, tidy, meta
+
+
+def ck_error_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    threshold: float = 0.15,
+    name: str = "chapman_kolmogorov",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Chapman–Kolmogorov max-abs error vs k, one bar group per process."""
+    figure = go.Figure()
+    tidy = frame.copy()
+    if not tidy.empty:
+        if "object" in tidy.columns:
+            tidy["series"] = (
+                tidy["generator"].astype(str)
+                + " / "
+                + tidy["embedding"].astype(str)
+                + " / "
+                + tidy["object"].astype(str)
+            )
+        else:
+            tidy["series"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        for i, (label, block) in enumerate(tidy.groupby("series", sort=True)):
+            figure.add_trace(
+                go.Bar(
+                    x=block["k"],
+                    y=block["max_abs_error"],
+                    name=str(label),
+                    marker={"color": PALETTE[i % len(PALETTE)]},
+                )
+            )
+    figure.add_hline(y=threshold, line={"color": ROLE_COLORS["horizon"], "dash": "dash"})
+    figure.update_layout(
+        template=plotly_template(),
+        title="Chapman–Kolmogorov error: max |T(kτ) − T(τ)^k| (object labelled)",
+        xaxis={"title": "k", "dtick": 1},
+        yaxis={"title": "max absolute deviation of T"},
+        barmode="group",
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"k": "multiples of the MSM lag", "max_abs_error": "probability"},
+    )
+    return figure, tidy, meta
+
+
+def current_norm_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    name: str = "probability_currents",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """‖J‖_F with a trajectory-bootstrap CI. Zero is equilibrium-like."""
+    figure = go.Figure()
+    tidy = frame.copy()
+    if not tidy.empty:
+        tidy["label"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        figure.add_trace(
+            go.Bar(
+                x=tidy["label"],
+                y=tidy["j_norm"],
+                marker={"color": PALETTE[0]},
+                error_y={
+                    "type": "data",
+                    "symmetric": False,
+                    "array": tidy["j_norm_ci_high"] - tidy["j_norm"],
+                    "arrayminus": tidy["j_norm"] - tidy["j_norm_ci_low"],
+                },
+            )
+        )
+    figure.add_hline(y=0.0, line={"color": ROLE_COLORS["baseline"], "dash": "dot"})
+    figure.update_layout(
+        template=plotly_template(),
+        title="Microstate probability-current norm ‖J‖_F",
+        xaxis={"title": "process × representation space"},
+        yaxis={"title": "‖π_i T_ij − π_j T_ji‖_F of the K×K micro-MSM"},
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"j_norm": "dimensionless current"},
+    )
+    return figure, tidy, meta
+
+
+def agreement_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    name: str = "leiden_msm_agreement",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """ARI(Leiden, MSM macrostates) with a trajectory-bootstrap CI."""
+    figure = go.Figure()
+    tidy = frame.copy()
+    if not tidy.empty:
+        tidy["label"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        figure.add_trace(
+            go.Bar(
+                x=tidy["label"],
+                y=tidy["ari"],
+                marker={"color": PALETTE[1]},
+                error_y={
+                    "type": "data",
+                    "symmetric": False,
+                    "array": tidy["ari_ci_high"] - tidy["ari"],
+                    "arrayminus": tidy["ari"] - tidy["ari_ci_low"],
+                },
+            )
+        )
+    figure.add_hline(y=0.0, line={"color": ROLE_COLORS["baseline"], "dash": "dot"})
+    figure.update_layout(
+        template=plotly_template(),
+        title="Agreement between Leiden communities and MSM macrostates",
+        xaxis={"title": "process × representation space"},
+        yaxis={"title": "adjusted Rand index", "range": [-0.1, 1.05]},
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"ari": "adjusted Rand index"},
+    )
+    return figure, tidy, meta
+
+
+def occupancy_vs_turnover_figure(
+    frame: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    caption: str,
+    limitations: str,
+    name: str = "occupancy_vs_turnover",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """Fraction of frames in each spectral coarse-graining, vs turnover."""
+    figure = go.Figure()
+    tidy = frame.copy()
+    if not tidy.empty and {"turnover", "macrostate", "generator", "embedding"}.issubset(
+        tidy.columns
+    ):
+        tidy["bin"] = np.floor(tidy["turnover"].astype(float)).astype(int)
+        tidy["process"] = tidy["generator"].astype(str) + " / " + tidy["embedding"].astype(str)
+        counts = (
+            tidy.groupby(["process", "bin", "macrostate"], sort=True)
+            .size()
+            .rename("n")
+            .reset_index()
+        )
+        totals = counts.groupby(["process", "bin"], sort=True)["n"].transform("sum")
+        counts["occupancy"] = counts["n"] / totals
+        for colour_i, ((process, macro), block) in enumerate(
+            counts.groupby(["process", "macrostate"], sort=True)
+        ):
+            figure.add_trace(
+                go.Scatter(
+                    x=block["bin"],
+                    y=block["occupancy"],
+                    mode="lines+markers",
+                    name=f"{process} / m{int(macro)}",
+                    marker={"color": PALETTE[colour_i % len(PALETTE)]},
+                )
+            )
+        tidy = counts
+    figure.update_layout(
+        template=plotly_template(),
+        title="Macrostate occupancy versus window turnover",
+        xaxis={"title": "turnover floor (t/W)"},
+        yaxis={"title": "fraction of frames in spectral coarse-graining", "range": [0, 1.05]},
+    )
+    meta = FigureMeta(
+        name=name,
+        caption=caption,
+        run_ids=run_ids,
+        limitations=limitations,
+        units={"bin": "turnovers", "occupancy": "fraction of frames"},
+    )
+    return figure, tidy, meta
+
+
 def _rgba(hex_colour: str, alpha: float) -> str:
     hex_colour = hex_colour.lstrip("#")
     r, g, b = (int(hex_colour[i : i + 2], 16) for i in (0, 2, 4))

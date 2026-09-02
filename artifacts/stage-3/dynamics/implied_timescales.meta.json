@@ -1,0 +1,19 @@
+{
+  "name": "implied_timescales",
+  "caption": "Implied timescales t_i = −τ / ln|λ_i| from the non-reversible MSM transition matrix, not from VAMP singular values. A usable model needs a region where the slowest real timescale is flat in τ.",
+  "alt_text": "Implied timescales t_i = −τ / ln|λ_i| from the non-reversible MSM transition matrix, not from VAMP singular values. A usable model needs a region where the slowest real timescale is flat in τ.",
+  "limitations": "A singular value of the Koopman operator is not a relaxation time. A looping trajectory produces a long timescale that measures the loop. Cells with n_macro=1 have no validated semantic state. S2.1 leftover qwen (2 traj) is excluded; S2.2 is the qwen cell.",
+  "run_ids": [
+    "s3-dynamics-20260901T204521Z-f21d5908",
+    "s3-dynamics-20260901T204549Z-b7c4d0c9",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s2-embed-model-axis-20260901T125626Z-50d60286"
+  ],
+  "git_sha": "9f69127",
+  "config_sha256": null,
+  "units": {
+    "lag": "chunks",
+    "timescale_chunks": "chunks"
+  },
+  "generated_at": "2026-09-01T20:48:07+00:00"
+}
