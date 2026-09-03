@@ -8,8 +8,11 @@ Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
 **Status.** `S3` computations PARTIAL (2026-09-01): no validated MSM
 macrostate on the restricted instruct sample; a 1B base model at `W=256`
-loops the seed and does not become a reviewer. S3.0 embeddings remain
-deferred. `S4` is next. Last revised 2026-09-01.
+loops the seed and does not become a reviewer. S3.0 embeddings exist
+(`s3-embed-local-base-embed-20260902T051805Z-2ce86473`); geometry is
+the follow-up on that run. `S4` is next and still needs a reduced
+PLAN — do not generate the written $120 sketch. Project ceiling
+**$200** (ADR-0013). Last revised 2026-09-03.
 
 ---
 
@@ -277,7 +280,7 @@ APPROVED WITH CHANGES; human merge still required). Plan:
 Do not default to prefill. Do not pool gemma-silence, qwen-reviewer,
 glimmer-physics and 20b-fragments into one MSM.
 
-**S3.0 (embeddings still deferred).** Local `google/gemma-3-1b-pt` at
+**S3.0 (embeddings landed 2026-09-02; geometry is the follow-up).** Local `google/gemma-3-1b-pt` at
 `W = 256`, `T = 12W` ([ADR-0011](decisions/ADR-0011-local-base-provider.md),
 [ADR-0012](decisions/ADR-0012-stage3-no-openrouter.md)). 0/8 reviewer
 register; 8/8 degenerate (seed-echo at T=0.3, token lock at T=1.0).
@@ -423,10 +426,11 @@ These come from the traps identified during project scoping and are enforced by
 
 ## 8. Budget and risk summary
 
-Cumulative ceiling for S0–S3 is **$78**, within the approved $50 pilot only if
-S2's window sweep is trimmed — so S2's matrix is finalised from S1's actual
-cost data, and S4/S5 require explicit approval before launch. Full risk register
-with mitigations: [`risks.md`](risks.md).
+The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
+was $50 in ADR-0004). Ledger at the raise: $11.57. S4/S5 still require
+their own PLAN, estimate, and an explicit generate approval — the $200
+ceiling is not a generate-yes for the written S4 sketch. Full risk
+register with mitigations: [`risks.md`](risks.md).
 
 The three risks that would most change the project:
 

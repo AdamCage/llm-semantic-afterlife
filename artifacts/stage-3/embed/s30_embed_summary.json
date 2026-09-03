@@ -1,0 +1,48 @@
+{
+  "kind": "s30_embed_followup",
+  "date_utc": "2026-09-02",
+  "source_run_id": "s3-local-base-20260901T184812Z-cc80633b",
+  "embed_run_id": "s3-embed-local-base-embed-20260902T051805Z-2ce86473",
+  "config": "configs/stages/stage3_s30_embed.yaml",
+  "api": "routerai",
+  "openrouter_called": false,
+  "n_chunks": 96,
+  "generator_tokens_per_space": 24576,
+  "spaces": {
+    "bge-m3": {
+      "model_id": "baai/bge-m3",
+      "dim": 1024,
+      "n_rows": 96,
+      "cache_hits": 0,
+      "cache_misses": 96,
+      "n_batches": 6,
+      "prompt_tokens": 30010,
+      "provider_normalised": true
+    },
+    "qwen3-embed-8b": {
+      "model_id": "qwen/qwen3-embedding-8b",
+      "dim": 4096,
+      "n_rows": 96,
+      "cache_hits": 0,
+      "cache_misses": 96,
+      "n_batches": 12,
+      "prompt_tokens": 26353,
+      "provider_normalised": true
+    }
+  },
+  "ledger_cost_usd": 0.0,
+  "ledger_cost_note": "RouterAI usage.cost absent; embeddings.yaml price_usd_per_m_input is null; _cost returns 0.",
+  "reconstructed_usd_at_catalog": 0.000791,
+  "catalog_usd_per_m_tokens": 0.01403663625,
+  "routerai_credits_before": 597.69,
+  "routerai_credits_after": 597.6290383572632,
+  "credits_delta_rub": 0.0609616427368,
+  "credits_delta_usd_at_0.0125": 0.000762,
+  "ceiling_usd": 0.50,
+  "geometry_run": false,
+  "does_not_establish": [
+    "geometry or MSD of the base-model loop",
+    "transfer from W=256 to W=4096",
+    "Stage 4 temperature x W sweep"
+  ]
+}

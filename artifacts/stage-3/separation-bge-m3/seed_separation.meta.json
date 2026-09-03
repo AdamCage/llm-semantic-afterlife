@@ -1,0 +1,27 @@
+{
+  "name": "seed_separation",
+  "caption": "Seed-separation contrast in the bge-m3 space, W=256. Upper panel: mean cosine distance between trajectory pairs from different semantic seeds, against the control of pairs sharing a semantic seed and differing only in their stochastic seed. Lower panel: the difference, with a 95% bootstrap interval resampled over trajectories. Filled markers mark bands whose interval excludes zero. A positive gap after the context horizon means the seed still shapes the trajectory once it has physically left the model's input.",
+  "alt_text": "Two-panel figure: pairwise distances for same-seed and different-seed trajectory pairs, and their difference with a confidence band, against window turnovers.",
+  "limitations": "Shows that the seed still influences the trajectory, not by what mechanism nor that the information is recoverable \u2014 the Stage 2 probe answers that. The contrast resolves a strong effect at this replicate count and not a marginal one, so a small gap is underpowered rather than absent. Degenerate trajectories inflate D_within and D_between alike and must be labelled before this figure is read. The published D_within pools same-seed pairs across T=0.3 and T=1.0 (120 of 144 within pair-rows are cross-temperature). Those are two different locks, so the decaying gap is partly T-mix, not seed forgetting. Last band CI includes 0. Same-T within n is 2\u20134 rows per band and includes the bit-identical T=0.3 physics pair. A gap between two loops is different repeated strings, not H2. W=256 only.",
+  "run_ids": [
+    "s3-embed-local-base-embed-20260902T051805Z-2ce86473",
+    "s3-separation-bge-m3-20260903T103004Z-9ce0ccd7"
+  ],
+  "git_sha": "7d332a1515e8e4dfabba72f427d5d4e3faa1b8b6",
+  "config_sha256": null,
+  "units": {
+    "band": "window turnovers t/W",
+    "gap": "cosine distance"
+  },
+  "generated_at": "2026-09-03T10:30:06+00:00",
+  "W": 256,
+  "embedding": "bge-m3",
+  "n_trajectories": 8.0,
+  "n_semantic_seeds": 2.0,
+  "gap_post_horizon_mean": 0.18669285620635254,
+  "gap_first_post_horizon_band": 0.21360999435515066,
+  "gap_last_band": 0.1029073741839654,
+  "bands_separated_fraction": 0.8333333333333334,
+  "separated_at_last_band": 0.0,
+  "gap_trend_per_turnover": -0.011763940151755761
+}

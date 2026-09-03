@@ -1,0 +1,44 @@
+# ===========================================================================
+# S3.0 follow-up — embed the local base-model run (ADR-0012)
+# ---------------------------------------------------------------------------
+# Generation already exists: s3-local-base-20260901T184812Z-cc80633b.
+# This config is only consumed by `afterlife embed --run …`. It does not
+# generate. OpenRouter is not called; both spaces are api: routerai.
+# Do not rewrite the Stage 3 opening report as if these numbers existed then.
+# ===========================================================================
+
+include:
+  - configs/models/generators.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s3
+name: local-base-embed
+description: >-
+  Follow-up embedding of the S3.0 local gemma-3-1b-pt run in bge-m3 and
+  qwen3-embed-8b via RouterAI. Geometry of the base-model loop is a
+  later analysis pass on this run_id.
+
+generators:
+  - local-gemma-3-1b-pt
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 256
+    block_size: 32
+    target_tokens: 3072
+    chunk_size: 256
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+# RouterAI 2026-09-02: both spaces $0.014/M input on deepinfra; siliconflow
+# qwen-embed is $0.056/M. 96 chunks × 256 tokens × 2 spaces = 49,152 tokens.
+# Forecast ≈ $0.0007. Ceiling is a hard refuse, not the forecast.
+budget_usd: 0.50

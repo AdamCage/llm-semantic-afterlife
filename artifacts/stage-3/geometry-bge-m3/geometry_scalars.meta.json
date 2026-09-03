@@ -1,0 +1,14 @@
+{
+  "name": "geometry_scalars",
+  "caption": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.",
+  "alt_text": "Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.",
+  "limitations": "An MSD exponent from a trajectory marked `degenerate` measures repetition, not semantic motion, and is not evidence of confinement. Exponents are fitted over a lag range bounded by the observed turnover count, so they cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the trajectory was too short to separate the post-horizon regime and the statistics mix forced and free segments.",
+  "run_ids": [
+    "s3-embed-local-base-embed-20260902T051805Z-2ce86473",
+    "s3-geometry-bge-m3-20260903T102912Z-f0a1b50e"
+  ],
+  "git_sha": "7d332a1515e8e4dfabba72f427d5d4e3faa1b8b6",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-03T10:29:32+00:00"
+}

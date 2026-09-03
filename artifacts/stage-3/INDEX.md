@@ -135,3 +135,272 @@ Hand labels of S3.0 step-1, last-quarter, and last-step text for local-gemma-3-1
 - source data: [`parquet`](surface/s30_surface_labels.data.parquet)
 - runs: `s3-local-base-20260901T184812Z-cc80633b`
 - git: `9f69127`
+
+# Follow-up 2026-09-03 — S3.0 geometry and separation
+
+Dated addendum. 8/8 source trajectories are loops. Ensemble MSD α and the
+CLI seed-separation table are not H3 / H2. See [`FOLLOWUP-geometry.md`](../../docs/stages/stage-3/FOLLOWUP-geometry.md).
+
+## drift_from_origin
+
+Cosine distance from each trajectory's first chunk. Saturation indicates a bounded semantic region; continued growth indicates directed drift. The context horizon t = W is where the seed has fully left the model's input.
+
+**Does not establish:** Distance from a single reference chunk is not a measure of the number or separation of semantic states.
+
+- formats: [`html`](geometry-bge-m3/drift_from_origin.html), [`png`](geometry-bge-m3/drift_from_origin.png), [`svg`](geometry-bge-m3/drift_from_origin.svg)
+- source data: [`parquet`](geometry-bge-m3/drift_from_origin.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## geometry_scalars
+
+Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.
+
+**Does not establish:** An MSD exponent from a trajectory marked `degenerate` measures repetition, not semantic motion, and is not evidence of confinement. Exponents are fitted over a lag range bounded by the observed turnover count, so they cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the trajectory was too short to separate the post-horizon regime and the statistics mix forced and free segments.
+
+- formats: [`html`](geometry-bge-m3/geometry_scalars.html), [`csv`](geometry-bge-m3/geometry_scalars.csv)
+- source data: [`parquet`](geometry-bge-m3/geometry_scalars.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## geometry_summary_panel
+
+Geometry summary at W=256. (a) distribution of per-step cosine displacement; (b) drift away from each trajectory's own first chunk, with the context horizon marked; (c) fitted MSD exponent per trajectory against the free-diffusion reference α=1; (d) integrated autocorrelation time of the displacement series, i.e. the effective spacing between independent observations.
+
+**Does not establish:** Descriptive only. None of these panels distinguishes metastability from a slowly mixing single state; that requires the Markov-state analysis.
+
+- formats: [`png`](geometry-bge-m3/geometry_summary_panel.png), [`svg`](geometry-bge-m3/geometry_summary_panel.svg), [`pdf`](geometry-bge-m3/geometry_summary_panel.pdf)
+- source data: [`parquet`](geometry-bge-m3/geometry_summary_panel.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## msd_loglog
+
+Mean squared displacement against lag, log–log, on L2-normalised chunk embeddings, post-horizon segment only. Thin grey lines are individual trajectories; the blue curve is the ensemble mean with a 95% bootstrap CI resampled over trajectories (n=8). The dashed line has slope 1, the free-diffusion reference. Fitted exponent α = 0.358 ± 0.513.
+
+**Does not establish:** An exponent estimated over a finite trajectory cannot establish asymptotic behaviour; the accessible lag range is bounded by the observed turnover count. 8/8 trajectories are degenerate (looping_fraction=1.0); the ensemble α is a fit to loops, not semantic confinement or diffusion. T=0.3 surreal s1 is a frozen point (near-zero MSD) whose α≈1 is a log-log artefact. W=256 does not transfer to W=4096.
+
+- formats: [`html`](geometry-bge-m3/msd_loglog.html), [`png`](geometry-bge-m3/msd_loglog.png), [`svg`](geometry-bge-m3/msd_loglog.svg)
+- source data: [`parquet`](geometry-bge-m3/msd_loglog.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## pca_projection_illustration
+
+Chunk embeddings projected onto their first two principal components, coloured by window turnover t/W and connected in generation order. W=256, chunk=256 tokens. Illustration only: all statistics reported in this project are computed in the full high-dimensional space.
+
+**Does not establish:** A 2-D projection cannot establish the existence, number, or separation of clusters. Nothing in this figure may be used as evidence; see the Markov-state analysis.
+
+- formats: [`html`](geometry-bge-m3/pca_projection_illustration.html), [`png`](geometry-bge-m3/pca_projection_illustration.png), [`svg`](geometry-bge-m3/pca_projection_illustration.svg)
+- source data: [`parquet`](geometry-bge-m3/pca_projection_illustration.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__physics__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0924 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.html), [`png`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.png), [`svg`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.svg)
+- source data: [`npz`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__physics__s2 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0925 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.html), [`png`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.png), [`svg`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.svg)
+- source data: [`npz`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__surreal__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0000 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.html), [`png`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.png), [`svg`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.svg)
+- source data: [`npz`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__surreal__s2 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.1058 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.html), [`png`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.png), [`svg`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.svg)
+- source data: [`npz`](geometry-bge-m3/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## semantic_velocity
+
+Per-step cosine displacement between consecutive 256-token chunks, for each trajectory (thin) with the per-seed ensemble mean and 95% CI (thick). W=256 generator tokens; the context horizon and its multiples are marked. A rising curve means the trajectory is moving faster through representation space; a flat one means a steady rate of semantic change.
+
+**Does not establish:** Displacement rate alone cannot distinguish a confined trajectory that moves quickly within a small region from one that drifts steadily away.
+
+- formats: [`html`](geometry-bge-m3/semantic_velocity.html), [`png`](geometry-bge-m3/semantic_velocity.png), [`svg`](geometry-bge-m3/semantic_velocity.svg)
+- source data: [`parquet`](geometry-bge-m3/semantic_velocity.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`
+- git: `7d332a1515e8`
+
+## drift_from_origin
+
+Cosine distance from each trajectory's first chunk. Saturation indicates a bounded semantic region; continued growth indicates directed drift. The context horizon t = W is where the seed has fully left the model's input.
+
+**Does not establish:** Distance from a single reference chunk is not a measure of the number or separation of semantic states.
+
+- formats: [`html`](geometry-qwen3-embed-8b/drift_from_origin.html), [`png`](geometry-qwen3-embed-8b/drift_from_origin.png), [`svg`](geometry-qwen3-embed-8b/drift_from_origin.svg)
+- source data: [`parquet`](geometry-qwen3-embed-8b/drift_from_origin.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## geometry_scalars
+
+Per-trajectory geometry summary: post-horizon displacement statistics, fitted MSD exponent with its standard error and fit quality, plateau level, and integrated autocorrelation time (the effective spacing between independent chunk observations). The `degenerate` column carries the calibrated degeneracy verdict for the same trajectory.
+
+**Does not establish:** An MSD exponent from a trajectory marked `degenerate` measures repetition, not semantic motion, and is not evidence of confinement. Exponents are fitted over a lag range bounded by the observed turnover count, so they cannot establish asymptotic behaviour. Where `burn_in_applied` is 0 the trajectory was too short to separate the post-horizon regime and the statistics mix forced and free segments.
+
+- formats: [`html`](geometry-qwen3-embed-8b/geometry_scalars.html), [`csv`](geometry-qwen3-embed-8b/geometry_scalars.csv)
+- source data: [`parquet`](geometry-qwen3-embed-8b/geometry_scalars.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## geometry_summary_panel
+
+Geometry summary at W=256. (a) distribution of per-step cosine displacement; (b) drift away from each trajectory's own first chunk, with the context horizon marked; (c) fitted MSD exponent per trajectory against the free-diffusion reference α=1; (d) integrated autocorrelation time of the displacement series, i.e. the effective spacing between independent observations.
+
+**Does not establish:** Descriptive only. None of these panels distinguishes metastability from a slowly mixing single state; that requires the Markov-state analysis.
+
+- formats: [`png`](geometry-qwen3-embed-8b/geometry_summary_panel.png), [`svg`](geometry-qwen3-embed-8b/geometry_summary_panel.svg), [`pdf`](geometry-qwen3-embed-8b/geometry_summary_panel.pdf)
+- source data: [`parquet`](geometry-qwen3-embed-8b/geometry_summary_panel.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## msd_loglog
+
+Mean squared displacement against lag, log–log, on L2-normalised chunk embeddings, post-horizon segment only. Thin grey lines are individual trajectories; the blue curve is the ensemble mean with a 95% bootstrap CI resampled over trajectories (n=8). The dashed line has slope 1, the free-diffusion reference. Fitted exponent α = 0.301 ± 0.367.
+
+**Does not establish:** An exponent estimated over a finite trajectory cannot establish asymptotic behaviour; the accessible lag range is bounded by the observed turnover count. 8/8 trajectories are degenerate (looping_fraction=1.0); the ensemble α is a fit to loops, not semantic confinement or diffusion. T=0.3 surreal s1 is a frozen point (near-zero MSD) whose α≈1 is a log-log artefact. W=256 does not transfer to W=4096.
+
+- formats: [`html`](geometry-qwen3-embed-8b/msd_loglog.html), [`png`](geometry-qwen3-embed-8b/msd_loglog.png), [`svg`](geometry-qwen3-embed-8b/msd_loglog.svg)
+- source data: [`parquet`](geometry-qwen3-embed-8b/msd_loglog.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## pca_projection_illustration
+
+Chunk embeddings projected onto their first two principal components, coloured by window turnover t/W and connected in generation order. W=256, chunk=256 tokens. Illustration only: all statistics reported in this project are computed in the full high-dimensional space.
+
+**Does not establish:** A 2-D projection cannot establish the existence, number, or separation of clusters. Nothing in this figure may be used as evidence; see the Markov-state analysis.
+
+- formats: [`html`](geometry-qwen3-embed-8b/pca_projection_illustration.html), [`png`](geometry-qwen3-embed-8b/pca_projection_illustration.png), [`svg`](geometry-qwen3-embed-8b/pca_projection_illustration.svg)
+- source data: [`parquet`](geometry-qwen3-embed-8b/pca_projection_illustration.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__physics__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0748 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.html), [`png`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.png), [`svg`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.svg)
+- source data: [`npz`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s1.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__physics__s2 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0759 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.html), [`png`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.png), [`svg`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.svg)
+- source data: [`npz`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__physics__s2.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__surreal__s1 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.0000 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.html), [`png`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.png), [`svg`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.svg)
+- source data: [`npz`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s1.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2
+
+Recurrence plot for trajectory local-gemma-3-1b-pt__W256__T0p3__surreal__s2 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.1128 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.
+
+**Does not establish:** ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.
+
+- formats: [`html`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.html), [`png`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.png), [`svg`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.svg)
+- source data: [`npz`](geometry-qwen3-embed-8b/recurrence_local-gemma-3-1b-pt__W256__T0p3__surreal__s2.data.npz)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## semantic_velocity
+
+Per-step cosine displacement between consecutive 256-token chunks, for each trajectory (thin) with the per-seed ensemble mean and 95% CI (thick). W=256 generator tokens; the context horizon and its multiples are marked. A rising curve means the trajectory is moving faster through representation space; a flat one means a steady rate of semantic change.
+
+**Does not establish:** Displacement rate alone cannot distinguish a confined trajectory that moves quickly within a small region from one that drifts steadily away.
+
+- formats: [`html`](geometry-qwen3-embed-8b/semantic_velocity.html), [`png`](geometry-qwen3-embed-8b/semantic_velocity.png), [`svg`](geometry-qwen3-embed-8b/semantic_velocity.svg)
+- source data: [`parquet`](geometry-qwen3-embed-8b/semantic_velocity.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`
+- git: `7d332a1515e8`
+
+## seed_separation
+
+Seed-separation contrast in the bge-m3 space, W=256. Upper panel: mean cosine distance between trajectory pairs from different semantic seeds, against the control of pairs sharing a semantic seed and differing only in their stochastic seed. Lower panel: the difference, with a 95% bootstrap interval resampled over trajectories. Filled markers mark bands whose interval excludes zero. A positive gap after the context horizon means the seed still shapes the trajectory once it has physically left the model's input.
+
+**Does not establish:** Shows that the seed still influences the trajectory, not by what mechanism nor that the information is recoverable — the Stage 2 probe answers that. The contrast resolves a strong effect at this replicate count and not a marginal one, so a small gap is underpowered rather than absent. Degenerate trajectories inflate D_within and D_between alike and must be labelled before this figure is read. The published D_within pools same-seed pairs across T=0.3 and T=1.0 (120 of 144 within pair-rows are cross-temperature). Those are two different locks, so the decaying gap is partly T-mix, not seed forgetting. Last band CI includes 0. Same-T within n is 2–4 rows per band and includes the bit-identical T=0.3 physics pair. A gap between two loops is different repeated strings, not H2. W=256 only.
+
+- formats: [`html`](separation-bge-m3/seed_separation.html), [`png`](separation-bge-m3/seed_separation.png), [`svg`](separation-bge-m3/seed_separation.svg)
+- source data: [`parquet`](separation-bge-m3/seed_separation.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-separation-bge-m3-20260903T103004Z-9ce0ccd7`
+- git: `7d332a1515e8`
+
+## separation_per_band
+
+Seed-separation contrast per turnover band. `d_within` is the mean cosine distance between trajectories sharing a semantic seed and differing only in their stochastic seed; `d_between` is the same across different semantic seeds. `gap` is their difference, with a 95% bootstrap interval resampled over trajectories rather than over pairs.
+
+**Does not establish:** A positive gap shows the seed still shapes the trajectory; it does not say through what mechanism, nor that the information is recoverable. The probe in Stage 2 answers that. At the pilot's replicate count the contrast resolves a strong effect and not a marginal one, so a small gap should be read as underpowered rather than absent. The published D_within pools same-seed pairs across T=0.3 and T=1.0 (120 of 144 within pair-rows are cross-temperature). Those are two different locks, so the decaying gap is partly T-mix, not seed forgetting. Last band CI includes 0. Same-T within n is 2–4 rows per band and includes the bit-identical T=0.3 physics pair. A gap between two loops is different repeated strings, not H2. W=256 only.
+
+- formats: [`html`](separation-bge-m3/separation_per_band.html), [`csv`](separation-bge-m3/separation_per_band.csv)
+- source data: [`parquet`](separation-bge-m3/separation_per_band.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-separation-bge-m3-20260903T103004Z-9ce0ccd7`
+- git: `7d332a1515e8`
+
+## seed_separation
+
+Seed-separation contrast in the qwen3-embed-8b space, W=256. Upper panel: mean cosine distance between trajectory pairs from different semantic seeds, against the control of pairs sharing a semantic seed and differing only in their stochastic seed. Lower panel: the difference, with a 95% bootstrap interval resampled over trajectories. Filled markers mark bands whose interval excludes zero. A positive gap after the context horizon means the seed still shapes the trajectory once it has physically left the model's input.
+
+**Does not establish:** Shows that the seed still influences the trajectory, not by what mechanism nor that the information is recoverable — the Stage 2 probe answers that. The contrast resolves a strong effect at this replicate count and not a marginal one, so a small gap is underpowered rather than absent. Degenerate trajectories inflate D_within and D_between alike and must be labelled before this figure is read. The published D_within pools same-seed pairs across T=0.3 and T=1.0 (120 of 144 within pair-rows are cross-temperature). Those are two different locks, so the decaying gap is partly T-mix, not seed forgetting. Last band CI includes 0. Same-T within n is 2–4 rows per band and includes the bit-identical T=0.3 physics pair. A gap between two loops is different repeated strings, not H2. W=256 only.
+
+- formats: [`html`](separation-qwen3-embed-8b/seed_separation.html), [`png`](separation-qwen3-embed-8b/seed_separation.png), [`svg`](separation-qwen3-embed-8b/seed_separation.svg)
+- source data: [`parquet`](separation-qwen3-embed-8b/seed_separation.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-separation-qwen3-embed-8b-20260903T103008Z-8a7a3e1f`
+- git: `7d332a1515e8`
+
+## separation_per_band
+
+Seed-separation contrast per turnover band. `d_within` is the mean cosine distance between trajectories sharing a semantic seed and differing only in their stochastic seed; `d_between` is the same across different semantic seeds. `gap` is their difference, with a 95% bootstrap interval resampled over trajectories rather than over pairs.
+
+**Does not establish:** A positive gap shows the seed still shapes the trajectory; it does not say through what mechanism, nor that the information is recoverable. The probe in Stage 2 answers that. At the pilot's replicate count the contrast resolves a strong effect and not a marginal one, so a small gap should be read as underpowered rather than absent. The published D_within pools same-seed pairs across T=0.3 and T=1.0 (120 of 144 within pair-rows are cross-temperature). Those are two different locks, so the decaying gap is partly T-mix, not seed forgetting. Last band CI includes 0. Same-T within n is 2–4 rows per band and includes the bit-identical T=0.3 physics pair. A gap between two loops is different repeated strings, not H2. W=256 only.
+
+- formats: [`html`](separation-qwen3-embed-8b/separation_per_band.html), [`csv`](separation-qwen3-embed-8b/separation_per_band.csv)
+- source data: [`parquet`](separation-qwen3-embed-8b/separation_per_band.data.parquet)
+- runs: `s3-embed-local-base-embed-20260902T051805Z-2ce86473`, `s3-separation-qwen3-embed-8b-20260903T103008Z-8a7a3e1f`
+- git: `7d332a1515e8`

@@ -1,0 +1,22 @@
+{
+  "name": "msd_loglog",
+  "caption": "Mean squared displacement against lag, log\u2013log, on L2-normalised chunk embeddings, post-horizon segment only. Thin grey lines are individual trajectories; the blue curve is the ensemble mean with a 95% bootstrap CI resampled over trajectories (n=8). The dashed line has slope 1, the free-diffusion reference. Fitted exponent \u03b1 = 0.301 \u00b1 0.367.",
+  "alt_text": "Log-log plot of mean squared displacement against lag with a slope-1 reference.",
+  "limitations": "An exponent estimated over a finite trajectory cannot establish asymptotic behaviour; the accessible lag range is bounded by the observed turnover count. 8/8 trajectories are degenerate (looping_fraction=1.0); the ensemble \u03b1 is a fit to loops, not semantic confinement or diffusion. T=0.3 surreal s1 is a frozen point (near-zero MSD) whose \u03b1\u22481 is a log-log artefact. W=256 does not transfer to W=4096.",
+  "run_ids": [
+    "s3-embed-local-base-embed-20260902T051805Z-2ce86473",
+    "s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee"
+  ],
+  "git_sha": "7d332a1515e8e4dfabba72f427d5d4e3faa1b8b6",
+  "config_sha256": "26a974ee30f480bb34dcefce69f7fee183613192487cd24bf5f809949afe0071",
+  "units": {
+    "lag_chunks": "chunks",
+    "lag_tokens": "generator tokens",
+    "msd": "squared distance"
+  },
+  "generated_at": "2026-09-03T10:29:46+00:00",
+  "alpha_mean": 0.3008661900082201,
+  "alpha_sd": 0.3667611317259113,
+  "chunk_size": 256,
+  "W": 256
+}
