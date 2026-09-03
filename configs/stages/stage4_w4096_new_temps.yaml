@@ -1,0 +1,44 @@
+# ===========================================================================
+# S4.1 — new temperatures at W = 4096 on or-qwen3-8b
+# ---------------------------------------------------------------------------
+# Completes the W=4096 row of the reduced Stage 4 grid (ADR-0014).
+# T ∈ {0.3, 1.0} already exist as S2.2 raw:
+#   s2-mechanism-20260901T071519Z-dfbb173a (8/8 COMPLETED).
+# Do not regenerate those cells.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s4
+name: w4096-new-temps
+description: >-
+  New temperatures 0.7 and 1.5 at W=4096, 12 turnovers, or-qwen3-8b raw
+  completion. Pairs with the reused S2.2 cells at 0.3 and 1.0.
+
+generators:
+  - or-qwen3-8b
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.7
+    top_p: 1.0
+  - temperature: 1.5
+    top_p: 1.0
+
+semantic_seeds: [physics, surreal]
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+# afterlife estimate 2026-09-03: $0.35 at fill=1. S2.2 raw fill ~0.65
+# raises that to ~$0.45. $4 is the refuse, not a spend target.
+budget_usd: 4.0

@@ -10,9 +10,9 @@ Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 macrostate on the restricted instruct sample; a 1B base model at `W=256`
 loops the seed and does not become a reviewer. S3.0 embeddings exist
 (`s3-embed-local-base-embed-20260902T051805Z-2ce86473`); geometry is
-the follow-up on that run. `S4` is next and still needs a reduced
-PLAN — do not generate the written $120 sketch. Project ceiling
-**$200** (ADR-0013). Last revised 2026-09-03.
+the follow-up on that run. `S4` PLAN is written (ADR-0014, reduced qwen grid); generate waits
+on estimate approval. Project ceiling **$200** (ADR-0013). Last
+revised 2026-09-03.
 
 ---
 
@@ -301,18 +301,26 @@ H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 
 **Budget.** ≤ $10 declared; **$0.00** actual this opening.
 
-### S4 — Control parameters: the `temperature × W` phase portrait `← current`
+### S4 — Control parameters: a reduced `temperature × W` grid `← current`
 
-Sweep `T ∈ {0.0, 0.2, 0.5, 0.7, 1.0, 1.2, 1.5}` × `W ∈ {4k, 8k, 16k, 32k}` on
-2–3 models; locate any transition between confinement and diffusion using
-`α`, macrostate count, dwell time, and entropy rate as order parameters.
-For Glimmer, test specifically whether a characteristic scale appears near its
-2048-token local-attention window.
+Re-planned after Stage 3 ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
+The 7 × 4 × 2–3-model sketch is not this opening: `n_macro` is not an
+order parameter, T=1.0 was a lock not diffusion at `W = 256`, and
+`W ∈ {16k, 32k}` is the wrong first spend.
 
-**Exit criteria.** Order-parameter curves with CI across the full sweep; a
-transition region either localised or explicitly reported as absent.
+**This opening.** `or-qwen3-8b` only, P1 raw, 12 turnovers.
+`W ∈ {4096, 8192}`, T ∈ {0.3, 0.7, 1.0, 1.5}. Reuse the eight S2.2 raw
+cells at `W = 4096`, T ∈ {0.3, 1.0}. New generation: 8 + 16
+trajectories. Order parameters: looping rate, fill, stop, and MSD `α`
+on non-degenerate trajectories (`α` undefined if `n_clean < 2`).
+Glimmer's 2048 local window and 16k/32k stay parked.
 
-**Budget.** ≤ $120 (requires approval; the largest generation stage).
+**Exit criteria.** Per-cell looping rate and clean-`α` (or undefined)
+in both spaces; H5 present or explicitly absent **on this grid**.
+
+**Budget.** Declared in [`docs/stages/stage-4/PLAN.md`](stages/stage-4/PLAN.md).
+CLI estimate **$2.47** (fill=1); S2.2-calibrated fill 0.65 is **$3.33**.
+YAML ceilings $4 + $10. Not $120. Generate waits on estimate approval.
 
 ### S5 — Basins of attraction and sensitivity to initial conditions
 
@@ -428,9 +436,11 @@ These come from the traps identified during project scoping and are enforced by
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
 was $50 in ADR-0004). Ledger at the raise: $11.57. S4/S5 still require
-their own PLAN, estimate, and an explicit generate approval — the $200
-ceiling is not a generate-yes for the written S4 sketch. Full risk
-register with mitigations: [`risks.md`](risks.md).
+their own PLAN, estimate, and an explicit generate approval. Stage 4's
+PLAN exists ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md));
+CLI generate estimate is $2.47. The $200 ceiling is still not a
+generate-yes. Full risk register with mitigations:
+[`risks.md`](risks.md).
 
 The three risks that would most change the project:
 
