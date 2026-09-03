@@ -4,9 +4,12 @@
 S3.0 answered the base-model question from generated text. S3.1 found no
 validated MSM macrostate on the restricted instruct sample. S3.0 embeddings
 were deferred at opening (ADR-0012). A 2026-09-02 RouterAI follow-up
-embedded them ([§8](#8-follow-up-2026-09-02--s30-embeddings)); geometry
-is still unrun and this verdict is unchanged. OpenRouter was not called.
-Hosted spend at close: **$0.00**.
+embedded them ([§8](#8-follow-up-2026-09-02--s30-embeddings)); a
+2026-09-03 `$0` pass added geometry and separation
+([§9](#9-follow-up-2026-09-03--s30-geometry)). Both are dated
+addenda. This verdict is unchanged. OpenRouter was not called.
+Hosted spend at close: **$0.00**. Project ceiling is now **$200**
+(ADR-0013); ledger **$11.57**.
 
 This revision answers the six blocking findings in
 [`REVIEW.md`](REVIEW.md) (APPROVED WITH CHANGES). It does not upgrade the
@@ -277,10 +280,12 @@ Wall clock: S3.0 ≈ 46 min (18:48–19:34 UTC). S3.1 refit with K-grid ≈ 1 mi
 - **H4 is not answered.** Reported `‖J‖` is microstate. Prefill/bge's CI
   excludes 0. Equilibrium-like on "qwen" is not a claim the table
   supports.
-- **S3.0 embeddings** were deferred at opening (ADR-0012). The
-  follow-up ran 2026-09-02; see [§8](#8-follow-up-2026-09-02--s30-embeddings).
-  Geometry is still unrun. That is a later pass on the new `run_id`,
-  not a rewrite of this opening.
+- **S3.0 embeddings** were deferred at opening (ADR-0012). Embed
+  2026-09-02; geometry 2026-09-03
+  ([§8](#8-follow-up-2026-09-02--s30-embeddings),
+  [§9](#9-follow-up-2026-09-03--s30-geometry)). 8/8 loops: ensemble
+  MSD α is not H3; last-band CLI seed-separation CI includes 0.
+  Not a rewrite of this opening.
 - **Stage 4** still needs a temperature × `W` sweep, but S3.0 already
   says T=1.0 is not a diffusion regime for this base model at `W=256`.
   Do not assume H5 from Stage 3.
@@ -301,7 +306,25 @@ Ledger recorded `$0.00` because `usage.cost` and
 **~$0.0008** (56,363 billed tokens at the live ~$0.014/M catalog;
 RouterAI credits 597.69 → 597.629, ≈ 0.061 RUB). Ceiling was $0.50.
 
-**Does not establish** geometry, MSD, or seed-separation. 8/8 source
-trajectories are loops. A later `$0` CPU pass must join
-`s3-degeneracy-20260901T193542Z-f76d2086` before any confinement
-sentence. `W = 256` still does not transfer to `W = 4096`.
+**Does not establish** geometry, MSD, or seed-separation by itself.
+Those ran the next day; see [§9](#9-follow-up-2026-09-03--s30-geometry).
+
+## 9. Follow-up 2026-09-03 — S3.0 geometry
+
+Dated addendum. Full note: [`FOLLOWUP-geometry.md`](FOLLOWUP-geometry.md).
+Ceiling raised to **$200** (ADR-0013). This pass **$0.00**.
+
+Geometry: `s3-geometry-bge-m3-20260903T102912Z-f0a1b50e`,
+`s3-geometry-qwen3-embed-8b-20260903T102939Z-26a974ee`.
+**8/8 degenerate.** Ensemble MSD α = 0.36 ± 0.51 (bge) and
+0.30 ± 0.37 (qwen). That is a fit to loops, not H3. T=0.3 surreal s1
+is a frozen point whose α ≈ 1.2 is a log–log artefact.
+
+Separation: `s3-separation-bge-m3-20260903T103004Z-9ce0ccd7`,
+`s3-separation-qwen3-embed-8b-20260903T103008Z-8a7a3e1f`.
+Last-band gap CI includes 0 in both spaces. Published `D_within`
+mixes T=0.3 and T=1.0 (120/144 within rows). A same-T gap between
+two loops is different repeated strings, not H2.
+
+`W = 256` still does not transfer to `W = 4096`. Stage 4 generate
+is not authorised by the $200 ceiling.

@@ -1,8 +1,9 @@
 # S3.0 follow-up — RouterAI embeddings (2026-09-02)
 
 Dated addendum. It does **not** rewrite the Stage 3 opening
-([`REPORT.md`](REPORT.md), ADR-0012). Geometry and seed-separation are
-still unrun. `W = 256` still does not transfer to `W = 4096`.
+([`REPORT.md`](REPORT.md), ADR-0012). Geometry and seed-separation ran
+2026-09-03: [`FOLLOWUP-geometry.md`](FOLLOWUP-geometry.md). `W = 256`
+still does not transfer to `W = 4096`.
 
 ## Decision that this executes
 
@@ -74,11 +75,9 @@ does not move the reported project total at the displayed cents.
 
 ## What this does not establish
 
-- No geometry, MSD, half-life, or seed-separation. Those are a later
-  `$0` CPU pass on this `run_id`, joined to
-  `s3-degeneracy-20260901T193542Z-f76d2086` **before** any confinement
-  sentence (8/8 trajectories are loops; a confined MSD of a loop is the
-  Stage 1 trap).
+- Embeddings alone are not geometry. The `$0` CPU pass is
+  [`FOLLOWUP-geometry.md`](FOLLOWUP-geometry.md): 8/8 loops; ensemble
+  MSD α is not H3; last-band CLI separation CI includes 0.
 - Not a measurement at `W = 4096`.
 - Not a Stage 4 kickoff.
 - Not a rewrite of F3 or of the Stage 3 PARTIAL verdict.
