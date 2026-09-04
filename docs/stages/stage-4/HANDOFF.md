@@ -30,5 +30,21 @@ Reuse, do not regenerate:
 `s2-mechanism-20260901T071519Z-dfbb173a` — the eight
 `or-qwen3-8b__W4096__T{0p3,1}__{physics,surreal}__s{1,2}` cells.
 
-A killed generate creates a new `run_id` if re-invoked. Keep the tmux
-session; resume is intra-run via `*.steps.jsonl`.
+A bare `afterlife generate --config …` **mints a new `run_id`**. Do not
+do that for an unfinished arm. Resume the same directory:
+
+```bash
+export AFTERLIFE_BUDGET_USD_TOTAL=200 AFTERLIFE_BUDGET_USD_PER_RUN=7.0 \
+       AFTERLIFE_EXECUTION_MODE=live
+uv run afterlife generate --config configs/stages/stage4_w8192.yaml --yes \
+  --resume-run s4-w8192-20260904T120057Z-ce82ce55
+```
+
+Intra-run checkpoints are `*.steps.jsonl`. Kill a hung generate **by PID
+only**, then resume; never start a second live generate against the same
+`run_id`.
+
+Live ids:
+
+- S4.1 generate (done): `s4-w4096-new-temps-20260904T103121Z-589c8eb1`
+- S4.2 generate: `s4-w8192-20260904T120057Z-ce82ce55`

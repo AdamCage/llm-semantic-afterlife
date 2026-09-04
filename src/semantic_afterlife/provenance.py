@@ -191,3 +191,29 @@ def new_manifest(
 
 def read_manifest(path: Path) -> dict[str, Any]:
     return orjson.loads(path.read_bytes())
+
+
+def load_manifest(path: Path) -> RunManifest:
+    """Rehydrate a manifest so a hung run can be resumed without a new run_id."""
+    data = read_manifest(path)
+    return RunManifest(
+        run_id=str(data["run_id"]),
+        stage=str(data["stage"]),
+        command=str(data.get("command") or ""),
+        settings_snapshot=dict(data.get("settings") or {}),
+        config_resolved=dict(data.get("config_resolved") or {}),
+        config_sha256=str(data.get("config_sha256") or ""),
+        git=dict(data.get("git") or {}),
+        environment=dict(data.get("environment") or {}),
+        started_at=str(data["started_at"]),
+        execution_mode=str(data.get("execution_mode") or ""),
+        usd_per_rub=float(data.get("usd_per_rub") or 0.0),
+        seeds=dict(data.get("seeds") or {}),
+        endpoints=dict(data.get("endpoints") or {}),
+        totals=dict(data.get("totals") or {}),
+        trajectories=dict(data.get("trajectories") or {}),
+        notes=list(data.get("notes") or []),
+        finished_at=data.get("finished_at"),
+        status=str(data.get("status") or "RUNNING"),
+        integrity=dict(data.get("integrity") or {}),
+    )

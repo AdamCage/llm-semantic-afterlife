@@ -75,24 +75,34 @@ class Ledger:
         self.total_ceiling_usd = total_ceiling_usd
         self.stage_ceiling_usd = stage_ceiling_usd
         self._lock = threading.Lock()
-        self._run_spend = 0.0
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._historical_spend = self._sum_historical()
+        others, this_run = self._sum_ledger()
+        # Charges already written for this run_id count toward the per-run
+        # ceiling. A resume that started `_run_spend` at 0 would allow a
+        # second full ceiling on top of a hung invocation.
+        self._historical_spend = others
+        self._run_spend = this_run
 
-    def _sum_historical(self) -> float:
+    def _sum_ledger(self) -> tuple[float, float]:
         if not self.path.is_file():
-            return 0.0
-        total = 0.0
+            return 0.0, 0.0
+        others = 0.0
+        this_run = 0.0
         with self.path.open("rb") as handle:
             for raw in handle:
                 raw = raw.strip()
                 if not raw:
                     continue
                 try:
-                    total += float(orjson.loads(raw).get("cost_usd", 0.0))
+                    entry = orjson.loads(raw)
+                    cost = float(entry.get("cost_usd", 0.0))
                 except (orjson.JSONDecodeError, TypeError, ValueError):
                     continue
-        return total
+                if entry.get("run_id") == self.run_id:
+                    this_run += cost
+                else:
+                    others += cost
+        return others, this_run
 
     @property
     def run_spend_usd(self) -> float:

@@ -667,6 +667,11 @@ def audit_tokenizers_cmd(
 def generate(
     config: ConfigOpt,
     yes: bool = typer.Option(False, "--yes", "-y", help="skip the cost confirmation"),
+    resume_run: str | None = typer.Option(
+        None,
+        "--resume-run",
+        help="continue an unfinished run_id from its step checkpoints; do not mint a new id",
+    ),
 ) -> None:
     """Generate trajectories. Prints a forecast and waits for confirmation first."""
     settings = get_settings()
@@ -697,6 +702,16 @@ def generate(
     from .providers import build_client
     from .tokenization import describe, load_tokenizer
 
+    if resume_run:
+        console().print(
+            Panel(
+                f"resuming [bold]{resume_run}[/bold] from step checkpoints; "
+                "completed steps are not re-requested",
+                title="resume",
+                border_style="yellow",
+            )
+        )
+
     with run_context(
         stage=experiment.stage,
         slug=experiment.name,
@@ -704,6 +719,7 @@ def generate(
         config_sha256=sha,
         settings=settings,
         stage_budget_usd=experiment.budget_usd,
+        resume_run_id=resume_run,
     ) as context:
         tokenizers: dict[str, Any] = {}
 

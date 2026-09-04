@@ -243,7 +243,16 @@ class TestLedger:
 
         reopened = self._ledger(tmp_path)
         assert reopened.project_spend_usd == pytest.approx(0.03)
+        assert reopened.run_spend_usd == pytest.approx(0.03)
         assert reopened.remaining_project_usd == pytest.approx(10.0 - 0.03)
+
+    def test_resume_counts_this_run_toward_the_per_run_ceiling(self, tmp_path: Path) -> None:
+        first = self._ledger(tmp_path, per_run=0.05)
+        first.record(Usage(prompt_tokens=1, completion_tokens=1, cost_usd=0.04), kind="completion")
+        resumed = self._ledger(tmp_path, per_run=0.05)
+        assert resumed.run_spend_usd == pytest.approx(0.04)
+        with pytest.raises(BudgetExceededError, match="per-run ceiling"):
+            resumed.reserve(0.02, what="probe")
 
     def test_historical_spend_counts_towards_the_total_ceiling(self, tmp_path: Path) -> None:
         first = self._ledger(tmp_path, per_run=10.0, total=0.05)
