@@ -15,6 +15,10 @@ seed still shapes the trajectory after it has physically left the model's input;
 a gap indistinguishable from zero means it does not. Everything else in this
 module exists to put an honest confidence interval on that number.
 
+Pairs are formed only inside a matched ``(generator, W, temperature)`` cell
+when those labels are present. Same semantic seed at two temperatures is
+not a within-seed control (S3.0 published ``D_within`` mixed them).
+
 Two methodological constraints are enforced rather than left to the caller:
 
 * **The replicate unit is the trajectory.** Pairs are not independent -- one
@@ -68,6 +72,9 @@ class Trajectory:
     stochastic_seed: int
     embeddings: np.ndarray  # (n_chunks, d)
     turnovers: np.ndarray  # (n_chunks,)
+    W: int | None = None
+    temperature: float | None = None
+    generator: str | None = None
 
     def __post_init__(self) -> None:
         if self.embeddings.ndim != 2:
@@ -103,6 +110,11 @@ def pairwise_distances(trajectories: list[Trajectory]) -> pd.DataFrame:
 
     rows: list[pd.DataFrame] = []
     for left, right in itertools.combinations(trajectories, 2):
+        if not _matched_regime(left, right):
+            # D_within is "same seed, different stochastic seed" — not
+            # "same seed, different temperature". Mixing (W, T) into the
+            # control was the S3.0 CLI confound (ADR-0014).
+            continue
         n = min(left.embeddings.shape[0], right.embeddings.shape[0])
         if n == 0:
             continue
@@ -124,6 +136,24 @@ def pairwise_distances(trajectories: list[Trajectory]) -> pd.DataFrame:
     if not rows:
         raise AnalysisError("no comparable chunks across trajectories")
     return pd.concat(rows, ignore_index=True)
+
+
+def _same_or_unlabelled(left: object, right: object) -> bool:
+    return left is None or right is None or left == right
+
+
+def _matched_regime(left: Trajectory, right: Trajectory) -> bool:
+    """Pair only when W, temperature and generator match (when labelled).
+
+    ``None`` on either side means the label is unused — synthetic tests omit
+    them. A labelled trajectory is never paired with a differently labelled
+    one.
+    """
+    return (
+        _same_or_unlabelled(left.W, right.W)
+        and _same_or_unlabelled(left.temperature, right.temperature)
+        and _same_or_unlabelled(left.generator, right.generator)
+    )
 
 
 def _band_gap(pairs: pd.DataFrame) -> tuple[float, float, float, int, int]:
@@ -249,6 +279,27 @@ def _slope(x: np.ndarray, y: np.ndarray) -> float:
     return float((xc @ (y - y.mean())) / denominator) if denominator else 0.0
 
 
+def _optional_int(row: pd.Series, name: str) -> int | None:
+    if name not in row.index:
+        return None
+    value = row[name]
+    return None if pd.isna(value) else int(value)
+
+
+def _optional_float(row: pd.Series, name: str) -> float | None:
+    if name not in row.index:
+        return None
+    value = row[name]
+    return None if pd.isna(value) else float(value)
+
+
+def _optional_str(row: pd.Series, name: str) -> str | None:
+    if name not in row.index:
+        return None
+    value = row[name]
+    return None if pd.isna(value) else str(value)
+
+
 def trajectories_from_frame(
     frame: pd.DataFrame, *, embedding_columns: list[str] | None = None
 ) -> list[Trajectory]:
@@ -261,6 +312,7 @@ def trajectories_from_frame(
     out: list[Trajectory] = []
     for trajectory_id, block in frame.groupby("trajectory_id", sort=True):
         block = block.sort_values("chunk_index")
+        row = block.iloc[0]
         out.append(
             Trajectory(
                 trajectory_id=str(trajectory_id),
@@ -268,6 +320,9 @@ def trajectories_from_frame(
                 stochastic_seed=int(block["stochastic_seed"].iloc[0]),
                 embeddings=block[columns].to_numpy(dtype=np.float64),
                 turnovers=block["turnover"].to_numpy(dtype=np.float64),
+                W=_optional_int(row, "W"),
+                temperature=_optional_float(row, "temperature"),
+                generator=_optional_str(row, "generator"),
             )
         )
     return out

@@ -1382,7 +1382,9 @@ def analyze_separation(
                     "through what mechanism, nor that the information is recoverable. The probe "
                     "in Stage 2 answers that. At the pilot's replicate count the contrast "
                     "resolves a strong effect and not a marginal one, so a small gap should be "
-                    "read as underpowered rather than absent."
+                    "read as underpowered rather than absent. Pairs are formed only inside a "
+                    "matched (generator, W, temperature) cell; same-seed rows at different T "
+                    "are not D_within (S3.0 / ADR-0014)."
                 ),
             ),
         )
