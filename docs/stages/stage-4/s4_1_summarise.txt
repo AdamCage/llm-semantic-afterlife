@@ -1,0 +1,14 @@
+
+s4-w4096-new-temps-20260904T103121Z-589c8eb1  (retries 19, reasoning leaks 0)
+
+               run       model    status  steps  fresh_calls  generated_tokens  block_fill_mean  block_fill_min  stop_rate  median_latency_s  max_latency_s  prompt_token_delta  roundtrip_failures  reasoning_tokens served_provider  cost_usd  forecast_hours_full_trajectory
+s4-w4096-new-temps or-qwen3-8b COMPLETED     53           53             49152            0.920           0.840      0.755             17.96          22.08                  12                   0                 0         Alibaba  0.046694                            0.24
+s4-w4096-new-temps or-qwen3-8b COMPLETED     49           49             49152            0.980           0.651      0.082             19.22          23.51                  12                   0                 0         Alibaba  0.044714                            0.26
+s4-w4096-new-temps or-qwen3-8b COMPLETED     69           69             49152            0.710           0.243      0.696             12.98          29.10                  12                   0                 0         Alibaba  0.053941                            0.17
+s4-w4096-new-temps or-qwen3-8b COMPLETED    100          100             49152            0.495           0.261      0.950              9.05          21.35                  12                   0                 0         Alibaba  0.069129                            0.12
+s4-w4096-new-temps or-qwen3-8b COMPLETED     58           58             49152            0.844           0.028      0.500             18.46         332.07                  12                   0                 0         Alibaba  0.049104                            0.25
+s4-w4096-new-temps or-qwen3-8b COMPLETED     50           50             49152            0.980           0.450      0.080             18.82         338.43                  12                   0                 0         Alibaba  0.045261                            0.25
+s4-w4096-new-temps or-qwen3-8b COMPLETED     83           83             49152            0.584           0.109      0.880             10.83         314.38                  12                   0                 0         Alibaba  0.060552                            0.14
+s4-w4096-new-temps or-qwen3-8b COMPLETED     99           99             49152            0.495           0.133      0.970             10.35         321.37                  12                   0                 0         Alibaba  0.068480                            0.14
+
+forecast_hours_full_trajectory = median fresh-call latency x 48 steps. Multiply by the trajectory count and divide by concurrency for a stage estimate; throttling makes that optimistic.
