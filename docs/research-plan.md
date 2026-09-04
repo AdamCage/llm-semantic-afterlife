@@ -10,9 +10,9 @@ Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 macrostate on the restricted instruct sample; a 1B base model at `W=256`
 loops the seed and does not become a reviewer. S3.0 embeddings exist
 (`s3-embed-local-base-embed-20260902T051805Z-2ce86473`); geometry is
-the follow-up on that run. `S4` PLAN is written (ADR-0014, reduced qwen grid); generate waits
-on estimate approval. Project ceiling **$200** (ADR-0013). Last
-revised 2026-09-03.
+the follow-up on that run. `S4` PLAN is written (ADR-0014, reduced qwen grid); generate
+authorised 2026-09-04 on the $2.47 estimate. Project ceiling **$200**
+(ADR-0013). Last revised 2026-09-04.
 
 ---
 
@@ -320,7 +320,7 @@ in both spaces; H5 present or explicitly absent **on this grid**.
 
 **Budget.** Declared in [`docs/stages/stage-4/PLAN.md`](stages/stage-4/PLAN.md).
 CLI estimate **$2.47** (fill=1); S2.2-calibrated fill 0.65 is **$3.33**.
-YAML ceilings $4 + $10. Not $120. Generate waits on estimate approval.
+YAML ceilings $4 + $10. Not $120. Generate authorised 2026-09-04.
 
 ### S5 — Basins of attraction and sensitivity to initial conditions
 
