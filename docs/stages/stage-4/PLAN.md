@@ -3,7 +3,8 @@
 **Status.** Opened 2026-09-03 on branch `cursor/stage-4-6dce`, after
 Stage 3 closed PARTIAL and the S3.0 follow-up merged to `main`.
 Decision: [ADR-0014](../../decisions/ADR-0014-reduced-s4-temp-window.md).
-**No `afterlife generate` until the estimate below is approved.**
+Generate authorised 2026-09-04 (human yes on the $2.47 / $3.33
+estimate). S4.1 then S4.2.
 
 ## 1. Question
 
@@ -148,8 +149,8 @@ minutes per `W=4096` trajectory at concurrency 2; S4.2 is ~2× the
 tokens per traj. Stop and ask if wall clock exceeds 24 h or a run is
 throttled to empty completions.
 
-**Generate is not authorised by this PLAN.** It waits for an explicit
-yes on the printed estimate.
+Generate authorised 2026-09-04 against this estimate. Do not add a
+third config without a new yes.
 
 ## 8. Stage-specific risks
 
@@ -165,7 +166,7 @@ yes on the printed estimate.
 
 ## 9. Definition of done
 
-- [ ] Estimate approved; then 24 new trajectories or named losses
+- [x] Estimate approved 2026-09-04; then 24 new trajectories or named losses
 - [ ] S2.2 raw eight cited, not regenerated
 - [ ] Degeneracy, geometry, separation, both spaces; `α` rule held
 - [ ] `artifacts/stage-4/` populated
