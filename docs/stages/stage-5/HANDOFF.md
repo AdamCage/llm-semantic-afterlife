@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` at launch (2026-09-05T16:43:27Z) |
+| STATUS | `RUNNING` (resumed 2026-09-05T19:01:20Z after stall) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -30,6 +30,19 @@ First steps at launch: finance s1/s2, served `Alibaba`, `reasoning_tokens=0`,
 S5.0 reuse (do **not** regenerate):
 `s2-mechanism-20260901T071519Z-dfbb173a`,
 `or-qwen3-8b__W4096__T0p3__{physics,surreal}__s{1,2}`.
+
+## Stall 2026-09-05T18:13 → 19:01 (S4-style `ep_poll`)
+
+Last `generation.step.completed` at 18:13:27Z on `programming` s1/s2
+(steps 19 / 18). Hourly at 19:00 found ~48 min idle, python PID
+111858 in `ep_poll`. Killed **that PID only**. Resumed the same
+`run_id` at 19:01:20Z. New steps immediately: programming s2 step 19
+and s1 step 20, Alibaba, `reasoning_tokens=0`.
+
+Resume **re-emits** `generation.trajectory.finished` for already
+completed trajectories. Count **unique** `trajectory_id`, not event
+rows. After this resume: 10 unique COMPLETED (finance, biology, war,
+love, recipe ×2). Do not read 20/24 from the JSONL line count.
 
 ## Resume (same `run_id` only)
 
