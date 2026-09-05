@@ -85,6 +85,24 @@ class TestPairwiseDistances:
         with pytest.raises(AnalysisError):
             pairwise_distances(build(n_seeds=1, n_repeats=1))
 
+    def test_cross_temperature_pairs_are_not_within(self) -> None:
+        """Same semantic seed at two temperatures is not D_within (S3.0 confound)."""
+        low = build(n_seeds=2, n_repeats=2, rng_seed=0)
+        high = build(n_seeds=2, n_repeats=2, rng_seed=1)
+        for traj in low:
+            traj.temperature = 0.3
+            traj.W = 4096
+        for traj in high:
+            traj.temperature = 1.5
+            traj.W = 4096
+            traj.trajectory_id = traj.trajectory_id + "_T15"
+        pairs = pairwise_distances(low + high)
+        kinds = pairs.groupby(["left", "right"]).first()["kind"]
+        assert (kinds == "within").sum() == 4  # two temps × two seeds
+        assert (kinds == "between").sum() == 8  # two temps × four cross-seed pairs
+        mixed = pairs[pairs["left"].str.contains("_T15") != pairs["right"].str.contains("_T15")]
+        assert mixed.empty
+
 
 class TestSeparation:
     def test_persistent_seeds_give_a_positive_gap(self) -> None:

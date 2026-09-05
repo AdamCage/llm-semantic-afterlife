@@ -1,0 +1,18 @@
+{
+  "name": "protocol_by_quarter_cell",
+  "caption": "Block fill and stop rate per (W, T, quarter), mean over the four trajectories with a 95% trajectory-bootstrap CI.",
+  "alt_text": "Block fill and stop rate per (W, T, quarter), mean over the four trajectories with a 95% trajectory-bootstrap CI.",
+  "limitations": "Quarters are even step bins. A run-level mean is not computed.",
+  "run_ids": [
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s4-w4096-new-temps-20260904T103121Z-589c8eb1",
+    "s4-embed-w4096-new-temps-20260904T120202Z-37e61e58",
+    "s4-w8192-20260904T120057Z-ce82ce55",
+    "s4-embed-w8192-20260905T090901Z-15172d14"
+  ],
+  "git_sha": "2076a37b40ae1601ecb057651d11c1b094b09c5f",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-05T09:33:04+00:00"
+}

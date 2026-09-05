@@ -1,0 +1,21 @@
+{
+  "name": "clean_alpha_vs_T",
+  "caption": "Mean fitted MSD exponent α on the non-degenerate subset of each (W, T) cell, separately in bge-m3 and qwen3-embed-8b, with a 95% trajectory-bootstrap CI. A cell with n_clean < 2 is marked undefined (×) and is not an α estimate. The dashed line is free diffusion (α = 1). Degenerate trajectories are excluded because their exponent measures repetition, not semantic motion.",
+  "alt_text": "Mean fitted MSD exponent α on the non-degenerate subset of each (W, T) cell, separately in bge-m3 and qwen3-embed-8b, with a 95% trajectory-bootstrap CI. A cell with n_clean < 2 is marked undefined (×) and is not an α estimate. The dashed line is free diffusion (α = 1). Degenerate trajectories are excluded because their exponent measures repetition, not semantic motion.",
+  "limitations": "Exponents are fitted over a lag range bounded by the observed turnover count and cannot establish asymptotic behaviour. Cross-W comparison is at matched turnover, not matched token count. A one-space result is not a result.",
+  "run_ids": [
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s4-w4096-new-temps-20260904T103121Z-589c8eb1",
+    "s4-embed-w4096-new-temps-20260904T120202Z-37e61e58",
+    "s4-w8192-20260904T120057Z-ce82ce55",
+    "s4-embed-w8192-20260905T090901Z-15172d14"
+  ],
+  "git_sha": "2076a37b40ae1601ecb057651d11c1b094b09c5f",
+  "config_sha256": null,
+  "units": {
+    "msd_alpha": "MSD log-log slope",
+    "temperature": "sampling temperature"
+  },
+  "generated_at": "2026-09-05T09:33:05+00:00"
+}

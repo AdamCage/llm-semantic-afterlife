@@ -1,0 +1,5 @@
+generator,quarter,block_fill,block_fill_ci_low,block_fill_ci_high,stop_rate,stop_rate_ci_low,stop_rate_ci_high,n_trajectories
+or-qwen3-8b,1,0.743718,0.624148,0.846474,0.572641,0.403591,0.736094,16
+or-qwen3-8b,2,0.757074,0.631499,0.869012,0.597711,0.409039,0.789971,16
+or-qwen3-8b,3,0.768225,0.637373,0.894102,0.613595,0.412931,0.813341,16
+or-qwen3-8b,4,0.798288,0.67218,0.912488,0.501954,0.299279,0.698985,16

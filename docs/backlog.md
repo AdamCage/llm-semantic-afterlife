@@ -3,6 +3,27 @@
 Ideas that are good but out of scope for the current stage. Parking an idea here
 is how we keep stages from expanding. Nothing here is a commitment.
 
+## Parked from the Stage 4 opening (ADR-0014)
+
+Not in the reduced `or-qwen3-8b` grid. Adding any of these is a new
+ADR plus a new config, not a silent widening of S4.
+
+- **Finer temperature grid.** T ∈ {0.0, 0.2, 0.5, 1.2}. Near-greedy
+  lock is already attested; extra points wait on whether {0.3, 0.7,
+  1.0, 1.5} moves clean-`α` at all.
+- **Larger imposed windows.** `W ∈ {16384, 32768}`. Input scales as
+  `T · W / S`; this is the wrong first spend after Stage 3.
+- **Second generator on the same grid.** gemma-4-31b (silence) and
+  Muse Glimmer 30B (barely completed in S2) are later passes if T
+  moves `α` on qwen.
+- **Glimmer's 2048-token local-attention window.** Its own research
+  axis, not a drop-in `W`.
+- **Hosted coder slugs as a "base" arm.** They are instruct/agent
+  endpoints. A coder contrast belongs with S6-style robustness, not
+  as a substitute for a local base model.
+- **Local Qwen3-8B-Base pair.** Still the right base-model contrast;
+  not this opening's spend.
+
 ## Scientific extensions
 
 - **Logprob-level dynamics.** Providers can return `logprobs`/`top_logprobs`.

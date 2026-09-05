@@ -1,0 +1,26 @@
+{
+  "name": "recurrence_or-qwen3-8b__W4096__T0p7__physics__s2",
+  "caption": "Recurrence plot for trajectory or-qwen3-8b__W4096__T0p7__physics__s2 over the post-horizon segment. A dark pixel at (t_i, t_j) means the two chunk embeddings are within ε=0.2017 of each other. Diagonal structure indicates the trajectory retracing previously visited semantic regions; block structure indicates extended residence in one region.",
+  "alt_text": "Square binary matrix showing which pairs of time points are close in embedding space.",
+  "limitations": "ε is a quantile of this trajectory's own distance distribution, so recurrence rates are comparable across trajectories only at equal quantile, not in absolute distance.",
+  "run_ids": [
+    "s4-embed-w4096-new-temps-20260904T120202Z-37e61e58",
+    "s4-geometry-qwen3-embed-8b-20260904T120809Z-c77a312f"
+  ],
+  "git_sha": "be094fa93e87ae4340ead128eb606168a9b1ed16",
+  "config_sha256": "c77a312f21ffa27e80c7c8bcece14f19f95c537ffd2b264a5d8637f1079f2fe3",
+  "units": {
+    "axes": "generator tokens"
+  },
+  "generated_at": "2026-09-04T12:08:23+00:00",
+  "epsilon": 0.20167968281426807,
+  "W": 4096,
+  "chunk_size": 1024,
+  "recurrence_epsilon": 0.20167968281426807,
+  "recurrence_rate": 0.04983388704318937,
+  "determinism": 0.6444444444444445,
+  "mean_diagonal_line": 3.2222222222222223,
+  "max_diagonal_line": 7.0,
+  "trapping_time": 2.2903225806451615,
+  "data_format": "npz"
+}

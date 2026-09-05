@@ -11,6 +11,10 @@ class AfterlifeError(Exception):
     """Base class for every error raised by this package."""
 
 
+class ResumeError(AfterlifeError):
+    """An unfinished run cannot be resumed as requested."""
+
+
 class ConfigError(AfterlifeError):
     """Malformed, missing, or internally inconsistent configuration."""
 
