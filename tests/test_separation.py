@@ -100,9 +100,7 @@ class TestPairwiseDistances:
         kinds = pairs.groupby(["left", "right"]).first()["kind"]
         assert (kinds == "within").sum() == 4  # two temps × two seeds
         assert (kinds == "between").sum() == 8  # two temps × four cross-seed pairs
-        mixed = pairs[
-            pairs["left"].str.contains("_T15") != pairs["right"].str.contains("_T15")
-        ]
+        mixed = pairs[pairs["left"].str.contains("_T15") != pairs["right"].str.contains("_T15")]
         assert mixed.empty
 
 

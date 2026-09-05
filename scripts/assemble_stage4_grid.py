@@ -170,7 +170,7 @@ def clean_alpha_cells(geometry: pd.DataFrame, *, seed: int = 0) -> pd.DataFrame:
                 "embedding": embedding,
                 "W": int(window),
                 "temperature": float(temperature),
-                "n_traj": int(len(block)),
+                "n_traj": len(block),
                 "n_clean": int(np.isfinite(clean).sum()),
                 "alpha_defined": defined,
                 "msd_alpha": alpha,
@@ -475,7 +475,12 @@ def _plotly_rate(rates: pd.DataFrame, *, run_ids: list[str], git_sha: str | None
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
 
-    figure = make_subplots(rows=1, cols=2, subplot_titles=[f"W = {int(w)}" for w in sorted(rates["W"].unique())], shared_yaxes=True)
+    figure = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=[f"W = {int(w)}" for w in sorted(rates["W"].unique())],
+        shared_yaxes=True,
+    )
     for col, (window, block) in enumerate(rates.groupby("W", sort=True), start=1):
         block = block.sort_values("temperature")
         figure.add_trace(

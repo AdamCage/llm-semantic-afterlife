@@ -44,9 +44,7 @@ class RunContext:
             try:
                 existing = settings.paths.ensure().find_run(resume_run_id)
             except FileNotFoundError as exc:
-                raise ResumeError(
-                    f"cannot resume {resume_run_id}: no run directory"
-                ) from exc
+                raise ResumeError(f"cannot resume {resume_run_id}: no run directory") from exc
             if not existing.manifest.is_file():
                 raise ResumeError(f"cannot resume {resume_run_id}: no manifest")
             self.manifest = load_manifest(existing.manifest)
