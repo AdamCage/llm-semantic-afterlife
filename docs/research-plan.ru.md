@@ -13,7 +13,7 @@ Models Beyond the Context Horizon*
 `W ∈ {4096, 8192}`; T=1.5 — единственная clean-`α` полоса и она
 субдиффузионная; H5 на этой сетке нет. `S5` открыт как occupancy
 lock'а на `seed_bank_v1` при `W=4096` T=0.3 (ADR-0015, ADR-0016);
-generate не разрешён. `S3` закрыт PARTIAL. Потолок проекта **$200**
+generate разрешён 2026-09-05. `S3` закрыт PARTIAL. Потолок проекта **$200**
 (ADR-0013). Последняя правка 2026-09-05.
 
 ---
@@ -265,7 +265,7 @@ T без петель нет. Восемь клеток S2.2 raw переисп�
 [ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md),
 [ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
 Объект **(a)**: occupancy lock'а S4, не T=1.0 как бассейн, не
-остаток T=1.5. Generate не разрешён.
+остаток T=1.5. Generate разрешён 2026-09-05 на оценку $1.06.
 
 Один процесс (`or-qwen3-8b`, P1 raw), `W = 4096`, T=0.3, 12
 оборотов. Десять доменных seed + две пары близнецов из
@@ -368,7 +368,7 @@ ADR-0004). Леджер после Stage 4: **$15.00**. Hosted Stage 4 **$3.44**
 ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)). PLAN и
 оценка S5 есть
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md));
-оценка generate **$1.06**. $200 по-прежнему не разрешение generate.
+оценка generate **$1.06**, разрешена 2026-09-05.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

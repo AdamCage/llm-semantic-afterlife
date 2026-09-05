@@ -4,7 +4,8 @@
 Stage 4 closed APPROVED (`5c07751`). Decision:
 [ADR-0015](../../decisions/ADR-0015-s5-operating-point-after-s4.md),
 [ADR-0016](../../decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
-Generate is **not** authorised.
+Generate authorised 2026-09-05 (human yes on the $1.06 / ~$1.17
+estimate).
 
 ## 1. Question
 
@@ -70,8 +71,10 @@ seed_bank_v2, a second generator, MSM / `n_macro`.
 
 ## 4. Computations
 
-Ordered. Degeneracy before geometry. No generate until estimate
-approval. Degenerate rows stay in occupancy and twin contrasts.
+Ordered. Degeneracy before geometry. Estimate approved 2026-09-05.
+Live generate `run_id` and resume instructions:
+[`HANDOFF.md`](HANDOFF.md). Degenerate rows stay in occupancy and
+twin contrasts.
 
 1. `afterlife generate --config configs/stages/stage5_lock_occupancy.yaml`.
    Artifacts under `runs/s5/`. Stop if live spend hits `budget_usd`.
@@ -155,7 +158,8 @@ were tens of minutes each at concurrency 2; 24 cells are ~3× that
 if the endpoint holds. Stop and ask if wall clock exceeds 24 h or a
 run is throttled to empty completions.
 
-Do not generate until the human says yes to this estimate.
+Generate authorised 2026-09-05 against this estimate. Do not add a
+second config without a new yes.
 
 ## 8. Stage-specific risks
 
@@ -171,7 +175,7 @@ Do not generate until the human says yes to this estimate.
 
 ## 9. Definition of done
 
-- [ ] Estimate approved; then 24 new trajectories or named losses
+- [x] Estimate approved 2026-09-05; 24 new trajectories or named losses
 - [ ] S2.2 T=0.3 four cited, not regenerated
 - [ ] Degeneracy, domain separation, twins, both spaces
 - [ ] `artifacts/stage-5/` populated

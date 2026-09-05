@@ -11,7 +11,7 @@ Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 `W ∈ {4096, 8192}`; T=1.5 is the only clean-`α` band and is
 subdiffusive; H5 absent on this grid. `S5` opened as lock occupancy
 on `seed_bank_v1` at `W=4096` T=0.3 (ADR-0015, ADR-0016); generate
-not authorised. `S3` closed PARTIAL. Project ceiling **$200**
+authorised 2026-09-05. `S3` closed PARTIAL. Project ceiling **$200**
 (ADR-0013). Last revised 2026-09-05.
 
 ---
@@ -322,7 +322,8 @@ Opened 2026-09-05. Plan:
 [ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md),
 [ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
 Object **(a)**: occupancy of the S4 lock, not T=1.0-as-basin, not
-the T=1.5 residual. Generate not authorised.
+the T=1.5 residual. Generate authorised 2026-09-05 against the
+$1.06 estimate.
 
 One process (`or-qwen3-8b`, P1 raw), `W = 4096`, T=0.3, 12
 turnovers. Ten domain seeds + two twin pairs from `seed_bank_v1`
@@ -442,8 +443,8 @@ was $50 in ADR-0004). Ledger after Stage 4: **$15.00**. Stage 4 hosted
 refuse ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
 S5 PLAN and estimate exist
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md));
-CLI generate estimate **$1.06**. The $200 ceiling is still not a
-generate-yes. Full risk register:
+CLI generate estimate **$1.06**; authorised 2026-09-05. Full risk
+register:
 [`risks.md`](risks.md).
 
 The three risks that would most change the project:
