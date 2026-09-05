@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (second resume 2026-09-05T20:00:50Z) |
+| STATUS | `RUNNING` (third resume 2026-09-05T21:00:50Z) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -54,6 +54,18 @@ resume: **12/24** (previous ten plus programming ×2).
 
 This is now two Alibaba TCP stalls ~1 h apart. Same mitigation: PID
 kill + `--resume-run`. Do not mint a new `run_id`.
+
+## Stall 2026-09-05T20:15 → 21:00 (same `ep_poll`)
+
+Philosophy s1/s2 finished after the second resume. `noise` s1/s2 ran
+to steps 11/9 and sat ~45 min. Hourly at 21:00: python PID 114798 in
+`ep_poll`. Killed that PID. Resumed the same `run_id`. New steps
+immediately: noise s1 step 12 and s2 step 10, Alibaba,
+`reasoning_tokens=0`. Unique COMPLETED at that resume: **14/24**
+(plus philosophy ×2).
+
+Three stalls, ~hourly, each after a new pair has made ~10–20 steps.
+Mitigation unchanged. Do not mint a new `run_id`.
 
 ## Resume (same `run_id` only)
 
