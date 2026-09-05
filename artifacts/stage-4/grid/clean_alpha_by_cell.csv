@@ -1,0 +1,17 @@
+embedding,W,temperature,n_traj,n_clean,alpha_defined,msd_alpha,ci_low,ci_high
+bge-m3,4096,0.3,4,0,False,,,
+bge-m3,4096,0.7,4,0,False,,,
+bge-m3,4096,1,4,0,False,,,
+bge-m3,4096,1.5,4,4,True,0.148541,0.139624,0.158156
+bge-m3,8192,0.3,4,0,False,,,
+bge-m3,8192,0.7,4,0,False,,,
+bge-m3,8192,1,4,0,False,,,
+bge-m3,8192,1.5,4,2,True,0.146276,0.0859006,0.206651
+qwen3-embed-8b,4096,0.3,4,0,False,,,
+qwen3-embed-8b,4096,0.7,4,0,False,,,
+qwen3-embed-8b,4096,1,4,0,False,,,
+qwen3-embed-8b,4096,1.5,4,4,True,0.277196,0.240627,0.318161
+qwen3-embed-8b,8192,0.3,4,0,False,,,
+qwen3-embed-8b,8192,0.7,4,0,False,,,
+qwen3-embed-8b,8192,1,4,0,False,,,
+qwen3-embed-8b,8192,1.5,4,2,True,0.24703,0.172182,0.321878

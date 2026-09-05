@@ -1,0 +1,21 @@
+{
+  "name": "looping_rate_vs_T",
+  "caption": "Degenerate fraction per (W, T) cell on or-qwen3-8b under P1 raw_completion, with a 95% trajectory-bootstrap CI (n = 4). Degenerate = calibrated looping fraction ≥ 0.5 or late-phase shingle Jaccard at a fixed point (threshold 0.0122). W=4096 T∈{0.3,1.0} are the reused S2.2 raw eight; they were not regenerated.",
+  "alt_text": "Degenerate fraction per (W, T) cell on or-qwen3-8b under P1 raw_completion, with a 95% trajectory-bootstrap CI (n = 4). Degenerate = calibrated looping fraction ≥ 0.5 or late-phase shingle Jaccard at a fixed point (threshold 0.0122). W=4096 T∈{0.3,1.0} are the reused S2.2 raw eight; they were not regenerated.",
+  "limitations": "n = 4 makes every interval wide by construction; a cell whose CI includes 0.5 does not decide a direction. The flag is a surface-form verdict, not a semantic state. One S4.1 T=0.7 physics replicate is degenerate via the fixed-point arm at looping_fraction 0.0465 — below the 0.083 per-chunk loop threshold.",
+  "run_ids": [
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s4-w4096-new-temps-20260904T103121Z-589c8eb1",
+    "s4-embed-w4096-new-temps-20260904T120202Z-37e61e58",
+    "s4-w8192-20260904T120057Z-ce82ce55",
+    "s4-embed-w8192-20260905T090901Z-15172d14"
+  ],
+  "git_sha": "2076a37b40ae1601ecb057651d11c1b094b09c5f",
+  "config_sha256": null,
+  "units": {
+    "rate": "proportion of trajectories",
+    "temperature": "sampling temperature"
+  },
+  "generated_at": "2026-09-05T09:33:05+00:00"
+}

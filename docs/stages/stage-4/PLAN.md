@@ -110,14 +110,14 @@ A cell that is 4/4 degenerate can still pass F4 (undefined) and F5
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | --- | --- |
-| Q1 | T=1.5 at `W = 4096` is **not** a diffusion regime: clean-`α` is undefined or its CI includes the T=0.3 value. S2 T=1.0 was already 8/8 fixed points | 0.70 | |
-| Q2 | Degenerate fraction at T=0.3 is ≥ the fraction at T=1.5, at each W (higher T less locked). Stage 1's T=1.6 escaped the *textual* fixed point on a different matrix; we may be wrong here | 0.55 | |
-| Q3 | `W = 8192` vs `W = 4096` at matched T: looping rate CIs overlap. A W-effect on lock rate is not predicted | 0.60 | |
-| Q4 | Block fill at `W = 8192` stays within 0.10 of the S2.2 `W = 4096` quarter-4 mean for the same T. Qwen's viability sweep was stable across W; this is the transfer we have been wrong about before | 0.50 | |
-| Q5 | H5 is **absent** on this grid (F6's "absent" branch). The interesting wrong is a clean-`α` split in both spaces | 0.65 | |
-| Q6 | At least one (W, T=1.5) cell has `n_clean < 2`, so `α` is undefined there | 0.50 | |
-| Q7 | Seed-separation last-band CI at `W = 8192`, T=0.3, same-T pairing, excludes 0 in both spaces (Stage 1/2 qwen gap survived 12 turnovers at 4096; this asks the new W) | 0.55 | |
-| Q8 | Cross-space agreement: the F6 verdict (transition present vs absent) is the same in bge-m3 and qwen3-embed-8b | 0.70 | |
+| Q1 | T=1.5 at `W = 4096` is **not** a diffusion regime: clean-`α` is undefined or its CI includes the T=0.3 value. S2 T=1.0 was already 8/8 fixed points | 0.70 | Right as not-diffusion; T=0.3 arm undefined. REPORT §3 |
+| Q2 | Degenerate fraction at T=0.3 is ≥ the fraction at T=1.5, at each W (higher T less locked). Stage 1's T=1.6 escaped the *textual* fixed point on a different matrix; we may be wrong here | 0.55 | Right. 1.0 ≥ 0.0 and 1.0 ≥ 0.5 |
+| Q3 | `W = 8192` vs `W = 4096` at matched T: looping rate CIs overlap. A W-effect on lock rate is not predicted | 0.60 | Right. T=1.5 [0,0] overlaps [0,1] |
+| Q4 | Block fill at `W = 8192` stays within 0.10 of the S2.2 `W = 4096` quarter-4 mean for the same T. Qwen's viability sweep was stable across W; this is the transfer we have been wrong about before | 0.50 | Wrong at T=1.0 (Δ=0.311). T=0.3 holds (Δ=0.077) |
+| Q5 | H5 is **absent** on this grid (F6's "absent" branch). The interesting wrong is a clean-`α` split in both spaces | 0.65 | Right. Absent |
+| Q6 | At least one (W, T=1.5) cell has `n_clean < 2`, so `α` is undefined there | 0.50 | Wrong. n_clean = 4 and 2 |
+| Q7 | Seed-separation last-band CI at `W = 8192`, T=0.3, same-T pairing, excludes 0 in both spaces (Stage 1/2 qwen gap survived 12 turnovers at 4096; this asks the new W) | 0.55 | Right. Both spaces exclude 0 |
+| Q8 | Cross-space agreement: the F6 verdict (transition present vs absent) is the same in bge-m3 and qwen3-embed-8b | 0.70 | Right. Absent in both |
 
 Q5 is the one that matters. A pretty MSD slope on four looping
 trajectories is the Stage 1 trap; F3/F4 exist to stop that.
@@ -167,10 +167,10 @@ third config without a new yes.
 ## 9. Definition of done
 
 - [x] Estimate approved 2026-09-04; then 24 new trajectories or named losses
-- [ ] S2.2 raw eight cited, not regenerated
-- [ ] Degeneracy, geometry, separation, both spaces; `α` rule held
-- [ ] `artifacts/stage-4/` populated
-- [ ] `REPORT.md` scores F1–F10 and Q1–Q8
-- [ ] `afterlife review --stage s4` exits 0
-- [ ] Master plan consistent with ADR-0014
-- [ ] Spend ≤ $14 hosted or an ADR explains the overrun
+- [x] S2.2 raw eight cited, not regenerated
+- [x] Degeneracy, geometry, separation, both spaces; `α` rule held
+- [x] `artifacts/stage-4/` populated
+- [x] `REPORT.md` scores F1–F10 and Q1–Q8
+- [x] `afterlife review --stage s4` exits 0
+- [x] Master plan consistent with ADR-0014 / ADR-0015
+- [x] Spend ≤ $14 hosted ($3.44 actual)

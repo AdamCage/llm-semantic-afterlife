@@ -6,13 +6,12 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S3` computations PARTIAL (2026-09-01): no validated MSM
-macrostate on the restricted instruct sample; a 1B base model at `W=256`
-loops the seed and does not become a reviewer. S3.0 embeddings exist
-(`s3-embed-local-base-embed-20260902T051805Z-2ce86473`); geometry is
-the follow-up on that run. `S4` PLAN is written (ADR-0014, reduced qwen grid); generate
-authorised 2026-09-04 on the $2.47 estimate. Project ceiling **$200**
-(ADR-0013). Last revised 2026-09-04.
+**Status.** `S4` computations finished 2026-09-05 (awaiting scientific
+review): on `or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
+`W ∈ {4096, 8192}`; T=1.5 is the only clean-`α` band and is
+subdiffusive; H5 absent on this grid (ADR-0014, ADR-0015). `S3`
+closed PARTIAL. Project ceiling **$200** (ADR-0013). Last revised
+2026-09-05.
 
 ---
 
@@ -303,32 +302,31 @@ H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 
 ### S4 — Control parameters: a reduced `temperature × W` grid `← current`
 
-Re-planned after Stage 3 ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
-The 7 × 4 × 2–3-model sketch is not this opening: `n_macro` is not an
-order parameter, T=1.0 was a lock not diffusion at `W = 256`, and
-`W ∈ {16k, 32k}` is the wrong first spend.
+Computations finished 2026-09-05. Report:
+[`docs/stages/stage-4/REPORT.md`](stages/stage-4/REPORT.md). Awaiting
+scientific review; do not merge on the gate alone.
 
-**This opening.** `or-qwen3-8b` only, P1 raw, 12 turnovers.
-`W ∈ {4096, 8192}`, T ∈ {0.3, 0.7, 1.0, 1.5}. Reuse the eight S2.2 raw
-cells at `W = 4096`, T ∈ {0.3, 1.0}. New generation: 8 + 16
-trajectories. Order parameters: looping rate, fill, stop, and MSD `α`
-on non-degenerate trajectories (`α` undefined if `n_clean < 2`).
-Glimmer's 2048 local window and 16k/32k stay parked.
-
-**Exit criteria.** Per-cell looping rate and clean-`α` (or undefined)
-in both spaces; H5 present or explicitly absent **on this grid**.
-
-**Budget.** Declared in [`docs/stages/stage-4/PLAN.md`](stages/stage-4/PLAN.md).
-CLI estimate **$2.47** (fill=1); S2.2-calibrated fill 0.65 is **$3.33**.
-YAML ceilings $4 + $10. Not $120. Generate authorised 2026-09-04.
+On `or-qwen3-8b` under P1 raw, 12 turnovers: T≤1.0 is 4/4 degenerate
+at both `W ∈ {4096, 8192}`. T=1.5 is the only defined clean-`α`
+(subdiffusive in both spaces). H5 absent — there is no low-T clean-`α`.
+S2.2 raw eight reused. Hosted spend **$3.44** against $3.33
+authorised / $14 YAML. [ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md),
+[ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md).
 
 ### S5 — Basins of attraction and sensitivity to initial conditions
 
-Many seeds (target 200+ per model) at the best-characterised operating point ⇒
-empirical basin occupancy, compared across model families ("semantic phase
-portraits"). Twin-seed experiment: minimally different seeds (*Napoleon won* vs.
-*lost at Waterloo*), tracking `D(t) = ‖z_t^A − z_t^B‖` for divergence,
-convergence, or metastable switching.
+Not opened. After Stage 4 the phrase "best-characterised operating
+point" is no longer T=1.0: that point is a textual lock at both W
+(ADR-0015). The S5 PLAN must pick, before any generate, either
+**(a)** lock occupancy vs seed or **(b)** the T=1.5 residual (the
+only band with `n_clean ≥ 2`, still reviewer-register). Twin-seed
+divergence remains in scope once the object is named.
+
+Many seeds (target 200+ per model) at the *chosen* object ⇒
+empirical occupancy. Twin-seed experiment: minimally different seeds
+(*Napoleon won* vs. *lost at Waterloo*), tracking
+`D(t) = ‖z_t^A − z_t^B‖` for divergence, convergence, or
+metastable switching.
 
 **Exit criteria.** Basin occupancy with CI per model; twin-seed divergence
 classified with a stated statistical criterion against a same-seed

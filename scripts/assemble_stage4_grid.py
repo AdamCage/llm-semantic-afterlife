@@ -183,8 +183,14 @@ def clean_alpha_cells(geometry: pd.DataFrame, *, seed: int = 0) -> pd.DataFrame:
 
 def protocol_cells(steps: pd.DataFrame, *, seed: int = 0) -> pd.DataFrame:
     per = quarter_diagnostics(steps)
-    parsed = pd.DataFrame(per["trajectory_id"].map(parse_trajectory_id).tolist())
-    per = per.merge(parsed, on="trajectory_id", how="left")
+    # Map once per row. Merging a repeated parse table on trajectory_id
+    # Cartesian-explodes the quarters (4 copies → n=16 for a 4-traj cell)
+    # and shrinks the bootstrap CI without adding data.
+    parsed = per["trajectory_id"].map(parse_trajectory_id)
+    per = per.assign(
+        W=parsed.map(lambda row: row["W"]),
+        temperature=parsed.map(lambda row: row["temperature"]),
+    )
     rows: list[dict[str, object]] = []
     for keys, block in per.groupby(["W", "temperature", "quarter"], sort=True):
         window, temperature, quarter = keys

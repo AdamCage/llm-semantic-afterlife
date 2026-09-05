@@ -1,0 +1,19 @@
+{
+  "name": "semantic_velocity",
+  "caption": "Per-step cosine displacement between consecutive 1024-token chunks, for each trajectory (thin) with the per-seed ensemble mean and 95% CI (thick). W=8,192 generator tokens; the context horizon and its multiples are marked. A rising curve means the trajectory is moving faster through representation space; a flat one means a steady rate of semantic change.",
+  "alt_text": "1 − cos(z_k, z_{k+1}) against generated tokens, per trajectory and ensemble mean with CI.",
+  "limitations": "Displacement rate alone cannot distinguish a confined trajectory that moves quickly within a small region from one that drifts steadily away.",
+  "run_ids": [
+    "s4-embed-w8192-20260905T090901Z-15172d14",
+    "s4-geometry-qwen3-embed-8b-20260905T092812Z-fd24381e"
+  ],
+  "git_sha": "2076a37b40ae1601ecb057651d11c1b094b09c5f",
+  "config_sha256": "fd24381e54964a35a5f648c1a9f2b6068edd7350926e2d852004359edf76cba9",
+  "units": {
+    "token_end": "generator tokens",
+    "step_displacement": "cosine distance"
+  },
+  "generated_at": "2026-09-05T09:28:17+00:00",
+  "W": 8192,
+  "n_trajectories": 16
+}
