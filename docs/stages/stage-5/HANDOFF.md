@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (fourth resume 2026-09-05T22:00:50Z) |
+| STATUS | `RUNNING` (fifth resume 2026-09-05T23:00:50Z) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -77,6 +77,18 @@ Unique COMPLETED at that resume: **16/24** (plus noise ×2). First
 twin pair is now the live pair.
 
 Four stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
+
+## Stall 2026-09-05T22:15 → 23:00 (same `ep_poll`)
+
+`waterloo-won` s1 finished. Live pair: `waterloo-won` s2 (step 115,
+47333 tokens, fill ~0.13) and `waterloo-lost` s1 (step 17, 4259
+tokens, fill ~0.15). Both sat ~45 min. Hourly at 23:00: python PID
+115856 in `ep_poll`. Killed that PID. Resumed the same `run_id`.
+New steps immediately, Alibaba, `reasoning_tokens=0`. Unique
+COMPLETED: **17/24**. Low fill on the twins is a measurement, not a
+reason to retune.
+
+Five stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
 
 ## Resume (same `run_id` only)
 
