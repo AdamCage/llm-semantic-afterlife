@@ -1,6 +1,8 @@
 # Stage 4 report — lock at T≤1.0 both W; H5 absent on this grid
 
 **Status.** Computations finished 2026-09-05. Overall verdict: **PASS**.
+Scientific review **APPROVED** 2026-09-05 ([`REVIEW.md`](REVIEW.md));
+merge withheld.
 On `or-qwen3-8b` under P1 `raw_completion`, temperature moves the
 looping rate only at T=1.5. Every T≤1.0 cell is 4/4 degenerate at
 `W = 4096` and at `W = 8192`. Clean-`α` is defined only at T=1.5 and

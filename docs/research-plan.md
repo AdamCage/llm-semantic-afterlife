@@ -6,8 +6,8 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S4` computations finished 2026-09-05 (awaiting scientific
-review): on `or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
+**Status.** `S4` scientific review **APPROVED** 2026-09-05, not
+merged: on `or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
 `W ∈ {4096, 8192}`; T=1.5 is the only clean-`α` band and is
 subdiffusive; H5 absent on this grid (ADR-0014, ADR-0015). `S3`
 closed PARTIAL. Project ceiling **$200** (ADR-0013). Last revised
@@ -303,8 +303,9 @@ H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 ### S4 — Control parameters: a reduced `temperature × W` grid `← current`
 
 Computations finished 2026-09-05. Report:
-[`docs/stages/stage-4/REPORT.md`](stages/stage-4/REPORT.md). Awaiting
-scientific review; do not merge on the gate alone.
+[`docs/stages/stage-4/REPORT.md`](stages/stage-4/REPORT.md). Review:
+[`docs/stages/stage-4/REVIEW.md`](stages/stage-4/REVIEW.md)
+(**APPROVED**; merge withheld).
 
 On `or-qwen3-8b` under P1 raw, 12 turnovers: T≤1.0 is 4/4 degenerate
 at both `W ∈ {4096, 8192}`. T=1.5 is the only defined clean-`α`

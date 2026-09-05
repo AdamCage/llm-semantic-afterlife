@@ -2,12 +2,14 @@
 
 Operational detail. The contract is [`PLAN.md`](PLAN.md).
 The result is [`REPORT.md`](REPORT.md).
+The review is [`REVIEW.md`](REVIEW.md).
 
-**Branch:** `cursor/stage-4-6dce`. Do not merge; that follows scientific
-sign-off. Gate first: `afterlife review --stage s4`.
+**Branch:** `cursor/stage-4-6dce`. Scientific review **APPROVED**
+2026-09-05. Do not merge from this file. Do not mint a generate
+`run_id`. Do not open S5 generate.
 
-Generate is **done**. Do not mint a new generate `run_id`.
-Analysis is **done**. Embed `$0`. Hosted generate **$3.44**.
+Generate is **done**. Analysis is **done**. Embed `$0`. Hosted
+generate **$3.44**.
 
 ## Ids
 
@@ -23,3 +25,6 @@ Analysis is **done**. Embed `$0`. Hosted generate **$3.44**.
 
 T≤1.0 is 4/4 lock at both W. T=1.5 is the only clean-`α` band and
 is subdiffusive. H5 absent. Q4 wrong at T=1.0. ADR-0015 for S5.
+REVIEW: do not carry lock CI `[1, 1]` into the manuscript; do not
+write “we measured H5”; do not treat the two T=1.0 locks as one
+mechanism.
