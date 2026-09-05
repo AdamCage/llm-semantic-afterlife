@@ -1408,6 +1408,117 @@ def analyze_separation(
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
 
 
+@analyze_app.command("twins")
+def analyze_twins(
+    run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
+    embedding: Annotated[str, typer.Option("--embedding", "-e")] = "",
+    seed_bank: Annotated[
+        str, typer.Option(help="seed bank YAML; twin_of links define the pairs")
+    ] = "configs/seeds/seed_bank_v1.yaml",
+    turnover_bin: float = typer.Option(2.0, help="width of the turnover bands reported"),
+) -> None:
+    """Twin-seed Δ = D_twin_matched − D_control, last-band verdict.
+
+    Pairs that differ by one factual proposition are compared at the same
+    stochastic seed. The control is same-seed different-stochastic distance
+    among those members. A last-band CI excluding 0 from above is divergent;
+    otherwise collapsed. Not a metastable-state claim.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+
+    candidates = sorted(source.data_dir.glob("embeddings_*.parquet"))
+    if not candidates:
+        raise typer.BadParameter(f"run {run} has no embeddings; run `afterlife embed` first")
+    chosen = source.embeddings(embedding) if embedding else candidates[0]
+    if not chosen.is_file():
+        raise typer.BadParameter(f"{chosen.name} not found in run {run}")
+    slug = chosen.stem.removeprefix("embeddings_")
+
+    from .analysis.separation import trajectories_from_frame
+    from .analysis.twins import TwinParams, compute_twin_contrast, twin_pairs_from_bank
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta
+
+    bank = load_seed_bank(seed_bank)
+    pairs = twin_pairs_from_bank(bank)
+    params = TwinParams(turnover_bin=turnover_bin)
+    config_resolved = {
+        "analysis": "twins",
+        "source_run_id": run,
+        "embedding": slug,
+        "seed_bank": seed_bank,
+        "twin_pairs": pairs,
+        "params": params.model_dump(),
+    }
+    with run_context(
+        stage=str(manifest.get("stage", "s5")),
+        slug=f"twins-{slug}",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        frame = pd.read_parquet(chosen)
+        trajectories = trajectories_from_frame(frame)
+        result = compute_twin_contrast(trajectories, twin_pairs=pairs, params=params)
+
+        result.per_band.to_parquet(context.paths.data_dir / "twin_per_band.parquet", index=False)
+        result.pairs.to_parquet(context.paths.data_dir / "twin_pairs.parquet", index=False)
+
+        _print_frame(
+            result.per_band,
+            f"twin contrast ({slug})",
+            columns=[
+                "band",
+                "scope",
+                "delta",
+                "d_twin",
+                "d_control",
+                "delta_ci_low",
+                "delta_ci_high",
+                "divergent",
+                "n_twin_pairs",
+                "n_control_pairs",
+            ],
+        )
+        verdict = (
+            "twins remain divergent at the last band"
+            if result.scalars["divergent_at_last_band"]
+            else "twins collapsed to the control at the last band"
+        )
+        console().print(
+            f"[bold]{verdict}[/bold]  |  last-band Δ "
+            f"{result.scalars['delta_last']:.4f} "
+            f"[{result.scalars['delta_ci_low']:.4f}, {result.scalars['delta_ci_high']:.4f}]"
+        )
+
+        save_table(
+            result.per_band,
+            context.artifacts_dir / f"twins-{slug}",
+            FigureMeta(
+                name="twin_per_band",
+                caption=(
+                    "Twin-seed contrast per turnover band. `d_twin` is the mean cosine "
+                    "distance between twin members at the same stochastic seed; "
+                    "`d_control` is same-seed different-stochastic distance among those "
+                    "members; `delta` is their difference with a 95% trajectory-bootstrap CI."
+                ),
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=(
+                    "A last-band CI excluding 0 from above means the factual flip still "
+                    "shapes the locked trajectory; it is not a semantic basin and not an "
+                    "MSM macrostate. Crossed twin pairs (different stochastic seeds) are "
+                    "excluded from both sides of Δ. Pairs stay inside one (W, T)."
+                ),
+            ),
+        )
+        context.finish(twins={k: float(v) for k, v in result.scalars.items()})
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
 @analyze_app.command("rates")
 def analyze_rates(
     run: Annotated[str, typer.Option("--run", "-r", help="degeneracy or generation run_id")],

@@ -5,7 +5,7 @@ Stage 3 closed PARTIAL and the S3.0 follow-up merged to `main`.
 Decision: [ADR-0014](../../decisions/ADR-0014-reduced-s4-temp-window.md).
 Generate authorised 2026-09-04 (human yes on the $2.47 / $3.33
 estimate). S4.1 then S4.2. Scientific review **APPROVED** 2026-09-05
-([`REVIEW.md`](REVIEW.md)). Merge withheld.
+([`REVIEW.md`](REVIEW.md)). Closed `--no-ff` to `main` as `5c07751`.
 
 ## 1. Question
 
@@ -175,4 +175,4 @@ third config without a new yes.
 - [x] `afterlife review --stage s4` exits 0
 - [x] Master plan consistent with ADR-0014 / ADR-0015
 - [x] Spend ≤ $14 hosted ($3.44 actual)
-- [x] `REVIEW.md` APPROVED 2026-09-05; merge withheld
+- [x] `REVIEW.md` APPROVED 2026-09-05; merged `--no-ff` as `5c07751`
