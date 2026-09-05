@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (resumed 2026-09-05T19:01:20Z after stall) |
+| STATUS | `RUNNING` (second resume 2026-09-05T20:00:50Z) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -41,8 +41,19 @@ and s1 step 20, Alibaba, `reasoning_tokens=0`.
 
 Resume **re-emits** `generation.trajectory.finished` for already
 completed trajectories. Count **unique** `trajectory_id`, not event
-rows. After this resume: 10 unique COMPLETED (finance, biology, war,
-love, recipe ×2). Do not read 20/24 from the JSONL line count.
+rows. Do not read the JSONL line count as n/24.
+
+## Stall 2026-09-05T19:15 → 20:00 (same `ep_poll`)
+
+After the first resume, programming s1/s2 finished (~19:11Z). Then
+`philosophy` s1/s2 ran to steps 13/14 and sat ~45 min. Hourly at
+20:00: python PID 114194 in `ep_poll`. Killed that PID. Resumed the
+same `run_id`. New steps immediately: philosophy s1 step 14 and s2
+step 15, Alibaba, `reasoning_tokens=0`. Unique COMPLETED at that
+resume: **12/24** (previous ten plus programming ×2).
+
+This is now two Alibaba TCP stalls ~1 h apart. Same mitigation: PID
+kill + `--resume-run`. Do not mint a new `run_id`.
 
 ## Resume (same `run_id` only)
 
