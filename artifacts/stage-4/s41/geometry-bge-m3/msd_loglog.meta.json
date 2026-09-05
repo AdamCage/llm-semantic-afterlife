@@ -1,0 +1,22 @@
+{
+  "name": "msd_loglog",
+  "caption": "Mean squared displacement against lag, log–log, on L2-normalised chunk embeddings, post-horizon segment only. Thin grey lines are individual trajectories; the blue curve is the ensemble mean with a 95% bootstrap CI resampled over trajectories (n=8). The dashed line has slope 1, the free-diffusion reference. Fitted exponent α = 0.171 ± 0.086.",
+  "alt_text": "Log-log plot of mean squared displacement against lag with a slope-1 reference.",
+  "limitations": "An exponent estimated over a finite trajectory cannot establish asymptotic behaviour; the accessible lag range is bounded by the observed turnover count.",
+  "run_ids": [
+    "s4-embed-w4096-new-temps-20260904T120202Z-37e61e58",
+    "s4-geometry-bge-m3-20260904T120747Z-a109ad65"
+  ],
+  "git_sha": "be094fa93e87ae4340ead128eb606168a9b1ed16",
+  "config_sha256": "a109ad65c34f2f8a3a8f82bcbb229a1d7b5bb67645273ae48fc4fad4297c27b8",
+  "units": {
+    "lag_chunks": "chunks",
+    "lag_tokens": "generator tokens",
+    "msd": "squared distance"
+  },
+  "generated_at": "2026-09-04T12:07:54+00:00",
+  "alpha_mean": 0.1712325348872564,
+  "alpha_sd": 0.0859827219620256,
+  "chunk_size": 1024,
+  "W": 4096
+}
