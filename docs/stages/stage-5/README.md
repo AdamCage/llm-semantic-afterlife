@@ -15,7 +15,7 @@ and resume instructions: [`HANDOFF.md`](HANDOFF.md).
 | pass | status |
 | --- | --- |
 | S5.0 reuse S2.2 raw `W=4096` T=0.3 physics/surreal (4 traj) | cells exist; not yet joined |
-| S5.1 `stage5_lock_occupancy.yaml` (24 traj) | generating |
+| S5.1 `stage5_lock_occupancy.yaml` (24 traj) | `s5-lock-occupancy-20260905T164327Z-6780902f` RUNNING |
 | embed / degeneracy / separation / twins | blocked on generate |
 
 Scientific grid: 14 seeds × 2 stochastic = 28 trajectories, 12 turnovers.

@@ -5,7 +5,8 @@ Stage 4 closed APPROVED (`5c07751`). Decision:
 [ADR-0015](../../decisions/ADR-0015-s5-operating-point-after-s4.md),
 [ADR-0016](../../decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
 Generate authorised 2026-09-05 (human yes on the $1.06 / ~$1.17
-estimate).
+estimate). Live `run_id`:
+`s5-lock-occupancy-20260905T164327Z-6780902f`. Resume only that id.
 
 ## 1. Question
 
