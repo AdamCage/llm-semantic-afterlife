@@ -433,11 +433,12 @@ These come from the traps identified during project scoping and are enforced by
 ## 8. Budget and risk summary
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
-was $50 in ADR-0004). Ledger at the raise: $11.57. S4/S5 still require
-their own PLAN, estimate, and an explicit generate approval. Stage 4's
-PLAN exists ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md));
-CLI generate estimate is $2.47. The $200 ceiling is still not a
-generate-yes. Full risk register with mitigations:
+was $50 in ADR-0004). Ledger after Stage 4: **$15.00**. Stage 4 hosted
+**$3.44** against the authorised $3.33 generate estimate / $14 YAML
+refuse ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
+S5 is **not** opened: it still needs its own PLAN, estimate, and
+generate-yes ([ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md)).
+The $200 ceiling is not a generate-yes for S5. Full risk register:
 [`risks.md`](risks.md).
 
 The three risks that would most change the project:

@@ -358,11 +358,13 @@ instruct-модели дают релевантный для продакшен�
 
 Одобренный потолок проекта — **$200**
 ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md); было $50 в
-ADR-0004). В леджере на момент повышения: $11.57. S4/S5 по-прежнему
-требуют свой PLAN, estimate и отдельное «да» на generate. PLAN Stage 4
-есть ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)); оценка
-generate $2.47. $200 по-прежнему не разрешение generate. Полный
-реестр рисков с митигациями: [`risks.md`](risks.md).
+ADR-0004). Леджер после Stage 4: **$15.00**. Hosted Stage 4 **$3.44**
+против оценки generate $3.33 / YAML $14
+([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)). S5 **не**
+открыт: ему нужны свой PLAN, estimate и отдельное «да» на generate
+([ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md)). $200
+не разрешение generate для S5. Полный реестр рисков:
+[`risks.md`](risks.md).
 
 Три риска, которые сильнее всего изменили бы проект:
 
