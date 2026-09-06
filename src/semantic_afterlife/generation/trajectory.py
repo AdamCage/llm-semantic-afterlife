@@ -168,6 +168,8 @@ class TrajectoryResult:
     completion_tokens_total: int
     served_providers: dict[str, int] = field(default_factory=dict)
     error: str | None = None
+    eviction_start_tokens: int = 0
+    full_eviction_tokens: int = 0
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -182,6 +184,8 @@ class TrajectoryResult:
             "roundtrip_failures": self.roundtrip_failures,
             "horizon_tokens": self.horizon_tokens,
             "seed_tokens": self.seed_tokens,
+            "eviction_start_tokens": self.eviction_start_tokens,
+            "full_eviction_tokens": self.full_eviction_tokens,
             "cost_usd": round(self.cost_usd, 6),
             "prompt_tokens_total": self.prompt_tokens_total,
             "completion_tokens_total": self.completion_tokens_total,
@@ -309,6 +313,8 @@ class TrajectoryRunner:
             stochastic_seed=self.stochastic_seed,
             seed_tokens=window.seed_tokens,
             seed_truncated=window.seed_truncated,
+            eviction_start_tokens=window.eviction_start_tokens,
+            full_eviction_tokens=window.full_eviction_tokens,
             horizon_tokens=window.horizon_tokens,
             tokenizer=self.tokenizer.fingerprint,
             mirror=f"start {self.id}: W={self.window_config.W} T={target} "
@@ -435,6 +441,8 @@ class TrajectoryRunner:
             roundtrip_failures=accumulator.roundtrip_failures,
             horizon_tokens=window.horizon_tokens,
             seed_tokens=window.seed_tokens,
+            eviction_start_tokens=window.eviction_start_tokens,
+            full_eviction_tokens=window.full_eviction_tokens,
             cost_usd=self._cost,
             prompt_tokens_total=self._prompt_tokens_total,
             completion_tokens_total=self._completion_tokens_total,
@@ -727,6 +735,8 @@ async def run_trajectories(
                     roundtrip_failures=0,
                     horizon_tokens=0,
                     seed_tokens=0,
+                    eviction_start_tokens=0,
+                    full_eviction_tokens=0,
                     cost_usd=0.0,
                     prompt_tokens_total=0,
                     completion_tokens_total=0,

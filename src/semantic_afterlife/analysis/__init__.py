@@ -32,6 +32,7 @@ from .geometry import (
     recurrence_quantification,
 )
 from .rates import (
+    clopper_pearson_ci,
     grouped_rates,
     parse_trajectory_id,
     quarter_diagnostics,
@@ -51,6 +52,7 @@ from .twins import (
     compute_twin_contrast,
     twin_pairs_from_bank,
     twin_pairwise_distances,
+    weighted_band_delta,
 )
 
 __all__ = [
@@ -67,6 +69,7 @@ __all__ = [
     "TwinParams",
     "TwinResult",
     "aggregate_msd",
+    "clopper_pearson_ci",
     "compute_degeneracy",
     "compute_dynamics",
     "compute_geometry",
@@ -91,4 +94,5 @@ __all__ = [
     "twin_pairs_from_bank",
     "twin_pairwise_distances",
     "vamp_fit",
+    "weighted_band_delta",
 ]

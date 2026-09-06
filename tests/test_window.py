@@ -45,21 +45,72 @@ class TestSlidingWindow:
             before = state.generated_tokens
         assert window.generated_tokens == before
 
-    def test_horizon_matches_W_minus_seed(self, whitespace_tokenizer: WhitespaceTokenizer) -> None:
-        seed = "alpha beta gamma delta"
-        window = SlidingWindow(whitespace_tokenizer, W=50, seed_text=seed)
-        assert window.horizon_tokens == 50 - window.seed_tokens
-
-    def test_seed_leaves_the_window_exactly_at_the_horizon(
+    def test_horizon_is_full_eviction_not_window_fill(
         self, whitespace_tokenizer: WhitespaceTokenizer
     ) -> None:
-        window = SlidingWindow(whitespace_tokenizer, W=40, seed_text="one two three")
-        horizon = window.horizon_tokens
-        assert window.seed_tokens_in_window > 0
-        while window.generated_tokens < horizon:
-            window.append(words(4, offset=window.generated_tokens))
-        assert window.past_horizon
-        assert window.seed_tokens_in_window == 0
+        seed = "alpha beta gamma delta"
+        window = SlidingWindow(whitespace_tokenizer, W=50, seed_text=seed)
+        assert window.eviction_start_tokens == 50 - window.seed_tokens
+        assert window.full_eviction_tokens == 50
+        assert window.horizon_tokens == window.full_eviction_tokens
+
+    def test_eviction_boundaries_at_unit_stride(
+        self, whitespace_tokenizer: WhitespaceTokenizer
+    ) -> None:
+        """Full eviction is at g=W, not at window-fill W-L_0.
+
+        A block larger than 1 can skip the false horizon and accidentally
+        satisfy past_horizon after crossing W. Stride 1 is the only test
+        that would have caught ADR-0019.
+        """
+        window = SlidingWindow(whitespace_tokenizer, W=10, seed_text="one two three")
+        l0 = window.seed_tokens
+        start = window.eviction_start_tokens
+        assert start == 10 - l0
+        assert l0 > 1
+        snapshots: list[tuple[int, int, bool]] = []
+        while window.generated_tokens < 10:
+            window.append(words(1, offset=window.generated_tokens))
+            snapshots.append(
+                (
+                    window.generated_tokens,
+                    window.seed_tokens_in_window,
+                    window.past_horizon,
+                )
+            )
+        for g, remaining, past in snapshots:
+            if g < start:
+                assert remaining == l0
+                assert not past
+            elif g < 10:
+                assert remaining == 10 - g
+                assert not past
+            else:
+                assert remaining == 0
+                assert past
+        assert snapshots[-1][0] >= 10
+        assert snapshots[-1][2]
+
+    def test_seed_still_present_at_eviction_start(
+        self, whitespace_tokenizer: WhitespaceTokenizer
+    ) -> None:
+        window = SlidingWindow(whitespace_tokenizer, W=10, seed_text="one two three")
+        start = window.eviction_start_tokens
+        l0 = window.seed_tokens
+        previous_remaining = l0
+        previous_g = 0
+        while window.generated_tokens < start:
+            previous_remaining = window.seed_tokens_in_window
+            previous_g = window.generated_tokens
+            window.append(words(1, offset=window.generated_tokens))
+        if window.generated_tokens == start:
+            assert window.seed_tokens_in_window == l0
+            assert not window.past_horizon
+        else:
+            assert previous_g < start <= window.generated_tokens
+            assert previous_remaining == l0
+            assert window.seed_tokens_in_window < l0
+            assert not window.past_horizon
 
     def test_oversized_seed_is_truncated_and_flagged(
         self, whitespace_tokenizer: WhitespaceTokenizer
@@ -67,7 +118,10 @@ class TestSlidingWindow:
         window = SlidingWindow(whitespace_tokenizer, W=10, seed_text=words(100))
         assert window.seed_truncated
         assert window.seed_tokens == 10
-        assert window.horizon_tokens == 0
+        assert window.eviction_start_tokens == 0
+        assert window.horizon_tokens == 10
+        assert window.full_eviction_tokens == 10
+        assert not window.past_horizon
 
     def test_empty_block_is_rejected(self, whitespace_tokenizer: WhitespaceTokenizer) -> None:
         window = SlidingWindow(whitespace_tokenizer, W=16, seed_text="x")

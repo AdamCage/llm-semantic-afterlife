@@ -13,15 +13,17 @@
 # 4. No self-reference to models, AI, prompts or generation. Such text invites
 #    meta-commentary, which is a distinct dynamical attractor and would
 #    contaminate the seed contrast.
-# 5. Twin pairs differ in exactly one factual proposition, for the
-#    sensitivity-to-initial-conditions experiment (S5).
+# 5. Twin pairs are short *counterfactual narratives* (several coordinated
+#    clauses), not a one-token-span factual flip. They remain a sensitivity
+#    contrast, not a single-proposition experiment (ADR-0019).
 # ===========================================================================
 
 version: v1
 description: >-
-  Ten maximally distant semantic domains plus two minimal-perturbation twin
-  pairs. Used from Stage 0 onwards; extended, never edited in place, so that
-  earlier runs remain interpretable.
+  Ten maximally distant semantic domains plus two counterfactual twin
+  pairs (coordinated narratives, not one-token-span flips). Used from Stage 0
+  onwards; extended, never edited in place, so that earlier runs remain
+  interpretable.
 
 seeds:
   - id: physics

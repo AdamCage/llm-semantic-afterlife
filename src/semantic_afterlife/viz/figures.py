@@ -719,12 +719,12 @@ def rate_bar_figure(
     group_column: str,
     run_ids: list[str],
     name: str = "fixed_point_rate",
-    title: str = "Fixed-point rate per generator",
+    title: str = "Repetition-lock rate per generator",
     caption: str,
     limitations: str,
     reference: float | None = 0.5,
 ) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
-    """Bernoulli rate with a precomputed trajectory-level bootstrap interval.
+    """Bernoulli rate with a precomputed Clopper–Pearson interval.
 
     The interval must already live on the frame as ``ci_low`` / ``ci_high``.
     This function does not re-estimate anything: a figure that recomputed the

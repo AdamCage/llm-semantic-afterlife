@@ -1,7 +1,7 @@
 """Stage 5 lock-occupancy sample splits.
 
 F4 (domain last-band gap) uses the ten domain seeds. F6 (twins) uses the
-two one-fact pairs. Pooling a twin member into domain ``D_between`` is a
+two counterfactual narrative pairs. Pooling a twin member into domain ``D_between`` is a
 confound: the pair is designed to be close, so it would shrink the domain
 gap. This module is the guard that keeps those samples apart.
 

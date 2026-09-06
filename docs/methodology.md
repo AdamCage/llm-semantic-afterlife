@@ -44,40 +44,57 @@ flowing text. Consequences that hold throughout:
   measured distribution, or shown insensitive to it via the Stage 6 stride
   ablation.
 
-State at step `t` is the token sequence held in the model's input:
+State at step `k` is the token sequence held in the model's input. The
+measured process is **blockwise re-prompt**, not token-by-token sliding
+attention. Inside one API call the model may condition on the original
+prompt *and* tokens already emitted in the same completion, up to `B`:
 
 ```
-X_t ∈ V^{≤W}
-Y_t ~ P_θ( · | X_t ; temperature, top_p, seed_t )        |Y_t| ≤ B
-X_{t+1} = Tail_W( X_t ⊕ Y_t )
+X_k ∈ V^{≤W}
+Y_k^{(B)} ~ P_θ( · | X_k ; B, temperature, top_p, seed_k )        |Y_k^{(B)}| ≤ B
+X_{k+1} = Tail_W( X_k ⊕ Y_k^{(B)} )
 ```
 
 `Tail_W(·)` keeps the last `min(|·|, W)` tokens. The **trajectory** is the
 concatenation of all generated blocks, `Y_0 ⊕ Y_1 ⊕ …`, of total length `T`
-tokens; the seed prefix is *not* part of it.
+tokens; the seed prefix is *not* part of it. Occupancy used `W = 4096`,
+`B = 1024`, so `B/W = 0.25`.
 
-Two derived quantities are used everywhere:
+Two derived quantities are used everywhere. They are **not** the same
+(ADR-0019):
 
-- **context horizon** `t_h` — the number of generated tokens after which no seed
-  token remains in `X_t`. With a seed of `L_0` tokens and `L_0 < W`,
-  `t_h = W − L_0` (the first block whose generation begins with a seed-free
-  window is `⌈t_h / B⌉`). Recorded per trajectory, since `L_0` varies by seed.
+- **eviction start** `t_start = W − L_0` (when `L_0 ≤ W`) — generated tokens
+  after which the window is first full. The next token can drop seed.
+- **context horizon** `t_h` — generated tokens after which no seed token
+  remains in `X_k`. For `L_0 > 0`, `t_h = W`. `past_horizon` is
+  `seed_tokens_in_window == 0`, which becomes true at this point. F4
+  post-horizon bands use `turnover ≥ 1`, i.e. this boundary, not
+  `t_start`. Historical generate logs stored `t_start` under the name
+  `horizon_tokens`; do not treat those fields as full eviction.
 - **turnover** `R = T / W` — how many times the entire memory has been
   replaced. This, not absolute token count, is the meaningful measure of how
   long we observed the system.
+
+The harness continues after a stop/EOS finish reason. The measured object
+is therefore *externally sustained self-conditioning after repeated
+termination attempts*, not an unrestricted free-running chain whose
+absorbing state is EOS. Survival/hazard modelling of EOS is parked
+(ADR-0019 / Paper B).
 
 ### 1.1 Protocol P1 — re-prompt (primary)
 
 Each step sends `Tail_W` as a fresh prompt. Position IDs restart at 0; there is
 no KV-cache carry-over. This is the only protocol implementable over a hosted
-API, it realises the recursion above exactly at the token level, and it is what
-all reported results use unless stated otherwise.
+API, it realises the *blockwise* recursion above at the token level after each
+completion of size `≤ B`, and it is what all reported results use unless stated
+otherwise. It is **not** equivalent to a strict token-by-token sliding
+context: during a block the model can attend to tokens it has just produced
+inside that same completion.
 
 What it is **not**: a genuine sliding-attention mask with KV eviction, where
 positions keep increasing (or are re-indexed by a RoPE scheme) and earlier keys
 remain in cache. The two can differ, and the paper says so in its limitations.
-Stage 6 attempts a small-`W` local comparison as far as CPU-only hardware
-allows.
+A local P1 vs sliding control remains parked (ADR-0017 / ADR-0019).
 
 ### 1.2 Protocol P2 — true sliding attention (control, local only)
 
@@ -236,10 +253,14 @@ paper.
   Δ = D_twin_matched − D_control
   ```
 
-  with a trajectory-bootstrap CI. The last band is **divergent** if that CI
-  excludes 0 from above, and **collapsed** otherwise. Do not call the
-  outcome a metastable state: that word is reserved for validated MSM
-  macrostates. Crossed twin pairs (different stochastic seeds) are not
+  with a trajectory-bootstrap CI that *preserves resample multiplicities*
+  (pair weight `counts[left] × counts[right]`; ADR-0019). The last band is
+  **divergent** if that CI excludes 0 from above, and **no detected
+  divergence** otherwise. `CI ∋ 0` is not `Δ ≈ 0` and is not semantic
+  collapse. Do not call the outcome a metastable state: that word is
+  reserved for validated MSM macrostates. Twin pairs in `seed_bank_v1`
+  are short counterfactual narratives, not one-token-span factual flips.
+  Crossed twin pairs (different stochastic seeds) are not
   `D_twin_matched` and are not the control.
 
 ### 3.3 Diffusion

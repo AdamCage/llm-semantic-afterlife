@@ -87,10 +87,10 @@ F4_LIMITATIONS = (
     "alone."
 )
 F6_LIMITATIONS = (
-    "n=2 last-band pairs per family. A last-band CI that includes 0 is the "
-    "operational collapsed verdict, not occupancy of one lock. In "
+    "n=2 last-band pairs per family. A last-band CI that includes 0 is "
+    "no detected divergence, not occupancy of one lock. In "
     "gemini-embed-001, waterloo Δ is 0.033 [0.001, 0.065] at band 0 "
-    "(divergent on a 0.001 whisker, seed still in the window) and −0.031 "
+    "(divergent on a 0.001 lower bound, seed still in the window) and −0.031 "
     "[−0.286, 0.223] at band 12 (sign flip; CI includes 0). That is not a "
     "vanished contrast. Gemini reactor never excluded 0, including at band 0. "
     "Do not narrate the S5 bge-m3 waterloo point-Δ≈0.05 story as gemini's. "

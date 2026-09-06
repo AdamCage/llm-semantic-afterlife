@@ -306,7 +306,7 @@ def looping_figure(
         ax.set_xticks(sorted(block["temperature"].unique()))
     axes[0].set_ylabel("degenerate fraction")
     figure.suptitle(
-        "Looping / fixed-point rate on or-qwen3-8b (P1 raw), n = 4 per cell",
+        "Looping / repetition-lock rate on or-qwen3-8b (P1 raw), n = 4 per cell",
         x=0.01,
         ha="left",
     )
@@ -315,17 +315,19 @@ def looping_figure(
         name="looping_rate_vs_T",
         caption=(
             "Degenerate fraction per (W, T) cell on or-qwen3-8b under P1 raw_completion, "
-            "with a 95% trajectory-bootstrap CI (n = 4). Degenerate = calibrated looping "
-            "fraction ≥ 0.5 or late-phase shingle Jaccard at a fixed point (threshold 0.0122). "
-            "W=4096 T∈{0.3,1.0} are the reused S2.2 raw eight; they were not regenerated."
+            "with a 95% Clopper–Pearson CI (n = 4). Degenerate = calibrated looping "
+            "fraction ≥ 0.5 or late-phase shingle Jaccard labelled a textual repetition "
+            "lock (threshold 0.0122). W=4096 T∈{0.3,1.0} are the reused S2.2 raw eight; "
+            "they were not regenerated. Intervals at 0/4 and 4/4 are not point masses."
         ),
         run_ids=run_ids,
         git_sha=git_sha,
         limitations=(
             "n = 4 makes every interval wide by construction; a cell whose CI includes 0.5 "
-            "does not decide a direction. The flag is a surface-form verdict, not a semantic "
-            "state. One S4.1 T=0.7 physics replicate is degenerate via the fixed-point arm "
-            "at looping_fraction 0.0465 — below the 0.083 per-chunk loop threshold."
+            "does not decide a direction. 4/4 is [0.398, 1], not [1, 1]; 0/4 is [0, 0.602], "
+            "not [0, 0]. The flag is a surface-form verdict, not a semantic state. One S4.1 "
+            "T=0.7 physics replicate is degenerate via the lock arm at looping_fraction "
+            "0.0465 — below the 0.083 per-chunk loop threshold."
         ),
         units={"rate": "proportion of trajectories", "temperature": "sampling temperature"},
     )
@@ -654,8 +656,8 @@ def main() -> None:
         FigureMeta(
             name="looping_rate_by_cell",
             caption=(
-                "Degenerate fraction per (W, T) with a 95% trajectory-bootstrap CI. "
-                "n = 4 in every cell."
+                "Degenerate fraction per (W, T) with a 95% Clopper–Pearson CI. "
+                "n = 4 in every cell. 4/4 is not [1, 1]; 0/4 is not [0, 0]."
             ),
             run_ids=run_ids,
             git_sha=git_sha,

@@ -1,8 +1,9 @@
-"""Twin-seed contrast: recover collapse vs divergence on synthetic embeddings."""
+"""Twin-seed contrast: recover no-detected-divergence vs divergence on synthetic embeddings."""
 
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from semantic_afterlife.analysis.separation import Trajectory
 from semantic_afterlife.analysis.twins import (
@@ -11,6 +12,7 @@ from semantic_afterlife.analysis.twins import (
     family_name,
     twin_pairs_from_bank,
     twin_pairwise_distances,
+    weighted_band_delta,
 )
 from semantic_afterlife.config import SeedBank, SeedSpec
 from semantic_afterlife.errors import AnalysisError
@@ -115,13 +117,14 @@ class TestTwinDistances:
 
 
 class TestTwinContrast:
-    def test_collapse_when_twins_share_a_centre(self) -> None:
+    def test_no_detected_divergence_when_twins_share_a_centre(self) -> None:
         result = compute_twin_contrast(
             _four(offset=0.0, noise=0.04, rng_seed=2),
             twin_pairs=PAIRS,
             params=PARAMS,
         )
         assert result.scalars["divergent_at_last_band"] == 0.0
+        assert result.scalars["no_detected_divergence_at_last_band"] == 1.0
         assert result.scalars["delta_ci_low"] <= 0.0
 
     def test_divergent_when_twins_are_offset(self) -> None:
@@ -131,6 +134,7 @@ class TestTwinContrast:
             params=PARAMS,
         )
         assert result.scalars["divergent_at_last_band"] == 1.0
+        assert result.scalars["no_detected_divergence_at_last_band"] == 0.0
         assert result.scalars["delta_ci_low"] > 0.0
         assert result.scalars["d_twin_last"] > result.scalars["d_control_last"]
 
@@ -148,3 +152,32 @@ class TestTwinContrast:
         assert int(last["n_twin_pairs"]) == 2
         assert int(last["n_control_pairs"]) == 2
         assert bool(last["divergent"]) is True
+        assert bool(last["no_detected_divergence"]) is False
+
+
+class TestTwinBootstrapMultiplicity:
+    def test_set_filter_is_not_a_bootstrap(self) -> None:
+        """A draw [0,0,1,1] must not collapse to the unique set {0,1}.
+
+        Two twin_matched pairs with distances 1 and 0, both controls 0.5.
+        Doubling trajectories 0 and 2 weights the far pair 4:1 vs 1:1.
+        """
+        left = np.array([0, 1, 0, 2])
+        right = np.array([2, 3, 1, 3])
+        is_twin = np.array([True, True, False, False])
+        distances = np.array([1.0, 0.0, 0.5, 0.5])
+        unique = np.array([1, 1, 1, 1])
+        doubled = np.array([2, 1, 2, 1])
+        delta_unique = weighted_band_delta(left, right, is_twin, distances, unique)
+        delta_doubled = weighted_band_delta(left, right, is_twin, distances, doubled)
+        assert delta_unique == pytest.approx(0.0)
+        assert delta_doubled == pytest.approx(0.3)
+
+    def test_compute_contrast_emits_no_detected_divergence_column(self) -> None:
+        result = compute_twin_contrast(
+            _four(offset=0.0, noise=0.04, rng_seed=2),
+            twin_pairs=PAIRS,
+            params=PARAMS,
+        )
+        assert "no_detected_divergence" in result.per_band.columns
+        assert "collapsed" not in result.per_band.columns
