@@ -53,7 +53,11 @@ def is_raw_lock_trajectory(trajectory_id: str) -> bool:
     if not str(trajectory_id).startswith(RAW_PREFIX):
         return False
     parsed = parse_trajectory_id(str(trajectory_id))
-    return int(parsed["W"]) == LOCK_W and float(parsed["temperature"]) == LOCK_TEMPERATURE
+    window = parsed["W"]
+    temperature = parsed["temperature"]
+    if not isinstance(window, int) or not isinstance(temperature, (int, float)):
+        return False
+    return window == LOCK_W and float(temperature) == LOCK_TEMPERATURE
 
 
 def filter_raw_lock(frame: pd.DataFrame) -> pd.DataFrame:
@@ -164,7 +168,7 @@ def last_band_seed_matrix(
                     "seed_col": col_seed,
                     "kind": kind,
                     "distance": distance,
-                    "n_chunk_pairs": int(len(block)),
+                    "n_chunk_pairs": len(block),
                     "last_band": last_band,
                 }
             )
@@ -178,15 +182,9 @@ def lock_rate_by_seed(verdicts: pd.DataFrame) -> pd.DataFrame:
         raise AnalysisError("verdicts have no degenerate column")
     rows: list[dict[str, object]] = []
     for seed, block in frame.groupby("semantic_seed", sort=True):
-        n = int(len(block))
+        n = len(block)
         n_deg = int(block["degenerate"].astype(bool).sum())
-        role = (
-            "domain"
-            if seed in DOMAIN_SEEDS
-            else "twin"
-            if seed in TWIN_SEEDS
-            else "other"
-        )
+        role = "domain" if seed in DOMAIN_SEEDS else "twin" if seed in TWIN_SEEDS else "other"
         rows.append(
             {
                 "semantic_seed": str(seed),
@@ -199,11 +197,9 @@ def lock_rate_by_seed(verdicts: pd.DataFrame) -> pd.DataFrame:
         )
     domain = frame[frame["semantic_seed"].isin(DOMAIN_SEEDS)]
     if not domain.empty:
-        n = int(len(domain))
+        n = len(domain)
         n_deg = int(domain["degenerate"].astype(bool).sum())
-        n_seeds_hit = int(
-            domain.groupby("semantic_seed")["degenerate"].any().astype(bool).sum()
-        )
+        n_seeds_hit = int(domain.groupby("semantic_seed")["degenerate"].any().astype(bool).sum())
         n_domain_seeds = int(domain["semantic_seed"].nunique())
         rows.append(
             {

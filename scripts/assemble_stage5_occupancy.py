@@ -160,12 +160,8 @@ def protocol_by_seed_quarter(steps: pd.DataFrame, *, seed: int = 0) -> pd.DataFr
     per = per.assign(semantic_seed=parsed.map(lambda row: row["semantic_seed"]))
     rows: list[dict[str, object]] = []
     for (seed_name, quarter), block in per.groupby(["semantic_seed", "quarter"], sort=True):
-        fill = bootstrap_mean_ci(
-            block["block_fill"].to_numpy(), seed=seed + 100 + int(quarter)
-        )
-        stop = bootstrap_mean_ci(
-            block["stop_rate"].to_numpy(), seed=seed + 200 + int(quarter)
-        )
+        fill = bootstrap_mean_ci(block["block_fill"].to_numpy(), seed=seed + 100 + int(quarter))
+        stop = bootstrap_mean_ci(block["stop_rate"].to_numpy(), seed=seed + 200 + int(quarter))
         rows.append(
             {
                 "semantic_seed": str(seed_name),
@@ -216,12 +212,12 @@ def looping_figure(
 ) -> tuple[plt.Figure, pd.DataFrame, FigureMeta]:
     apply_seaborn_theme()
     per_seed = rates[rates["role"].isin(("domain", "twin"))].copy()
-    order = [s for s in (*DOMAIN_SEED_ORDER, *TWIN_SEED_ORDER) if s in set(per_seed["semantic_seed"])]
+    order = [
+        s for s in (*DOMAIN_SEED_ORDER, *TWIN_SEED_ORDER) if s in set(per_seed["semantic_seed"])
+    ]
     per_seed["semantic_seed"] = pd.Categorical(per_seed["semantic_seed"], order, ordered=True)
     per_seed = per_seed.sort_values("semantic_seed")
-    colors = [
-        PALETTE[0] if role == "domain" else PALETTE[1] for role in per_seed["role"]
-    ]
+    colors = [PALETTE[0] if role == "domain" else PALETTE[1] for role in per_seed["role"]]
     figure, ax = plt.subplots(figsize=(FIGSIZE_DOUBLE[0], 4.6))
     ax.bar(
         np.arange(len(per_seed)),
@@ -234,7 +230,9 @@ def looping_figure(
     ax.set_ylim(0, 1.15)
     ax.set_ylabel("degenerate fraction (k/n)")
     for index, row in enumerate(per_seed.itertuples(index=False)):
-        ax.text(index, float(row.fraction) + 0.04, row.k_over_n, ha="center", va="bottom", fontsize=9)
+        ax.text(
+            index, float(row.fraction) + 0.04, row.k_over_n, ha="center", va="bottom", fontsize=9
+        )
     ax.legend(
         handles=[
             Line2D([0], [0], color=PALETTE[0], lw=8, label="domain seed"),
@@ -281,9 +279,9 @@ def matrix_figure(
 ) -> tuple[plt.Figure, pd.DataFrame, FigureMeta]:
     apply_seaborn_theme()
     seeds = [s for s in DOMAIN_SEED_ORDER if s in set(tidy["seed_row"])]
-    pivot = tidy.pivot(index="seed_row", columns="seed_col", values="distance").reindex(
-        index=seeds, columns=seeds
-    )
+    pivot = tidy.pivot_table(
+        index="seed_row", columns="seed_col", values="distance", aggfunc="mean"
+    ).reindex(index=seeds, columns=seeds)
     figure, ax = plt.subplots(figsize=(FIGSIZE_SQUARE[0] + 2.4, FIGSIZE_SQUARE[1] + 1.2))
     sns.heatmap(
         pivot,
@@ -481,9 +479,9 @@ def _plotly_matrix(tidy: pd.DataFrame, *, embedding: str, run_ids: list[str], gi
     import plotly.graph_objects as go
 
     seeds = [s for s in DOMAIN_SEED_ORDER if s in set(tidy["seed_row"])]
-    pivot = tidy.pivot(index="seed_row", columns="seed_col", values="distance").reindex(
-        index=seeds, columns=seeds
-    )
+    pivot = tidy.pivot_table(
+        index="seed_row", columns="seed_col", values="distance", aggfunc="mean"
+    ).reindex(index=seeds, columns=seeds)
     figure = go.Figure(
         data=go.Heatmap(
             z=pivot.to_numpy(),
