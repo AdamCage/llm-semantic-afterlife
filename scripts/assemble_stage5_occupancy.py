@@ -13,6 +13,7 @@ semantic basin.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Sequence
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -319,12 +320,20 @@ def matrix_figure(
 
 
 def separation_figure(
-    per_band: pd.DataFrame, *, run_ids: list[str], git_sha: str | None
+    per_band: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    git_sha: str | None,
+    embeddings: Sequence[str] | None = None,
 ) -> tuple[plt.Figure, pd.DataFrame, FigureMeta]:
     apply_seaborn_theme()
-    figure, axes = plt.subplots(1, 2, figsize=FIGSIZE_DOUBLE, sharey=True)
-    for ax, (slug, block) in zip(axes, per_band.groupby("embedding", sort=True), strict=True):
-        block = block.sort_values("band")
+    spaces = list(embeddings or EMBEDDINGS)
+    n_spaces = len(spaces)
+    figure, axes = plt.subplots(1, n_spaces, figsize=(4.4 * n_spaces, 4.2), sharey=True)
+    if n_spaces == 1:
+        axes = [axes]
+    for ax, slug in zip(axes, spaces, strict=True):
+        block = per_band[per_band["embedding"] == slug].sort_values("band")
         _errorbar_panel(
             ax,
             block,
@@ -349,7 +358,7 @@ def separation_figure(
         name="domain_separation_vs_turnover",
         caption=(
             "Domain last-band occupancy contrast: D_between − D_within among the "
-            "ten domain seeds of seed_bank_v1, in both embedding spaces, with a "
+            "ten domain seeds of seed_bank_v1, per embedding space, with a "
             "95% trajectory-bootstrap CI. Twin pairs are excluded from this "
             "figure. Physics/surreal are the reused S2.2 raw T=0.3 four."
         ),
@@ -366,19 +375,32 @@ def separation_figure(
 
 
 def twins_figure(
-    per_band: pd.DataFrame, *, run_ids: list[str], git_sha: str | None
+    per_band: pd.DataFrame,
+    *,
+    run_ids: list[str],
+    git_sha: str | None,
+    embeddings: Sequence[str] | None = None,
 ) -> tuple[plt.Figure, pd.DataFrame, FigureMeta]:
     apply_seaborn_theme()
     families = ["all", "reactor-stable+reactor-unstable", "waterloo-lost+waterloo-won"]
     present = [f for f in families if f in set(per_band["scope"])]
-    embeddings = list(EMBEDDINGS)
+    spaces = list(embeddings or EMBEDDINGS)
+    n_spaces = len(spaces)
     figure, axes = plt.subplots(
-        len(present), 2, figsize=(FIGSIZE_DOUBLE[0], 3.2 * len(present)), sharex=True, sharey=True
+        len(present),
+        n_spaces,
+        figsize=(4.4 * n_spaces, 3.2 * max(len(present), 1)),
+        sharex=True,
+        sharey=True,
     )
-    if len(present) == 1:
+    if len(present) == 1 and n_spaces == 1:
+        axes = np.array([[axes]])
+    elif len(present) == 1:
         axes = np.array([axes])
+    elif n_spaces == 1:
+        axes = np.asarray(axes).reshape(len(present), 1)
     for row, family in enumerate(present):
-        for col, slug in enumerate(embeddings):
+        for col, slug in enumerate(spaces):
             ax = axes[row, col]
             block = per_band[
                 (per_band["scope"] == family) & (per_band["embedding"] == slug)
@@ -412,7 +434,7 @@ def twins_figure(
         name="twin_delta_vs_turnover",
         caption=(
             "Twin-seed contrast Δ = D_twin_matched − D_control per turnover band, "
-            "for the pooled twins and for each family, in both embedding spaces, "
+            "for the pooled twins and for each family, per embedding space, "
             "with a 95% trajectory-bootstrap CI. Divergent iff the last-band CI "
             "excludes 0 from above; otherwise collapsed. Not a metastable-state "
             "label."

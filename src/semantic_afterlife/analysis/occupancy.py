@@ -47,6 +47,25 @@ RAW_PREFIX = "or-qwen3-8b__"
 LOCK_W = 4096
 LOCK_TEMPERATURE = 0.3
 
+TWO_SPACE_S51_EMBED = "s5-embed-lock-occupancy-20260906T030125Z-eab6e484"
+TWO_SPACE_S22_EMBED = "s2-embed-mechanism-20260901T131051Z-55761049"
+GEMINI_S51_EMBED = "s6-embed-third-space-20260906T082301Z-588eff8f"
+GEMINI_S22_EMBED = "s6-embed-third-space-20260906T082628Z-9077d587"
+OCCUPANCY_SPACE_ORDER: tuple[str, ...] = ("bge-m3", "qwen3-embed-8b", "gemini-embed-001")
+
+
+def occupancy_embed_runs(slug: str) -> tuple[str, str]:
+    """``(s5.1_embed_run_id, s2.2_embed_run_id)`` for one representation.
+
+    Gemini lives on the Stage 6 embed runs. Reusing the S5 two-space
+    embed id for ``gemini-embed-001`` would silently drop the third space.
+    """
+    if slug == "gemini-embed-001":
+        return GEMINI_S51_EMBED, GEMINI_S22_EMBED
+    if slug in ("bge-m3", "qwen3-embed-8b"):
+        return TWO_SPACE_S51_EMBED, TWO_SPACE_S22_EMBED
+    raise AnalysisError(f"no occupancy embed runs for {slug!r}")
+
 
 def is_raw_lock_trajectory(trajectory_id: str) -> bool:
     """True for P1 raw ``or-qwen3-8b`` cells at the S5 lock ``(W=4096, T=0.3)``."""
