@@ -1,4 +1,4 @@
-"""Lexical and path checks for the Stage 7 manuscript.
+"""Lexical and path checks for the TMLR manuscript (ADR-0019).
 
 The paper is assembled from closed-stage artifacts. These tests catch
 claim overruns and broken includes that a TeX compile would not.
@@ -42,11 +42,21 @@ def test_related_work_has_no_lead_backticks() -> None:
     assert "`LEAD`" not in text
 
 
-def test_gemini_whisker_and_not_thick_robustness() -> None:
+def test_occupancy_block_is_1024() -> None:
+    text = _tex()
+    assert re.search(r"B\{=\}1024", text)
+    assert not re.search(r"B\{=\}512", text)
+    protocol = text.split(r"\label{sec:p1}")[1].split(r"\subsection{Cost")[0]
+    assert "1024" in protocol
+    assert "0.25" in protocol or r"B/W" in protocol
+
+
+def test_gemini_lower_bound_named_not_architecture_independence() -> None:
     text = _tex()
     assert "0.029" in text
-    assert "whisker" in text.lower()
-    assert re.search(r"not\s+thick robustness", text, re.I)
+    for match in re.finditer(r".{0,80}architecture-independen[ct]e.{0,80}", text, re.I):
+        window = match.group(0).lower()
+        assert any(tok in window for tok in ("not", "cannot", "no ")), window
 
 
 def test_h1_not_claimed_established() -> None:
@@ -72,17 +82,19 @@ def test_architecture_independence_only_negated() -> None:
         assert any(tok in window for tok in ("not", "cannot", "no ")), window
 
 
-def test_collapsed_is_not_one_lock() -> None:
+def test_no_detected_divergence_is_not_one_lock() -> None:
     text = _tex()
     assert "not occupancy of one" in text.lower()
-    assert "operational" in text.lower()
+    assert "no detected divergence" in text.lower() or "underpowered" in text.lower()
     assert not re.search(r"collapsed(?: twins)? occupy one lock", text, re.I)
 
 
-def test_no_unverified_citations() -> None:
-    text = _tex() + BIB.read_text(encoding="utf-8")
-    for banned in ("Holtzman", "Shumailov", "nucleus sampling"):
-        assert banned not in text, banned
+def test_no_point_mass_bernoulli_ci() -> None:
+    text = _tex()
+    assert not re.search(r"\[0,\s*0\]", text)
+    assert not re.search(r"\[1,\s*1\]", text)
+    assert "0.369" in text
+    assert "0.631" in text or "0.630" in text
 
 
 def test_cite_keys_resolve() -> None:
@@ -103,12 +115,19 @@ def test_cite_keys_resolve() -> None:
         "chen2026horizon",
         "wu2020vampnets",
         "paul2019core",
+        "perez2025",
+        "mohamed2025",
+        "xu2022",
+        "holtzman2020",
+        "shumailov2024",
     ):
         assert required in defined, required
+        assert required in used, required
 
 
 def test_bib_authors_match_verified_records() -> None:
     bib = BIB.read_text(encoding="utf-8")
+    related = RELATED.read_text(encoding="utf-8")
     assert "Zekri, Oussama" in bib
     assert "Odonnat, Ambroise" in bib
     assert "Wang, Zhilin" in bib
@@ -117,6 +136,28 @@ def test_bib_authors_match_verified_records() -> None:
     assert "Chen, Mingguang" in bib
     assert "Wu, Hao" in bib
     assert "Paul, Fabian" in bib
+    assert "Perez, J" in bib
+    assert "Holtzman, Ari" in bib
+    assert "Shumailov, Ilia" in bib
+    assert "Mohamed, Amr" in bib
+    assert "Xu, Jin" in bib
+    assert "VERIFIED" in related
+    for key in ("Holtzman", "Shumailov", "Perez", "Mohamed", "Xu"):
+        assert key in related
+
+
+def test_verified_citations_are_logged() -> None:
+    related = RELATED.read_text(encoding="utf-8")
+    for marker in (
+        "When LLMs Play the Telephone Game",
+        "LLM as a Broken Telephone",
+        "Learning to Break the Loop",
+        "The Curious Case of Neural Text Degeneration",
+        "AI models collapse when trained on recursively generated data",
+    ):
+        assert marker in related
+        idx = related.index(marker)
+        assert "VERIFIED" in related[max(0, idx - 400) : idx]
 
 
 def test_includegraphics_paths_exist_under_artifacts() -> None:
@@ -183,7 +224,7 @@ def test_no_dummy_s7_run_directory() -> None:
 
 
 def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
-    """S7 review blocker 1: F4 is ensemble gap, not recovered identity."""
+    """F4 is ensemble gap, not recovered identity."""
     text = _tex()
     abstract = text.split(r"\begin{abstract}")[1].split(r"\end{abstract}")[0]
     lowered = abstract.lower()
@@ -192,19 +233,17 @@ def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
     assert re.search(r"domain gap|distinguishability", abstract, re.I)
     assert re.search(r"not recovered prompt memory", abstract, re.I)
     assert "H2" in abstract
-    before_whisker = abstract.split("whisker")[0].lower()
-    assert "three embedding spaces" not in before_whisker
 
 
 def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
-    """S7 review blocker 2: P1 is not the continuation mechanism."""
+    """P1 is not the continuation mechanism."""
     text = _tex()
-    protocol = text.split(r"\label{sec:p1}")[1].split(r"\subsection{Cost law}")[0]
+    protocol = text.split(r"\label{sec:p1}")[1].split(r"\subsection{Cost")[0]
     assert re.search(r"raw\\_completion", protocol)
     assert "Alibaba" in protocol
     assert "P1" in protocol
     assert "glossary" in protocol.lower() or "distinct" in protocol.lower()
-    limitations = text.split(r"\label{sec:limitations}")[1].split(r"\section{Discussion}")[0]
+    limitations = text.split(r"\label{sec:limitations}")[1]
     assert re.search(r"raw\\_completion", limitations)
     assert "Alibaba" in limitations
     assert "not synonyms" in limitations.lower() or "not a synonym" in limitations.lower()

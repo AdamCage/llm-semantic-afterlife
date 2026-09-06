@@ -1,8 +1,7 @@
 figure,stage,relative_path,format,run_id,note
 s1_separation,1,stage-1/separation-bge-m3/seed_separation.png,png,s1-separation-bge-m3-20260831T074042Z-9bf54fbf,degenerate-majority panel; not a clean subsample
-s4_looping,4,stage-4/grid/looping_rate_vs_T.pdf,pdf,s4-w4096-new-temps-20260904T103121Z-589c8eb1,H5 absence is the missing low-T points
+s4_looping,4,stage-4/grid/looping_rate_vs_T.pdf,pdf,s4-w4096-new-temps-20260904T103121Z-589c8eb1,Clopper-Pearson; H5 absence is the missing low-T points
 s4_clean_alpha,4,stage-4/grid/clean_alpha_vs_T.pdf,pdf,s4-w4096-new-temps-20260904T103121Z-589c8eb1,defined only at T=1.5
 s5_domain_gap,5,stage-5/occupancy/domain_separation_vs_turnover.pdf,pdf,s5-lock-occupancy-20260905T164327Z-6780902f,two spaces; love is one of ten F4 seeds
-s6_domain_gap,6,stage-6/occupancy/domain_gap_three_spaces.pdf,pdf,s6-embed-third-space-20260906T082301Z-588eff8f,gemini F4 whisker 0.029; not architecture-independence
-s6_twin_delta,6,stage-6/occupancy/twin_delta_vs_turnover.pdf,pdf,s6-embed-third-space-20260906T082301Z-588eff8f,operational collapsed is CI includes 0; not one lock
+s6_domain_gap,6,stage-6/occupancy/domain_gap_three_spaces.pdf,pdf,s6-embed-third-space-20260906T082301Z-588eff8f,gemini F4 lower bound 0.029; not architecture-independence
 s6_last_band_matrix,6,stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.pdf,pdf,s6-embed-third-space-20260906T082301Z-588eff8f,pairwise matrix illustration; not a cluster count

@@ -1,38 +1,29 @@
-# Figure shortlist (S7 notes)
+# Figure shortlist (S7 notes; ADR-0019)
 
 Include from `artifacts/`. Do not redraw. PCA/UMAP remain
-illustrations only.
+illustrations only. F6 is not a headline figure.
 
 ## Headline (print)
 
 | Figure | Path | What it shows | What it does not |
 | --- | --- | --- | --- |
-| S4 lock grid | `artifacts/stage-4/grid/` (looping / clean-α panels) | T≤1.0 lock at both W; H5 absent | a temperature phase transition |
-| S5 last-band domain gap | `artifacts/stage-5/occupancy/domain_separation_last_band.*` | ten-domain gap CI excludes 0 in two spaces | recovered semantic memory |
-| S5 twin last-band | `artifacts/stage-5/occupancy/twin_last_band.*` | F6 CI∋0; waterloo point Δ ~0.05 | occupancy of one lock |
-| S6 three-space gap | `artifacts/stage-6/occupancy/domain_gap_three_spaces.*` | gemini 0.150 [0.029, 0.266] | thick robustness; architecture-independence |
-| S6 twin last-band | `artifacts/stage-6/occupancy/twin_last_band.*` | gemini F6 CI∋0, families split | vanished contrast; one lock |
-| S6 twin vs turnover | `artifacts/stage-6/occupancy/twin_delta_vs_turnover.*` | waterloo sign flip | S5 bge-m3 point-Δ story as gemini’s |
+| S4 lock grid | `artifacts/stage-4/grid/looping_rate_vs_T.*` | T≤1.0 lock; Clopper–Pearson CI | a temperature phase transition |
+| S4 clean α | `artifacts/stage-4/grid/clean_alpha_vs_T.*` | defined only at T=1.5 | H5 |
+| S5 last-band domain gap | `artifacts/stage-5/occupancy/domain_separation_vs_turnover.*` | ten-domain gap CI excludes 0 in two spaces | recovered semantic memory |
+| S6 three-space gap | `artifacts/stage-6/occupancy/domain_gap_three_spaces.*` | gemini 0.150 [0.029, 0.266] | architecture-independence |
+| S6 last-band matrix | `artifacts/stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.*` | pairwise distances | a cluster count |
 
-## Support
+## Support (not headline)
 
 | Figure | Path | Note |
 | --- | --- | --- |
 | S5/S6 lock rate by seed | `*/occupancy/lock_rate_by_seed.*` | k/n; love 1/2 |
-| Last-band matrices | `*/occupancy/last_band_distance_matrix_*.*` | original space; not a cluster count |
-| Protocol by quarter | `*/occupancy/protocol_by_quarter.*` | fill/stop; do not retune |
-| S1 degeneracy / freeze | `artifacts/stage-1/` | 94% fixed point |
-| S2 model-axis completion | stage-2 artifacts | 11/40; gemma silence |
-| S3.0 surface labels | `artifacts/stage-3/surface/` | base model loops the seed |
+| Twin last-band points | `*/occupancy/twin_last_band.*` | n=2; CIs not bootstrap (ADR-0019) |
+| Protocol by quarter | `*/occupancy/protocol_by_quarter.*` | fill/stop; forced continuation |
+| S1 separation | `artifacts/stage-1/separation-bge-m3/` | 94% lock panel |
+| S2 model-axis rates | `artifacts/stage-2/model-axis/rates/` | gemma 0/8; Clopper–Pearson |
+| S3 k_stability | `artifacts/stage-3/dynamics/` | `validated=0` |
 
 ## Illustrations only (label as such)
 
-Last-chunk PCA panels under `artifacts/stage-5/occupancy/` and
-`artifacts/stage-6/occupancy/`. No cluster count, no statistical
-claim from 2-D.
-
-## Do not include as evidence
-
-UMAP/t-SNE if any exist. MSM implied-timescale plots from S3 as
-if they validated macrostates. Geometry α on degenerate rows as
-confinement.
+Last-chunk PCA panels. No cluster count from 2-D.

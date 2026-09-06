@@ -16,6 +16,7 @@ A rate whose interval includes 0.5 does not decide a direction.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -53,7 +54,7 @@ def clopper_pearson_ci(k: int, n: int, *, alpha: float = 0.05) -> tuple[float, f
     return (float(interval.low), float(interval.high))
 
 
-def rate_ci(flags: np.ndarray, *, seed: int = 0, n_boot: int = 2000) -> dict[str, float]:
+def rate_ci(flags: np.ndarray, *, seed: int = 0, n_boot: int = 2000) -> dict[str, Any]:
     """Clopper–Pearson CI for a Bernoulli rate. ``flags`` is one 0/1 per trajectory.
 
     ``seed`` and ``n_boot`` are accepted for call-site compatibility and ignored:
@@ -91,7 +92,7 @@ def rate_difference_ci(
     *,
     seed: int = 0,
     n_boot: int = 2000,
-) -> dict[str, float]:
+) -> dict[str, Any]:
     """Unpaired Newcombe CI for ``rate(a) - rate(b)``, plus Fisher exact *p*.
 
     The two arms are different generators or mechanisms, so the trajectories
