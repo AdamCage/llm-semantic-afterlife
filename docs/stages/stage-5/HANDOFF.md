@@ -38,7 +38,10 @@ S5.0 reuse (do **not** regenerate):
 twins pulled fill down). YAML refuse $8. Eight `ep_poll` stalls, each
 PID-killed and resumed on this `run_id`. Two `tokenizer_roundtrip_ok=false`
 steps: `war` s1 step 36, `love` s1 step 44; both trajectories COMPLETED.
-Do not mint a second generate `run_id`. Analysis is the next step.
+Do not mint a second generate `run_id`.
+
+Embed (started 2026-09-06T03:01:25Z):
+`s5-embed-lock-occupancy-20260906T030125Z-eab6e484`.
 
 ## Stall 2026-09-05T18:13 → 19:01 (S4-style `ep_poll`)
 
