@@ -1,9 +1,9 @@
 # Stage 5 report — distinguishable domain locks; twins not last-band divergent
 
-**Status.** Computations finished 2026-09-06. Overall verdict: **PASS**.
+**Status.** Closed 2026-09-06. Overall verdict: **PASS**.
 Scientific review: **APPROVED WITH CHANGES**
-([`REVIEW.md`](REVIEW.md)). F6 prose below matches the interval.
-Do not merge until the human closes `--no-ff`.
+([`REVIEW.md`](REVIEW.md)). F6 prose matches the interval
+(`0e1bb42`). Human authorised `--no-ff` close.
 
 On `or-qwen3-8b` under P1 `raw_completion`, at the S4 lock
 (`W = 4096`, T=0.3, 12 turnovers), the ten domain seeds of
