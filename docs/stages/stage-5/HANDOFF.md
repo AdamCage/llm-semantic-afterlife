@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (eighth resume 2026-09-06T02:01:00Z) |
+| STATUS | **COMPLETED** 2026-09-06 ~02:15Z. 24/24 unique. Spend **$1.3385** |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -30,6 +30,15 @@ First steps at launch: finance s1/s2, served `Alibaba`, `reasoning_tokens=0`,
 S5.0 reuse (do **not** regenerate):
 `s2-mechanism-20260901T071519Z-dfbb173a`,
 `or-qwen3-8b__W4096__T0p3__{physics,surreal}__s{1,2}`.
+
+## Generate COMPLETED (2026-09-06)
+
+24/24 unique COMPLETED. 1764 steps, all Alibaba, `reasoning_tokens=0`,
+0 empty completions. Hosted spend **$1.3385** (forecast $1.06 fill=1;
+twins pulled fill down). YAML refuse $8. Eight `ep_poll` stalls, each
+PID-killed and resumed on this `run_id`. Two `tokenizer_roundtrip_ok=false`
+steps: `war` s1 step 36, `love` s1 step 44; both trajectories COMPLETED.
+Do not mint a second generate `run_id`. Analysis is the next step.
 
 ## Stall 2026-09-05T18:13 → 19:01 (S4-style `ep_poll`)
 
