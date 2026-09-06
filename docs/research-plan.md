@@ -371,7 +371,8 @@ one generator at `W=4096` T=0.3, holding in three embedding spaces
 (S5–S6), with gemini F4 an NHST whisker. Do not headline `n_macro`,
 call a lock a basin, or treat last-band collapsed as occupancy of
 one lock. Kitchen-sink S6 arms stay parked (ADR-0017).
-`paper/main.tex` waits for an explicit yes after the PLAN.
+Human yes received 2026-09-06; draft manuscript is `paper/main.tex`
+on `cursor/stage-7-6dce`. Scientific close of S7 is not this commit.
 
 Deliverables: manuscript, reproducibility appendix, artifact
 release (figures with tidy data, response cache for headline

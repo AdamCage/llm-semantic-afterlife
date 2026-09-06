@@ -3,8 +3,8 @@
 **Status.** Opened 2026-09-06 on branch `cursor/stage-7-6dce`, after
 Stage 6 closed APPROVED WITH CHANGES (`ad1f244`). Decision:
 [ADR-0018](../../decisions/ADR-0018-s7-manuscript-from-closed-stages.md).
-No generate. No embed. `paper/main.tex` waits for an explicit
-human yes after this PLAN is committed.
+No generate. No embed. Human yes on `paper/main.tex` received
+2026-09-06; manuscript is in `paper/main.tex`.
 
 ## 1. Question
 
@@ -102,20 +102,20 @@ Ordered. No generate. No embed.
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | ---: | --- |
-| Q1 | The paper can be assembled without a new generate `run_id` | 0.90 | |
-| Q2 | Occupancy three-space sign agreement is a results subsection, not the title claim | 0.70 | |
-| Q3 | The title/abstract will not say “metastable semantic states” as an established finding | 0.75 | |
-| Q4 | Gemini F4 will be reported with the 0.029 whisker, not as thick robustness | 0.85 | |
-| Q5 | F6 will be reported as operational collapsed, not occupancy of one lock | 0.85 | |
-| Q6 | Related-work citations in the manuscript will all be `VERIFIED` | 0.80 | |
-| Q7 | Hosted S7 spend is $0 | 0.95 | |
-| Q8 | No `configs/stages/stage7_*.yaml` is added | 0.90 | |
+| Q1 | The paper can be assembled without a new generate `run_id` | 0.90 | **right** (`paper/main.tex`; `runs/s7/` absent) |
+| Q2 | Occupancy three-space sign agreement is a results subsection, not the title claim | 0.70 | **right** (gemini is §Stage 6) |
+| Q3 | The title/abstract will not say “metastable semantic states” as an established finding | 0.75 | **right** |
+| Q4 | Gemini F4 will be reported with the 0.029 whisker, not as thick robustness | 0.85 | **right** |
+| Q5 | F6 will be reported as operational collapsed, not occupancy of one lock | 0.85 | **right** |
+| Q6 | Related-work citations in the manuscript will all be `VERIFIED` | 0.80 | **right** |
+| Q7 | Hosted S7 spend is $0 | 0.95 | **right** |
+| Q8 | No `configs/stages/stage7_*.yaml` is added | 0.90 | **right** |
 
 ## 7. Budget and wall-clock
 
 **$0 API.** YAML refuse is not applicable (no stage YAML). Project
-ceiling **$200**; remaining **$183.66**. Stop and ask before any
-API call or any `paper/main.tex` commit.
+ceiling **$200**; remaining **$183.66**. Human yes received before
+the `paper/main.tex` commit. Stop and ask before any API call.
 
 Wall clock is writing, not generation. No 4 h embed watch.
 
@@ -134,8 +134,8 @@ Wall clock is writing, not generation. No 4 h embed watch.
 ## 9. Definition of done
 
 - [x] `paper/notes/claims.md`, `figure-shortlist.md`, `limitations.md` committed
-- [ ] Human yes on `paper/main.tex`
-- [ ] `paper/main.tex` scores F1–F10
-- [ ] `REPORT.md` scores Q1–Q8
-- [ ] Hosted spend $0
-- [ ] No `stage7_*.yaml`
+- [x] Human yes on `paper/main.tex`
+- [x] `paper/main.tex` scores F1–F10
+- [x] `REPORT.md` scores Q1–Q8
+- [x] Hosted spend $0
+- [x] No `stage7_*.yaml`

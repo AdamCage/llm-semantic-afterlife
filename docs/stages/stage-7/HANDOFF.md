@@ -1,14 +1,22 @@
 # Stage 7 — handoff
 
 Operational detail. The contract is [`PLAN.md`](PLAN.md).
+Report: [`REPORT.md`](REPORT.md).
 
 **Branch:** `cursor/stage-7-6dce` (from `main` `ad1f244`).
-Do not write `paper/main.tex` until the human says yes on this
-PLAN. Do not raise ceilings. Do **not** `afterlife generate`.
-Do not mint a stage-7 YAML that lists generators.
+Human yes on `paper/main.tex` received 2026-09-06. Do not raise
+ceilings. Do **not** `afterlife generate`. Do not mint `runs/s7`
+to green `runs.complete`.
 
-**Object.** Manuscript from S0–S6 artifacts. Not a new occupancy
-map. Not MSM. Not T=1.0.
+**Object.** Manuscript from S0–S6 artifacts. Headline: last-band
+occupancy signs on `or-qwen3-8b` P1 after eviction, including a
+gemini F4 NHST whisker. Not MSM. Not H5. Not architecture-
+independence.
+
+**Gate.** `afterlife review --stage s7` is expected to FAIL
+`runs.complete` (no generate directory). That FAIL is not a
+missing experiment. Do not request scientific review by pretending
+the generate-gate is green.
 
 ## Do not
 
@@ -17,7 +25,7 @@ map. Not MSM. Not T=1.0.
 - Headline H1, H5, `n_macro`, a lock-as-basin, or architecture-
   independence from gemini
 - Call last-band collapsed occupancy of one lock
-- Cite `LEAD` literature
+- Cite unverified literature
 - Redraw figures; include from `artifacts/`
 - Open T=1.0 / T=1.5 / 200 seeds / a second generator / MSM
 - Merge S7 without scientific review
