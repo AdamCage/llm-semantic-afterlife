@@ -8,16 +8,14 @@ Models Beyond the Context Horizon*
 [`research-plan.md`](research-plan.md). При расхождениях английская версия
 считается основной.
 
-**Статус.** `S6` закрыт APPROVED WITH CHANGES 2026-09-06: на тех же
-28 траекториях `or-qwen3-8b` под P1 при `W=4096` T=0.3 знаки
-occupancy держатся в `gemini-embed-001` (F4 last-band gap 0.150
-[0.029, 0.266], NHST-волосок; F6 last-band Δ CI включают 0).
-Согласие знака с обоими пространствами S5, не
-architecture-independence (gemini закрытый), не recovered semantic
-memory. Hosted **$0**. `S7` открывается как рукопись из артефактов
-S0–S6. `S5` закрыт APPROVED WITH CHANGES (`9cb2845`). `S4` закрыт
-APPROVED (`5c07751`). `S3` закрыт PARTIAL. Потолок проекта **$200**
-(ADR-0013). Последняя правка 2026-09-06.
+**Статус.** `S7` закрыт APPROVED WITH CHANGES 2026-09-06: TMLR-черновик
+из закрытых артефактов S0–S6 лежит в `paper/main.tex`. F4 — ансамблевый
+last-band domain gap, не recovered prompt memory (H2). Occupancy-протокол —
+P1 `raw_completion` у Alibaba. H1 не поддержан; H5 нет. Hosted **$0**.
+FAIL `runs.complete` — исключение письменной стадии (ADR-0018).
+Плановые этапы S0–S7 завершены; S8 нет. `S6` закрыт APPROVED WITH
+CHANGES (`ad1f244`). Потолок проекта **$200** (ADR-0013). Последняя
+правка 2026-09-06.
 
 ---
 
@@ -296,21 +294,25 @@ last-band `D_within` NaN). F6 last-band Δ CI включают 0 (all
 одного lock. Generate не было. Hosted **$0.00**. Пороги 0.083 /
 Jaccard 0.0122 не двигались.
 
-### S7 — Рукопись `← текущий`
+### S7 — Рукопись `закрыт`
 
-Пишется только из артефактов S0–S6, согласно
-`.cursor/rules/50-paper.mdc`. Статья сообщает то, что этапы
-установили, включая отрицательные результаты: H1 не поддержан на
-instruct-под-P1 выборке (S3); H5 нет на урезанной сетке (S4);
-знаки occupancy (не recovered memory) на одном генераторе при
-`W=4096` T=0.3 держатся в трёх пространствах (S5–S6), gemini F4 —
-NHST-волосок. Не выносить `n_macro` в заголовок, не называть lock
-basin, не читать last-band collapsed как occupancy одного lock.
-Kitchen-sink руки S6 остаются на парковке (ADR-0017).
+Закрыт 2026-09-06. План:
+[`docs/stages/stage-7/PLAN.md`](stages/stage-7/PLAN.md).
+Отчёт: [`docs/stages/stage-7/REPORT.md`](stages/stage-7/REPORT.md).
+Рецензия: [`docs/stages/stage-7/REVIEW.md`](stages/stage-7/REVIEW.md).
+[ADR-0018](decisions/ADR-0018-s7-manuscript-from-closed-stages.md).
 
-Результаты: рукопись, приложение о воспроизводимости, релиз
-артефактов (графики с tidy-данными, кэш ответов для основных
-графиков, наборы траекторий с provenance).
+TMLR-черновик собран из закрытых артефактов S0–S6 без нового
+generate `run_id`. Заголовок: *Semantic Afterlife: Lock Occupancy
+After the Prompt Leaves the Window*. F4 в абстракте — ensemble
+domain gap, не recovered prompt memory (H2). Occupancy-протокол
+называет `raw_completion` и пин Alibaba. Gemini F4 остаётся
+0.150 [0.029, 0.266] (NHST-волосок). F6 last-band Δ CI включают 0.
+H1 не поддержан (`validated=0`); H5 нет. Hosted **$0**. FAIL
+`runs.complete` ожидаем; не создавать `runs/s7`.
+
+Плановые этапы S0–S7 завершены. S8 нет. Подача на площадку, Zenodo
+и руки на парковке (ADR-0017) — не этап.
 
 **Бюджет.** $0 API.
 
@@ -372,13 +374,13 @@ instruct-модели дают релевантный для продакшен�
 
 Одобренный потолок проекта — **$200**
 ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md); было $50 в
-ADR-0004). Леджер после Stage 6: **$16.34**. Hosted Stage 6
-**$0.00** (gemini embed; YAML refuse $2). Hosted Stage 5
-**$1.3385** против оценки fill=1 $1.06 / YAML $8
+ADR-0004). Леджер после Stage 7: **$16.34**. Hosted Stage 7
+**$0.00**. Hosted Stage 6 **$0.00** (gemini embed; YAML refuse $2).
+Hosted Stage 5 **$1.3385** против оценки fill=1 $1.06 / YAML $8
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
-S6 закрыт 2026-09-06. Рецензия APPROVED WITH CHANGES; знаки
-occupancy держатся в `gemini-embed-001`; нижняя граница F4 —
-NHST-волосок. Человек разрешил `--no-ff` close.
+S7 закрыт 2026-09-06. Рецензия APPROVED WITH CHANGES; рукопись из
+артефактов S0–S6; F4 — domain gap, не H2. Человек разрешил
+`--no-ff` close. Плановые этапы завершены.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

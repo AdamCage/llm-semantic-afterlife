@@ -1,0 +1,18 @@
+{
+  "name": "figure_inventory",
+  "caption": "Figures included in paper/main.tex from closed-stage artifacts. Paths are relative to artifacts/. No figure was redrawn for the manuscript.",
+  "alt_text": "Table of manuscript figures with stage, path, run_id, and a one-line bound on what each figure does not show.",
+  "limitations": "This inventory is a writing-stage index, not a new measurement. Included figures remain bounded by their original .meta.json limitations. Gemini F4 is an NHST whisker (lower CI 0.029), not architecture-independence. F6 last-band CI including 0 is not occupancy of one lock. PCA/UMAP illustrations were not included as evidence. Stage 7 minted no generate run_id.",
+  "run_ids": [
+    "s1-separation-bge-m3-20260831T074042Z-9bf54fbf",
+    "s4-w4096-new-temps-20260904T103121Z-589c8eb1",
+    "s4-w8192-20260904T120057Z-ce82ce55",
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s6-embed-third-space-20260906T082301Z-588eff8f",
+    "s6-embed-third-space-20260906T082628Z-9077d587"
+  ],
+  "git_sha": "a3ae248",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T10:00:00+00:00"
+}

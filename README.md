@@ -202,7 +202,7 @@ falsifies its own hypothesis and says so is a stage well spent.
 | S4 | `temperature × W` phase portrait | closed APPROVED (T≤1.0 lock; H5 absent) |
 | S5 | Lock occupancy vs seed at `W=4096` T=0.3 | closed APPROVED WITH CHANGES |
 | S6 | Do occupancy *signs* hold in a third embedding space? | closed APPROVED WITH CHANGES |
-| **S7** | Manuscript from S0–S6 artifacts | current |
+| **S7** | Manuscript from S0–S6 artifacts | closed APPROVED WITH CHANGES |
 
 ## Novelty, stated honestly
 
