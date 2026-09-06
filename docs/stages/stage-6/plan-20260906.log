@@ -1,0 +1,11 @@
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ s6/third-space  config 9fc58c6a                                              │
+│ Embed-only third representation (gemini-embed-001) of the S5 occupancy traje │
+╰──────────────────────────────────────────────────────────────────────────────╯
+matrix
+┏━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
+┃ generator   ┃ W    ┃ block_size ┃ target_tokens ┃ turnovers ┃ n_trajectories ┃
+┡━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
+│ or-qwen3-8b │ 4096 │ 1024       │ 49152         │ 12.0      │ 24             │
+└─────────────┴──────┴────────────┴───────────────┴───────────┴────────────────┘
+24 trajectories, 1 generator(s), 1 representation space(s), 12 semantic seeds x 2 stochastic seeds

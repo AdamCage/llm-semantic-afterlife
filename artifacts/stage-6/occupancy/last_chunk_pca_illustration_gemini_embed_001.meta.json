@@ -1,0 +1,17 @@
+{
+  "name": "last_chunk_pca_illustration_gemini_embed_001",
+  "caption": "Two-dimensional PCA of last-chunk embeddings for the ten domain seeds in gemini-embed-001. Illustration only. Statistical claims, including the last-band gap, are taken from the original high-dimensional space.",
+  "alt_text": "Two-dimensional PCA of last-chunk embeddings for the ten domain seeds in gemini-embed-001. Illustration only. Statistical claims, including the last-band gap, are taken from the original high-dimensional space.",
+  "limitations": "A 2-D projection is not a cluster count and is not evidence of a semantic basin. Distances in this plane are not the cosine distances used for F4.",
+  "run_ids": [
+    "s6-embed-third-space-20260906T082301Z-588eff8f",
+    "s6-embed-third-space-20260906T082628Z-9077d587"
+  ],
+  "git_sha": "0f25179cd2d28f87c81668e5d7c0fd4c0976e29f",
+  "config_sha256": null,
+  "units": {
+    "pc1": "illustration axis",
+    "pc2": "illustration axis"
+  },
+  "generated_at": "2026-09-06T08:36:53+00:00"
+}

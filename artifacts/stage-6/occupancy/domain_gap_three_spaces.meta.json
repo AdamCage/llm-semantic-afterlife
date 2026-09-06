@@ -1,0 +1,21 @@
+{
+  "name": "domain_gap_three_spaces",
+  "caption": "F4 last-band domain gap with a 95% trajectory-bootstrap CI in bge-m3, qwen3-embed-8b, and gemini-embed-001 on the same 28 occupancy trajectories. Pre-registered sign is CI excludes 0; gemini's lower bound is 0.029. Twin pairs are excluded.",
+  "alt_text": "F4 last-band domain gap with a 95% trajectory-bootstrap CI in bge-m3, qwen3-embed-8b, and gemini-embed-001 on the same 28 occupancy trajectories. Pre-registered sign is CI excludes 0; gemini's lower bound is 0.029. Twin pairs are excluded.",
+  "limitations": "The pre-registered separated verdict is a last-band CI that excludes 0, not a thick robustness margin and not a recovered semantic state. gemini-embed-001 last-band gap 0.150 [0.029, 0.266] is an NHST whisker on n=20 with n_within_pairs=9: reused S2.2 physics s1 has 47 chunks vs 48 on its pair, so the last-band D_within diagonal is NaN (n_chunk_pairs=0). That lower bound is closer to 0 than bge-m3's 0.065. gemini-embed-001 is closed; three-space sign agreement answers an embedding-artifact objection, not architecture-independence from gemini alone.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s6-embed-third-space-20260906T082301Z-588eff8f",
+    "s6-embed-third-space-20260906T082628Z-9077d587"
+  ],
+  "git_sha": "0f25179cd2d28f87c81668e5d7c0fd4c0976e29f",
+  "config_sha256": null,
+  "units": {
+    "gap": "cosine-distance contrast"
+  },
+  "generated_at": "2026-09-06T08:36:55+00:00"
+}

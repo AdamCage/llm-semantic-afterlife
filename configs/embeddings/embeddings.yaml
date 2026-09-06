@@ -47,7 +47,7 @@ embedding_library:
     model_id: google/gemini-embedding-001
     api: routerai
     architecture: closed
-    expected_dim: null
+    expected_dim: 3072
     max_batch: 16
     price_usd_per_m_input: null
     notes: >-

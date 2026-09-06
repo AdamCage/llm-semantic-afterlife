@@ -1,0 +1,19 @@
+{
+  "name": "domain_separation_per_band",
+  "caption": "Ten-domain D_between − D_within per turnover band in three embedding spaces, including gemini-embed-001. Twin pairs are excluded.",
+  "alt_text": "Ten-domain D_between − D_within per turnover band in three embedding spaces, including gemini-embed-001. Twin pairs are excluded.",
+  "limitations": "The lock is the sample; degenerate rows are kept. gemini is closed and cannot alone prove architecture-independence.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049",
+    "s6-embed-third-space-20260906T082301Z-588eff8f",
+    "s6-embed-third-space-20260906T082628Z-9077d587"
+  ],
+  "git_sha": "0f25179cd2d28f87c81668e5d7c0fd4c0976e29f",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T08:36:53+00:00"
+}

@@ -12,6 +12,7 @@ from semantic_afterlife.analysis.occupancy import (
     filter_raw_lock,
     last_band_seed_matrix,
     lock_rate_by_seed,
+    occupancy_embed_runs,
     require_occupancy_grid,
     split_domain_twin,
 )
@@ -136,3 +137,22 @@ class TestLastBandMatrix:
             assert ab["kind"] == "between"
             assert ab["distance"] == pytest.approx(ba["distance"])
             assert ab["distance"] > 0.5
+
+
+class TestOccupancyEmbedRuns:
+    def test_gemini_is_not_the_s5_two_space_embed(self) -> None:
+        s51, s22 = occupancy_embed_runs("gemini-embed-001")
+        assert s51.startswith("s6-embed-")
+        assert s22.startswith("s6-embed-")
+        bge_s51, bge_s22 = occupancy_embed_runs("bge-m3")
+        qwen_s51, qwen_s22 = occupancy_embed_runs("qwen3-embed-8b")
+        assert bge_s51.startswith("s5-embed-")
+        assert qwen_s51 == bge_s51
+        assert bge_s22.startswith("s2-embed-")
+        assert qwen_s22 == bge_s22
+        assert s51 != bge_s51
+        assert s22 != bge_s22
+
+    def test_unknown_space_raises(self) -> None:
+        with pytest.raises(AnalysisError, match="no occupancy embed runs"):
+            occupancy_embed_runs("invented-space")
