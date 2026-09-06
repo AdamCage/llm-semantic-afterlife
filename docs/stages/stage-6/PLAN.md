@@ -3,8 +3,8 @@
 **Status.** Opened 2026-09-06 on branch `cursor/stage-6-6dce`, after
 Stage 5 closed APPROVED WITH CHANGES (`9cb2845`). Decision:
 [ADR-0017](../../decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
-No generate. Embed **authorised 2026-09-06** (human yes on the
-hand embed forecast, not on the CLI generate print).
+No generate. Embed **authorised and executed 2026-09-06**. REPORT
+written; mechanical gate next, then scientific review.
 
 ## 1. Question
 
@@ -106,14 +106,14 @@ is a successful negative: the occupancy claim is representation-tied.
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | ---: | --- |
-| Q1 | Gemini last-band domain gap CI excludes 0 (same sign as both S5 spaces) | 0.60 | |
-| Q2 | Gemini last-band twin Δ CI includes 0 for **reactor** (never excluded 0 in S5) | 0.55 | |
-| Q3 | Gemini last-band twin Δ CI includes 0 for **waterloo** (operational collapsed; point Δ need not be 0) | 0.50 | |
-| Q4 | Gemini F4/F6 last-band *signs* agree with both S5 spaces (Q1–Q3 jointly) | 0.50 | |
-| Q5 | Gemini gap *level* differs from both S5 spaces by > 0.05 (closed embedder, different dim) | 0.55 | |
-| Q6 | Waterloo gemini point Δ at band 12 is within 0.10 of band 0 (contrast does not vanish) | 0.40 | |
-| Q7 | Embed ledger cost is $0 because RouterAI `usage.cost` / yaml price are empty, as in S5 embed | 0.60 | |
-| Q8 | No new generate `run_id` is minted | 0.90 | |
+| Q1 | Gemini last-band domain gap CI excludes 0 (same sign as both S5 spaces) | 0.60 | **Right.** 0.150 [0.029, 0.266]. See REPORT |
+| Q2 | Gemini last-band twin Δ CI includes 0 for **reactor** (never excluded 0 in S5) | 0.55 | **Right.** 0.008 [−0.071, 0.087] |
+| Q3 | Gemini last-band twin Δ CI includes 0 for **waterloo** (operational collapsed; point Δ need not be 0) | 0.50 | **Right** on last-band NHST. Point −0.031 |
+| Q4 | Gemini F4/F6 last-band *signs* agree with both S5 spaces (Q1–Q3 jointly) | 0.50 | **Right.** |
+| Q5 | Gemini gap *level* differs from both S5 spaces by > 0.05 (closed embedder, different dim) | 0.55 | **Right.** vs bge 0.051; vs qwen 0.240 |
+| Q6 | Waterloo gemini point Δ at band 12 is within 0.10 of band 0 (contrast does not vanish) | 0.40 | **Right.** \|0.033 − (−0.031)\| = 0.064 |
+| Q7 | Embed ledger cost is $0 because RouterAI `usage.cost` / yaml price are empty, as in S5 embed | 0.60 | **Right.** `$0.0000` |
+| Q8 | No new generate `run_id` is minted | 0.90 | **Right.** Two embed ids only |
 
 Q1 wrong is the interesting wrong: then S5 F4 is space-tied and S6
 must say so. Q4 can fail while Q1 holds if only twins flip.
@@ -160,10 +160,10 @@ unauthorised.
 ## 9. Definition of done
 
 - [x] Human yes on the embed forecast (not the generate print)
-- [ ] Zero new generate `run_id`s
-- [ ] Gemini embed COMPLETED on S5.1 and S2.2 source runs
-- [ ] Occupancy assemble has three spaces; F4/F6 split held
-- [ ] `REPORT.md` scores F1–F10 and Q1–Q8
-- [ ] `afterlife review --stage s6` exits 0
-- [ ] Spend ≤ $2 hosted
+- [x] Zero new generate `run_id`s
+- [x] Gemini embed COMPLETED on S5.1 and S2.2 source runs
+- [x] Occupancy assemble has three spaces; F4/F6 split held
+- [x] `REPORT.md` scores F1–F10 and Q1–Q8
+- [x] `afterlife review --stage s6` exits 0
+- [x] Spend ≤ $2 hosted
 
