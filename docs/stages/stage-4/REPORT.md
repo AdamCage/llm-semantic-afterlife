@@ -1,5 +1,7 @@
 # Stage 4 report — lock at T≤1.0 both W; H5 absent on this grid
 
+> **Errata (2026-09-06).** See [`ERRATA.md`](ERRATA.md) (ADR-0019). Closed verdicts stand; looping-rate CIs are now Clopper–Pearson. `run_id`s are unchanged.
+
 **Status.** Computations finished 2026-09-05. Overall verdict: **PASS**.
 Scientific review **APPROVED** 2026-09-05 ([`REVIEW.md`](REVIEW.md));
 closed `--no-ff` as `5c07751`.

@@ -1,5 +1,7 @@
 # Stage 6 report — occupancy signs hold in a third embedding space
 
+> **Errata (2026-09-06).** See [`ERRATA.md`](ERRATA.md) (ADR-0019). F4 last-band points stand; F6 CIs are not valid bootstrap intervals. `run_id`s are unchanged.
+
 **Status.** Closed 2026-09-06. Overall verdict: **PASS**.
 Scientific review: **APPROVED WITH CHANGES**
 ([`REVIEW.md`](REVIEW.md)). F4/F6 sidecar prose aligned

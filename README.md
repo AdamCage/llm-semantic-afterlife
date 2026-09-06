@@ -221,6 +221,14 @@ Our contribution is the specific regime:
 > diffusion scaling, metastability and time-irreversibility as functions of
 > window size, temperature and model.
 
+The GitHub release tag `state-latest` is a **mutable** restore pointer for
+`runs/` and `cache/`. It is not a citable archival object. A snapshot created
+locally under `.cache/snapshot/` after this correctness pass must be published
+by a human as an **immutable** tag (do not move `state-latest` to stand in for
+a DOI). Cloud agents cannot cut GitHub releases (`gh` is read-only). The
+snapshot restored here is dated 2026-09-01T01:35Z and does **not** contain
+Stage 5–6 occupancy embeddings.
+
 ## Licence
 
 Code: [MIT](LICENSE). Research artifacts (figures, tables, derived datasets,
