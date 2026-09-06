@@ -4,9 +4,9 @@ Operational detail. The contract is [`PLAN.md`](PLAN.md).
 The result is [`REPORT.md`](REPORT.md).
 The review is [`REVIEW.md`](REVIEW.md).
 
-**Branch:** `cursor/stage-4-6dce`. Scientific review **APPROVED**
-2026-09-05. Do not merge from this file. Do not mint a generate
-`run_id`. Do not open S5 generate.
+**Closed.** Scientific review **APPROVED** 2026-09-05. Merged
+`--no-ff` to `main` as `5c07751`. Do not mint a Stage 4 generate
+`run_id`.
 
 Generate is **done**. Analysis is **done**. Embed `$0`. Hosted
 generate **$3.44**.

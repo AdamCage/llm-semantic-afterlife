@@ -6,12 +6,13 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S4` scientific review **APPROVED** 2026-09-05, not
-merged: on `or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
+**Status.** `S4` closed APPROVED 2026-09-05 (`5c07751`): on
+`or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
 `W ∈ {4096, 8192}`; T=1.5 is the only clean-`α` band and is
-subdiffusive; H5 absent on this grid (ADR-0014, ADR-0015). `S3`
-closed PARTIAL. Project ceiling **$200** (ADR-0013). Last revised
-2026-09-05.
+subdiffusive; H5 absent on this grid. `S5` opened as lock occupancy
+on `seed_bank_v1` at `W=4096` T=0.3 (ADR-0015, ADR-0016); generate
+authorised 2026-09-05. `S3` closed PARTIAL. Project ceiling **$200**
+(ADR-0013). Last revised 2026-09-05.
 
 ---
 
@@ -300,12 +301,12 @@ H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 
 **Budget.** ≤ $10 declared; **$0.00** actual this opening.
 
-### S4 — Control parameters: a reduced `temperature × W` grid `← current`
+### S4 — Control parameters: a reduced `temperature × W` grid `✓ closed 2026-09-05`
 
 Computations finished 2026-09-05. Report:
 [`docs/stages/stage-4/REPORT.md`](stages/stage-4/REPORT.md). Review:
 [`docs/stages/stage-4/REVIEW.md`](stages/stage-4/REVIEW.md)
-(**APPROVED**; merge withheld).
+(**APPROVED**; merged `--no-ff` as `5c07751`).
 
 On `or-qwen3-8b` under P1 raw, 12 turnovers: T≤1.0 is 4/4 degenerate
 at both `W ∈ {4096, 8192}`. T=1.5 is the only defined clean-`α`
@@ -314,26 +315,29 @@ S2.2 raw eight reused. Hosted spend **$3.44** against $3.33
 authorised / $14 YAML. [ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md),
 [ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md).
 
-### S5 — Basins of attraction and sensitivity to initial conditions
+### S5 — Lock occupancy versus seed `← current`
 
-Not opened. After Stage 4 the phrase "best-characterised operating
-point" is no longer T=1.0: that point is a textual lock at both W
-(ADR-0015). The S5 PLAN must pick, before any generate, either
-**(a)** lock occupancy vs seed or **(b)** the T=1.5 residual (the
-only band with `n_clean ≥ 2`, still reviewer-register). Twin-seed
-divergence remains in scope once the object is named.
+Opened 2026-09-05. Plan:
+[`docs/stages/stage-5/PLAN.md`](stages/stage-5/PLAN.md).
+[ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md),
+[ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
+Object **(a)**: occupancy of the S4 lock, not T=1.0-as-basin, not
+the T=1.5 residual. Generate authorised 2026-09-05 against the
+$1.06 estimate.
 
-Many seeds (target 200+ per model) at the *chosen* object ⇒
-empirical occupancy. Twin-seed experiment: minimally different seeds
-(*Napoleon won* vs. *lost at Waterloo*), tracking
-`D(t) = ‖z_t^A − z_t^B‖` for divergence, convergence, or
-metastable switching.
+One process (`or-qwen3-8b`, P1 raw), `W = 4096`, T=0.3, 12
+turnovers. Ten domain seeds + two twin pairs from `seed_bank_v1`
+(28 trajectories; 4 reused from S2.2 T=0.3). A 200-seed bank is
+not this opening. Headline measurements: domain last-band
+`D_between − D_within`, per-seed lock rate (k/n), twin last-band
+Δ vs the same-seed stochastic control. `n_macro` stays off the
+headline. Degenerate rows are kept.
 
-**Exit criteria.** Basin occupancy with CI per model; twin-seed divergence
-classified with a stated statistical criterion against a same-seed
-different-stochastic-seed control.
+**Exit criteria.** See PLAN F1–F10 (pre-registered). Twin verdict
+is `divergent` iff last-band Δ CI excludes 0 from above.
 
-**Budget.** ≤ $120 (requires approval).
+**Budget.** YAML refuse $8; CLI generate estimate **$1.06**
+(fill=1). The $120 sketch is not a generate-yes.
 
 ### S6 — Robustness, ablations, independent replication
 
@@ -437,9 +441,10 @@ The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-
 was $50 in ADR-0004). Ledger after Stage 4: **$15.00**. Stage 4 hosted
 **$3.44** against the authorised $3.33 generate estimate / $14 YAML
 refuse ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
-S5 is **not** opened: it still needs its own PLAN, estimate, and
-generate-yes ([ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md)).
-The $200 ceiling is not a generate-yes for S5. Full risk register:
+S5 PLAN and estimate exist
+([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md));
+CLI generate estimate **$1.06**; authorised 2026-09-05. Full risk
+register:
 [`risks.md`](risks.md).
 
 The three risks that would most change the project:

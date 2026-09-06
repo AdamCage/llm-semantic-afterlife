@@ -226,9 +226,21 @@ paper.
 - `D_within(t)` — distance between trajectories from the *same* seed with
   different stochastic seeds. This is the control that makes `D_between`
   interpretable: seed identity persists only if `D_between > D_within`.
-- **twin-seed** `D(t) = ‖z_t^A − z_t^B‖` for minimally-different seed pairs,
-  classified as divergent / convergent / metastable against the `D_within`
-  baseline.
+- **twin-seed** `D(t) = 1 − cos(z_t^A, z_t^B)` for minimally-different seed
+  pairs (`twin_of` in the seed bank). Pairs are formed only inside a matched
+  `(generator, W, temperature)` cell, and only at the *same* stochastic seed
+  (`D_twin_matched`). The control is `D_within` among those members. The
+  pre-registered last-band statistic is
+
+  ```
+  Δ = D_twin_matched − D_control
+  ```
+
+  with a trajectory-bootstrap CI. The last band is **divergent** if that CI
+  excludes 0 from above, and **collapsed** otherwise. Do not call the
+  outcome a metastable state: that word is reserved for validated MSM
+  macrostates. Crossed twin pairs (different stochastic seeds) are not
+  `D_twin_matched` and are not the control.
 
 ### 3.3 Diffusion
 
