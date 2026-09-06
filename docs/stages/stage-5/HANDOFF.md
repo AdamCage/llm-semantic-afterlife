@@ -4,7 +4,10 @@ Operational detail. The contract is [`PLAN.md`](PLAN.md).
 
 **Branch:** `cursor/stage-5-6dce` (from `main` `5c07751`). Do not merge.
 Do not write `paper/main.tex`. Do not raise ceilings. Do not mint a
-second generate `run_id`.
+second generate `run_id`. Scientific review
+([`REVIEW.md`](REVIEW.md)): **APPROVED WITH CHANGES**. Executor
+aligned F6 prose to the interval (last-band collapsed ≠ one lock).
+Human closes `--no-ff`.
 
 **Object.** Lock occupancy vs seed at the S4 lock (`W=4096`, T=0.3)
 on `or-qwen3-8b` under P1. Not T=1.0-as-basin. Not the T=1.5 residual.

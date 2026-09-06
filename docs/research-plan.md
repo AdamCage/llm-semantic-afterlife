@@ -442,7 +442,10 @@ was $50 in ADR-0004). Ledger after Stage 5 generate: **$16.34**.
 Stage 5 hosted **$1.3385** against the authorised $1.06 fill=1
 print / $8 YAML refuse
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
-S5 computations finished 2026-09-06; awaiting scientific review.
+S5 computations finished 2026-09-06. Review: APPROVED WITH CHANGES
+([`docs/stages/stage-5/REVIEW.md`](stages/stage-5/REVIEW.md));
+F6 last-band scoring stands, “twins collapse” as a dynamical claim
+does not. Human closes `--no-ff`.
 Full risk register:
 [`risks.md`](risks.md).
 

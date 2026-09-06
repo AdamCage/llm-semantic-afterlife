@@ -420,9 +420,12 @@ def twins_figure(
         run_ids=run_ids,
         git_sha=git_sha,
         limitations=(
-            "Each family has n=4 trajectories. A CI that includes 0 is a collapse "
-            "verdict, including a negative Δ. Crossed twin pairs (different "
-            "stochastic seeds) are excluded from both sides of Δ."
+            "n=2 last-band pairs per family. A last-band CI that includes 0 is "
+            "the operational collapsed verdict, not occupancy of one lock and "
+            "not a vanished contrast. Waterloo bge-m3 point Δ stayed ~0.05 from "
+            "band 0 (then divergent) to band 12 (CI grew to include 0 and a "
+            "domain-sized gap). Reactor never excluded 0, including at band 0. "
+            "Crossed twin pairs are excluded from both sides of Δ."
         ),
         units={"delta": "cosine-distance contrast", "band": "turnover bin start"},
     )
@@ -752,7 +755,11 @@ def main() -> None:
             ),
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations="Divergent iff last-band CI excludes 0 from above; else collapsed.",
+            limitations=(
+                "Divergent iff last-band CI excludes 0 from above; else collapsed. "
+                "That rule is an NHST default, not an equivalence test. Waterloo "
+                "point Δ did not go to 0; reactor never excluded 0."
+            ),
         ),
     )
     save_table(
@@ -766,7 +773,14 @@ def main() -> None:
             ),
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations="n=4 trajectories per family. Not an MSM macrostate.",
+            limitations=(
+                "n=2 last-band pairs per family. A last-band CI that includes 0 "
+                "is the operational collapsed verdict, not occupancy of one lock. "
+                "Waterloo bge-m3 point Δ stayed ~0.05 from band 0 (then divergent) "
+                "to band 12 (CI grew to include 0 and a domain-sized gap). Reactor "
+                "never excluded 0, including at band 0. Extra replicates would be "
+                "required to claim sameness."
+            ),
         ),
     )
     save_table(

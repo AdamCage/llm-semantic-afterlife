@@ -2,7 +2,7 @@
   "name": "twin_delta_vs_turnover",
   "caption": "Twin-seed contrast Δ = D_twin_matched − D_control per turnover band, for the pooled twins and for each family, in both embedding spaces, with a 95% trajectory-bootstrap CI. Divergent iff the last-band CI excludes 0 from above; otherwise collapsed. Not a metastable-state label.",
   "alt_text": "Twin-seed contrast Δ = D_twin_matched − D_control per turnover band, for the pooled twins and for each family, in both embedding spaces, with a 95% trajectory-bootstrap CI. Divergent iff the last-band CI excludes 0 from above; otherwise collapsed. Not a metastable-state label.",
-  "limitations": "Each family has n=4 trajectories. A CI that includes 0 is a collapse verdict, including a negative Δ. Crossed twin pairs (different stochastic seeds) are excluded from both sides of Δ.",
+  "limitations": "n=2 last-band pairs per family. A last-band CI that includes 0 is the operational collapsed verdict, not occupancy of one lock and not a vanished contrast. Waterloo bge-m3 point Δ stayed ~0.05 from band 0 (then divergent) to band 12 (CI grew to include 0 and a domain-sized gap). Reactor never excluded 0, including at band 0. Crossed twin pairs are excluded from both sides of Δ.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

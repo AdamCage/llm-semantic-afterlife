@@ -2,7 +2,7 @@
   "name": "twin_last_band",
   "caption": "F6 last-band twin Δ per family and pooled, both embedding spaces. divergent is the F6 verdict.",
   "alt_text": "F6 last-band twin Δ per family and pooled, both embedding spaces. divergent is the F6 verdict.",
-  "limitations": "n=4 trajectories per family. Not an MSM macrostate.",
+  "limitations": "n=2 last-band pairs per family. A last-band CI that includes 0 is the operational collapsed verdict, not occupancy of one lock. Waterloo bge-m3 point Δ stayed ~0.05 from band 0 (then divergent) to band 12 (CI grew to include 0 and a domain-sized gap). Reactor never excluded 0, including at band 0. Extra replicates would be required to claim sameness.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

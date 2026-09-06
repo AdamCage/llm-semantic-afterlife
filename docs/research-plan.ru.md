@@ -366,7 +366,10 @@ instruct-модели дают релевантный для продакшен�
 ADR-0004). Леджер после generate S5: **$16.34**. Hosted Stage 5
 **$1.3385** против оценки fill=1 $1.06 / YAML $8
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
-Вычисления S5 закончены 2026-09-06; ждут научной рецензии.
+Вычисления S5 закончены 2026-09-06. Рецензия: APPROVED WITH CHANGES
+([`docs/stages/stage-5/REVIEW.md`](stages/stage-5/REVIEW.md));
+last-band scoring F6 стоит, динамическое «twins collapse» — нет.
+Закрытие `--no-ff` — за человеком.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

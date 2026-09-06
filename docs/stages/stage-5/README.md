@@ -16,7 +16,7 @@ and resume instructions: [`HANDOFF.md`](HANDOFF.md).
 | --- | --- |
 | S5.0 reuse S2.2 raw `W=4096` T=0.3 physics/surreal (4 traj) | cited, not regenerated; joined in occupancy assemble |
 | S5.1 `stage5_lock_occupancy.yaml` (24 traj) | `s5-lock-occupancy-20260905T164327Z-6780902f` **24/24 COMPLETED**, $1.3385 |
-| embed / degeneracy / occupancy / twins | **done**. REPORT written 2026-09-06. Gate next |
+| embed / degeneracy / occupancy / twins | **done**. REPORT 2026-09-06. Review: APPROVED WITH CHANGES; F6 prose aligned to the interval. Human closes `--no-ff` |
 
 Scientific grid: 14 seeds × 2 stochastic = 28 trajectories, 12 turnovers.
 New tokens: 24 trajectories only.

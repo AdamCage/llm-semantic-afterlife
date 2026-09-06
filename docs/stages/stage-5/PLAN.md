@@ -124,15 +124,16 @@ result: distinguishable locks, not a recovered semantic state.
 | Q1 | ≥8 of 10 domain seeds are degenerate on at least one stochastic replicate | 0.75 | **Right.** 10/10; domain traj 19/20 |
 | Q2 | Ten-domain last-band gap CI excludes 0 in **both** spaces (S4 Q7 on two seeds, now ten) | 0.60 | **Right.** bge-m3 [0.065, 0.332]; qwen [0.151, 0.593] |
 | Q3 | `noise` is degenerate too: low-structure text does not escape the lock | 0.55 | **Right.** 2/2 mode 2 |
-| Q4 | Each twin family's last-band Δ CI **includes 0** (twins collapse to the control). The interesting wrong is divergent | 0.55 | **Right.** Both families collapsed in both spaces |
-| Q5 | waterloo and reactor agree on Q4 (same last-band verdict in a given space) | 0.50 | **Right.** Both collapsed |
-| Q6 | F4 / F6 last-band verdicts agree across the two embedding spaces | 0.70 | **Right.** Separated / collapsed in both |
+| Q4 | Each twin family's last-band Δ CI **includes 0** (twins collapse to the control). The interesting wrong is divergent | 0.55 | **Right** on last-band NHST. Point Δ did not go to 0; see REPORT |
+| Q5 | waterloo and reactor agree on Q4 (same last-band verdict in a given space) | 0.50 | **Right** on last-band operational verdict only. Dynamics differ |
+| Q6 | F4 / F6 last-band verdicts agree across the two embedding spaces | 0.70 | **Right** on last-band sign |
 | Q7 | T=0.3 Q4 block fill stays within 0.10 of S4's W=4096 T=0.3 Q4 mean 0.903 | 0.55 | **Right on the cell mean** (domain_20 Q4 0.853). Seeds are not uniform |
 | Q8 | Late-chunk quoted text is still the reviewer / assistant register on ≥5 of 10 domain seeds | 0.65 | **Right.** ≥8 of 10 |
 
-Q2 and Q4 can both be right: domains stay apart, twins do not.
-Q2 right and Q4 wrong would mean even a one-fact flip occupies a
-distinguishable lock.
+Q2 and Q4 last-band signs can both be right: domains stay apart;
+twins are not last-band divergent. That is not sameness of locks.
+Q2 right and Q4 wrong would mean a one-fact flip is last-band
+divergent.
 
 ## 7. Budget and wall clock
 
