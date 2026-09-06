@@ -6,9 +6,9 @@ unverified citation in a submission is worse than a missing one.
 
 | Status | Meaning |
 | --- | --- |
-| `VERIFIED` | fetched, read, delta stated |
-| `LEAD` | identifier recorded during scoping, **not yet verified** — do not cite |
-| `REJECTED` | checked and not relevant / does not exist as described |
+| VERIFIED | fetched, read, delta stated |
+| unverified | identifier recorded during scoping, not yet verified — do not cite |
+| REJECTED | checked and not relevant / does not exist as described |
 
 **Verification pass completed 2026-08-30.** All seven scoping citations exist and
 say what the notes claimed — but three of them say *more* than the notes
