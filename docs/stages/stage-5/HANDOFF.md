@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (seventh resume 2026-09-06T01:01:00Z) |
+| STATUS | `RUNNING` (eighth resume 2026-09-06T02:01:00Z) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -112,6 +112,17 @@ finish reactor-stable + reactor-unstable ×2.
 
 Seven stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
 Spend ~$1.22 vs $8 refuse. Do not raise the ceiling.
+
+## Stall 2026-09-06T01:15 → 02:00 (same `ep_poll`)
+
+`reactor-stable` finished (22/24). Both `reactor-unstable` sat ~45
+min (s1 step 34 / 33401 tokens; s2 step 27 / 26583). Hourly at
+02:00: python PID 117545 in `ep_poll`. Killed that PID. Resumed the
+same `run_id`. New steps immediately, Alibaba, `reasoning_tokens=0`.
+Unique COMPLETED: **22/24**. Last pair is live.
+
+Eight stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
+Spend ~$1.30 vs $8 refuse. Do not raise the ceiling.
 
 ## Resume (same `run_id` only)
 
