@@ -41,7 +41,19 @@ steps: `war` s1 step 36, `love` s1 step 44; both trajectories COMPLETED.
 Do not mint a second generate `run_id`.
 
 Embed (started 2026-09-06T03:01:25Z):
-`s5-embed-lock-occupancy-20260906T030125Z-eab6e484`.
+`s5-embed-lock-occupancy-20260906T030125Z-eab6e484`. RouterAI `/embeddings`
+503 is an upstream 429 ("engine overloaded"); batches still land at $0.
+Do not mint a second embed `run_id`. If this process dies, inspect STATUS
+before starting anything else — a fresh `afterlife embed` would mint a
+sibling id. Geometry / occupancy assemble wait on COMPLETED.
+
+Degeneracy: `s5-degeneracy-20260906T030145Z-deb4c3bd`. **23/24**
+degenerate (threshold 0.083 / half of post-horizon chunks, plus late
+Jaccard 0.0122). The exception is `love` s1: looping_fraction 0.477
+(< 0.5) and late pairwise 0.010 (< 0.0122). Do not retune the bar.
+Keep that row in occupancy tables. S2.2 raw T=0.3 physics/surreal
+four are already degenerate in
+`artifacts/stage-2/mechanism/degeneracy/`.
 
 ## Stall 2026-09-05T18:13 → 19:01 (S4-style `ep_poll`)
 
