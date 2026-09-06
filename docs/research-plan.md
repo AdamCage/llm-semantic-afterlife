@@ -359,6 +359,10 @@ Jaccard 0.0122 unmoved.
 
 ### S7 — Manuscript `← current`
 
+Opened 2026-09-06. Plan:
+[`docs/stages/stage-7/PLAN.md`](stages/stage-7/PLAN.md).
+[ADR-0018](decisions/ADR-0018-s7-manuscript-from-closed-stages.md).
+
 Written from S0–S6 artifacts only, per `.cursor/rules/50-paper.mdc`.
 The paper reports what the stages established, including negatives:
 H1 unsupported on the instruct-under-P1 sample (S3); H5 absent on
@@ -367,6 +371,7 @@ one generator at `W=4096` T=0.3, holding in three embedding spaces
 (S5–S6), with gemini F4 an NHST whisker. Do not headline `n_macro`,
 call a lock a basin, or treat last-band collapsed as occupancy of
 one lock. Kitchen-sink S6 arms stay parked (ADR-0017).
+`paper/main.tex` waits for an explicit yes after the PLAN.
 
 Deliverables: manuscript, reproducibility appendix, artifact
 release (figures with tidy data, response cache for headline
