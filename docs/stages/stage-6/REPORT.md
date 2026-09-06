@@ -1,10 +1,9 @@
 # Stage 6 report — occupancy signs hold in a third embedding space
 
-**Status.** Computations complete 2026-09-06. Overall verdict: **PASS**.
+**Status.** Closed 2026-09-06. Overall verdict: **PASS**.
 Scientific review: **APPROVED WITH CHANGES**
-([`REVIEW.md`](REVIEW.md)). F4/F6 sidecar prose aligned with the
-intervals (physics s1 last-band dropout; gemini waterloo sign flip).
-Do not merge until the human authorises close.
+([`REVIEW.md`](REVIEW.md)). F4/F6 sidecar prose aligned
+(`ff6254f`). Human authorised `--no-ff` close.
 
 On the **same** 28 `or-qwen3-8b` P1 trajectories Stage 5 used
 (`W=4096`, T=0.3, 12 turnovers), the occupancy *signs* survive
@@ -263,5 +262,5 @@ No ceiling raise. No generate.
 4. **`n_macro` stays off the headline.**
 5. **Provider replication / chunk ablation / forced vs unforced**
    remain later estimates, not this opening.
-6. **S7 manuscript** still waits for scientific close of this
-   stage. Do not write `paper/main.tex` from this REPORT alone.
+6. **S7 manuscript** is the next stage: write from these artifacts.
+   Do not write `paper/main.tex` from this REPORT alone.

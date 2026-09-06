@@ -6,14 +6,16 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S5` closed APPROVED WITH CHANGES 2026-09-06: on
-`or-qwen3-8b` under P1 at `W=4096` T=0.3, ten domain seeds are
-ensemble-distinguishable at the last band in both spaces; twins
-are not last-band divergent (operational F6), and waterloo’s
-point Δ did not vanish. `S6` opens as robustness of that occupancy
-claim (third embedding space, same trajectories). `S4` closed
-APPROVED 2026-09-05 (`5c07751`). `S3` closed PARTIAL. Project
-ceiling **$200** (ADR-0013). Last revised 2026-09-06.
+**Status.** `S6` closed APPROVED WITH CHANGES 2026-09-06: on the
+same 28 `or-qwen3-8b` P1 trajectories at `W=4096` T=0.3, occupancy
+*signs* hold in `gemini-embed-001` (F4 last-band gap 0.150
+[0.029, 0.266], an NHST whisker; F6 last-band Δ CIs include 0).
+Sign agreement with both S5 spaces, not architecture-independence
+(gemini closed), not recovered semantic memory. Hosted **$0**.
+`S7` opens as the manuscript from S0–S6 artifacts. `S5` closed
+APPROVED WITH CHANGES (`9cb2845`). `S4` closed APPROVED
+(`5c07751`). `S3` closed PARTIAL. Project ceiling **$200**
+(ADR-0013). Last revised 2026-09-06.
 
 ---
 
@@ -114,8 +116,10 @@ tokens as the prompt and receive `B` new tokens; the window slides by `S = B`.
 This realises `X_{t+1} = Tail_W(X_t ⊕ Y_t)` exactly, over any API, and is our
 primary protocol. It is *not* identical to true sliding attention with KV-cache
 eviction — positions restart each step. We state this in the paper's
-limitations rather than hiding it, and Stage 6 quantifies the gap on a small
-local control.
+limitations rather than hiding it. A local P1 vs sliding control, and a
+stride-`S` sensitivity check, remain parked
+([ADR-0017](decisions/ADR-0017-s6-third-space-occupancy-robustness.md));
+they were not this Stage 6 opening.
 
 **The cost law.** Because the whole window is re-sent every `S` tokens, input
 tokens dominate:
@@ -130,8 +134,8 @@ prices, decides what is affordable. Consequences we adopt:
 
 - The pilot's primary window is `W = 8k`, not `32k`: same number of turnovers
   at one quarter the input cost.
-- `S` is a first-class protocol parameter with a documented sensitivity check
-  (Stage 6), not an implementation detail.
+- `S` is a first-class protocol parameter. A documented sensitivity
+  check remains parked (ADR-0017), not an S6 result.
 - Cheap models carry the wide matrix; expensive models are used where their
   architecture is the point (Glimmer's hybrid local/global attention).
 - RouterAI `service_tier: flex` where available (≈2× cheaper), recorded per run.
@@ -334,33 +338,39 @@ with ≥1 lock; love 1/2 kept. Twin last-band Δ CIs include 0
 never excluded 0. Distinguishable ≠ recovered semantic memory.
 Hosted **$1.3385**. `n_macro` stayed off the headline.
 
-### S6 — Robustness of the occupancy claim `← current`
+### S6 — Robustness of the occupancy claim `closed`
 
-Object: does the S5 occupancy *sign* (F4 last-band domain gap
-excludes 0; F6 twins not last-band divergent) hold in a third
-embedding space on the **same** 28 trajectories? Not a new
-generate. Not T=1.0 occupancy, not the T=1.5 residual, not 200
-seeds, not a second generator, not MSM.
+Closed 2026-09-06. Plan:
+[`docs/stages/stage-6/PLAN.md`](stages/stage-6/PLAN.md).
+Report: [`docs/stages/stage-6/REPORT.md`](stages/stage-6/REPORT.md).
+Review: [`docs/stages/stage-6/REVIEW.md`](stages/stage-6/REVIEW.md).
+[ADR-0017](decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
 
-Third space: `gemini-embed-001` (closed architecture, S0 dim 3072,
-usable). Agreement of all three answers the embedding-artifact
-objection; gemini alone cannot prove architecture-independence.
-Provider replication, chunk-size ablation, and forced vs unforced
-stay parked until a separate estimate and generate-yes.
+On the same 28 `or-qwen3-8b` P1 trajectories (`W=4096`, T=0.3),
+F4 last-band gap in `gemini-embed-001` is 0.150 [0.029, 0.266]
+(separated; NHST whisker on n=20, `n_within_pairs=9`; physics s1
+last-band `D_within` NaN). F6 last-band Δ CIs include 0 (all
+−0.012; reactor 0.008; waterloo −0.031). Waterloo gemini point Δ
+flipped sign (band 0 0.033 → band 12 −0.031). Sign agreement with
+`bge-m3` and `qwen3-embed-8b`, not architecture-independence
+(gemini closed), not recovered semantic memory, not occupancy of
+one lock. No new generate. Hosted **$0.00**. Thresholds 0.083 /
+Jaccard 0.0122 unmoved.
 
-**Exit criteria.** F4 and F6 last-band *signs* stated for the
-third space, or the disagreement scoped as a limitation. Degeneracy
-threshold unchanged. No new generate in this opening.
+### S7 — Manuscript `← current`
 
-**Budget.** Embed-only YAML refuse (see stage PLAN). The $40
-master-plan sketch is a ceiling for later S6 arms, not this
-opening’s spend.
+Written from S0–S6 artifacts only, per `.cursor/rules/50-paper.mdc`.
+The paper reports what the stages established, including negatives:
+H1 unsupported on the instruct-under-P1 sample (S3); H5 absent on
+the reduced grid (S4); occupancy *signs* (not recovered memory) on
+one generator at `W=4096` T=0.3, holding in three embedding spaces
+(S5–S6), with gemini F4 an NHST whisker. Do not headline `n_macro`,
+call a lock a basin, or treat last-band collapsed as occupancy of
+one lock. Kitchen-sink S6 arms stay parked (ADR-0017).
 
-### S7 — Manuscript
-
-Written from artifacts only, per `.cursor/rules/50-paper.mdc`. Deliverables:
-manuscript, reproducibility appendix, artifact release (figures with tidy data,
-response cache for headline figures, trajectory bundles with provenance).
+Deliverables: manuscript, reproducibility appendix, artifact
+release (figures with tidy data, response cache for headline
+figures, trajectory bundles with provenance).
 
 **Budget.** $0 API.
 
@@ -386,7 +396,7 @@ Every generator runs through **`raw_completion`** (`POST /completions`), which S
 found works on all four despite no endpoint advertising it, and which adds 1–8
 template tokens against 27–107 for chat. `forcing = unforced` throughout: no
 system prompt, no instruction text. The `chat_instructed` variant is retained as
-a Stage 6 contrast condition, never pooled with unforced data.
+a later contrast, never pooled with unforced data. It was not run in S6.
 
 Two protocol facts follow from S0 and apply to every model:
 
@@ -440,13 +450,14 @@ These come from the traps identified during project scoping and are enforced by
 ## 8. Budget and risk summary
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
-was $50 in ADR-0004). Ledger after Stage 5 generate: **$16.34**.
-Stage 5 hosted **$1.3385** against the authorised $1.06 fill=1
-print / $8 YAML refuse
+was $50 in ADR-0004). Ledger after Stage 6: **$16.34**. Stage 6
+hosted **$0.00** (gemini embed; YAML refuse $2). Stage 5 hosted
+**$1.3385** against the authorised $1.06 fill=1 print / $8 YAML
+refuse
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
-S5 closed 2026-09-06. Review APPROVED WITH CHANGES; F6 last-band
-scoring stands, “twins collapse” as a dynamical claim does not.
-Hosted **$1.3385**. Human authorised `--no-ff` close.
+S6 closed 2026-09-06. Review APPROVED WITH CHANGES; occupancy
+*signs* hold in `gemini-embed-001`; F4 lower bound is an NHST
+whisker. Human authorised `--no-ff` close.
 Full risk register:
 [`risks.md`](risks.md).
 

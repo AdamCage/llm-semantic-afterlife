@@ -2,7 +2,7 @@
 
 Operational detail. The contract is [`PLAN.md`](PLAN.md).
 
-**Branch:** `cursor/stage-6-6dce` (from `main` `9cb2845`).
+**Branch:** `cursor/stage-6-6dce` closed `--no-ff` into `main` 2026-09-06.
 Do not write `paper/main.tex`. Do not raise ceilings. Do **not**
 `afterlife generate` with `configs/stages/stage6_third_space.yaml`.
 That YAML is embed-only in intent; generate would mint a new
@@ -10,7 +10,7 @@ That YAML is embed-only in intent; generate would mint a new
 
 **Scientific review 2026-09-06: APPROVED WITH CHANGES.** F4/F6
 sidecar prose aligned (physics s1; gemini waterloo sign flip).
-Do not merge until the human authorises `--no-ff` close.
+Human authorised `--no-ff` close.
 
 **Object.** Third-space robustness of S5 occupancy signs. Not T=1.0.
 Not T=1.5. Not 200 seeds. Not a second generator. Not MSM.
@@ -72,6 +72,6 @@ assemble keeps raw T=0.3 physics/surreal only.
 - Move 0.083 / 0.0122
 - Pool twins into domain `D_between`
 - Call last-band collapsed “one lock”
-- Open provider replication / chunk ablation / forced / Gemma
-- Merge without an explicit human `--no-ff` close
-- Write `paper/main.tex`
+- Open T=1.0 occupancy, T=1.5, 200 seeds, a second generator, or MSM
+  because the third space agreed
+- Write `paper/main.tex` from this stage's REPORT alone

@@ -195,14 +195,14 @@ falsifies its own hypothesis and says so is a stage well spent.
 
 | Stage | Question | Status |
 | --- | --- | --- |
-| **S0** | Can this be run reproducibly, at what cost, and what do the providers actually do? | in progress |
-| S1 | Does the phenomenon exist over ~32 window turnovers? | planned |
-| S2 | Semantic half-life and diffusion scaling | planned |
-| S3 | Metastability, Markov state models, representation robustness | planned |
-| S4 | `temperature × W` phase portrait | planned |
-| S5 | Basins of attraction; sensitivity to initial conditions | planned |
-| S6 | Robustness, ablations, cross-provider replication | planned |
-| S7 | Manuscript | planned |
+| S0 | Can this be run reproducibly, at what cost, and what do the providers actually do? | closed |
+| S1 | Does the phenomenon exist over ~32 window turnovers? | closed PARTIAL (94% freeze) |
+| S2 | Is convergence a property of the model or the protocol? | closed PARTIAL |
+| S3 | Metastability, Markov state models, representation robustness | closed PARTIAL (`n_macro` unsupported) |
+| S4 | `temperature × W` phase portrait | closed APPROVED (T≤1.0 lock; H5 absent) |
+| S5 | Lock occupancy vs seed at `W=4096` T=0.3 | closed APPROVED WITH CHANGES |
+| S6 | Do occupancy *signs* hold in a third embedding space? | closed APPROVED WITH CHANGES |
+| **S7** | Manuscript from S0–S6 artifacts | current |
 
 ## Novelty, stated honestly
 

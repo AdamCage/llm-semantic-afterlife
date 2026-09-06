@@ -8,7 +8,7 @@ excludes 0; F6 twins not last-band divergent) hold in
 `gemini-embed-001` on the **same** 28 trajectories?
 
 Scientific review: **APPROVED WITH CHANGES** ([`REVIEW.md`](REVIEW.md)).
-Executor aligned sidecar prose. Waiting on human close.
+Closed `--no-ff` 2026-09-06.
 
 **No generate.** Embed authorised and executed 2026-09-06.
 

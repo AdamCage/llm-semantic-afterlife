@@ -1,11 +1,11 @@
 # Stage 6 — Does the occupancy sign survive a third embedding space?
 
-**Status.** Opened 2026-09-06 on branch `cursor/stage-6-6dce`, after
+**Status.** Closed 2026-09-06 on branch `cursor/stage-6-6dce`, after
 Stage 5 closed APPROVED WITH CHANGES (`9cb2845`). Decision:
 [ADR-0017](../../decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
 No generate. Embed **authorised and executed 2026-09-06**. REPORT
 written. Scientific review: **APPROVED WITH CHANGES**. Sidecar prose
-aligned; waiting on human `--no-ff` close.
+aligned. Human authorised `--no-ff` close.
 
 ## 1. Question
 
