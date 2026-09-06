@@ -1,0 +1,14 @@
+{
+  "name": "last_band_distance_matrix_bge_m3_interactive",
+  "caption": "Interactive companion to the bge-m3 last-band domain occupancy matrix. Same tidy source as the print heatmap.",
+  "alt_text": "Interactive companion to the bge-m3 last-band domain occupancy matrix. Same tidy source as the print heatmap.",
+  "limitations": "Illustration of the same numbers as the print matrix. Do not read a cluster count from the interactive layout.",
+  "run_ids": [
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T03:26:27+00:00"
+}

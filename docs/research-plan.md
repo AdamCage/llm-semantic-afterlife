@@ -6,12 +6,14 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S4` scientific review **APPROVED** 2026-09-05, not
-merged: on `or-qwen3-8b` under P1, T≤1.0 is 4/4 lock at both
-`W ∈ {4096, 8192}`; T=1.5 is the only clean-`α` band and is
-subdiffusive; H5 absent on this grid (ADR-0014, ADR-0015). `S3`
-closed PARTIAL. Project ceiling **$200** (ADR-0013). Last revised
-2026-09-05.
+**Status.** `S5` closed APPROVED WITH CHANGES 2026-09-06: on
+`or-qwen3-8b` under P1 at `W=4096` T=0.3, ten domain seeds are
+ensemble-distinguishable at the last band in both spaces; twins
+are not last-band divergent (operational F6), and waterloo’s
+point Δ did not vanish. `S6` opens as robustness of that occupancy
+claim (third embedding space, same trajectories). `S4` closed
+APPROVED 2026-09-05 (`5c07751`). `S3` closed PARTIAL. Project
+ceiling **$200** (ADR-0013). Last revised 2026-09-06.
 
 ---
 
@@ -300,12 +302,12 @@ H1 unsupported on this instruct-under-P1 sample. Hosted spend $0.00.
 
 **Budget.** ≤ $10 declared; **$0.00** actual this opening.
 
-### S4 — Control parameters: a reduced `temperature × W` grid `← current`
+### S4 — Control parameters: a reduced `temperature × W` grid `✓ closed 2026-09-05`
 
 Computations finished 2026-09-05. Report:
 [`docs/stages/stage-4/REPORT.md`](stages/stage-4/REPORT.md). Review:
 [`docs/stages/stage-4/REVIEW.md`](stages/stage-4/REVIEW.md)
-(**APPROVED**; merge withheld).
+(**APPROVED**; merged `--no-ff` as `5c07751`).
 
 On `or-qwen3-8b` under P1 raw, 12 turnovers: T≤1.0 is 4/4 degenerate
 at both `W ∈ {4096, 8192}`. T=1.5 is the only defined clean-`α`
@@ -314,41 +316,45 @@ S2.2 raw eight reused. Hosted spend **$3.44** against $3.33
 authorised / $14 YAML. [ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md),
 [ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md).
 
-### S5 — Basins of attraction and sensitivity to initial conditions
+### S5 — Lock occupancy versus seed `closed`
 
-Not opened. After Stage 4 the phrase "best-characterised operating
-point" is no longer T=1.0: that point is a textual lock at both W
-(ADR-0015). The S5 PLAN must pick, before any generate, either
-**(a)** lock occupancy vs seed or **(b)** the T=1.5 residual (the
-only band with `n_clean ≥ 2`, still reviewer-register). Twin-seed
-divergence remains in scope once the object is named.
+Closed 2026-09-06. Plan:
+[`docs/stages/stage-5/PLAN.md`](stages/stage-5/PLAN.md).
+Report: [`docs/stages/stage-5/REPORT.md`](stages/stage-5/REPORT.md).
+Review: [`docs/stages/stage-5/REVIEW.md`](stages/stage-5/REVIEW.md).
+[ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md),
+[ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md).
 
-Many seeds (target 200+ per model) at the *chosen* object ⇒
-empirical occupancy. Twin-seed experiment: minimally different seeds
-(*Napoleon won* vs. *lost at Waterloo*), tracking
-`D(t) = ‖z_t^A − z_t^B‖` for divergence, convergence, or
-metastable switching.
+On `or-qwen3-8b` under P1 at `W=4096` T=0.3, ten `seed_bank_v1`
+domain seeds are ensemble-distinguishable at the last band
+(`bge-m3` gap 0.201 [0.065, 0.332]; `qwen3-embed-8b` 0.390
+[0.151, 0.593]). Domain lock rate 19/20 trajectories, 10/10 seeds
+with ≥1 lock; love 1/2 kept. Twin last-band Δ CIs include 0
+(operational collapsed). Waterloo point Δ stayed ~0.05; reactor
+never excluded 0. Distinguishable ≠ recovered semantic memory.
+Hosted **$1.3385**. `n_macro` stayed off the headline.
 
-**Exit criteria.** Basin occupancy with CI per model; twin-seed divergence
-classified with a stated statistical criterion against a same-seed
-different-stochastic-seed control.
+### S6 — Robustness of the occupancy claim `← current`
 
-**Budget.** ≤ $120 (requires approval).
+Object: does the S5 occupancy *sign* (F4 last-band domain gap
+excludes 0; F6 twins not last-band divergent) hold in a third
+embedding space on the **same** 28 trajectories? Not a new
+generate. Not T=1.0 occupancy, not the T=1.5 residual, not 200
+seeds, not a second generator, not MSM.
 
-### S6 — Robustness, ablations, independent replication
+Third space: `gemini-embed-001` (closed architecture, S0 dim 3072,
+usable). Agreement of all three answers the embedding-artifact
+objection; gemini alone cannot prove architecture-independence.
+Provider replication, chunk-size ablation, and forced vs unforced
+stay parked until a separate estimate and generate-yes.
 
-Third embedding space as a sanity check; `chunk ∈ {512, 1024, 2048}`;
-PCA dimension sensitivity; stride `S` sensitivity; `system prompt` present vs.
-absent (*forced* vs. *unforced*); cross-provider replication of headline results
-(RouterAI vs. OpenRouter); a small local CPU control run to show the effect
-does not depend on router infrastructure; and the re-prompt vs. true-sliding
-comparison at small `W` insofar as hardware allows.
+**Exit criteria.** F4 and F6 last-band *signs* stated for the
+third space, or the disagreement scoped as a limitation. Degeneracy
+threshold unchanged. No new generate in this opening.
 
-**Exit criteria.** Every headline result reproduced under at least two
-representation spaces and one alternative provider, or the failure documented as
-a limitation with its scope stated.
-
-**Budget.** ≤ $40.
+**Budget.** Embed-only YAML refuse (see stage PLAN). The $40
+master-plan sketch is a ceiling for later S6 arms, not this
+opening’s spend.
 
 ### S7 — Manuscript
 
@@ -434,12 +440,14 @@ These come from the traps identified during project scoping and are enforced by
 ## 8. Budget and risk summary
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
-was $50 in ADR-0004). Ledger after Stage 4: **$15.00**. Stage 4 hosted
-**$3.44** against the authorised $3.33 generate estimate / $14 YAML
-refuse ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
-S5 is **not** opened: it still needs its own PLAN, estimate, and
-generate-yes ([ADR-0015](decisions/ADR-0015-s5-operating-point-after-s4.md)).
-The $200 ceiling is not a generate-yes for S5. Full risk register:
+was $50 in ADR-0004). Ledger after Stage 5 generate: **$16.34**.
+Stage 5 hosted **$1.3385** against the authorised $1.06 fill=1
+print / $8 YAML refuse
+([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
+S5 closed 2026-09-06. Review APPROVED WITH CHANGES; F6 last-band
+scoring stands, “twins collapse” as a dynamical claim does not.
+Hosted **$1.3385**. Human authorised `--no-ff` close.
+Full risk register:
 [`risks.md`](risks.md).
 
 The three risks that would most change the project:

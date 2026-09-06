@@ -45,6 +45,13 @@ from .separation import (
     compute_separation,
     trajectories_from_frame,
 )
+from .twins import (
+    TwinParams,
+    TwinResult,
+    compute_twin_contrast,
+    twin_pairs_from_bank,
+    twin_pairwise_distances,
+)
 
 __all__ = [
     "DegeneracyParams",
@@ -57,11 +64,14 @@ __all__ = [
     "SeparationResult",
     "Trajectory",
     "TrajectorySeries",
+    "TwinParams",
+    "TwinResult",
     "aggregate_msd",
     "compute_degeneracy",
     "compute_dynamics",
     "compute_geometry",
     "compute_separation",
+    "compute_twin_contrast",
     "filter_eligible",
     "fit_msd_exponent",
     "grouped_rates",
@@ -78,5 +88,7 @@ __all__ = [
     "stationary_distribution",
     "trajectories_from_frame",
     "transition_matrix",
+    "twin_pairs_from_bank",
+    "twin_pairwise_distances",
     "vamp_fit",
 ]

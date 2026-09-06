@@ -1,0 +1,14 @@
+{
+  "name": "degeneracy_verdicts",
+  "caption": "Per-trajectory degeneracy diagnostics. A chunk counts as looping when its 3-gram repetition rate exceeds 0.083, the 99th percentile of natural English prose chunked by the same tokenizer at the same size. A trajectory counts as degenerate when at least 50% of its post-horizon chunks are looping.",
+  "alt_text": "Per-trajectory degeneracy diagnostics. A chunk counts as looping when its 3-gram repetition rate exceeds 0.083, the 99th percentile of natural English prose chunked by the same tokenizer at the same size. A trajectory counts as degenerate when at least 50% of its post-horizon chunks are looping.",
+  "limitations": "Degeneracy is a surface-form measure. A trajectory can be lexically varied and still semantically static, which is what the frozen-embedding check and the geometry pass are for.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd"
+  ],
+  "git_sha": "79a7bb136f2b1cb5dda513df472d88c39d629e40",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T03:01:46+00:00"
+}

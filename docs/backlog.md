@@ -3,6 +3,19 @@
 Ideas that are good but out of scope for the current stage. Parking an idea here
 is how we keep stages from expanding. Nothing here is a commitment.
 
+## Parked from the Stage 5 opening (ADR-0016)
+
+- **Object (b): T=1.5 residual.** Only clean-`α` band; subdiffusive;
+  still the assistant register; `W=8192` looping CI [0, 1]. Own
+  question, own PLAN.
+- **T=1.0 lock occupancy.** A lock with a different stop/fill
+  mechanism than T=0.3. Not the semantic operating point.
+- **seed_bank_v2 (200 continuation seeds).** Occupancy on v1 first.
+  Extending the bank is a stage, not a silent YAML edit.
+- **W=8192 occupancy.** S4 found no lock-rate lever; input scales
+  as `T·W/S`.
+- **Second generator on the lock.** Same reason as ADR-0014.
+
 ## Parked from the Stage 4 opening (ADR-0014)
 
 Not in the reduced `or-qwen3-8b` grid. Adding any of these is a new

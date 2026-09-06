@@ -1,0 +1,17 @@
+{
+  "name": "protocol_by_quarter",
+  "caption": "Block fill and stop rate by quarter for the S5 lock. Scopes: s5_scientific_28 (10 domains + 2 twin pairs), s5_1_new_24 (generated this stage), domain_20 (F4 sample). Quarters are even step bins.",
+  "alt_text": "Block fill and stop rate by quarter for the S5 lock. Scopes: s5_scientific_28 (10 domains + 2 twin pairs), s5_1_new_24 (generated this stage), domain_20 (F4 sample). Quarters are even step bins.",
+  "limitations": "A run-level mean is not the Q7 object; use quarter 4.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T03:27:10+00:00"
+}

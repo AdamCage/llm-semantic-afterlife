@@ -1,0 +1,59 @@
+# ===========================================================================
+# S5.1 — lock occupancy vs seed on or-qwen3-8b
+# ---------------------------------------------------------------------------
+# Object (a) of ADR-0015 / ADR-0016. Not T=1.0-as-basin. Not the T=1.5 residual.
+# Operating point: W=4096, T=0.3, 12 turnovers, P1 raw_completion.
+#
+# Reuse, do not regenerate, the four S2.2 raw cells at this point:
+#   s2-mechanism-20260901T071519Z-dfbb173a
+#   or-qwen3-8b__W4096__T0p3__{physics,surreal}__s{1,2}
+# This config is the twelve remaining seed_bank_v1 seeds only.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s5
+name: lock-occupancy
+description: >-
+  Lock occupancy versus seed at the S4-characterised lock (W=4096, T=0.3)
+  on or-qwen3-8b, seed_bank_v1 minus the reused physics/surreal pair, plus
+  both twin pairs.
+
+generators:
+  - or-qwen3-8b
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds:
+  - finance
+  - biology
+  - war
+  - love
+  - recipe
+  - programming
+  - philosophy
+  - noise
+  - waterloo-won
+  - waterloo-lost
+  - reactor-stable
+  - reactor-unstable
+
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+# afterlife estimate 2026-09-05: fill=1 printed below. S4 T=0.3 Q4 fill
+# ~0.90 lowers input. $8 is the refuse, not a spend target.
+budget_usd: 8.0

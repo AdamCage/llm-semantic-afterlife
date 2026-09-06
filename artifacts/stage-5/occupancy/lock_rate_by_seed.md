@@ -1,0 +1,20 @@
+**lock_rate_by_seed** — Degenerate count per seed as k/n. Domain overall is 20 trajectories; domain seed-hit is how many of the ten domain seeds have at least one degenerate replicate. n=2 CIs are not reported as if they were uncertainty.
+
+| semantic_seed             | role            |   n |   n_degenerate | k_over_n   |   fraction |
+|:--------------------------|:----------------|----:|---------------:|:-----------|-----------:|
+| biology                   | domain          |   2 |              2 | 2/2        |       1    |
+| finance                   | domain          |   2 |              2 | 2/2        |       1    |
+| love                      | domain          |   2 |              1 | 1/2        |       0.5  |
+| noise                     | domain          |   2 |              2 | 2/2        |       1    |
+| philosophy                | domain          |   2 |              2 | 2/2        |       1    |
+| physics                   | domain          |   2 |              2 | 2/2        |       1    |
+| programming               | domain          |   2 |              2 | 2/2        |       1    |
+| reactor-stable            | twin            |   2 |              2 | 2/2        |       1    |
+| reactor-unstable          | twin            |   2 |              2 | 2/2        |       1    |
+| recipe                    | domain          |   2 |              2 | 2/2        |       1    |
+| surreal                   | domain          |   2 |              2 | 2/2        |       1    |
+| war                       | domain          |   2 |              2 | 2/2        |       1    |
+| waterloo-lost             | twin            |   2 |              2 | 2/2        |       1    |
+| waterloo-won              | twin            |   2 |              2 | 2/2        |       1    |
+| _domain_all               | domain_overall  |  20 |             19 | 19/20      |       0.95 |
+| _domain_seeds_with_a_lock | domain_seed_hit |  10 |             10 | 10/10      |       1    |
