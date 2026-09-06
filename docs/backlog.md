@@ -3,7 +3,17 @@
 Ideas that are good but out of scope for the current stage. Parking an idea here
 is how we keep stages from expanding. Nothing here is a commitment.
 
+## Parked from the Stage 6 opening (ADR-0017)
+
+Kitchen-sink S6 sketch, not this opening:
+
+- **Provider replication** of the occupancy claim (new generate).
+- **Chunk-size ablation** `{512, 2048}` (re-chunk + re-embed).
+- **Stride `S` / forced vs unforced / local CPU / P1 vs sliding.**
+- **PCA dimension / MSM / `n_macro`.** Off the occupancy headline.
+
 ## Parked from the Stage 5 opening (ADR-0016)
+
 
 - **Object (b): T=1.5 residual.** Only clean-`α` band; subdiffusive;
   still the assistant register; `W=8192` looping CI [0, 1]. Own

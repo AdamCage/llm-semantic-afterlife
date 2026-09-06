@@ -1,0 +1,61 @@
+# ===========================================================================
+# S6.1 — third embedding space on the S5 occupancy grid (ADR-0017)
+# ---------------------------------------------------------------------------
+# Embed-only. Do NOT `afterlife generate` with this config: that would mint a
+# new generate run_id and re-spend S5. Consumed by:
+#   afterlife embed --config this --run s5-lock-occupancy-20260905T164327Z-6780902f
+#   afterlife embed --config this --run s2-mechanism-20260901T071519Z-dfbb173a
+# YAML seed list documents the S5.1 source; embed reads chunks from --run,
+# not this list. Occupancy assemble still filters S2.2 to raw T=0.3
+# physics/surreal four.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s6
+name: third-space
+description: >-
+  Embed-only third representation (gemini-embed-001) of the S5 occupancy
+  trajectories. No generate. Robustness of F4/F6 last-band signs, not a
+  new occupancy map.
+
+generators:
+  - or-qwen3-8b
+
+embeddings: [gemini-embed-001]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers; matches S5.1 / S2.2
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds:
+  - finance
+  - biology
+  - war
+  - love
+  - recipe
+  - programming
+  - philosophy
+  - noise
+  - waterloo-won
+  - waterloo-lost
+  - reactor-stable
+  - reactor-unstable
+
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+# Embed refuse, not a generate target. `afterlife estimate` still prints a
+# generate forecast because generators are listed; that print is not authorised.
+# Hand embed forecast: ~2.0M tokens (S5.1 1152 chunks + S2.2 ~16 traj).
+# S0 gemini cost_usd was 0 (missing price field). YAML $2 is the refuse.
+budget_usd: 2.0
