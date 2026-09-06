@@ -15,8 +15,9 @@ independence.
 
 **Gate.** `afterlife review --stage s7` is expected to FAIL
 `runs.complete` (no generate directory). That FAIL is not a
-missing experiment. Do not request scientific review by pretending
-the generate-gate is green.
+missing experiment. Scientific review of the *manuscript* is
+[`REVIEW-BRIEF.md`](REVIEW-BRIEF.md): judge `paper/main.tex`, do
+not mint `runs/s7`.
 
 ## Do not
 
@@ -29,3 +30,5 @@ the generate-gate is green.
 - Redraw figures; include from `artifacts/`
 - Open T=1.0 / T=1.5 / 200 seeds / a second generator / MSM
 - Merge S7 without scientific review
+
+Scientific review assignment: [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).
