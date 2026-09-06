@@ -2,7 +2,7 @@
   "name": "domain_separation_vs_turnover",
   "caption": "Domain last-band occupancy contrast: D_between − D_within among the ten domain seeds of seed_bank_v1, per embedding space, with a 95% trajectory-bootstrap CI. Twin pairs are excluded from this figure. Physics/surreal are the reused S2.2 raw T=0.3 four.",
   "alt_text": "Domain last-band occupancy contrast: D_between − D_within among the ten domain seeds of seed_bank_v1, per embedding space, with a 95% trajectory-bootstrap CI. Twin pairs are excluded from this figure. Physics/surreal are the reused S2.2 raw T=0.3 four.",
-  "limitations": "A gap whose CI excludes 0 means the seed still shapes the locked trajectory. It is not recovery of the prompt and not a semantic basin. Degenerate rows are kept: the lock is the sample.",
+  "limitations": "The pre-registered separated verdict is a last-band CI that excludes 0, not a thick robustness margin and not a recovered semantic state. gemini-embed-001 last-band gap 0.150 [0.029, 0.266] is an NHST whisker on n=20 with n_within_pairs=9: reused S2.2 physics s1 has 47 chunks vs 48 on its pair, so the last-band D_within diagonal is NaN (n_chunk_pairs=0). That lower bound is closer to 0 than bge-m3's 0.065. gemini-embed-001 is closed; three-space sign agreement answers an embedding-artifact objection, not architecture-independence from gemini alone.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

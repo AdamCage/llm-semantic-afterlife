@@ -1,17 +1,23 @@
 # Stage 6 report — occupancy signs hold in a third embedding space
 
 **Status.** Computations complete 2026-09-06. Overall verdict: **PASS**.
-Awaiting scientific review. Do not merge until the supervisor signs.
+Scientific review: **APPROVED WITH CHANGES**
+([`REVIEW.md`](REVIEW.md)). F4/F6 sidecar prose aligned with the
+intervals (physics s1 last-band dropout; gemini waterloo sign flip).
+Do not merge until the human authorises close.
 
 On the **same** 28 `or-qwen3-8b` P1 trajectories Stage 5 used
 (`W=4096`, T=0.3, 12 turnovers), the occupancy *signs* survive
-`gemini-embed-001`: the ten-domain last-band gap CI excludes 0,
-and twin last-band Δ CIs include 0 (operational collapsed). That
-is robustness against an embedding-artifact objection. It is not
-architecture-independence: gemini is a closed model. It is not
-recovered semantic memory. A last-band CI that includes 0 is not
-occupancy of one lock. A lock is not a semantic basin. `n_macro`
-is not an order parameter. No new generate `run_id` was minted.
+`gemini-embed-001` under the pre-registered last-band rules: the
+ten-domain gap CI excludes 0, and twin last-band Δ CIs include 0
+(operational collapsed). Gemini F4 lower bound is 0.029 on n=20
+with `n_within_pairs=9` — an NHST whisker, not a thick robustness
+margin. That is sign agreement against an embedding-artifact
+objection. It is not architecture-independence: gemini is a closed
+model. It is not recovered semantic memory. A last-band CI that
+includes 0 is not occupancy of one lock. A lock is not a semantic
+basin. `n_macro` is not an order parameter. No new generate `run_id`
+was minted.
 
 Branch: `cursor/stage-6-6dce`. Plan: [`PLAN.md`](PLAN.md).
 Decision: [ADR-0017](../../decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
@@ -48,8 +54,9 @@ Occupancy assemble: [`artifacts/stage-6/occupancy/`](../../../artifacts/stage-6/
 | F9 | No basin / `n_macro` / H1 / generate | **PASS** | No new generate. This report does not call a lock a basin or headline MSM |
 | F10 | Spend ≤ $2 | **PASS** | Stage 6 hosted **$0.0000**. YAML refuse $2. 72 + 48 ledger embedding charges, `cost_usd=0` |
 
-Agreement of sign across three spaces is a robustness result, not
-a recovered semantic state.
+Agreement of sign across three spaces is sign agreement against an
+embedding-artifact objection, not a recovered semantic state and
+not a thick robustness margin.
 
 ---
 
@@ -72,7 +79,13 @@ Ten domain seeds only. Twin pairs excluded.
 Gemini agrees on **sign** and is closer in level to `bge-m3` than
 to `qwen3-embed-8b`. The gap is still an ensemble, not ten point
 attractors: gemini `D_within` rose from 0.098 (band 0) to 0.200
-(band 12) while `D_between` stayed ~0.35.
+(band 12) while `D_between` stayed ~0.35. The last-band CI
+[0.029, 0.266] is an NHST whisker on n=20, `n_within_pairs=9`.
+Reused S2.2 `physics` s1 has 47 chunks vs 48 on its pair, so its
+last-band matrix diagonal is NaN (`n_chunk_pairs=0`); F4 last-band
+`n_between_pairs=162`. Named, not regenerated. That lower bound is
+closer to 0 than `bge-m3`'s 0.065. Q1 remains Right against the
+pre-registered rule; it is not a thick robustness margin.
 [`domain_gap_three_spaces`](../../../artifacts/stage-6/occupancy/domain_gap_three_spaces.meta.json)
 is the comparison panel. PCA panels are illustrations only.
 
@@ -157,14 +170,17 @@ assistant register. Stage 6 did not regenerate these strings.
 | Q2 | Gemini last-band twin Δ CI includes 0 for reactor | 0.55 | **Right.** 0.008 [−0.071, 0.087]; never excluded 0, including band 0 |
 | Q3 | Gemini last-band twin Δ CI includes 0 for waterloo | 0.50 | **Right** on the last-band NHST rule. Point Δ = −0.031, not a demonstrated zero |
 | Q4 | Gemini F4/F6 last-band *signs* agree with both S5 spaces (Q1–Q3 jointly) | 0.50 | **Right.** Separated / not-divergent in all three spaces |
-| Q5 | Gemini gap *level* differs from both S5 spaces by > 0.05 | 0.55 | **Right.** vs bge-m3 Δ=0.051; vs qwen3-embed-8b Δ=0.240 |
+| Q5 | Gemini gap *level* differs from both S5 spaces by > 0.05 | 0.55 | **Right** arithmetically. vs bge-m3 Δ=0.0509 against an uncalibrated `> 0.05`; vs qwen3-embed-8b Δ=0.240 is the real level shift. Not “gemini is not a copy of bge” |
 | Q6 | Waterloo gemini point Δ at band 12 is within 0.10 of band 0 | 0.40 | **Right.** Band 0 = 0.033, band 12 = −0.031, \|Δ\| = 0.064. Sign flipped; contrast did not vanish to a proven zero |
 | Q7 | Embed ledger cost is $0 | 0.60 | **Right.** `$0.0000` on both gemini runs |
 | Q8 | No new generate `run_id` is minted | 0.90 | **Right.** Two `s6-embed-third-space-*` ids only |
 
-Q1 being right is the robustness claim. Q5 being right is why
-gemini cannot be treated as a copy of either S5 space. Q6 being
-right on the 0.10 band does not make waterloo “the same lock.”
+Q1 being right is the pre-registered sign, not a thick robustness
+margin (gemini lower bound 0.029; physics s1 drops out of last-band
+`D_within`). Q5 being Right on `> 0.05` vs bge is a 0.0009 whisker;
+vs qwen 0.240 is why gemini cannot be treated as a copy of that
+space. Q6 being right on the 0.10 band does not make waterloo
+“the same lock.”
 
 ---
 
@@ -233,10 +249,11 @@ No ceiling raise. No generate.
 
 ## 7. Implications for the plan
 
-1. **The S5 occupancy sign is not a two-space accident.** Gemini
-   F4 excludes 0; gemini F6 last-band CIs include 0. Report that as
-   robustness, not as a semantic state, and not as
-   architecture-independence.
+1. **The S5 occupancy *sign* is not a two-space accident.** Gemini
+   F4 excludes 0 under the pre-registered rule; gemini F6 last-band
+   CIs include 0. Report that as sign agreement, not as a thick
+   robustness margin, not as a semantic state, and not as
+   architecture-independence. Name the 0.029 whisker and physics s1.
 2. **Do not open T=1.0 occupancy, T=1.5, 200 seeds, a second
    generator, or MSM** because the third space agreed. Those arms
    stay parked (ADR-0017).

@@ -71,6 +71,32 @@ from semantic_afterlife.viz.theme import PALETTE, ROLE_COLORS, apply_seaborn_the
 S6_GEMINI_S51 = occupancy_embed_runs("gemini-embed-001")[0]
 S6_GEMINI_S22 = occupancy_embed_runs("gemini-embed-001")[1]
 
+# Scientific-review limitations. A CI excluding 0 is the pre-registered
+# F4 rule, not a thick robustness margin. Last-band F6 CI∋0 is not
+# occupancy of one lock. Do not narrate the S5 bge-m3 waterloo point-Δ
+# story as gemini's.
+F4_LIMITATIONS = (
+    "The pre-registered separated verdict is a last-band CI that excludes 0, "
+    "not a thick robustness margin and not a recovered semantic state. "
+    "gemini-embed-001 last-band gap 0.150 [0.029, 0.266] is an NHST whisker "
+    "on n=20 with n_within_pairs=9: reused S2.2 physics s1 has 47 chunks vs "
+    "48 on its pair, so the last-band D_within diagonal is NaN "
+    "(n_chunk_pairs=0). That lower bound is closer to 0 than bge-m3's 0.065. "
+    "gemini-embed-001 is closed; three-space sign agreement answers an "
+    "embedding-artifact objection, not architecture-independence from gemini "
+    "alone."
+)
+F6_LIMITATIONS = (
+    "n=2 last-band pairs per family. A last-band CI that includes 0 is the "
+    "operational collapsed verdict, not occupancy of one lock. In "
+    "gemini-embed-001, waterloo Δ is 0.033 [0.001, 0.065] at band 0 "
+    "(divergent on a 0.001 whisker, seed still in the window) and −0.031 "
+    "[−0.286, 0.223] at band 12 (sign flip; CI includes 0). That is not a "
+    "vanished contrast. Gemini reactor never excluded 0, including at band 0. "
+    "Do not narrate the S5 bge-m3 waterloo point-Δ≈0.05 story as gemini's. "
+    "Extra replicates would be required to claim sameness. gemini is closed."
+)
+
 
 def last_band_gap_figure(
     last_band: pd.DataFrame, *, run_ids: list[str], git_sha: str | None
@@ -97,17 +123,12 @@ def last_band_gap_figure(
         caption=(
             "F4 last-band domain gap with a 95% trajectory-bootstrap CI in "
             "bge-m3, qwen3-embed-8b, and gemini-embed-001 on the same 28 "
-            "occupancy trajectories. Sign agreement is the Stage 6 robustness "
-            "claim; the level may differ. Twin pairs are excluded."
+            "occupancy trajectories. Pre-registered sign is CI excludes 0; "
+            "gemini's lower bound is 0.029. Twin pairs are excluded."
         ),
         run_ids=run_ids,
         git_sha=git_sha,
-        limitations=(
-            "gemini-embed-001 is a closed architecture (dim 3072). Agreement "
-            "of three spaces answers an embedding-artifact objection; gemini "
-            "alone cannot prove architecture-independence. A CI excluding 0 "
-            "is distinguishable locks, not a recovered semantic state."
-        ),
+        limitations=F4_LIMITATIONS,
         units={"gap": "cosine-distance contrast"},
     )
     return figure, block.reset_index(drop=True), meta
@@ -351,12 +372,7 @@ def main() -> None:
             ),
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations=(
-                "A positive gap is distinguishable locks, not a recovered "
-                "semantic state. gemini-embed-001 is closed; three-space sign "
-                "agreement answers an embedding-artifact objection, not "
-                "architecture-independence from gemini alone."
-            ),
+            limitations=F4_LIMITATIONS,
         ),
     )
     save_table(
@@ -371,13 +387,7 @@ def main() -> None:
             ),
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations=(
-                "Divergent iff last-band CI excludes 0 from above; else "
-                "collapsed. That rule is an NHST default, not an equivalence "
-                "test. A last-band CI that includes 0 is not occupancy of one "
-                "lock. Waterloo point Δ need not be 0; reactor never excluded "
-                "0 in S5."
-            ),
+            limitations=F6_LIMITATIONS,
         ),
     )
     save_table(
@@ -391,15 +401,7 @@ def main() -> None:
             ),
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations=(
-                "n=2 last-band pairs per family. A last-band CI that includes 0 "
-                "is the operational collapsed verdict, not occupancy of one lock. "
-                "Waterloo bge-m3 point Δ stayed ~0.05 from band 0 (then "
-                "divergent) to band 12 (CI grew to include 0 and a domain-sized "
-                "gap). Reactor never excluded 0, including at band 0. Extra "
-                "replicates would be required to claim sameness. gemini is "
-                "closed."
-            ),
+            limitations=F6_LIMITATIONS,
         ),
     )
     save_table(
@@ -490,10 +492,12 @@ def main() -> None:
     figure, tidy, meta = separation_figure(
         sep_all, run_ids=run_ids, git_sha=git_sha, embeddings=spaces
     )
+    meta.limitations = F4_LIMITATIONS
     save_matplotlib_figure(figure, out_dir, meta, data=tidy)
     plt.close(figure)
 
     figure, tidy, meta = twins_figure(twin_all, run_ids=run_ids, git_sha=git_sha, embeddings=spaces)
+    meta.limitations = F6_LIMITATIONS
     save_matplotlib_figure(figure, out_dir, meta, data=tidy)
     plt.close(figure)
 

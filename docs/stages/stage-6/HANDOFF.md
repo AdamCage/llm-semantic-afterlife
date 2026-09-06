@@ -8,10 +8,9 @@ Do not write `paper/main.tex`. Do not raise ceilings. Do **not**
 That YAML is embed-only in intent; generate would mint a new
 `run_id` and re-spend S5.
 
-**Embed authorised and executed 2026-09-06.** Both gemini embeds
-COMPLETED at `$0`. Occupancy assemble has three spaces. REPORT
-scores F1–F10 and Q1–Q8. Awaiting `afterlife review --stage s6`
-then scientific review. Do not merge.
+**Scientific review 2026-09-06: APPROVED WITH CHANGES.** F4/F6
+sidecar prose aligned (physics s1; gemini waterloo sign flip).
+Do not merge until the human authorises `--no-ff` close.
 
 **Object.** Third-space robustness of S5 occupancy signs. Not T=1.0.
 Not T=1.5. Not 200 seeds. Not a second generator. Not MSM.
@@ -74,5 +73,5 @@ assemble keeps raw T=0.3 physics/surreal only.
 - Pool twins into domain `D_between`
 - Call last-band collapsed “one lock”
 - Open provider replication / chunk ablation / forced / Gemma
-- Merge without scientific review
+- Merge without an explicit human `--no-ff` close
 - Write `paper/main.tex`

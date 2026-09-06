@@ -2,7 +2,7 @@
   "name": "domain_separation_last_band",
   "caption": "F4 last-band gap on the ten domain seeds in three spaces, with a 95% trajectory-bootstrap CI. Separated iff the CI excludes 0 from above. agrees_s5_sign compares each space to the S5 two-space sign (both S5 spaces were separated).",
   "alt_text": "F4 last-band gap on the ten domain seeds in three spaces, with a 95% trajectory-bootstrap CI. Separated iff the CI excludes 0 from above. agrees_s5_sign compares each space to the S5 two-space sign (both S5 spaces were separated).",
-  "limitations": "A positive gap is distinguishable locks, not a recovered semantic state. gemini-embed-001 is closed; three-space sign agreement answers an embedding-artifact objection, not architecture-independence from gemini alone.",
+  "limitations": "The pre-registered separated verdict is a last-band CI that excludes 0, not a thick robustness margin and not a recovered semantic state. gemini-embed-001 last-band gap 0.150 [0.029, 0.266] is an NHST whisker on n=20 with n_within_pairs=9: reused S2.2 physics s1 has 47 chunks vs 48 on its pair, so the last-band D_within diagonal is NaN (n_chunk_pairs=0). That lower bound is closer to 0 than bge-m3's 0.065. gemini-embed-001 is closed; three-space sign agreement answers an embedding-artifact objection, not architecture-independence from gemini alone.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

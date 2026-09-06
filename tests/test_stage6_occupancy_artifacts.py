@@ -35,10 +35,35 @@ def test_twins_not_in_domain_matrix() -> None:
     assert seeds.isdisjoint(set(TWIN_SEED_ORDER))
 
 
+def test_f4_limitations_name_the_whisker_and_physics_s1() -> None:
+    for name in (
+        "domain_separation_last_band.meta.json",
+        "domain_gap_three_spaces.meta.json",
+        "domain_separation_vs_turnover.meta.json",
+    ):
+        meta = json.loads((ROOT / name).read_text(encoding="utf-8"))
+        text = str(meta["limitations"])
+        assert "n_within_pairs=9" in text, name
+        assert "physics s1" in text, name
+        assert "0.029" in text, name
+        assert "thick robustness" in text, name
+        assert "architecture-independence" in text, name
+        assert "robustness" not in str(meta["caption"]).lower(), name
+
+
 def test_gemini_twin_last_band_operational_collapsed() -> None:
     twin = pd.read_csv(ROOT / "twin_last_band.csv")
     gemini = twin.loc[twin["embedding"] == "gemini-embed-001"]
     assert not gemini.empty
     assert not gemini["divergent"].astype(bool).any()
-    meta = json.loads((ROOT / "twin_last_band.meta.json").read_text(encoding="utf-8"))
-    assert "not occupancy of one lock" in str(meta["limitations"])
+    for name in (
+        "twin_last_band.meta.json",
+        "twin_delta_vs_turnover.meta.json",
+        "twin_per_band.meta.json",
+    ):
+        meta = json.loads((ROOT / name).read_text(encoding="utf-8"))
+        text = str(meta["limitations"])
+        assert "not occupancy of one lock" in text, name
+        assert "sign flip" in text, name
+        assert "0.033" in text, name
+        assert "point-Δ≈0.05" in text, name

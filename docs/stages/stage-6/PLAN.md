@@ -4,7 +4,8 @@
 Stage 5 closed APPROVED WITH CHANGES (`9cb2845`). Decision:
 [ADR-0017](../../decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
 No generate. Embed **authorised and executed 2026-09-06**. REPORT
-written; mechanical gate next, then scientific review.
+written. Scientific review: **APPROVED WITH CHANGES**. Sidecar prose
+aligned; waiting on human `--no-ff` close.
 
 ## 1. Question
 
