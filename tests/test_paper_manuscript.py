@@ -204,9 +204,7 @@ def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
     assert "Alibaba" in protocol
     assert "P1" in protocol
     assert "glossary" in protocol.lower() or "distinct" in protocol.lower()
-    limitations = text.split(r"\label{sec:limitations}")[1].split(
-        r"\section{Discussion}"
-    )[0]
+    limitations = text.split(r"\label{sec:limitations}")[1].split(r"\section{Discussion}")[0]
     assert re.search(r"raw\\_completion", limitations)
     assert "Alibaba" in limitations
     assert "not synonyms" in limitations.lower() or "not a synonym" in limitations.lower()
