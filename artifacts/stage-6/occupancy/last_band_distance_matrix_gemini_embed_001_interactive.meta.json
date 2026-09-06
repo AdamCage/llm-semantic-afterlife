@@ -1,0 +1,14 @@
+{
+  "name": "last_band_distance_matrix_gemini_embed_001_interactive",
+  "caption": "Interactive companion to the gemini-embed-001 last-band domain occupancy matrix. Same tidy source as the print heatmap.",
+  "alt_text": "Interactive companion to the gemini-embed-001 last-band domain occupancy matrix. Same tidy source as the print heatmap.",
+  "limitations": "Illustration of the same numbers as the print matrix. Do not read a cluster count from the interactive layout.",
+  "run_ids": [
+    "s6-embed-third-space-20260906T082301Z-588eff8f",
+    "s6-embed-third-space-20260906T082628Z-9077d587"
+  ],
+  "git_sha": "0f25179cd2d28f87c81668e5d7c0fd4c0976e29f",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T08:36:53+00:00"
+}

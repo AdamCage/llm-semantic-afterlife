@@ -1,0 +1,17 @@
+{
+  "name": "last_band_distance_matrix_qwen3_embed_8b",
+  "caption": "Last-band mean cosine-distance matrix among the ten domain seeds in qwen3-embed-8b. Diagonal cells are D_within (same seed, two stochastic replicates). Off-diagonal cells are mean last-band between-seed distance. Computed in the original embedding space; this is an occupancy map, not a cluster count.",
+  "alt_text": "Last-band mean cosine-distance matrix among the ten domain seeds in qwen3-embed-8b. Diagonal cells are D_within (same seed, two stochastic replicates). Off-diagonal cells are mean last-band between-seed distance. Computed in the original embedding space; this is an occupancy map, not a cluster count.",
+  "limitations": "A large off-diagonal distance means two locked trajectories sit apart in this representation. It does not recover the seed, name a semantic state, or transfer to another embedding. Twin pairs are excluded so they cannot shrink D_between.",
+  "run_ids": [
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "0f25179cd2d28f87c81668e5d7c0fd4c0976e29f",
+  "config_sha256": null,
+  "units": {
+    "distance": "1 − cosine similarity",
+    "last_band": "turnover band start"
+  },
+  "generated_at": "2026-09-06T08:36:09+00:00"
+}

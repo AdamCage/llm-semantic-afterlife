@@ -1,0 +1,10 @@
+band,scope,delta,d_twin,d_control,delta_ci_low,delta_ci_high,divergent,n_twin_pairs,n_control_pairs,embedding
+12,all,0.0281913,0.296784,0.268592,-0.39404,0.4748,False,4,4,bge-m3
+12,reactor-stable+reactor-unstable,0.00771937,0.204626,0.196907,-0.0770563,0.0924951,False,2,2,bge-m3
+12,waterloo-lost+waterloo-won,0.0486633,0.388941,0.340278,-0.39404,0.491367,False,2,2,bge-m3
+12,all,0.0226854,0.391718,0.369032,-0.687817,0.670729,False,4,4,qwen3-embed-8b
+12,reactor-stable+reactor-unstable,0.0539145,0.276939,0.223025,-0.0916826,0.199512,False,2,2,qwen3-embed-8b
+12,waterloo-lost+waterloo-won,-0.00854374,0.506496,0.51504,-0.687817,0.670729,False,2,2,qwen3-embed-8b
+12,all,-0.0116998,0.201922,0.213622,-0.285526,0.222572,False,4,4,gemini-embed-001
+12,reactor-stable+reactor-unstable,0.00807754,0.160496,0.152418,-0.0710003,0.0871554,False,2,2,gemini-embed-001
+12,waterloo-lost+waterloo-won,-0.031477,0.243349,0.274826,-0.285526,0.222572,False,2,2,gemini-embed-001
