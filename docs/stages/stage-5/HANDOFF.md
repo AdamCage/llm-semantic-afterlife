@@ -16,7 +16,7 @@ Not 200 invented seeds.
 | --- | --- |
 | `run_id` | `s5-lock-occupancy-20260905T164327Z-6780902f` |
 | config | `configs/stages/stage5_lock_occupancy.yaml` |
-| STATUS | `RUNNING` (sixth resume 2026-09-06T00:00:50Z) |
+| STATUS | `RUNNING` (seventh resume 2026-09-06T01:01:00Z) |
 | forecast | $1.06 fill=1 / ~$1.17 at S4 T=0.3 fill 0.90 |
 | YAML refuse | $8 |
 | tmux | `s5-generate` |
@@ -101,6 +101,17 @@ fill=1 forecast because twins take more steps; still far under the
 $8 refuse. Do not raise the ceiling.
 
 Six stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
+
+## Stall 2026-09-06T00:15 → 01:00 (same `ep_poll`)
+
+Waterloo twins all finished (20/24). Both `reactor-stable` sat ~45
+min at step 37. Hourly at 01:00: python PID 116944 in `ep_poll`.
+Killed that PID. Resumed the same `run_id`. New steps immediately,
+Alibaba, `reasoning_tokens=0`. Unique COMPLETED: **20/24**. Remaining:
+finish reactor-stable + reactor-unstable ×2.
+
+Seven stalls, ~hourly. Same mitigation. Do not mint a new `run_id`.
+Spend ~$1.22 vs $8 refuse. Do not raise the ceiling.
 
 ## Resume (same `run_id` only)
 
