@@ -1,8 +1,8 @@
 {
   "name": "twin_per_band",
-  "caption": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control.",
-  "alt_text": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control.",
-  "limitations": "Divergent iff last-band CI excludes 0 from above; else collapsed. That rule is an NHST default, not an equivalence test. Waterloo point Δ did not go to 0; reactor never excluded 0.",
+  "caption": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. \u0394 = D_twin_matched \u2212 D_control.",
+  "alt_text": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. \u0394 = D_twin_matched \u2212 D_control.",
+  "limitations": "Divergent iff last-band CI excludes 0 from above; else collapsed. That rule is an NHST default, not an equivalence test. Waterloo point \u0394 did not go to 0; reactor never excluded 0. ADR-0019: published twin CI columns used set(chosen) and are not bootstrap intervals. Point \u0394 is the observed mean. Occupancy embeddings were absent from the 2026-09-01 snapshot, so CIs were not re-derived. n=2; no detected divergence is not semantic collapse.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

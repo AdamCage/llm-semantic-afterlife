@@ -1,0 +1,15 @@
+{
+  "name": "looping_rate_contrasts",
+  "caption": "Newcombe 95% CI and two-sided Fisher exact p for the 4/4 lock cell (T=0.3) versus the T=1.5 cell at each W. Not a temperature law: n=4.",
+  "alt_text": "Newcombe 95% CI and two-sided Fisher exact p for the 4/4 lock cell (T=0.3) versus the T=1.5 cell at each W. Not a temperature law: n=4.",
+  "limitations": "4/4 vs 0/4 at W=4096 is p≈0.029; 4/4 vs 2/4 at W=8192 T=1.5 is not the same contrast. Do not read a phase diagram from n=4.",
+  "run_ids": [
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s4-w4096-new-temps-20260904T103121Z-589c8eb1",
+    "s4-w8192-20260904T120057Z-ce82ce55"
+  ],
+  "git_sha": "727ff2f75e360bab444f198182f23494b34a5768",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T14:50:09+00:00"
+}

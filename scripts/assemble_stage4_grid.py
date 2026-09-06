@@ -513,7 +513,7 @@ def _plotly_rate(rates: pd.DataFrame, *, run_ids: list[str], git_sha: str | None
         name="looping_rate_vs_T_interactive",
         caption=(
             "Interactive companion to looping_rate_vs_T. Same numbers: degenerate fraction "
-            "per (W, T) with a 95% trajectory-bootstrap CI."
+            "per (W, T) with a 95% Clopper–Pearson CI. 0/4 and 4/4 are not point masses."
         ),
         run_ids=run_ids,
         git_sha=git_sha,

@@ -94,7 +94,10 @@ F6_LIMITATIONS = (
     "[−0.286, 0.223] at band 12 (sign flip; CI includes 0). That is not a "
     "vanished contrast. Gemini reactor never excluded 0, including at band 0. "
     "Do not narrate the S5 bge-m3 waterloo point-Δ≈0.05 story as gemini's. "
-    "Extra replicates would be required to claim sameness. gemini is closed."
+    "Extra replicates would be required to claim sameness. gemini is closed. "
+    "ADR-0019: published twin CI columns used set(chosen) and are not "
+    "bootstrap intervals until occupancy embeddings are restored and the "
+    "multiplicity-preserving estimator is re-run."
 )
 
 

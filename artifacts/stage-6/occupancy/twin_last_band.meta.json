@@ -1,8 +1,8 @@
 {
   "name": "twin_last_band",
-  "caption": "F6 last-band twin Δ per family and pooled, three embedding spaces including gemini-embed-001. divergent is the F6 verdict.",
-  "alt_text": "F6 last-band twin Δ per family and pooled, three embedding spaces including gemini-embed-001. divergent is the F6 verdict.",
-  "limitations": "n=2 last-band pairs per family. A last-band CI that includes 0 is the operational collapsed verdict, not occupancy of one lock. In gemini-embed-001, waterloo Δ is 0.033 [0.001, 0.065] at band 0 (divergent on a 0.001 whisker, seed still in the window) and −0.031 [−0.286, 0.223] at band 12 (sign flip; CI includes 0). That is not a vanished contrast. Gemini reactor never excluded 0, including at band 0. Do not narrate the S5 bge-m3 waterloo point-Δ≈0.05 story as gemini's. Extra replicates would be required to claim sameness. gemini is closed.",
+  "caption": "F6 last-band twin \u0394 per family and pooled, three embedding spaces including gemini-embed-001. divergent is the F6 verdict.",
+  "alt_text": "F6 last-band twin \u0394 per family and pooled, three embedding spaces including gemini-embed-001. divergent is the F6 verdict.",
+  "limitations": "n=2 last-band pairs per family. A last-band CI that includes 0 is no detected divergence, not occupancy of one lock. In gemini-embed-001, waterloo \u0394 is 0.033 [0.001, 0.065] at band 0 (divergent on a 0.001 whisker, seed still in the window) and \u22120.031 [\u22120.286, 0.223] at band 12 (sign flip; CI includes 0). That is not a vanished contrast. Gemini reactor never excluded 0, including at band 0. Do not narrate the S5 bge-m3 waterloo point-\u0394\u22480.05 story as gemini's. Extra replicates would be required to claim sameness. gemini is closed. ADR-0019: published twin CI columns used set(chosen) and are not bootstrap intervals. Point \u0394 is the observed mean. Occupancy embeddings were absent from the 2026-09-01 snapshot, so CIs were not re-derived. n=2; no detected divergence is not semantic collapse.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",

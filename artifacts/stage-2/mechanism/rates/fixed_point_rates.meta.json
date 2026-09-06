@@ -1,14 +1,14 @@
 {
   "name": "fixed_point_rates",
-  "caption": "Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.",
-  "alt_text": "Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.",
-  "limitations": "The verdict is the calibrated late-phase shingle Jaccard, not a semantic state. Eight trajectories per generator make the interval wide on purpose. Incidence is not reproducible across seed derivations (S1.2); only the rate is.",
+  "caption": "Repetition-lock rate on the Stage 2 mechanism arm, 95% Clopper–Pearson CI. raw_completion versus assistant_prefill on or-qwen3-8b.",
+  "alt_text": "Repetition-lock rate on the Stage 2 mechanism arm, 95% Clopper–Pearson CI. raw_completion versus assistant_prefill on or-qwen3-8b.",
+  "limitations": "n = 8 per mechanism. Clopper–Pearson; 8/8 is not a point mass at 1.",
   "run_ids": [
     "s2-mechanism-20260901T071519Z-dfbb173a",
-    "s2-rates-20260901T125517Z-da70666f"
+    "s2-rates-20260901T125506Z-41d2e88e"
   ],
-  "git_sha": "42ad63adbe22225cae2fc201edded0eab86fd4fb",
+  "git_sha": "727ff2f75e360bab444f198182f23494b34a5768",
   "config_sha256": null,
   "units": {},
-  "generated_at": "2026-09-01T12:55:19+00:00"
+  "generated_at": "2026-09-06T14:50:07+00:00"
 }
