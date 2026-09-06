@@ -8,6 +8,7 @@ from semantic_afterlife.analysis.separation import Trajectory
 from semantic_afterlife.analysis.twins import (
     TwinParams,
     compute_twin_contrast,
+    family_name,
     twin_pairs_from_bank,
     twin_pairwise_distances,
 )
@@ -132,3 +133,18 @@ class TestTwinContrast:
         assert result.scalars["divergent_at_last_band"] == 1.0
         assert result.scalars["delta_ci_low"] > 0.0
         assert result.scalars["d_twin_last"] > result.scalars["d_control_last"]
+
+    def test_family_scope_keeps_control_and_matched(self) -> None:
+        result = compute_twin_contrast(
+            _four(offset=3.0, noise=0.03, rng_seed=3),
+            twin_pairs=PAIRS,
+            params=PARAMS,
+        )
+        family = family_name("waterloo-won", PAIRS)
+        last = result.per_band[
+            (result.per_band["scope"] == family)
+            & (result.per_band["band"] == result.per_band["band"].max())
+        ].iloc[0]
+        assert int(last["n_twin_pairs"]) == 2
+        assert int(last["n_control_pairs"]) == 2
+        assert bool(last["divergent"]) is True

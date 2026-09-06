@@ -28,6 +28,7 @@ from semantic_afterlife.analysis.occupancy import (
     TWIN_PAIRS,
     TWIN_SEED_ORDER,
     filter_raw_lock,
+    is_raw_lock_trajectory,
     last_band_seed_matrix,
     last_chunk_2d_illustration,
     lock_rate_by_seed,
@@ -90,7 +91,7 @@ def _load_steps(events_path: Path, *, seeds: set[str] | None = None) -> pd.DataF
             if payload.get("event") != "generation.step.completed":
                 continue
             trajectory_id = str(payload["trajectory_id"])
-            if not trajectory_id.startswith(RAW_PREFIX):
+            if not is_raw_lock_trajectory(trajectory_id):
                 continue
             parsed = parse_trajectory_id(trajectory_id)
             if seeds is not None and str(parsed["semantic_seed"]) not in seeds:
@@ -612,11 +613,12 @@ def main() -> None:
                 ]
             )
         )
-        twin_last_rows.append(
-            twins.per_band.loc[twins.per_band.groupby("scope")["band"].idxmax()].assign(
-                embedding=slug
-            )
-        )
+        last_scopes = twins.per_band.loc[twins.per_band.groupby("scope")["band"].idxmax()]
+        last_scopes = last_scopes[
+            last_scopes["scope"].eq("all")
+            | last_scopes["scope"].astype(str).str.contains("+", regex=False)
+        ]
+        twin_last_rows.append(last_scopes.assign(embedding=slug))
         sep_rows.append(sep.per_band)
         twin_rows.append(twins.per_band)
         matrix_rows.append(matrix)
@@ -812,6 +814,39 @@ def main() -> None:
             limitations="n=2. Do not retune sampling because a twin filled poorly.",
         ),
     )
+    geom_frames: list[pd.DataFrame] = []
+    for slug in EMBEDDINGS:
+        s51_geom = root / f"artifacts/stage-5/geometry-{slug}/geometry_scalars.csv"
+        s22_geom = root / f"artifacts/stage-2/mechanism/geometry-{slug}/geometry_scalars.csv"
+        if s51_geom.is_file():
+            geom_frames.append(
+                filter_raw_lock(pd.read_csv(s51_geom)).assign(source="s5.1", embedding=slug)
+            )
+        if s22_geom.is_file():
+            reused = filter_raw_lock(pd.read_csv(s22_geom))
+            reused = reused[reused["semantic_seed"].isin(("physics", "surreal"))].copy()
+            geom_frames.append(reused.assign(source="s2.2", embedding=slug))
+    if geom_frames:
+        geometry = pd.concat(geom_frames, ignore_index=True)
+        save_table(
+            geometry.sort_values(["embedding", "source", "semantic_seed", "stochastic_seed"]),
+            out_dir,
+            FigureMeta(
+                name="geometry_scalars_occupancy",
+                caption=(
+                    "Diagnostic geometry on the 28-cell occupancy grid, both spaces. "
+                    "α on a degenerate row measures repetition, not diffusion. "
+                    "Physics/surreal scalars are the reused S2.2 raw T=0.3 four."
+                ),
+                run_ids=run_ids,
+                git_sha=git_sha,
+                limitations=(
+                    "A lock is not a semantic basin. Do not headline α or n_macro. "
+                    "Every row carries its degeneracy verdict."
+                ),
+            ),
+        )
+
     save_table(
         quotes,
         out_dir,

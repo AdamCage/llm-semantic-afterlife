@@ -66,6 +66,19 @@ def twin_pairs_from_bank(bank: SeedBank) -> list[tuple[str, str]]:
     return pairs
 
 
+def family_name(seed: str, twin_pairs: list[tuple[str, str]]) -> str:
+    """Canonical family id so controls and matched twins share a scope.
+
+    Control pairs are same-seed; matched pairs are the two twin members.
+    F6 needs Δ inside one family, so both kinds must carry the same label
+    (``lost+won``), not the singleton seed name on the control side.
+    """
+    for left, right in twin_pairs:
+        if seed in (left, right):
+            return "+".join(sorted((left, right)))
+    return seed
+
+
 def _pair_kind(
     left: Trajectory,
     right: Trajectory,
@@ -102,11 +115,7 @@ def twin_pairwise_distances(
         n = min(left.embeddings.shape[0], right.embeddings.shape[0])
         if n == 0:
             continue
-        family = (
-            left.semantic_seed
-            if kind == "control"
-            else "+".join(sorted({left.semantic_seed, right.semantic_seed}))
-        )
+        family = family_name(left.semantic_seed, twin_pairs)
         rows.append(
             pd.DataFrame(
                 {
