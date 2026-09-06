@@ -70,8 +70,9 @@ class TestSplitDomainTwin:
         domain = _rows(*DOMAIN_SEED_ORDER)
         twin = _rows(*TWIN_SEED_ORDER)
         require_occupancy_grid(domain, twin)
+        trimmed = domain[domain["trajectory_id"] != domain["trajectory_id"].iloc[0]]
         with pytest.raises(AnalysisError, match="expected 20"):
-            require_occupancy_grid(domain.iloc[:10], twin)
+            require_occupancy_grid(trimmed, twin)
 
 
 class TestLockRate:
