@@ -147,9 +147,7 @@ def _split_tex_comment(line: str) -> tuple[str, str]:
 
 def test_quantitative_lines_have_same_line_comments() -> None:
     """PLAN F1: every quantitative sentence carries artifact path + run_id."""
-    quant = re.compile(
-        r"(\$\d|\d+/\d+|0\.\d{2,}|\d+\\%|\$T\{=\}1\.5|n_\{?\\mathrm\{within\}\}?)"
-    )
+    quant = re.compile(r"(\$\d|\d+/\d+|0\.\d{2,}|\d+\\%|\$T\{=\}1\.5|n_\{?\\mathrm\{within\}\}?)")
     skip = re.compile(
         r"^(\\documentclass|\\usepackage|\\graphicspath|\\setstretch|"
         r"\\author|\\title|\\date|\\label|\\begin|\\end|\\toprule|"
