@@ -43,9 +43,27 @@ uv run afterlife embed --config configs/stages/stage6_third_space.yaml \
   --run s2-mechanism-20260901T071519Z-dfbb173a
 ```
 
-Record both new embed `run_id`s. A fresh `afterlife embed` mints a
-new id (no resume). If RUNNING, do not mint a sibling. Restore
-`uv.lock`. YAML refuse $2.
+## Live embed (authorised 2026-09-06)
+
+| field | value |
+| --- | --- |
+| S5.1 gemini `run_id` | `s6-embed-third-space-20260906T082301Z-588eff8f` |
+| S5.1 source | `s5-lock-occupancy-20260905T164327Z-6780902f` |
+| S5.1 parquet | 1152 × 3072, 24/24 traj, COMPLETED 08:25Z, `$0` |
+| S2.2 gemini `run_id` | `s6-embed-third-space-20260906T082628Z-9077d587` |
+| S2.2 source | `s2-mechanism-20260901T071519Z-dfbb173a` |
+| S2.2 parquet | 766 × 3072, 16 traj (assemble keeps raw T=0.3 physics/surreal four), COMPLETED 08:28Z, `$0` |
+| space | `gemini-embed-001` only |
+| tmux | `s6-embed-s5` / `s6-embed-s2` |
+| logs | `/tmp/s6_embed_s5.log` / `/tmp/s6_embed_s2.log` |
+| env | `AFTERLIFE_EXECUTION_MODE=live`, `AFTERLIFE_BUDGET_USD_TOTAL=200`, `AFTERLIFE_BUDGET_USD_PER_RUN=2.0` |
+| YAML refuse | $2 |
+| hosted spend | **$0.0000** (72 + 48 ledger charges, `cost_usd=0`) |
+
+Do **not** mint a sibling. Both STATUS=COMPLETED. Restore `uv.lock`
+after `uv run`. Occupancy assemble joins gemini as the third space;
+F4/F6 split unchanged. Recurring timer `s6-embed-watch` (15 min)
+until assemble + REPORT + gate.
 
 S2.2 embed will include prefill and T=1.0 surplus rows. Occupancy
 assemble keeps raw T=0.3 physics/surreal only.
