@@ -38,5 +38,7 @@ that would exceed the record.
 | A lock is a semantic basin; n_macro is an order parameter | S3–S6 law |
 | The result holds for language models as a class | one instruct process, P1, Alibaba |
 | P1 vs sliding was measured in S6 | parked (ADR-0017) |
+| Last-band occupancy still carries seed-domain identity / recovered prompt memory | F4 is an ensemble last-band domain gap; H2 is not recovered (S5/S6, ADR-0018) |
+| Occupancy protocol = P1 without naming `raw_completion` and Alibaba | glossary: P1 ≠ continuation mechanism; S5 generate was Alibaba `raw_completion` |
 
 Fill the Observed column of PLAN Q1–Q8 when the manuscript exists.

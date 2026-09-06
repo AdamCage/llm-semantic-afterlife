@@ -38,8 +38,9 @@ segment after seed eviction, not the prompt-conditioned transient.
 
 On one instruct generator (\texttt{or-qwen3-8b}) under a re-prompt protocol
 (P1), a textual fixed-point lock is the typical $T{=}0.3$ outcome through
-twelve turnovers of $W{=}4096$, and last-band occupancy still carries seed-domain
-identity in three embedding spaces. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+twelve turnovers of $W{=}4096$. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+Last-band occupancy retains an ensemble domain gap (F4 distinguishability);
+that gap is not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 That occupancy result is a subsection, not
 the title claim: the third space is an NHST whisker, not architecture-independent
 robustness. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
@@ -73,9 +74,11 @@ via VAMP/PCCA+ and did not obtain a validated MSM. % artifacts/stage-3/dynamics/
 Stage~4 asked for a
 temperature window of non-looping confined motion (H5) and did not find it. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 Stage~5--6 asked whether, \emph{given} the lock, last-band occupancy still
-separates seed domains and whether replica pairs collapse. Those occupancy
-signs hold in three embedding spaces on this generator, protocol, and
-temperature. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+shows an ensemble domain gap and whether replica pairs collapse. The
+last-band result is distinguishability, not recovered prompt memory (H2).
+Sign agreement holds in three embedding spaces on this generator,
+protocol, and temperature; the third space is an NHST whisker, not
+architecture-independent robustness. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 They do not establish H1, H5, or a result for language models as
 a class.
 
@@ -136,11 +139,17 @@ these trajectories (Section~\ref{sec:s3}). % artifacts/stage-3/dynamics/k_stabil
 \label{sec:p1}
 
 All occupancy numbers in Sections~\ref{sec:s5}--\ref{sec:s6} use
-\texttt{or-qwen3-8b} (Qwen3-8B-Instruct via OpenRouter), $W{=}4096$,
+\texttt{or-qwen3-8b} (Qwen3-8B-Instruct via OpenRouter; served provider
+\texttt{Alibaba} on every completed occupancy step), $W{=}4096$,
 $T{=}0.3$, block $B{=}512$, analysis chunks of $1024$ generator tokens, % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
 non-overlapping, and twelve turnovers of $W$ after the seed. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
-The input at each step is the last $W$ tokens of generated text, re-encoded
-and sent as a new prompt (P1). That is not a sliding native KV cache. The
+The continuation mechanism is \texttt{raw\_completion}, not
+\texttt{assistant\_prefill} and not \texttt{chat\_instructed}. Protocol P1
+is the re-prompt: the last $W$ tokens of generated text are re-encoded and
+sent as a new prompt. P1 and the continuation mechanism are distinct axes
+(glossary). Stage~2 already measured a prefill-versus-raw arm on this
+generator; occupancy does not reuse that arm as its protocol.
+The input construction is not a sliding native KV cache. The
 gap is named in Section~\ref{sec:limitations} and parked in ADR-0017; it is
 not treated as measured.
 
@@ -412,6 +421,8 @@ $n_{\mathrm{within}}{=}9$ pairs after physics seed~1 drops from the last-band % 
 diagonal:
 \texttt{bge-m3} gap $0.201$, 95\% CI $[0.065, 0.332]$, separated; % artifacts/stage-5/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
 \texttt{qwen3-embed-8b} gap $0.390$, CI $[0.151, 0.593]$, separated. % artifacts/stage-5/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+That last-band gap is ensemble distinguishability, not recovered prompt
+memory (H2).
 Figure~\ref{fig:s5-dom} shows the gap versus turnover in those two spaces.
 
 F6 (replica $\Delta$): every last-band CI includes $0$ on this panel. % artifacts/stage-5/occupancy/twin_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
@@ -582,7 +593,12 @@ This paper does not use ``metastable semantic states'' as an established
 finding.
 
 \paragraph{One generator, one protocol, one temperature for occupancy.}
-F4 and F6 are \texttt{or-qwen3-8b}, P1, $T{=}0.3$, $W{=}4096$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+F4 and F6 are \texttt{or-qwen3-8b}, P1, \texttt{raw\_completion}, served
+provider \texttt{Alibaba}, $T{=}0.3$, $W{=}4096$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+P1 is the re-prompt axis; \texttt{raw\_completion} is the continuation
+mechanism. They are not synonyms. Stage~2 already measured prefill versus
+raw on this generator ($7/8$ versus $8/8$, difference CI $[-0.375, 0]$); % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
+that arm is not the occupancy protocol. % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
 Stage~2 already shows a generator where the lock rate is $0/8$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
 Stage~4 already shows $T{=}1.5$, $W{=}4096$ with $0/4$ looping. % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 Those cells are not occupancy measurements.
@@ -616,7 +632,8 @@ $W{=}256$, not the occupancy window. % docs/stages/stage-3/REPORT.md @ s3-local-
 
 What is established, on this generator and protocol: after the seed leaves
 $W$, the typical $T{=}0.3$ trajectory is a textual lock; last-band centroids
-still separate ten seed domains in three embedding spaces; replica $\Delta$
+still show an ensemble domain gap across ten seed domains in three embedding
+spaces (not recovered prompt memory, H2); replica $\Delta$
 CIs at the last band include $0$ and do not justify a one-lock headline. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 
 What is not established: H1 (validated MSM macrostates); H5 (a temperature

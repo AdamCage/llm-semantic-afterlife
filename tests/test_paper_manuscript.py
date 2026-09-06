@@ -180,3 +180,33 @@ def test_quantitative_lines_have_same_line_comments() -> None:
 def test_no_dummy_s7_run_directory() -> None:
     runs = ROOT / "runs" / "s7"
     assert not runs.exists()
+
+
+def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
+    """S7 review blocker 1: F4 is ensemble gap, not recovered identity."""
+    text = _tex()
+    abstract = text.split(r"\begin{abstract}")[1].split(r"\end{abstract}")[0]
+    lowered = abstract.lower()
+    assert "seed-domain identity" not in lowered
+    assert "carries seed-domain" not in lowered
+    assert re.search(r"domain gap|distinguishability", abstract, re.I)
+    assert re.search(r"not recovered prompt memory", abstract, re.I)
+    assert "H2" in abstract
+    before_whisker = abstract.split("whisker")[0].lower()
+    assert "three embedding spaces" not in before_whisker
+
+
+def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
+    """S7 review blocker 2: P1 is not the continuation mechanism."""
+    text = _tex()
+    protocol = text.split(r"\label{sec:p1}")[1].split(r"\subsection{Cost law}")[0]
+    assert re.search(r"raw\\_completion", protocol)
+    assert "Alibaba" in protocol
+    assert "P1" in protocol
+    assert "glossary" in protocol.lower() or "distinct" in protocol.lower()
+    limitations = text.split(r"\label{sec:limitations}")[1].split(
+        r"\section{Discussion}"
+    )[0]
+    assert re.search(r"raw\\_completion", limitations)
+    assert "Alibaba" in limitations
+    assert "not synonyms" in limitations.lower() or "not a synonym" in limitations.lower()
