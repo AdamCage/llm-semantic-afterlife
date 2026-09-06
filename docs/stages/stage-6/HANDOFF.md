@@ -8,6 +8,13 @@ Do not write `paper/main.tex`. Do not raise ceilings. Do **not**
 That YAML is embed-only in intent; generate would mint a new
 `run_id` and re-spend S5.
 
+**Embed authorised 2026-09-06.** Live, YAML refuse $2,
+`AFTERLIFE_BUDGET_USD_PER_RUN=2.0`. S5.1 first, then S2.2.
+tmux `s6-embed-s5` / `s6-embed-s2`. Logs `/tmp/s6_embed_s5.log`
+and `/tmp/s6_embed_s2.log`. Recurring 15 min stall timer
+`s6-embed-watch`. Prefer waiting over killing an embed PID:
+CLI has no resume; a kill forces a new `run_id`.
+
 **Object.** Third-space robustness of S5 occupancy signs. Not T=1.0.
 Not T=1.5. Not 200 seeds. Not a second generator. Not MSM.
 

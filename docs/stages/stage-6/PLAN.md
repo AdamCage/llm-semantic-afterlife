@@ -3,8 +3,8 @@
 **Status.** Opened 2026-09-06 on branch `cursor/stage-6-6dce`, after
 Stage 5 closed APPROVED WITH CHANGES (`9cb2845`). Decision:
 [ADR-0017](../../decisions/ADR-0017-s6-third-space-occupancy-robustness.md).
-No generate. Embed not authorised until the human yeses the embed
-forecast below.
+No generate. Embed **authorised 2026-09-06** (human yes on the
+hand embed forecast, not on the CLI generate print).
 
 ## 1. Question
 
@@ -141,7 +141,8 @@ Wall clock: S5.1 bge+qwen embed was ~15 min with RouterAI 503s. One
 space, ~1920 chunks, batch 16 → tens of minutes if the endpoint holds.
 Stop and ask if wall > 4 h or empty embeddings.
 
-**No embed until the human yeses this forecast.**
+Embed **authorised 2026-09-06**. The generate print remains
+unauthorised.
 
 ## 8. Stage-specific risks
 
@@ -158,7 +159,7 @@ Stop and ask if wall > 4 h or empty embeddings.
 
 ## 9. Definition of done
 
-- [ ] Human yes on the embed forecast (not the generate print)
+- [x] Human yes on the embed forecast (not the generate print)
 - [ ] Zero new generate `run_id`s
 - [ ] Gemini embed COMPLETED on S5.1 and S2.2 source runs
 - [ ] Occupancy assemble has three spaces; F4/F6 split held
