@@ -30,9 +30,7 @@ def _gap_from_matrix(matrix: pd.DataFrame) -> dict[str, float]:
         & (matrix["seed_row"] == matrix["seed_col"])
         & matrix["distance"].notna()
     ]
-    between = matrix.loc[
-        (matrix["kind"] == "between") & (matrix["seed_row"] < matrix["seed_col"])
-    ]
+    between = matrix.loc[(matrix["kind"] == "between") & (matrix["seed_row"] < matrix["seed_col"])]
     between = between.loc[between["distance"].notna()]
     d_within = float(within["distance"].mean()) if not within.empty else float("nan")
     d_between = float(between["distance"].mean()) if not between.empty else float("nan")
@@ -76,9 +74,7 @@ def main() -> None:
         "k": lock_k,
         "n": lock_n,
         "k_over_n": f"{lock_k}/{lock_n}",
-        "seeds_with_a_lock": (
-            f"{int(seed_hit['n_degenerate'])}/{int(seed_hit['n'])}"
-        ),
+        "seeds_with_a_lock": (f"{int(seed_hit['n_degenerate'])}/{int(seed_hit['n'])}"),
         "clopper_pearson": [lock_low, lock_high],
         "matches_committed": lock_k == 19 and lock_n == 20 and int(seed_hit["n_degenerate"]) == 10,
     }

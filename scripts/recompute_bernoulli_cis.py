@@ -131,9 +131,7 @@ def _s2_mech() -> None:
             caption=caption,
             run_ids=run_ids,
             git_sha=git_sha,
-            limitations=(
-                "n = 8 per mechanism. Clopper–Pearson; 8/8 is not a point mass at 1."
-            ),
+            limitations=("n = 8 per mechanism. Clopper–Pearson; 8/8 is not a point mass at 1."),
         ),
     )
 
