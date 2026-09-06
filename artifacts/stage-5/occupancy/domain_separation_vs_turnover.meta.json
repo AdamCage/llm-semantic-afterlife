@@ -1,0 +1,20 @@
+{
+  "name": "domain_separation_vs_turnover",
+  "caption": "Domain last-band occupancy contrast: D_between − D_within among the ten domain seeds of seed_bank_v1, in both embedding spaces, with a 95% trajectory-bootstrap CI. Twin pairs are excluded from this figure. Physics/surreal are the reused S2.2 raw T=0.3 four.",
+  "alt_text": "Domain last-band occupancy contrast: D_between − D_within among the ten domain seeds of seed_bank_v1, in both embedding spaces, with a 95% trajectory-bootstrap CI. Twin pairs are excluded from this figure. Physics/surreal are the reused S2.2 raw T=0.3 four.",
+  "limitations": "A gap whose CI excludes 0 means the seed still shapes the locked trajectory. It is not recovery of the prompt and not a semantic basin. Degenerate rows are kept: the lock is the sample.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {
+    "gap": "cosine-distance contrast",
+    "band": "turnover bin start"
+  },
+  "generated_at": "2026-09-06T03:27:11+00:00"
+}

@@ -438,13 +438,12 @@ These come from the traps identified during project scoping and are enforced by
 ## 8. Budget and risk summary
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
-was $50 in ADR-0004). Ledger after Stage 4: **$15.00**. Stage 4 hosted
-**$3.44** against the authorised $3.33 generate estimate / $14 YAML
-refuse ([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)).
-S5 PLAN and estimate exist
-([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md));
-CLI generate estimate **$1.06**; authorised 2026-09-05. Full risk
-register:
+was $50 in ADR-0004). Ledger after Stage 5 generate: **$16.34**.
+Stage 5 hosted **$1.3385** against the authorised $1.06 fill=1
+print / $8 YAML refuse
+([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
+S5 computations finished 2026-09-06; awaiting scientific review.
+Full risk register:
 [`risks.md`](risks.md).
 
 The three risks that would most change the project:

@@ -1,0 +1,14 @@
+{
+  "name": "twin_per_band",
+  "caption": "Twin-seed contrast per turnover band. `d_twin` is the mean cosine distance between twin members at the same stochastic seed; `d_control` is same-seed different-stochastic distance among those members; `delta` is their difference with a 95% trajectory-bootstrap CI.",
+  "alt_text": "Twin-seed contrast per turnover band. `d_twin` is the mean cosine distance between twin members at the same stochastic seed; `d_control` is same-seed different-stochastic distance among those members; `delta` is their difference with a 95% trajectory-bootstrap CI.",
+  "limitations": "A last-band CI excluding 0 from above means the factual flip still shapes the locked trajectory; it is not a semantic basin and not an MSM macrostate. Crossed twin pairs (different stochastic seeds) are excluded from both sides of Δ. Pairs stay inside one (W, T).",
+  "run_ids": [
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-twins-bge-m3-20260906T032547Z-69fbaf0c"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T03:28:05+00:00"
+}

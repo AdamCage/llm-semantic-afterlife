@@ -1,0 +1,17 @@
+{
+  "name": "late_chunk_quotes",
+  "caption": "Last-chunk text heads from three domain seeds, the non-degenerate love s1 row, one twin member, and reused physics s1. Used for Q8 register scoring.",
+  "alt_text": "Last-chunk text heads from three domain seeds, the non-degenerate love s1 row, one twin member, and reused physics s1. Used for Q8 register scoring.",
+  "limitations": "Heads are truncated to 1600 characters. Read the raw chunk for the rest.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-06T03:27:10+00:00"
+}

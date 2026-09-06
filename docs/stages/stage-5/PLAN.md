@@ -121,14 +121,14 @@ result: distinguishable locks, not a recovered semantic state.
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | ---: | --- |
-| Q1 | ≥8 of 10 domain seeds are degenerate on at least one stochastic replicate | 0.75 | |
-| Q2 | Ten-domain last-band gap CI excludes 0 in **both** spaces (S4 Q7 on two seeds, now ten) | 0.60 | |
-| Q3 | `noise` is degenerate too: low-structure text does not escape the lock | 0.55 | |
-| Q4 | Each twin family's last-band Δ CI **includes 0** (twins collapse to the control). The interesting wrong is divergent | 0.55 | |
-| Q5 | waterloo and reactor agree on Q4 (same last-band verdict in a given space) | 0.50 | |
-| Q6 | F4 / F6 last-band verdicts agree across the two embedding spaces | 0.70 | |
-| Q7 | T=0.3 Q4 block fill stays within 0.10 of S4's W=4096 T=0.3 Q4 mean 0.903 | 0.55 | |
-| Q8 | Late-chunk quoted text is still the reviewer / assistant register on ≥5 of 10 domain seeds | 0.65 | |
+| Q1 | ≥8 of 10 domain seeds are degenerate on at least one stochastic replicate | 0.75 | **Right.** 10/10; domain traj 19/20 |
+| Q2 | Ten-domain last-band gap CI excludes 0 in **both** spaces (S4 Q7 on two seeds, now ten) | 0.60 | **Right.** bge-m3 [0.065, 0.332]; qwen [0.151, 0.593] |
+| Q3 | `noise` is degenerate too: low-structure text does not escape the lock | 0.55 | **Right.** 2/2 mode 2 |
+| Q4 | Each twin family's last-band Δ CI **includes 0** (twins collapse to the control). The interesting wrong is divergent | 0.55 | **Right.** Both families collapsed in both spaces |
+| Q5 | waterloo and reactor agree on Q4 (same last-band verdict in a given space) | 0.50 | **Right.** Both collapsed |
+| Q6 | F4 / F6 last-band verdicts agree across the two embedding spaces | 0.70 | **Right.** Separated / collapsed in both |
+| Q7 | T=0.3 Q4 block fill stays within 0.10 of S4's W=4096 T=0.3 Q4 mean 0.903 | 0.55 | **Right on the cell mean** (domain_20 Q4 0.853). Seeds are not uniform |
+| Q8 | Late-chunk quoted text is still the reviewer / assistant register on ≥5 of 10 domain seeds | 0.65 | **Right.** ≥8 of 10 |
 
 Q2 and Q4 can both be right: domains stay apart, twins do not.
 Q2 right and Q4 wrong would mean even a one-fact flip occupies a
@@ -177,10 +177,10 @@ second config without a new yes.
 ## 9. Definition of done
 
 - [x] Estimate approved 2026-09-05; 24 new trajectories or named losses
-- [ ] S2.2 T=0.3 four cited, not regenerated
-- [ ] Degeneracy, domain separation, twins, both spaces
-- [ ] `artifacts/stage-5/` populated
-- [ ] `REPORT.md` scores F1–F10 and Q1–Q8
-- [ ] `afterlife review --stage s5` exits 0
-- [ ] Master plan consistent with ADR-0015 / ADR-0016
-- [ ] Spend ≤ $8 hosted
+- [x] S2.2 T=0.3 four cited, not regenerated
+- [x] Degeneracy, domain separation, twins, both spaces
+- [x] `artifacts/stage-5/` populated
+- [x] `REPORT.md` scores F1–F10 and Q1–Q8
+- [x] `afterlife review --stage s5` exits 0
+- [x] Master plan consistent with ADR-0015 / ADR-0016
+- [x] Spend ≤ $8 hosted ($1.3385)

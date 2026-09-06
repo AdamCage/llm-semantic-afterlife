@@ -1,0 +1,21 @@
+{
+  "name": "pca_projection_illustration",
+  "caption": "Chunk embeddings projected onto their first two principal components, coloured by window turnover t/W and connected in generation order. W=4,096, chunk=1024 tokens. Illustration only: all statistics reported in this project are computed in the full high-dimensional space.",
+  "alt_text": "Scatter of chunk embeddings in two principal components, connected in time order.",
+  "limitations": "A 2-D projection cannot establish the existence, number, or separation of clusters. Nothing in this figure may be used as evidence; see the Markov-state analysis.",
+  "run_ids": [
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-geometry-qwen3-embed-8b-20260906T031918Z-2a856156"
+  ],
+  "git_sha": "a9a4026e0e0e6233df8a373cb2d1d47404d698cc",
+  "config_sha256": "2a856156951d2874c0a52eaa8261a6400b3ae508c44675f3860bbfffb61dd438",
+  "units": {
+    "pc1": "arbitrary",
+    "pc2": "arbitrary",
+    "turnover": "t/W"
+  },
+  "generated_at": "2026-09-06T03:19:53+00:00",
+  "explained_variance_pc1": 0.1562842166289663,
+  "explained_variance_pc2": 0.1312624903371356,
+  "W": 4096
+}

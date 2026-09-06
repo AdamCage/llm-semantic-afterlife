@@ -1,0 +1,20 @@
+{
+  "name": "looping_rate_per_seed",
+  "caption": "Degenerate fraction per semantic seed at the S5 lock (or-qwen3-8b, P1 raw_completion, W=4096, T=0.3). Labels are k/n with n=2 stochastic replicates. Domain seeds are blue; twin members are vermillion. Degenerate = looping fraction ≥ 0.5 of post-horizon chunks at the 0.083 3-gram bar, or late-phase shingle Jaccard at the 0.0122 fixed-point arm. Physics/surreal are reused S2.2 raw cells.",
+  "alt_text": "Degenerate fraction per semantic seed at the S5 lock (or-qwen3-8b, P1 raw_completion, W=4096, T=0.3). Labels are k/n with n=2 stochastic replicates. Domain seeds are blue; twin members are vermillion. Degenerate = looping fraction ≥ 0.5 of post-horizon chunks at the 0.083 3-gram bar, or late-phase shingle Jaccard at the 0.0122 fixed-point arm. Physics/surreal are reused S2.2 raw cells.",
+  "limitations": "n=2 is a count, not an uncertainty interval. A 2/2 bar is not CI [1, 1]. The flag is a surface-form verdict; a lock is not a semantic basin and not an MSM macrostate. love s1 can sit under the bar and still remain in the occupancy table.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "config_sha256": null,
+  "units": {
+    "fraction": "degenerate trajectories / 2",
+    "semantic_seed": "seed id"
+  },
+  "generated_at": "2026-09-06T03:27:11+00:00"
+}

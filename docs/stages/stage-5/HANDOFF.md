@@ -40,12 +40,11 @@ PID-killed and resumed on this `run_id`. Two `tokenizer_roundtrip_ok=false`
 steps: `war` s1 step 36, `love` s1 step 44; both trajectories COMPLETED.
 Do not mint a second generate `run_id`.
 
-Embed (started 2026-09-06T03:01:25Z):
-`s5-embed-lock-occupancy-20260906T030125Z-eab6e484`. RouterAI `/embeddings`
-503 is an upstream 429 ("engine overloaded"); batches still land at $0.
-Do not mint a second embed `run_id`. If this process dies, inspect STATUS
-before starting anything else — a fresh `afterlife embed` would mint a
-sibling id. Geometry / occupancy assemble wait on COMPLETED.
+Embed **COMPLETED** 2026-09-06T03:17Z:
+`s5-embed-lock-occupancy-20260906T030125Z-eab6e484`. Both spaces, 1152
+chunks, $0. RouterAI 503 was an upstream 429; do not mint a sibling
+embed id. Occupancy assemble and REPORT are written. Do not
+regenerate.
 
 Degeneracy: `s5-degeneracy-20260906T030145Z-deb4c3bd`. **23/24**
 degenerate (threshold 0.083 / half of post-horizon chunks, plus late

@@ -363,12 +363,10 @@ instruct-модели дают релевантный для продакшен�
 
 Одобренный потолок проекта — **$200**
 ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md); было $50 в
-ADR-0004). Леджер после Stage 4: **$15.00**. Hosted Stage 4 **$3.44**
-против оценки generate $3.33 / YAML $14
-([ADR-0014](decisions/ADR-0014-reduced-s4-temp-window.md)). PLAN и
-оценка S5 есть
-([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md));
-оценка generate **$1.06**, разрешена 2026-09-05.
+ADR-0004). Леджер после generate S5: **$16.34**. Hosted Stage 5
+**$1.3385** против оценки fill=1 $1.06 / YAML $8
+([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
+Вычисления S5 закончены 2026-09-06; ждут научной рецензии.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

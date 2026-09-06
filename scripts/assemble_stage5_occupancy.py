@@ -64,7 +64,6 @@ S51_EMBED = "s5-embed-lock-occupancy-20260906T030125Z-eab6e484"
 S51_DEGENERACY = "s5-degeneracy-20260906T030145Z-deb4c3bd"
 
 EMBEDDINGS = ("bge-m3", "qwen3-embed-8b")
-RAW_PREFIX = "or-qwen3-8b__"
 # S5.1 generated the eight remaining domains plus both twin pairs.
 S51_SEEDS = frozenset((*DOMAIN_SEED_ORDER[2:], *TWIN_SEED_ORDER))
 
