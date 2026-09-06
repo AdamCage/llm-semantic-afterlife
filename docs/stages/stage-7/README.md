@@ -19,5 +19,7 @@ establish?
 | S7.3 artifact release check | [`artifacts/stage-7/manuscript/`](../../../artifacts/stage-7/manuscript/) |
 
 Budget **$0 API**. Ledger **$16.34 of $200**.
-Do not merge without scientific review.
-Assignment for that review: [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).
+Scientific review: [`REVIEW.md`](REVIEW.md) — **APPROVED WITH
+CHANGES**; two TeX blockers applied. Do **not** merge until the
+human says close. Assignment that produced the review:
+[`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).

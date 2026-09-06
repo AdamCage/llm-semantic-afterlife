@@ -31,4 +31,7 @@ not mint `runs/s7`.
 - Open T=1.0 / T=1.5 / 200 seeds / a second generator / MSM
 - Merge S7 without scientific review
 
-Scientific review assignment: [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).
+Scientific review: [`REVIEW.md`](REVIEW.md) (**APPROVED WITH
+CHANGES**, 2026-09-06). Phrase blockers applied in `paper/main.tex`.
+**Do not merge.** Close is a later human `--no-ff` into `main`.
+Original assignment: [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).

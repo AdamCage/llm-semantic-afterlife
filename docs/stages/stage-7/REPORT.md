@@ -4,9 +4,13 @@
 verdict: **PASS** on the writing contract (F1–F10). Mechanical
 `afterlife review --stage s7` is expected to **FAIL**
 `runs.complete`: this stage has no generate `run_id` by design
-(ADR-0018). Do not mint `runs/s7` to green that check. Do not
-request scientific review as if the generate-gate were the right
-tool for a manuscript stage.
+(ADR-0018). Do not mint `runs/s7` to green that check.
+
+Scientific review 2026-09-06: **APPROVED WITH CHANGES**
+([`REVIEW.md`](REVIEW.md)). Two phrase blockers applied in
+`paper/main.tex` (F4 = ensemble domain gap, not H2; occupancy names
+`raw_completion` + Alibaba). No new `run_id`. **Do not merge** until
+the human says close.
 
 Human yes on `paper/main.tex` received 2026-09-06. Branch:
 `cursor/stage-7-6dce`. Plan: [`PLAN.md`](PLAN.md). Decision:
@@ -21,7 +25,7 @@ Hosted Stage 7 spend **$0**. No `configs/stages/stage7_*.yaml`.
 | # | Criterion | Verdict | Evidence |
 | --- | --- | --- | --- |
 | F1 | Traceable numbers | **PASS** | every quantitative sentence in [`paper/main.tex`](../../../paper/main.tex) has a same-line `% artifacts/` or `% docs/stages` comment with a `run_id`; `tests/test_paper_manuscript.py` |
-| F2 | Limitations specific | **PASS** | `paper/main.tex` §Limitations names P1 vs sliding, one generator, closed gemini, n=2, degeneracy as sample, F4 whisker, physics s1 last-band NaN, F6 ≠ one lock |
+| F2 | Limitations specific | **PASS** | `paper/main.tex` §Limitations names P1 vs sliding, `raw_completion` + Alibaba pin, one generator, closed gemini, n=2, degeneracy as sample, F4 whisker, physics s1 last-band NaN, F6 ≠ one lock |
 | F3 | H1 not supported | **PASS** | paper states H1 unsupported; `validated=0` from [`k_stability.md`](../../../artifacts/stage-3/dynamics/k_stability.md) |
 | F4 | H5 not present | **PASS** | paper states H5 absent; [`clean_alpha_by_cell.csv`](../../../artifacts/stage-4/grid/clean_alpha_by_cell.csv) |
 | F5 | No basin / `n_macro` / architecture-independence | **PASS** | lock is not a basin; `n_macro` is not an order parameter; gemini is sign agreement, not architecture-independence |
@@ -109,6 +113,11 @@ No pre-registered prediction was wrong.
 
 ## 4. Surprises
 
+- Scientific review (2026-09-06) was **APPROVED WITH CHANGES** on
+  two sentences, not on the occupancy numbers. Abstract sold F4 as
+  seed-domain identity in three spaces; protocol named P1 without
+  `raw_completion` / Alibaba. Both closed by reword. No new
+  `run_id`.
 - The generate-oriented review gate (`runs.complete`) cannot pass a
   writing stage without a dummy run. That is a tooling mismatch,
   not a missing experiment. ADR-0018 already forbade minting one.
@@ -150,8 +159,10 @@ refuse is not applicable (no stage YAML).
 
 ## 7. Implications for the plan
 
-- S7 writing contract is scored. Scientific close of S7 still
-  waits on a human supervisor; do not merge.
+- S7 writing contract is scored. Scientific review is
+  **APPROVED WITH CHANGES** ([`REVIEW.md`](REVIEW.md)); both
+  blockers reworded. Close still waits on an explicit human
+  command; do not merge.
 - `afterlife review --stage s7` remaining FAIL is `runs.complete`.
   That check assumes a generate directory. Changing it belongs in
   a later ADR if the project wants a writing-stage gate, not in a
