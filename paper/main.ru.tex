@@ -1,0 +1,459 @@
+% Semantic Afterlife manuscript (TMLR correctness pass, ADR-0019), Russian translation.
+% English source of record: paper/main.tex. On disagreement, numbers and run_ids there win.
+% Every quantitative claim carries a same-line LaTeX comment: artifact path + run_id.
+% Cite only VERIFIED entries in docs/literature/related-work.md (see paper/refs.bib).
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{natbib}
+\usepackage[unicode,hidelinks]{hyperref}
+\usepackage{setspace}
+\usepackage{microtype}
+
+\graphicspath{{../artifacts/}}
+\setstretch{1.08}
+
+\title{Долговременная динамика блочной самообусловленной языковой генерации после вытеснения промпта\\
+\large Semantic Afterlife}
+\author{Adam Cage}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Языковая модель, чей вход усечён до последних $W$ сгенерированных токенов,
+продолжает работу после того, как исходный промпт покинул это окно. Мы изучаем
+\emph{блочное ядро повторного промптинга}
+$Y_k^{(B)}\sim P_\theta(\cdot\mid X_k; B,\tau)$,
+$X_{k+1}=\mathrm{Tail}_W(X_k\oplus Y_k^{(B)})$,
+при $B{=}1024$ и $W{=}4096$ ($B/W{=}0.25$) на одном instruct-генераторе. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
+После полного вытеснения seed текстовый repetition lock --- типичный исход
+при $T{=}0.3$ ($19/20$ доменных траекторий). % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+Last-band occupancy сохраняет ансамблевый domain gap (F4 distinguishability);
+этот зазор --- not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Гипотеза H1 (валидированные марковские модели состояний) не поддержана. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
+Скользящий нативный KV-кэш мы не измеряли. Degeneracy --- это выборка, а не
+фильтр, который применили и потом забыли. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+\end{abstract}
+
+\section{Введение}
+\label{sec:intro}
+
+Пусть $X_k\in V^W$ --- последние $W$ токенов генератора. Объект этой статьи ---
+не потокенное скользящее внимание. Это блочное ядро
+\begin{equation}
+  Y_k^{(B)}\sim P_\theta(\cdot\mid X_k; B,\tau),\qquad
+  X_{k+1}=\mathrm{Tail}_W\bigl(X_k\oplus Y_k^{(B)}\bigr).
+\end{equation}
+После счётчика генерации $g=W$ seed физически отсутствует во входе модели
+(полное вытеснение). Последующая траектория --- \emph{afterlife}.
+Научный вопрос: удерживает ли эта траектория идентичность seed, занимает ли
+lock с меткой домена, или диффундирует.
+
+На этот вопрос легко ответить неправильно. Зацикленная траектория занимает одну
+точку в пространстве представлений и даёт удержанный mean-squared displacement
+по причинам, не имеющим отношения к семантике. Degeneracy помечается до того,
+как читается геометрия.
+
+Эксперименты --- этапы~0--6 проспективно заданного, версионируемого
+последовательного исследования с документированным адаптивным перепланированием
+между этапами (\texttt{docs/research-plan.md}). Они не устанавливают H1,
+H5 и не дают результата для языковых моделей как класса.
+
+Раздел~\ref{sec:related} помещает afterlife в проверенную литературу.
+Раздел~\ref{sec:protocol} определяет ядро, два момента вытеснения и
+принудительное продолжение. Раздел~\ref{sec:lock} сообщает о lock при низком $T$.
+Раздел~\ref{sec:occupancy} сообщает last-band occupancy доменов.
+Раздел~\ref{sec:notshown} фиксирует, чего дизайн не может установить.
+Раздел~\ref{sec:limitations} перечисляет оставшиеся угрозы валидности.
+
+\section{Связанные работы}
+\label{sec:related}
+
+Мы цитируем только источники, помеченные VERIFIED в журнале литературы проекта.
+
+\citet{zekri2024} изучают авторегрессивную генерацию как марковскую цепь на
+контексте и при сжатии next-token ядра в полной вариации доказывают
+существование единственного стационарного распределения. Эта теорема ---
+правильный нуль для единственного долговременного закона. Это не измерение
+last-band occupancy после вытеснения.
+
+Протоколы telephone-game и paraphrase передают \emph{весь} предыдущий
+текст под инструкцией
+\citep{perez2025,mohamed2025,wang2025,geng2026}.
+Наше состояние --- конечный хвост с явным вытеснением промпта и многими
+оборотами навязанного $W$. \citet{ko2026} описывают аттракторы,
+обусловленные собеседником; в этом протоколе собеседника нет.
+\citet{chen2026horizon} разделяют horizon, context и memory; мы навязываем $W$
+усечением и начинаем после того, как seed покинул это окно.
+
+Дегенерация поверхностной формы при максимизирующем декодировании задокументирована
+\citep{holtzman2020}. Самоподкрепление повторного предложения --- ближайшее
+альтернативное объяснение lock \citep{xu2022}.
+Коллапс при обучении на рекурсивно сгенерированных данных
+\citep{shumailov2024} --- другой объект: мы никогда не дообучаем.
+Марковская методология из молекулярной динамики
+\citep{wu2020vampnets,paul2019core} --- инструментарий, который применил
+этап~3; инструментарий не есть результат.
+
+\section{Протокол}
+\label{sec:protocol}
+
+\subsection{Генератор, окно и P1}
+\label{sec:p1}
+
+Occupancy использует \texttt{or-qwen3-8b} (Qwen3-8B-Instruct через OpenRouter;
+served provider \texttt{Alibaba} на каждом завершённом occupancy-шаге),
+$W{=}4096$, $T{=}0.3$, блок $B{=}1024$, так что $B/W{=}0.25$, чанки анализа по % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
+$1024$ токена генератора, без перекрытия, и двенадцать оборотов $W$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+Механизм продолжения --- \texttt{raw\_completion}, не
+\texttt{assistant\_prefill} и не \texttt{chat\_instructed}. Протокол P1 ---
+повторный промптинг: последние $W$ токенов перекодируются и отправляются как
+новый промпт. P1 и механизм продолжения --- разные оси (глоссарий).
+Конструкция входа --- не скользящий нативный KV-кэш (протокол P2).
+
+Вытеснение имеет два момента. \emph{Начало вытеснения} --- $W-L_0$: окно
+впервые заполняется, и следующий сгенерированный токен может вытолкнуть токен
+seed. \emph{Полное вытеснение} --- $g=W$: ни одного токена seed не осталось.
+Last-band occupancy использует оборот $\ge 1$, то есть полное вытеснение, а не
+момент заполнения.
+Исторический generate JSONL хранил \texttt{horizon\_tokens}${}=W-L_0$;
+анализ не читает это поле для F4. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+
+Процесс --- \emph{внешне поддерживаемое самообусловливание после повторных
+попыток остановки}: stop-токены записываются, генерация продолжается.
+Survival-анализ EOS как поглощающего состояния отложен (Paper B).
+
+\subsection{Закон стоимости}
+\label{sec:cost}
+
+Хостовые траты следуют записанному ledger. Аудит этапа~0 стоил $\$0.0128$. % docs/stages/stage-0/REPORT.md @ s0 audit
+Генерация этапа~1 биллилась $\$6.32$ на % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
+\texttt{s1-pilot-core-20260830T134147Z-f1cce9ec}. % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
+Хостовая генерация этапа~4 биллилась $\$3.4383$. % docs/stages/stage-4/REPORT.md @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+Генерация этапа~5 биллилась $\$1.3385$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+Этап~6 использовал кэшированные эмбеддинги Gemini при хостовых $\$0$. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
+Хостовые траты проекта на закрытии этапа~6 составляли $\$16.34$ из потолка $\$200$. % docs/stages/stage-6/REPORT.md @ ledger
+Этот correctness-проход потратил $\$0$. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+
+\subsection{Degeneracy --- это выборка}
+\label{sec:degeneracy}
+
+Траектория помечается текстовым repetition lock, когда калиброванная
+статистика повторов пересекает порог, выведенный из корпуса человеческой
+прозы (Carroll и Darwin): средний $3$-gram Jaccard $0.083$ и % artifacts/stage-1/degeneracy/degeneracy_verdicts.meta.json @ s1-degeneracy-20260831T070038Z-b2f6f0c9
+Jaccard позднего окна $0.0122$. % artifacts/stage-1/degeneracy/degeneracy_verdicts.meta.json @ s1-degeneracy-20260831T070038Z-b2f6f0c9
+Детектор сообщает о почти-рекуррентном текстовом режиме (неподвижная точка
+или короткий цикл), а не о точном тесте периода-1. Эти два числа не
+перенастраиваются.
+
+На occupancy-панели $19/20$ доменных траекторий и $1/2$ love- % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+траекторий удовлетворяют правилу lock; у $10/10$ доменных seed есть хотя бы один lock. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+Clopper--Pearson $19/20$ равен $[0.751, 0.999]$. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
+Occupancy --- утверждение о зацикленных траекториях. Геометрия на looping-строке
+не интерпретируется как удержанный семантический бассейн.
+
+\section{Низкотемпературный repetition lock}
+\label{sec:lock}
+
+Этап~1 сгенерировал $48$ траекторий на \texttt{or-qwen3-8b} при $W{=}4096$, % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
+целевых $T{=}131072$ токенов ($32$ оборота). % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
+Правило lock сработало на $45/48$ траекториях ($94\%$), включая $24/24$ при % docs/stages/stage-1/REPORT.md @ s1-degeneracy-20260831T070038Z-b2f6f0c9
+$T{=}0.3$ и $21/24$ при $T{=}1.0$. % docs/stages/stage-1/REPORT.md @ s1-degeneracy-20260831T070038Z-b2f6f0c9
+Рисунок~\ref{fig:s1-sep} показывает кривую domain-gap на этой
+панели с degenerate-majority; это не не-looping подвыборка.
+
+Lock не универсален среди hosted-генераторов.
+Таблица~\ref{tab:s2-rates} сообщает частоты этапа~2 при $T{=}0.3$, $W{=}4096$
+с интервалами Clopper--Pearson. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gemma-4-31b} --- $0/8$ ($[0, 0.369]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gpt-oss-120b} --- $8/8$ ($[0.631, 1]$), с оговоркой almost-$T$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-qwen3-8b} на этом плече --- $7/8$ ($[0.473, 0.997]$), что включает $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+Направление (F2) --- gemma против $120$B, а не утверждение, что каждый интервал Qwen % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+исключает одну половину.
+
+Плечо prefill-versus-raw на \texttt{or-qwen3-8b} --- $7/8$ против $8/8$; % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
+разностный CI Newcombe включает $0$ (Fisher $p{=}1$). % artifacts/stage-2/mechanism/rates/fixed_point_rates.csv @ s2-mechanism-20260901T071519Z-dfbb173a
+
+Этап~4 пересёк температуру и окно при $n{=}4$ на ячейку.
+При $T\le 1.0$ и $W{=}4096$, и $W{=}8192$ дают $4/4$ ($[0.398, 1]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+При $T{=}1.5$, $W{=}4096$ даёт $0/4$ ($[0, 0.602]$); $W{=}8192$ даёт $2/4$ ($[0.068, 0.932]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
+Точный Fisher $p$ для $4/4$ против $0/4$ при $W{=}4096$ равен $0.029$; это % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+контраст ячеек, а не температурный закон. Гипотеза H5 (температурное окно
+не-looping удержанного движения) отсутствует: чистая MSD $\alpha$ определена
+только при $T{=}1.5$ и субдиффузионна. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+
+\begin{table}[t]
+  \centering
+  \caption{Частоты текстового repetition-lock, ось моделей этапа~2, $T{=}0.3$,
+    $W{=}4096$, 95\% CI Clopper--Pearson. Источник: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates.csv};
+    \texttt{s2-rates-20260901T125506Z-41d2e88e}.
+    $0/8$ у Gemma --- доказательство существования того, что заморозка этапа~1 не % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    свойство instruct-моделей как класса.} % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+  \label{tab:s2-rates}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Генератор & $n$ & частота lock & 95\% CI \\
+    \midrule
+    \texttt{or-qwen3-8b} & $8$ & $7/8$ & $[0.473, 0.997]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gemma-4-31b} & $8$ & $0/8$ & $[0, 0.369]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-120b} & $8$ & $8/8$ & $[0.631, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-muse-glimmer-30b} & $8$ & $2/8$ & $[0.032, 0.651]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-20b} & $0$ достигли $T$ & --- & --- \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \caption{Частота looping по температуре и окну, этап~4,
+    \texttt{or-qwen3-8b}, $n{=}4$ на ячейку, CI Clopper--Pearson. Источник:
+    \texttt{artifacts/stage-4/grid/looping\_rate\_by\_cell.csv}.} % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+  \label{tab:s4-loop}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    $T$ & $W{=}4096$ & CI & $W{=}8192$ & CI \\
+    \midrule
+    $\le 1.0$ & $4/4$ & $[0.398, 1]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+    $1.5$ & $0/4$ & $[0, 0.602]$ & $2/4$ & $[0.068, 0.932]$ \\ % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{stage-1/separation-bge-m3/seed_separation.png}
+  \caption{Domain-gap этапа~1 против оборота в \texttt{bge-m3} на
+    пилоте из $48$ траекторий \texttt{or-qwen3-8b}. Панель с degenerate-majority. % artifacts/stage-1/separation-bge-m3/seed_separation.png @ s1-separation-bge-m3-20260831T074042Z-9bf54fbf
+    Данные: \texttt{artifacts/stage-1/separation-bge-m3/seed\_separation.data.parquet}.} % artifacts/stage-1/separation-bge-m3/seed_separation.png @ s1-separation-bge-m3-20260831T074042Z-9bf54fbf
+  \label{fig:s1-sep}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{stage-4/grid/looping_rate_vs_T.pdf}
+  \caption{Частота looping против температуры на двух окнах, 95\% CI Clopper--Pearson, % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+    $n{=}4$. Ячейка $T{=}1.5$, $W{=}4096$ --- % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+    существование не-looping режима на этой модели, а не время перемешивания.} % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+  \label{fig:s4-loop}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{stage-4/grid/clean_alpha_vs_T.pdf}
+  \caption{Чистая MSD $\alpha$ там, где определена (только не-looping ячейки).
+    Отсутствующие точки при низком $T$ --- отсутствие H5.} % artifacts/stage-4/grid/clean_alpha_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+  \label{fig:s4-alpha}
+\end{figure}
+
+\section{Last-band occupancy}
+\label{sec:occupancy}
+
+При наличии lock этапы~5--6 спрашивают, показывают ли last-band центроиды
+всё ещё ансамблевый domain gap. Двадцать восемь траекторий при $W{=}4096$, $T{=}0.3$,
+$B{=}1024$, двенадцать оборотов. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
+Generate \texttt{s5-lock-occupancy-20260905T164327Z-6780902f};
+embed \texttt{s5-embed-lock-occupancy-20260906T030125Z-eab6e484};
+degeneracy \texttt{s5-degeneracy-20260906T030145Z-deb4c3bd};
+gemini \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}.
+
+Пусть $D_{\mathrm{within}}$ --- среднее косинусное расстояние между last-band
+центроидами, разделяющими домен seed, а $D_{\mathrm{between}}$ --- среднее
+между разными доменами. Зазор равен
+$\Delta_{\mathrm{dom}}=D_{\mathrm{between}}-D_{\mathrm{within}}$.
+Домены помечаются разделёнными, когда 95\% CI траекторного bootstrap % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+исключает $0$ сверху. Этот оценщик уже ресэмплирует с кратностью % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+(ADR-0019). Независимый пересчёт матрицы пар seed согласуется по знаку до
+$<0.002$ во всех трёх пространствах. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
+
+Таблица~\ref{tab:s6-f4} сообщает last-band F4. Все три пространства разделены
+по этому правилу CI:
+\texttt{bge-m3} $0.201$ $[0.065, 0.332]$; % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+\texttt{qwen3-embed-8b} $0.390$ $[0.151, 0.593]$; % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+\texttt{gemini-embed-001} $0.150$ $[0.029, 0.266]$. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Утверждение --- согласие знака. Уровни не взаимозаменяемы. Нижняя граница
+Gemini $0.029$ --- прохождение NHST, а не architecture-independence. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+У physics seed~1 $47$ против $48$ чанков, поэтому диагональ last-band % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
+$D_{\mathrm{within}}$ не определена; F4 использует
+$n_{\mathrm{within}}{=}9$ пар. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
+Last-band gap --- ансамблевая различимость, а не recovered prompt
+memory (H2).
+
+Протокольная диагностика, не заголовок: доменные траектории проводят среднюю
+долю заполнения $0.853$, 95\% CI $[0.756, 0.936]$, в последней четверти, при средней % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+доле stop-токенов $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+
+\begin{table}[t]
+  \centering
+  \caption{F4 last-band domain gap, десять доменных seed, $n{=}20$,
+    $n_{\mathrm{within}}{=}9$. Источник: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
+    Separated означает, что 95\% CI исключает $0$ сверху.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \label{tab:s6-f4}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Пространство & зазор & 95\% CI & separated \\
+    \midrule
+    \texttt{bge-m3} & $0.201$ & $[0.065, 0.332]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+    \texttt{qwen3-embed-8b} & $0.390$ & $[0.151, 0.593]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+    \texttt{gemini-embed-001} & $0.150$ & $[0.029, 0.266]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{stage-5/occupancy/domain_separation_vs_turnover.pdf}
+  \caption{Domain gap против оборота в \texttt{bge-m3} и
+    \texttt{qwen3-embed-8b} на locked-панели этапа~5. Last-band CI
+    исключают $0$ сверху в обоих пространствах.} % artifacts/stage-5/occupancy/domain_separation_vs_turnover.pdf @ s5-lock-occupancy-20260905T164327Z-6780902f
+  \label{fig:s5-dom}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{stage-6/occupancy/domain_gap_three_spaces.pdf}
+  \caption{F4 domain gap против оборота в трёх пространствах эмбеддингов на
+    тех же $28$ траекториях. Last-band CI исключают $0$; нижняя граница gemini % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
+    равна $0.029$. Уровни $0.201$ / $0.390$ / $0.150$ не взаимозаменяемы.} % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \label{fig:s6-f4}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.72\linewidth]{stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.pdf}
+  \caption{Last-band косинусные расстояния в \texttt{gemini-embed-001}
+    (иллюстрация попарной матрицы, не число кластеров, не 2-D
+    проекция).} % artifacts/stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \label{fig:s6-heat}
+\end{figure}
+
+\section{Чего это не показывает}
+\label{sec:notshown}
+
+\paragraph{H1 не поддержана.}
+Этап~3 применил VAMP/PCCA+ на эмбеддингах панели этапа~1.
+\texttt{validated=0} в каждой ячейке
+\texttt{artifacts/stage-3/dynamics/k\_stability.md}. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
+Implied $n_{\mathrm{macro}}$ нестабилен по $K$ и по пространствам
+эмбеддингов. Гипотеза H1 (метастабильные семантические состояния как объект MSM)
+не поддержана. Короткоцикловый lock --- не валидированное макросостояние.
+
+\paragraph{H5 отсутствует.}
+На сетке этапа~4 нет чистой $\alpha$ при низком $T$. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+
+\paragraph{F6 не заголовок.}
+Сопоставленные пары реплик --- контрфактические нарративы, а не однотокенные
+фактические переключения. $n{=}2$ на семейство. Опубликованные CI-колонки twins
+использовали bootstrap, отбрасывавший кратности ресэмпла (ADR-0019), и здесь
+не сообщаются как интервалы. Last-band \emph{точечная} $\Delta$ в \texttt{gemini-embed-001}
+равна $-0.012$ (все пары) и $0.049$ в \texttt{bge-m3} waterloo. % artifacts/stage-6/occupancy/twin_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Это no detected divergence / underpowered, а не occupancy одного lock
+и не семантический коллапс. Дизайн эквивалентности не утверждается.
+
+\paragraph{Нет универсальных аттракторов.}
+Один instruct-генератор, P1, \texttt{raw\_completion}, Alibaba, $T{=}0.3$.
+Уже $0/8$ у Gemma фальсифицирует универсальность. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+
+\section{Ограничения}
+\label{sec:limitations}
+
+\paragraph{P1 против скользящего внимания.}
+Каждый токен afterlife производится повторным промптингом последних $W$ токенов.
+Нативный скользящий KV-кэш (P2) не измерялся. Ни одно предложение здесь не
+является свидетельством о скользящем внимании.
+
+\paragraph{Один генератор, один протокол, одна температура для occupancy.}
+F4 --- \texttt{or-qwen3-8b}, P1, \texttt{raw\_completion}, served provider
+\texttt{Alibaba}, $T{=}0.3$, $W{=}4096$, $B{=}1024$. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
+P1 --- ось повторного промптинга; \texttt{raw\_completion} --- механизм
+продолжения. Это не синонимы.
+
+\paragraph{Instruction-tuning и регистр.}
+Occupancy-генератор --- instruct-tuned. Этап~2 уже измерил reviewer-регистр
+на этой модели. Альтернатива persona/register --- last-band центроиды кластеризуются
+по остаточному стилю инструкции, а не по домену seed ---
+не исключена F4. Хостовой base-модели не было (этап~0). Локальный зонд
+\texttt{gemma-3-1b-pt} при $W{=}256$ --- другое окно. % docs/stages/stage-3/REPORT.md @ s3-local-base-20260901T184812Z-cc80633b
+
+\paragraph{Принудительное продолжение.}
+Объект --- внешне поддерживаемое самообусловливание после повторных
+попыток остановки. Доля stop в последней четверти $0.359$ --- конфound, который % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+нужно назвать, а не измерение EOS как поглощающего.
+
+\paragraph{Twins, $n{=}2$.}
+F6 underpowered. Twins --- не однофактовые пары. CI от сломанного
+bootstrap не используются как свидетельство.
+
+\paragraph{Нуль degeneracy.}
+Порог lock --- проза Carroll+Darwin. Калибровка масштаба Wikipedia
+отложена.
+
+\paragraph{Представление.}
+Абсолютные зазоры $0.201$, $0.390$, $0.150$ не согласны. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Нижний CI Gemini $0.029$ --- не architecture-independence. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+
+\paragraph{Недетерминизм провайдера.}
+Точные совпадения этапа~2 составляли $100/60/20/20$ процентов по четырём hosted- % docs/stages/stage-2/REPORT.md @ s2-audit-determinism-20260901T015221Z-ab59afc8
+генераторам. Пары реплик не гарантированы как независимые реализации.
+
+\paragraph{Конечный горизонт.}
+Occupancy использует двенадцать оборотов, а не бесконечный afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+
+\section{Обсуждение}
+\label{sec:discussion}
+
+Что установлено на этом генераторе и протоколе: после того как seed покидает
+$W$, типичная траектория при $T{=}0.3$ --- текстовый repetition lock; last-band
+центроиды всё ещё показывают ансамблевый domain gap по десяти доменам seed в
+трёх пространствах эмбеддингов (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+
+Что не установлено: H1; H5; мы не можем утверждать architecture-independence
+occupancy; результат для языковых моделей как класса; P1 против P2; времена
+перемешивания; коллапс реплик; однофактовая чувствительность twins.
+
+\citet{zekri2024} остаются правильным нулём единственности. Last-band зазоры
+с меткой домена на locked-панели совместимы с более чем одной долговременной
+областью occupancy в пространстве эмбеддингов. Эта совместимость --- не
+доказательство того, что токенная цепь имеет несколько стационарных мер.
+
+\section{Воспроизводимость}
+\label{sec:repro}
+
+Эксперименты через этап~6 закрыты на git-коммите \texttt{ad1f244}.
+Этап~7 написал первую рукопись. Этот correctness-проход --- ADR-0019
+на ветке \texttt{cursor/tmlr-correctness-a7f7}; он не чеканит
+\texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+Тег GitHub \texttt{state-latest} --- изменяемый указатель восстановления, а не
+цитируемый архивный объект.
+
+Основные \texttt{run\_id}:
+
+\begin{itemize}
+  \item Этап~1 generate: \texttt{s1-pilot-core-20260830T134147Z-f1cce9ec}
+  \item Этап~1 degeneracy: \texttt{s1-degeneracy-20260831T070038Z-b2f6f0c9}
+  \item Этап~1 embed: \texttt{s1-embed-pilot-core-20260831T064430Z-f05e6a68}
+  \item Этап~1 separation: \texttt{s1-separation-bge-m3-20260831T074042Z-9bf54fbf}
+  \item Этап~2 model axis: \texttt{s2-model-axis-20260901T015457Z-ab59afc8}
+  \item Этап~2 mechanism: \texttt{s2-mechanism-20260901T071519Z-dfbb173a}
+  \item Этап~2 rates: \texttt{s2-rates-20260901T125506Z-41d2e88e}
+  \item Этап~3 dynamics: \texttt{s3-dynamics-20260901T204521Z-f21d5908}
+  \item Этап~4: \texttt{s4-w4096-new-temps-20260904T103121Z-589c8eb1},
+        \texttt{s4-w8192-20260904T120057Z-ce82ce55}
+  \item Этап~5 generate: \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}
+  \item Этап~6 gemini: \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

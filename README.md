@@ -183,7 +183,7 @@ src/semantic_afterlife/
   viz/             one theme, plotly + seaborn, multi-format export
 runs/              raw output, git-ignored, regenerable
 artifacts/         small publication-grade output, committed
-paper/             manuscript — written last, from artifacts only
+paper/             manuscript (English canonical, Russian translation) + PDFs
 ```
 
 ## Stages

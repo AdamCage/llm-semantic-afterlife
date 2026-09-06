@@ -1,18 +1,32 @@
 # Manuscript
 
-Source of record: [`main.tex`](main.tex) plus [`refs.bib`](refs.bib).
+English source of record: [`main.tex`](main.tex) plus [`refs.bib`](refs.bib).
+Russian translation: [`main.ru.tex`](main.ru.tex). On disagreement,
+numbers and `run_id`s in the English file win.
+
 Figures are included from `../artifacts/` (see `\graphicspath`).
 Do not redraw them for the paper.
 
-Compile from this directory (TeX Live with `natbib`, `graphicx`, `booktabs`, `hyperref`):
+Compile both PDFs (TeX Live: `texlive-latex-recommended`,
+`texlive-latex-extra`, `texlive-fonts-recommended`, `texlive-bibtex-extra`,
+`texlive-lang-cyrillic`, `cm-super`, `lmodern`):
 
 ```bash
-pdflatex main.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
+bash paper/compile.sh          # both
+bash paper/compile.sh en       # English only
+bash paper/compile.sh ru       # Russian only
 ```
 
-Every quantitative sentence in `main.tex` carries a same-line comment
-with an artifact path and `run_id`. Cite only `VERIFIED` entries from
-`docs/literature/related-work.md`. Stage 7 minted no generate `run_id`.
+Released PDFs (committed):
+
+- [`releases/semantic-afterlife-en.pdf`](releases/semantic-afterlife-en.pdf)
+- [`releases/semantic-afterlife-ru.pdf`](releases/semantic-afterlife-ru.pdf)
+
+Auxiliary files go to `paper/build/` (gitignored).
+
+Every quantitative sentence in both TeX files carries a same-line
+comment with an artifact path and `run_id`. Cite only `VERIFIED`
+entries from `docs/literature/related-work.md`. Stage 7 minted no
+generate `run_id`. The Russian file tracks the ADR-0019 English
+rewrite (blockwise kernel, `B=1024`, Clopper–Pearson intervals,
+H1 unsupported / H5 absent / F6 not a headline).
