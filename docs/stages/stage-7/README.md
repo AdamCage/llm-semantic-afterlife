@@ -20,6 +20,6 @@ establish?
 
 Budget **$0 API**. Ledger **$16.34 of $200**.
 Scientific review: [`REVIEW.md`](REVIEW.md) — **APPROVED WITH
-CHANGES**; two TeX blockers applied. Do **not** merge until the
-human says close. Assignment that produced the review:
+CHANGES**; two TeX blockers applied. Closed `--no-ff` 2026-09-06.
+Assignment that produced the review:
 [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).

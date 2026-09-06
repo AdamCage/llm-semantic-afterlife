@@ -10,11 +10,13 @@ project $16.34 of $200), `report.diagnostics_segmented`,
 
 Verdict: **APPROVED WITH CHANGES**
 
-Do not merge from this review. Do not generate, embed, retune
-0.083 / 0.0122, drop degenerate rows, headline H1, H5, a lock-as-basin,
-architecture-independence, one lock, or “language models as a class.”
-The two blockers close by **rewording phrases only**. No new `run_id`.
-Stage close is `--no-ff` into `main` only after the human says close.
+## Close
+
+Human authorised `--no-ff` close 2026-09-06. Executor rewords
+applied (`25e7f70`): both blockers closed by phrase rewrite. CI
+6/6 green on `9fbfa87`. Mechanical gate remains FAIL
+`runs.complete` by design (ADR-0018); do not mint `runs/s7`.
+Do not generate. Do not retune 0.083 / 0.0122.
 
 ---
 

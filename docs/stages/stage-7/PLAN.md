@@ -1,10 +1,12 @@
 # Stage 7 — Can the manuscript be written from S0–S6 artifacts?
 
-**Status.** Opened 2026-09-06 on branch `cursor/stage-7-6dce`, after
+**Status.** Closed 2026-09-06 on branch `cursor/stage-7-6dce`, after
 Stage 6 closed APPROVED WITH CHANGES (`ad1f244`). Decision:
 [ADR-0018](../../decisions/ADR-0018-s7-manuscript-from-closed-stages.md).
 No generate. No embed. Human yes on `paper/main.tex` received
-2026-09-06; manuscript is in `paper/main.tex`.
+2026-09-06; manuscript is in `paper/main.tex`. Scientific review:
+**APPROVED WITH CHANGES**. Phrase blockers applied. Human
+authorised `--no-ff` close.
 
 ## 1. Question
 
@@ -139,3 +141,4 @@ Wall clock is writing, not generation. No 4 h embed watch.
 - [x] `REPORT.md` scores Q1–Q8
 - [x] Hosted spend $0
 - [x] No `stage7_*.yaml`
+- [x] Human authorised `--no-ff` close

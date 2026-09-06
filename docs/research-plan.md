@@ -6,16 +6,15 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S6` closed APPROVED WITH CHANGES 2026-09-06: on the
-same 28 `or-qwen3-8b` P1 trajectories at `W=4096` T=0.3, occupancy
-*signs* hold in `gemini-embed-001` (F4 last-band gap 0.150
-[0.029, 0.266], an NHST whisker; F6 last-band Δ CIs include 0).
-Sign agreement with both S5 spaces, not architecture-independence
-(gemini closed), not recovered semantic memory. Hosted **$0**.
-`S7` opens as the manuscript from S0–S6 artifacts. `S5` closed
-APPROVED WITH CHANGES (`9cb2845`). `S4` closed APPROVED
-(`5c07751`). `S3` closed PARTIAL. Project ceiling **$200**
-(ADR-0013). Last revised 2026-09-06.
+**Status.** `S7` closed APPROVED WITH CHANGES 2026-09-06: a TMLR-shaped
+manuscript from closed S0–S6 artifacts exists at `paper/main.tex`.
+F4 is an ensemble last-band domain gap, not recovered prompt memory
+(H2). Occupancy protocol is P1 `raw_completion` served by Alibaba.
+H1 unsupported; H5 absent. Hosted **$0**. Mechanical gate FAIL
+`runs.complete` is the writing-stage exception (ADR-0018). Planned
+stages S0–S7 are complete; there is no S8. `S6` closed APPROVED WITH
+CHANGES (`ad1f244`). Project ceiling **$200** (ADR-0013). Last
+revised 2026-09-06.
 
 ---
 
@@ -357,26 +356,27 @@ flipped sign (band 0 0.033 → band 12 −0.031). Sign agreement with
 one lock. No new generate. Hosted **$0.00**. Thresholds 0.083 /
 Jaccard 0.0122 unmoved.
 
-### S7 — Manuscript `← current`
+### S7 — Manuscript `closed`
 
-Opened 2026-09-06. Plan:
+Closed 2026-09-06. Plan:
 [`docs/stages/stage-7/PLAN.md`](stages/stage-7/PLAN.md).
+Report: [`docs/stages/stage-7/REPORT.md`](stages/stage-7/REPORT.md).
+Review: [`docs/stages/stage-7/REVIEW.md`](stages/stage-7/REVIEW.md).
 [ADR-0018](decisions/ADR-0018-s7-manuscript-from-closed-stages.md).
 
-Written from S0–S6 artifacts only, per `.cursor/rules/50-paper.mdc`.
-The paper reports what the stages established, including negatives:
-H1 unsupported on the instruct-under-P1 sample (S3); H5 absent on
-the reduced grid (S4); occupancy *signs* (not recovered memory) on
-one generator at `W=4096` T=0.3, holding in three embedding spaces
-(S5–S6), with gemini F4 an NHST whisker. Do not headline `n_macro`,
-call a lock a basin, or treat last-band collapsed as occupancy of
-one lock. Kitchen-sink S6 arms stay parked (ADR-0017).
-Human yes received 2026-09-06; draft manuscript is `paper/main.tex`
-on `cursor/stage-7-6dce`. Scientific close of S7 is not this commit.
+A TMLR-shaped manuscript was assembled from closed S0–S6 artifacts
+without a new generate `run_id`. Title: *Semantic Afterlife: Lock
+Occupancy After the Prompt Leaves the Window*. Abstract F4 is
+ensemble distinguishability / domain gap, not recovered prompt
+memory (H2). Occupancy protocol names `raw_completion` and the
+Alibaba pin; P1 is the re-prompt axis, not the continuation
+mechanism. Gemini F4 remains 0.150 [0.029, 0.266] (NHST whisker).
+F6 last-band Δ CIs include 0. H1 unsupported (`validated=0`); H5
+absent. Hosted **$0**. Gate FAIL `runs.complete` is expected
+(writing stage); do not mint `runs/s7`.
 
-Deliverables: manuscript, reproducibility appendix, artifact
-release (figures with tidy data, response cache for headline
-figures, trajectory bundles with provenance).
+Planned stages S0–S7 are complete. There is no S8. Venue
+submission, Zenodo, and parked arms (ADR-0017) are not a stage.
 
 **Budget.** $0 API.
 
@@ -456,14 +456,14 @@ These come from the traps identified during project scoping and are enforced by
 ## 8. Budget and risk summary
 
 The approved project ceiling is **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md);
-was $50 in ADR-0004). Ledger after Stage 6: **$16.34**. Stage 6
-hosted **$0.00** (gemini embed; YAML refuse $2). Stage 5 hosted
-**$1.3385** against the authorised $1.06 fill=1 print / $8 YAML
-refuse
+was $50 in ADR-0004). Ledger after Stage 7: **$16.34**. Stage 7
+hosted **$0.00**. Stage 6 hosted **$0.00** (gemini embed; YAML
+refuse $2). Stage 5 hosted **$1.3385** against the authorised $1.06
+fill=1 print / $8 YAML refuse
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
-S6 closed 2026-09-06. Review APPROVED WITH CHANGES; occupancy
-*signs* hold in `gemini-embed-001`; F4 lower bound is an NHST
-whisker. Human authorised `--no-ff` close.
+S7 closed 2026-09-06. Review APPROVED WITH CHANGES; manuscript
+assembled from S0–S6 artifacts; F4 is a domain gap, not H2.
+Human authorised `--no-ff` close. Planned stages complete.
 Full risk register:
 [`risks.md`](risks.md).
 

@@ -3,10 +3,11 @@
 Operational detail. The contract is [`PLAN.md`](PLAN.md).
 Report: [`REPORT.md`](REPORT.md).
 
-**Branch:** `cursor/stage-7-6dce` (from `main` `ad1f244`).
-Human yes on `paper/main.tex` received 2026-09-06. Do not raise
-ceilings. Do **not** `afterlife generate`. Do not mint `runs/s7`
-to green `runs.complete`.
+**Branch:** `cursor/stage-7-6dce` closed `--no-ff` into `main`
+2026-09-06 (from `main` `ad1f244`). Human yes on `paper/main.tex`
+received 2026-09-06. Do not raise ceilings. Do **not**
+`afterlife generate`. Do not mint `runs/s7` to green
+`runs.complete`.
 
 **Object.** Manuscript from S0–S6 artifacts. Headline: last-band
 occupancy signs on `or-qwen3-8b` P1 after eviction, including a
@@ -29,9 +30,9 @@ not mint `runs/s7`.
 - Cite unverified literature
 - Redraw figures; include from `artifacts/`
 - Open T=1.0 / T=1.5 / 200 seeds / a second generator / MSM
-- Merge S7 without scientific review
+- Reopen S7 generate to green `runs.complete`
 
 Scientific review: [`REVIEW.md`](REVIEW.md) (**APPROVED WITH
 CHANGES**, 2026-09-06). Phrase blockers applied in `paper/main.tex`.
-**Do not merge.** Close is a later human `--no-ff` into `main`.
-Original assignment: [`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).
+Human authorised `--no-ff` close. Original assignment:
+[`REVIEW-BRIEF.md`](REVIEW-BRIEF.md).

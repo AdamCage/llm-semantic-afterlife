@@ -205,7 +205,7 @@ paper/             рукопись — пишется последней, то�
 | S4 | Фазовый портрет `temperature × W` | закрыт APPROVED (T≤1.0 lock; H5 нет) |
 | S5 | Occupancy lock'а по seed при `W=4096` T=0.3 | закрыт APPROVED WITH CHANGES |
 | S6 | Держатся ли знаки occupancy в третьем пространстве? | закрыт APPROVED WITH CHANGES |
-| **S7** | Рукопись из артефактов S0–S6 | текущий |
+| **S7** | Рукопись из артефактов S0–S6 | закрыт APPROVED WITH CHANGES |
 
 ## Новизна, сформулированная честно
 
