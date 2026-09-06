@@ -17,6 +17,12 @@ absent, F4 = domain gap not H2) stand.
   Nature 2024 — all `VERIFIED` in
   [`docs/literature/related-work.md`](../../literature/related-work.md).
 - Sequential-study wording replaces “pre-registered plan”.
+- Russian translation [`paper/main.ru.tex`](../../../paper/main.ru.tex)
+  and committed PDFs
+  [`semantic-afterlife-en.pdf`](../../../paper/releases/semantic-afterlife-en.pdf) /
+  [`semantic-afterlife-ru.pdf`](../../../paper/releases/semantic-afterlife-ru.pdf)
+  track this rewrite (`bash paper/compile.sh all`). English remains
+  canonical on numbers and `run_id`s.
 
 ## What did not change
 
