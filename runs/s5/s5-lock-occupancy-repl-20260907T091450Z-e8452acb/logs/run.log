@@ -23,3 +23,17 @@
 2026-09-07 10:04:09,793 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__finance__s2: 49 steps, 49152 tokens, 48 chunks, $0.0446
 2026-09-07 10:04:09,794 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
 2026-09-07 10:05:29,766 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 10:16:53,961 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 10:17:03,875 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 10:20:08,444 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__biology__s2: 59 steps, 49152 tokens, 48 chunks, $0.0467
+2026-09-07 10:20:08,445 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 10:20:25,517 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__biology__s1: 56 steps, 49152 tokens, 48 chunks, $0.0473
+2026-09-07 10:20:25,518 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 10:34:49,145 WARNING  semantic_afterlife.providers openrouter /completions retry 1: transport: 
+2026-09-07 10:34:49,275 WARNING  semantic_afterlife.providers openrouter /completions retry 1: transport: 
+2026-09-07 10:42:41,648 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 10:42:57,457 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 10:45:54,386 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__war__s1: 56 steps, 49152 tokens, 48 chunks, $0.0479
+2026-09-07 10:45:54,387 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 10:46:55,679 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__war__s2: 75 steps, 49152 tokens, 47 chunks, $0.0572
+2026-09-07 10:46:55,681 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
