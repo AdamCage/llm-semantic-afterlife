@@ -1,0 +1,13 @@
+# Raw run output lives here and is git-ignored: it is large and regenerable from
+# `configs/**` plus a git SHA plus a seed. Publication-grade artifacts live in
+# `artifacts/` and are committed.
+#
+# Layout:
+#   runs/<stage>/<run_id>/manifest.json      what produced this result
+#                        /config.resolved.yaml
+#                        /events.jsonl        structured, append-only event log
+#                        /requests/           raw request + response bodies
+#                        /data/               parquet / npz outputs
+#                        /logs/run.log
+#                        /STATUS
+#   runs/_ledger/spend.jsonl                 append-only cost record

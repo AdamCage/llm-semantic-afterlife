@@ -1,0 +1,87 @@
+budget_usd: 8.0
+description: Replication of the S5 lock occupancy grid including physics/surreal (28
+  trajectories). New run_ids. Do not overwrite Stage 5/6 headline CSVs.
+embeddings:
+- api: routerai
+  architecture: bidirectional-encoder
+  expected_dim: 1024
+  max_batch: 16
+  model_id: baai/bge-m3
+  normalise: true
+  notes: Primary space. XLM-RoBERTa encoder (24 layers, hidden 1024), bidirectional
+    and encoder-only; needs no retrieval instruction, which suits raw chunks.
+  price_usd_per_m_input: null
+  slug: bge-m3
+- api: routerai
+  architecture: causal-decoder
+  expected_dim: 4096
+  max_batch: 8
+  model_id: qwen/qwen3-embedding-8b
+  normalise: true
+  notes: Primary space. Derived from Qwen3ForCausalLM (36 layers, hidden 4096), so
+    its geometry is that of a causal decoder.
+  price_usd_per_m_input: null
+  slug: qwen3-embed-8b
+generators:
+- allow_fallbacks: false
+  api: openrouter
+  continuation: raw_completion
+  continuation_instruction: Continue the following text directly. Do not comment,
+    summarise, explain or address the reader. Output only the continuation.
+  country: null
+  expected_block_fill: 1.0
+  extra_body:
+    reasoning_effort: none
+  is_base_model: false
+  max_reasoning_tokens: 0
+  model_id: qwen/qwen3-8b
+  native_context: 131072
+  notes: 'MEASURED (S0.12): reasons by default (653 tokens for a 96-token request,
+    a 7.8x overshoot). `reasoning_effort: none` suppresses it on BOTH providers, which
+    is why that switch is used everywhere. Confirms the RouterAI trap independently:
+    `include_reasoning: false` is accepted here too and still leaves 575 reasoning
+    tokens, hiding the trace rather than preventing it (ADR-0005).'
+  prefill_user_stub: null
+  price_usd_per_m_input: 0.117
+  price_usd_per_m_output: 0.455
+  provider_slug: alibaba
+  service_tier: null
+  slug: or-qwen3-8b
+  system_prompt: null
+  tokenizer_repo: Qwen/Qwen3-8B
+  tokenizer_revision: null
+max_concurrent: 2
+name: lock-occupancy-repl
+sampling:
+- logprobs: false
+  repetition_penalty: null
+  temperature: 0.3
+  top_k: null
+  top_logprobs: null
+  top_p: 1.0
+seed_bank: configs/seeds/seed_bank_v1.yaml
+semantic_seeds:
+- physics
+- surreal
+- finance
+- biology
+- war
+- love
+- recipe
+- programming
+- philosophy
+- noise
+- waterloo-won
+- waterloo-lost
+- reactor-stable
+- reactor-unstable
+stage: s5
+stochastic_seeds:
+- 1
+- 2
+windows:
+- W: 4096
+  block_size: 1024
+  chunk_size: 1024
+  protocol: P1_reprompt
+  target_tokens: 49152

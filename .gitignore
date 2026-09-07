@@ -12,8 +12,16 @@ secrets/
 # ---------------------------------------------------------------------------
 # `runs/` holds raw trajectories and full logs: large, regenerable from configs.
 # Small, publication-grade artifacts live in `artifacts/` and ARE committed.
-runs/
+# Occupancy replication (ADR-0022) is tracked so the panel cannot vanish with
+# a VM. Do not un-ignore other stages. Secrets stay in `.env`, never here.
+runs/*
 !runs/.gitkeep
+!runs/_ledger/
+!runs/_ledger/**
+!runs/s5/
+runs/s5/*
+!runs/s5/s5-lock-occupancy-repl-*/
+!runs/s5/s5-lock-occupancy-repl-*/**
 .cache/
 scratch/
 
