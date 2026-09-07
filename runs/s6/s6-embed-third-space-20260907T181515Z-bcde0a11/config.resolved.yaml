@@ -1,0 +1,78 @@
+budget_usd: 2.0
+description: Embed-only third representation (gemini-embed-001) of the S5 occupancy
+  trajectories. No generate. Robustness of F4/F6 last-band signs, not a new occupancy
+  map.
+embeddings:
+- api: routerai
+  architecture: closed
+  expected_dim: 3072
+  max_batch: 16
+  model_id: google/gemini-embedding-001
+  normalise: true
+  notes: Stage 6 sanity check only. Closed architecture, so it cannot serve the "independent
+    architecture" argument on its own — but if all three spaces agree, the embedding-artifact
+    objection is largely answered.
+  price_usd_per_m_input: null
+  slug: gemini-embed-001
+generators:
+- allow_fallbacks: false
+  api: openrouter
+  continuation: raw_completion
+  continuation_instruction: Continue the following text directly. Do not comment,
+    summarise, explain or address the reader. Output only the continuation.
+  country: null
+  expected_block_fill: 1.0
+  extra_body:
+    reasoning_effort: none
+  is_base_model: false
+  max_reasoning_tokens: 0
+  model_id: qwen/qwen3-8b
+  native_context: 131072
+  notes: 'MEASURED (S0.12): reasons by default (653 tokens for a 96-token request,
+    a 7.8x overshoot). `reasoning_effort: none` suppresses it on BOTH providers, which
+    is why that switch is used everywhere. Confirms the RouterAI trap independently:
+    `include_reasoning: false` is accepted here too and still leaves 575 reasoning
+    tokens, hiding the trace rather than preventing it (ADR-0005).'
+  prefill_user_stub: null
+  price_usd_per_m_input: 0.117
+  price_usd_per_m_output: 0.455
+  provider_slug: alibaba
+  service_tier: null
+  slug: or-qwen3-8b
+  system_prompt: null
+  tokenizer_repo: Qwen/Qwen3-8B
+  tokenizer_revision: null
+max_concurrent: 2
+name: third-space
+sampling:
+- logprobs: false
+  repetition_penalty: null
+  temperature: 0.3
+  top_k: null
+  top_logprobs: null
+  top_p: 1.0
+seed_bank: configs/seeds/seed_bank_v1.yaml
+semantic_seeds:
+- finance
+- biology
+- war
+- love
+- recipe
+- programming
+- philosophy
+- noise
+- waterloo-won
+- waterloo-lost
+- reactor-stable
+- reactor-unstable
+source_run_id: s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+stage: s6
+stochastic_seeds:
+- 1
+- 2
+windows:
+- W: 4096
+  block_size: 1024
+  chunk_size: 1024
+  protocol: P1_reprompt
+  target_tokens: 49152
