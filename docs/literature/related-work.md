@@ -99,6 +99,23 @@ experimental variable. Their recurrence is exact string matching; ours is
 semantic near-recurrence in embedding space, with RQA and MSM machinery. They
 have no analogue of the context horizon.
 
+### `VERIFIED` Heng Wang, Qiu, Zhao, Qian, Yang, Han, Ji, Savarese, Heinecke, Huan Wang, *Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning*, arXiv:2609.03430 (3 Sep 2026)
+
+KV-cache eviction for long chain-of-thought. Random Attention **keeps the
+prompt** and then evicts non-prompt tokens by independent uniform draws
+per attention head, with no importance score. Across four models and six
+reasoning tasks it matches stronger selectors at matched budget; the
+authors argue the prompt is the fragile part of the cache and the
+generated trace is redundant enough to survive random eviction.
+
+**Our delta:** they *pin the prompt* and randomly drop generated reasoning
+tokens under a task. We *evict the seed completely* (`t_h = W`) and watch
+uninstructed continuation of the remaining tail. Their object is serving
+efficiency for reasoning; ours is occupancy after the initial condition
+has physically left `W`. Do not cite this paper as evidence that random
+eviction preserves seed identity in our protocol — they never drop the
+prompt.
+
 ### `VERIFIED` Perez, Kovač, Léger, Colas, Molinaro, Derex, Oudeyer, Moulin-Frier, *When LLMs Play the Telephone Game: Cultural Attractors as Conceptual Tools to Evaluate LLMs in Multi-turn Settings*, ICLR 2025 (OpenReview hash `dbdea7859f1d2fc10f2c9e79b8f5ae54`; arXiv:2407.04503)
 
 Transmission chains: each agent receives the *whole* previous text and an
@@ -320,10 +337,12 @@ is training-time collapse. Zekri et al. work analytically in token space.
 ## 8. Remaining verification queue
 
 Telephone / degeneration / training-time collapse entries above were verified
-2026-09-06 for the TMLR correctness pass (ADR-0019). Still outstanding:
+2026-09-06 for the TMLR correctness pass (ADR-0019). Random Attention
+(arXiv:2609.03430) was verified 2026-09-07 (ADR-0020). Still outstanding:
 
 | Item | Action | Owner stage |
 | --- | --- | --- |
 | Systematic search | arXiv/ACL/Semantic Scholar for: free-running generation, self-conditioned generation, sliding-window generation dynamics, unbounded/open-ended generation degeneration | parked with Paper B |
 | Metastability estimation | PCCA+ and non-reversible MSM literature, for the estimator we actually use in S3 | S3 (closed: `validated=0`) |
 | Semantic-drift measurement | existing definitions of semantic drift in generation, to avoid reinventing a metric under a new name | S2 |
+| “Execution Horizon Laws / 31-model census” | **Not found** under that title (search 2026-09-07: arXiv, web). A lookalike, *The Illusion of Diminishing Returns: Measuring Long Horizon Execution in LLMs* (arXiv:2509.09677), is a multi-turn *task-execution* benchmark with the prompt retained. It is **not** a substitute; do not cite it as this project's neighbour without a written delta, and do not cite it at all until VERIFIED for a reason other than the missing title. | ADR-0020 |

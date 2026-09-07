@@ -41,18 +41,23 @@ measures its long-run behaviour.
 | **`temperature × W` phase behaviour** | Is there a boundary between semantic confinement and semantic diffusion? |
 | **Basins of attraction** | Which seeds end where, and does the map differ between model families? |
 
-The central pre-registered hypothesis:
+The registered H1, **unsupported** on the closed Stage 0–7 record:
 
 > After the initial context has been fully evicted, a freely generating LLM does
 > not perform unbounded random drift through semantic space. It occupies and
 > transitions between a **finite set of model-specific metastable semantic
 > states.**
 
+What the record does support, on one instruct generator at `T=0.3`, `W=4096`:
+a textual repetition lock is typical after eviction, and last-band centroids of
+**ten fixed seed texts** remain distinguishable (between-seed vs within-seed).
+That is not recovered prompt memory (H2). Do not read H1 off this occupancy.
+
 ## How the experiment actually works
 
 **Protocol P1 (re-prompt).** Each step sends the last `W` tokens as a fresh
-prompt and receives `B` new tokens; the window slides by `S = B`. This realises
-the recursion exactly over any hosted API. It is **not** identical to true
+prompt and receives `B` new tokens; the window slides by `S = B`. This is the
+blockwise re-prompt kernel used on hosted APIs. It is **not** identical to true
 sliding attention with KV-cache eviction — positions restart each step — and
 that limitation is stated in the method section rather than buried
 ([ADR-0001](docs/decisions/ADR-0001-reprompt-window-protocol.md)).

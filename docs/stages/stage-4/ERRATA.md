@@ -16,6 +16,12 @@ data source.
   $4/4$ vs $0/4$ is $p\approx 0.029$. That is a cell contrast, not a
   temperature law.
 
+## ADR-0020 (2026-09-07)
+
+Fisher $p\approx 0.029$ remains in the CSV. It is **not** in the
+manuscript narrative. The paper reports the $4/4$ vs $0/4$ cell contrast
+without the $p$-value.
+
 ## What did not change
 
 - H5 remains **absent**. Clean $\alpha$ is still defined only at $T=1.5$.

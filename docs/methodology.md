@@ -99,8 +99,9 @@ A local P1 vs sliding control remains parked (ADR-0017 / ADR-0019).
 ### 1.2 Protocol P2 — true sliding attention (control, local only)
 
 Single forward-running generation with KV-cache eviction beyond `W` tokens.
-Requires local weights. Recorded as a control at small `W` and small `T`; never
-mixed with P1 data.
+Requires local weights. **Planned** as a control at small `W` and small `T`;
+**not recorded** in Stages 0–7 (ADR-0017 / ADR-0019). Never mixed with P1
+data.
 
 ### 1.3 Continuation mechanism
 
@@ -171,10 +172,13 @@ This is exact, `O(W)` per step, and self-consistent: the prompt sent *is* the
 detokenisation of the last `W` tokens under our tokenizer. Two facts are logged
 every step:
 
-- `tokenizer_roundtrip_ok` — whether `decode(encode(x)) == x` on the tail. For
-  byte-level BPE this holds; a failure means the window boundary is not where
+- `tokenizer_roundtrip_ok` — whether `decode(encode(x)) == x` on the tail
+  **and** `encode(decode(ids[-W:])) == ids[-W:]` after `Tail_W`. For
+  byte-level BPE both hold; a failure means the window boundary is not where
   the manifest claims, which invalidates `W` semantics for that trajectory and
-  marks it `SUSPECT`.
+  marks it `SUSPECT`. Historical JSONL (S0–S6) logged a weaker length check
+  `len(encode(decode(ids[-W:]))) == W`; those events are not rewritten
+  (ADR-0020). New steps use the identity checks.
 - `prompt_tokens_local` vs. `prompt_tokens_api` — our count against the
   provider's. A systematic gap indicates a template or special-token difference
   and is reported in the S0 audit.
@@ -426,7 +430,7 @@ measured in S0 and reported as a rate.
 | Attractors are artifacts of one embedding space | two architecturally different primary spaces, third in S6; ARI reported |
 | 2-D projections mistaken for evidence | all statistics in full space; UMAP labelled illustration-only |
 | A permanent system prompt keeps forcing the system | `unforced` vs. `fixed` as separate arms |
-| Re-prompt ≠ sliding attention | stated in §1.1, local P2 control in S6, named in the paper's limitations |
+| Re-prompt ≠ sliding attention | stated in §1.1, P2 planned not recorded (ADR-0017/0019), named in the paper's limitations |
 | Overlapping chunks manufacture metastability | non-overlapping by construction; enforced by tests |
 | Microstates over-interpreted | only validated macrostates are interpreted, labelled post hoc |
 | Provider drift / unknown quantization | provider pinning + `allow_fallbacks=false`, recorded quantization, determinism audit |

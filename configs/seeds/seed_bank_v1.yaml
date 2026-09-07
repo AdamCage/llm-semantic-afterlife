@@ -8,8 +8,10 @@
 #    without being asked to, since asking is external forcing.
 # 2. Domains are maximally far apart, so that a probe distinguishing them past
 #    the horizon is measuring semantic content rather than register.
-# 3. Comparable length (~90-140 tokens), so the context horizon
-#    t_h = W - L_0 does not vary much between trajectories.
+# 3. Comparable length (~90-140 tokens), so eviction start
+#    t_fill = W - L_0 does not vary much between trajectories.
+#    Full eviction is t_h = W when L_0 > 0 (ADR-0019). Do not call
+#    t_fill the horizon.
 # 4. No self-reference to models, AI, prompts or generation. Such text invites
 #    meta-commentary, which is a distinct dynamical attractor and would
 #    contaminate the seed contrast.

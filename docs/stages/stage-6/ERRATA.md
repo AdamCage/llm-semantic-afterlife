@@ -18,6 +18,13 @@ remain `s6-embed-third-space-20260906T082301Z-588eff8f` and
   ([`artifacts/tmlr-correctness/headline_audit.json`](../../../artifacts/tmlr-correctness/headline_audit.json)).
   Published gaps $0.201$ / $0.390$ / $0.150$ stand.
 
+## ADR-0020 (2026-09-07)
+
+Invalid F6 CI columns quarantined to `*.legacy_invalid.csv`. F4
+leave-one-out and within-pair randomisation ($p=0.0001$ in each space,
+$n_{\mathrm{perm}}=9999$) are tests on ten seed texts. Trajectory-bootstrap
+CI recompute remains pending embeddings.
+
 ## What did not change
 
 - F4 trajectory-bootstrap CIs (multiplicity already correct).

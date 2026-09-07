@@ -18,6 +18,14 @@ and wording*, not in the trajectories.
 - Mechanism contrast $7/8$ vs $8/8$: Newcombe CI includes $0$; Fisher
   $p=1$. The old bootstrap difference CI `[-0.375, 0]` is withdrawn.
 
+## ADR-0020 (2026-09-07)
+
+The published $n=8$ rows **pool** $T\in\{0.3,1.0\}$. They are not a
+$T=0.3$ table. Per-temperature rates ($n=4$) are
+[`fixed_point_rates_by_temperature.csv`](../../../artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv):
+Qwen $3/4$ at $0.3$ and $4/4$ at $1.0$; gemma $0/4$ and $0/4$; 120B
+$4/4$ and $4/4$. Closed `REPORT.md` is not rewritten.
+
 ## What did not change
 
 - Generate `run_id`s, lock flags, and the PARTIAL verdict.

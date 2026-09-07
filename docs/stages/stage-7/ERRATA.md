@@ -24,6 +24,14 @@ absent, F4 = domain gap not H2) stand.
   track this rewrite (`bash paper/compile.sh all`). English remains
   canonical on numbers and `run_id`s.
 
+## ADR-0020 (2026-09-07)
+
+Manuscript table for Stage 2 is per temperature (`n=4`). F4 wording is
+between-seed vs within-seed on ten fixed texts. Fisher $p=0.029$ is not
+in the Stage 4 narrative. Random Attention (arXiv:2609.03430) is cited
+after VERIFIED. `paper/compile.sh anonymous` blanks the author and
+branch. F4 bootstrap CI recompute is still pending occupancy embeddings.
+
 ## What did not change
 
 - No Stage 7 generate. No `runs/s7`. Hosted spend $\$0$.
