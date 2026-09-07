@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -10,11 +12,16 @@ from semantic_afterlife.analysis.occupancy import (
     DOMAIN_SEED_ORDER,
     TWIN_SEED_ORDER,
     filter_raw_lock,
+    last_band_gap_from_matrix,
     last_band_seed_matrix,
+    leave_one_seed_out_gaps,
     lock_rate_by_seed,
     occupancy_embed_runs,
+    quarantine_f6_ci_columns,
     require_occupancy_grid,
     split_domain_twin,
+    unique_domain_pair_distances,
+    within_pair_randomization,
 )
 from semantic_afterlife.analysis.separation import Trajectory
 from semantic_afterlife.errors import AnalysisError
@@ -156,3 +163,93 @@ class TestOccupancyEmbedRuns:
     def test_unknown_space_raises(self) -> None:
         with pytest.raises(AnalysisError, match="no occupancy embed runs"):
             occupancy_embed_runs("invented-space")
+
+
+def _toy_domain_matrix() -> pd.DataFrame:
+    """Three seeds: close within, far between; one missing within diagonal."""
+    rows = [
+        ("physics", "physics", "within", np.nan),
+        ("surreal", "surreal", "within", 0.10),
+        ("finance", "finance", "within", 0.20),
+        ("physics", "surreal", "between", 0.80),
+        ("surreal", "physics", "between", 0.80),
+        ("physics", "finance", "between", 0.90),
+        ("finance", "physics", "between", 0.90),
+        ("surreal", "finance", "between", 1.00),
+        ("finance", "surreal", "between", 1.00),
+    ]
+    return pd.DataFrame(rows, columns=["seed_row", "seed_col", "kind", "distance"])
+
+
+class TestSeedPairInference:
+    def test_unique_pairs_drop_nan_and_dedupe_between(self) -> None:
+        pairs = unique_domain_pair_distances(_toy_domain_matrix())
+        assert set(pairs["pair_kind"]) == {"within", "between"}
+        assert int((pairs["pair_kind"] == "within").sum()) == 2
+        assert int((pairs["pair_kind"] == "between").sum()) == 3
+
+    def test_gap_is_unweighted_mean_of_finite_pairs(self) -> None:
+        stats = last_band_gap_from_matrix(_toy_domain_matrix())
+        assert stats["n_within_pairs"] == 2
+        assert stats["n_between_pairs"] == 3
+        assert stats["d_within"] == pytest.approx(0.15)
+        assert stats["d_between"] == pytest.approx(0.90)
+        assert stats["gap"] == pytest.approx(0.75)
+
+    def test_leave_one_seed_out_drops_that_seed_only(self) -> None:
+        loo = leave_one_seed_out_gaps(_toy_domain_matrix())
+        physics = loo.loc[loo["dropped_seed"] == "physics"].iloc[0]
+        assert int(physics["n_within_pairs"]) == 2
+        assert int(physics["n_between_pairs"]) == 1
+        assert physics["gap"] == pytest.approx(1.00 - 0.15)
+
+    def test_randomization_observed_gap_is_extreme(self) -> None:
+        result = within_pair_randomization(_toy_domain_matrix(), n_perm=199, seed=0)
+        assert result["gap"] == pytest.approx(0.75)
+        assert result["n_perm"] == 199
+        assert float(result["p_value"]) == pytest.approx(
+            (1.0 + int(result["n_extreme"])) / 200.0
+        )
+        # Two smallest of five unique distances: 1 / C(5,2) = 0.1 of permutations.
+        assert 0.02 < float(result["p_value"]) < 0.20
+
+    def test_mixed_embeddings_are_refused(self) -> None:
+        frame = _toy_domain_matrix()
+        frame["embedding"] = ["bge-m3"] * 5 + ["qwen3-embed-8b"] * 4
+        with pytest.raises(AnalysisError, match="multiple embeddings"):
+            last_band_gap_from_matrix(frame)
+
+    def test_committed_matrix_gaps_match_headline_points(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        matrix = pd.read_csv(root / "artifacts/stage-6/occupancy/last_band_distance_matrix.csv")
+        expected = {"bge-m3": 0.201, "qwen3-embed-8b": 0.390, "gemini-embed-001": 0.150}
+        for space, gap in expected.items():
+            stats = last_band_gap_from_matrix(matrix.loc[matrix["embedding"] == space])
+            assert stats["gap"] == pytest.approx(gap, abs=0.002)
+            assert int(stats["n_within_pairs"]) == 9
+            assert int(stats["n_between_pairs"]) == 45
+
+
+class TestF6Quarantine:
+    def test_drops_ci_columns_and_keeps_point_delta(self) -> None:
+        frame = pd.DataFrame(
+            {
+                "band": [12],
+                "scope": ["all"],
+                "delta": [0.03],
+                "d_twin": [0.3],
+                "d_control": [0.27],
+                "delta_ci_low": [-0.4],
+                "delta_ci_high": [0.5],
+                "divergent": [False],
+                "n_twin_pairs": [4],
+                "n_control_pairs": [4],
+                "embedding": ["bge-m3"],
+            }
+        )
+        canonical, legacy = quarantine_f6_ci_columns(frame)
+        assert "delta_ci_low" not in canonical.columns
+        assert "delta_ci_high" not in canonical.columns
+        assert float(canonical["delta"].iloc[0]) == pytest.approx(0.03)
+        assert "delta_ci_low" in legacy.columns
+        assert float(legacy["delta"].iloc[0]) == pytest.approx(0.03)

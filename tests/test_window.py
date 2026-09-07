@@ -140,6 +140,24 @@ class TestSlidingWindow:
             window.append(words(2, offset=step * 2))
         assert window.turnovers() == pytest.approx(window.generated_tokens / 20)
 
+    def test_length_stable_non_identity_roundtrip_is_logged_false(self) -> None:
+        """len(encode(decode(ids)))==W is not enough (methodology §1.5)."""
+
+        class LengthStableNonIdentityTokenizer:
+            vocab_size = 256
+
+            def encode(self, text: str) -> list[int]:
+                return [(ord(ch) + 3) % 70 + 1 for ch in text] or [1]
+
+            def decode(self, ids: list[int]) -> str:
+                return "".join(chr(i + 50) for i in ids)
+
+        tokenizer = LengthStableNonIdentityTokenizer()
+        window = SlidingWindow(tokenizer, W=8, seed_text="abcdefgh")
+        state = window.append("ijkl")
+        assert len(tokenizer.encode(window.prompt_text)) == 8
+        assert state.roundtrip_ok is False
+
 
 class TestTokenChunker:
     def test_chunks_are_exactly_chunk_size(self, whitespace_tokenizer: WhitespaceTokenizer) -> None:

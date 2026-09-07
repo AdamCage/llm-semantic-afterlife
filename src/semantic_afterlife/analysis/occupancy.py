@@ -40,6 +40,25 @@ TWIN_PAIRS: tuple[tuple[str, str], ...] = (
     ("waterloo-won", "waterloo-lost"),
     ("reactor-stable", "reactor-unstable"),
 )
+F6_INVALID_CI_COLUMNS: tuple[str, ...] = (
+    "delta_ci_low",
+    "delta_ci_high",
+    "delta_ci_n_pairs",
+    "delta_ci_n_dropped_incomplete",
+    "delta_ci_n_dropped_identical_twin",
+    "delta_ci_n_dropped_invalid_delta",
+)
+F6_CI_JOIN_COLUMNS: tuple[str, ...] = (
+    "band",
+    "scope",
+    "embedding",
+    "delta",
+    "d_twin",
+    "d_control",
+    "divergent",
+    "n_twin_pairs",
+    "n_control_pairs",
+)
 
 DOMAIN_SEEDS = frozenset(DOMAIN_SEED_ORDER)
 TWIN_SEEDS = frozenset(TWIN_SEED_ORDER)
@@ -275,3 +294,131 @@ def last_chunk_2d_illustration(frame: pd.DataFrame) -> pd.DataFrame:
         if c in last.columns
     ]
     return last[keep].reset_index(drop=True)
+
+
+def _domain_matrix(frame: pd.DataFrame) -> pd.DataFrame:
+    """Last-band seed matrix restricted to the ten F4 domain seeds.
+
+    Callers must pass one embedding space. Mixing spaces would average
+    cosine distances that are not on a common scale.
+    """
+    if "seed_row" not in frame.columns or "seed_col" not in frame.columns:
+        raise AnalysisError("last-band matrix needs seed_row and seed_col")
+    out = frame.copy()
+    if "embedding" in out.columns and int(out["embedding"].nunique(dropna=False)) > 1:
+        raise AnalysisError("last-band matrix has multiple embeddings; filter first")
+    return out[
+        out["seed_row"].astype(str).isin(DOMAIN_SEEDS)
+        & out["seed_col"].astype(str).isin(DOMAIN_SEEDS)
+    ].copy()
+
+
+def unique_domain_pair_distances(frame: pd.DataFrame) -> pd.DataFrame:
+    """One row per unordered domain seed pair (diagonal = within).
+
+    The committed matrix is square and duplicated across the diagonal.
+    Using ``seed_row < seed_col`` for between, and the diagonal for within,
+    matches the seed-pair audit (ADR-0019) rather than a trajectory bootstrap.
+    """
+    domain = _domain_matrix(frame)
+    within = domain.loc[domain["seed_row"].astype(str) == domain["seed_col"].astype(str)].copy()
+    within["pair_kind"] = "within"
+    between = domain.loc[domain["seed_row"].astype(str) < domain["seed_col"].astype(str)].copy()
+    between["pair_kind"] = "between"
+    pairs = pd.concat([within, between], ignore_index=True)
+    pairs["distance"] = pd.to_numeric(pairs["distance"], errors="coerce")
+    return pairs.loc[np.isfinite(pairs["distance"].to_numpy(dtype=np.float64))].copy()
+
+
+def last_band_gap_from_matrix(frame: pd.DataFrame) -> dict[str, float | int]:
+    """Unweighted mean within vs between on unique finite seed pairs."""
+    pairs = unique_domain_pair_distances(frame)
+    within = pairs.loc[pairs["pair_kind"] == "within", "distance"].to_numpy(dtype=np.float64)
+    between = pairs.loc[pairs["pair_kind"] == "between", "distance"].to_numpy(dtype=np.float64)
+    d_within = float(within.mean()) if within.size else float("nan")
+    d_between = float(between.mean()) if between.size else float("nan")
+    return {
+        "d_within": d_within,
+        "d_between": d_between,
+        "gap": d_between - d_within,
+        "n_within_pairs": int(within.size),
+        "n_between_pairs": int(between.size),
+    }
+
+
+def leave_one_seed_out_gaps(frame: pd.DataFrame) -> pd.DataFrame:
+    """Recompute the seed-pair gap after dropping each domain seed."""
+    domain = _domain_matrix(frame)
+    seeds = sorted(set(domain["seed_row"].astype(str)) | set(domain["seed_col"].astype(str)))
+    rows: list[dict[str, object]] = []
+    for dropped in seeds:
+        kept = domain[
+            (domain["seed_row"].astype(str) != dropped) & (domain["seed_col"].astype(str) != dropped)
+        ]
+        stats = last_band_gap_from_matrix(kept)
+        rows.append({"dropped_seed": dropped, **stats})
+    return pd.DataFrame(rows)
+
+
+def within_pair_randomization(
+    frame: pd.DataFrame,
+    *,
+    n_perm: int = 9999,
+    seed: int = 0,
+) -> dict[str, float | int | str]:
+    """One-sided randomisation: are designated within-pairs unusually close?
+
+    All unique finite unordered pairs are the population. Each permutation
+    assigns the observed number of within-pairs at random and recomputes
+    ``gap = mean(between) − mean(within)``. The p-value is the fraction of
+    permutation gaps at least as large as the observed gap (plus one).
+
+    This is a test on ten seed texts, not a test of domain as a population.
+    It does not replace trajectory-bootstrap CIs.
+    """
+    pairs = unique_domain_pair_distances(frame)
+    distances = pairs["distance"].to_numpy(dtype=np.float64)
+    n_within = int((pairs["pair_kind"] == "within").sum())
+    observed = last_band_gap_from_matrix(frame)
+    if n_within <= 0 or distances.size <= n_within:
+        return {
+            **observed,
+            "n_perm": 0,
+            "n_extreme": 0,
+            "p_value": float("nan"),
+            "method": "within_pair_randomization",
+        }
+    rng = np.random.default_rng(seed)
+    n_extreme = 0
+    for _ in range(n_perm):
+        chosen = rng.choice(distances.size, size=n_within, replace=False)
+        mask = np.zeros(distances.size, dtype=bool)
+        mask[chosen] = True
+        perm_within = float(distances[mask].mean())
+        perm_between = float(distances[~mask].mean())
+        perm_gap = perm_between - perm_within
+        if perm_gap >= float(observed["gap"]):
+            n_extreme += 1
+    p_value = (1.0 + n_extreme) / (1.0 + n_perm)
+    return {
+        **observed,
+        "n_perm": n_perm,
+        "n_extreme": n_extreme,
+        "p_value": float(p_value),
+        "method": "within_pair_randomization",
+        "seed": seed,
+    }
+
+
+def quarantine_f6_ci_columns(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Split invalid F6 CI columns from a twin-band table.
+
+    Returns ``(canonical_without_ci, legacy_ci_sidecar)``. Point ``delta``
+    stays on the canonical frame. Join keys are copied onto the sidecar so
+    a reader can align rows without re-deriving Δ.
+    """
+    present = [column for column in F6_INVALID_CI_COLUMNS if column in frame.columns]
+    canonical = frame.drop(columns=present).copy()
+    keys = [column for column in F6_CI_JOIN_COLUMNS if column in frame.columns]
+    legacy = frame.loc[:, keys + present].copy()
+    return canonical, legacy

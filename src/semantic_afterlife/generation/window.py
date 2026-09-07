@@ -155,14 +155,11 @@ class SlidingWindow:
             kept = ids[-self.W :]
             self._buffer = self.tokenizer.decode(kept)
             self._buffer_tokens = len(kept)
-            # decode/encode must be stable, otherwise the boundary drifts.
-            self._last_roundtrip_ok = (
-                len(self.tokenizer.encode(self._buffer)) == self._buffer_tokens
-            )
+            self._last_roundtrip_ok = self._tail_roundtrip_ok(kept, self._buffer)
         else:
             self._buffer = combined
             self._buffer_tokens = len(ids)
-            self._last_roundtrip_ok = True
+            self._last_roundtrip_ok = self._tail_roundtrip_ok(ids, self._buffer)
 
         if self._buffer_tokens > self.W:
             raise WindowProtocolError(
@@ -183,6 +180,18 @@ class SlidingWindow:
             eviction_start_tokens=self.eviction_start_tokens,
             full_eviction_tokens=self.full_eviction_tokens,
         )
+
+    def _tail_roundtrip_ok(self, expected_ids: list[int], text: str) -> bool:
+        """``decode(encode(x)) == x`` and token-id equality after ``Tail_W``.
+
+        Historical JSONL logged a weaker length check
+        ``len(encode(decode(ids[-W:]))) == W``. New steps use identity plus
+        ``encode(decode(ids[-W:])) == ids[-W:]``. Do not rewrite old events.
+        """
+        reencoded = self.tokenizer.encode(text)
+        if reencoded != expected_ids:
+            return False
+        return self.tokenizer.decode(reencoded) == text
 
 
 class TokenChunker:
