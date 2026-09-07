@@ -4,3 +4,10 @@
 2026-09-07 09:14:51,583 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
 2026-09-07 09:19:11,314 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
 2026-09-07 09:20:24,033 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:31:06,740 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__physics__s1: 49 steps, 49152 tokens, 48 chunks, $0.0448
+2026-09-07 09:31:06,742 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__surreal__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 09:31:31,215 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__physics__s2: 49 steps, 49152 tokens, 48 chunks, $0.0448
+2026-09-07 09:31:31,216 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__surreal__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 09:35:52,870 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:37:24,063 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:37:36,044 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
