@@ -218,6 +218,7 @@
     "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
     "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
     "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
+    "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
     "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb"
   ],
   "run_id": "s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
