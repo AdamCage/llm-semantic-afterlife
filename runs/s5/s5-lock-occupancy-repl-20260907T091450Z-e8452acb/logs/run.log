@@ -478,3 +478,6 @@
 2026-09-07 17:01:40,822 INFO     semantic_afterlife.events resuming or-qwen3-8b__W4096__T0p3__reactor-unstable__s2 at step 42 (32592 tokens)
 2026-09-07 17:01:40,823 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__reactor-unstable__s2: W=4096 T=49152 (12.0 turnovers)
 2026-09-07 17:01:58,887 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 17:04:05,069 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__reactor-unstable__s1: 69 steps, 49152 tokens, 48 chunks, $0.0536
+2026-09-07 17:07:07,630 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__reactor-unstable__s2: 62 steps, 49152 tokens, 48 chunks, $0.0495
+2026-09-07 17:07:07,721 INFO     semantic_afterlife.events completed s5-lock-occupancy-repl-20260907T091450Z-e8452acb — spent $1.5180 (project $10.54 of $200.00)

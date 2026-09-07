@@ -9,5 +9,12 @@ under `runs/s5/` and is git-tracked (see `.gitignore`) so embeddings and
 chunks cannot disappear with a cloud VM. Do not copy secrets here. `.env`
 stays git-ignored.
 
-After generate+embed, tidy F4 tables go in this directory. Do not
+Generate STATUS is `COMPLETED` (27/28 trajectories). Spend $1.518.
+`noise s2` FAILED at 49151/49152 (`WindowProtocolError`); 47 chunks kept.
+Three COMPLETED trajectories also have 47 chunks (`philosophy s1`,
+`programming s2`, `war s2`). That is missing data, not a silent drop.
+
+After embed+degeneracy, tidy F4 tables go in this directory. Do not
 overwrite `artifacts/stage-5/occupancy/` or `artifacts/stage-6/occupancy/`.
+Sign agreement (CI excludes 0) is the claim; do not replace archival
+`0.201 [0.065, 0.332]`.
