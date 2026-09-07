@@ -21,7 +21,11 @@
 
 \title{Long-Run Dynamics of Blockwise Self-Conditioned Language Generation After Prompt Eviction\\
 \large Semantic Afterlife}
+\ifdefined\TMLRANON
+\author{Anonymous}
+\else
 \author{Adam Cage}
+\fi
 \date{}
 
 \begin{document}
@@ -36,8 +40,8 @@ $X_{k+1}=\mathrm{Tail}_W(X_k\oplus Y_k^{(B)})$,
 with $B{=}1024$ and $W{=}4096$ ($B/W{=}0.25$) on one instruct generator. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 After full seed eviction, a textual repetition lock is the typical
 $T{=}0.3$ outcome ($19/20$ domain trajectories). % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
-Last-band occupancy retains an ensemble domain gap (F4 distinguishability);
-that gap is not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Last-band occupancy retains between-seed distinguishability on ten fixed
+seed texts (F4); that gap is not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 Hypothesis H1 (validated Markov state models) is unsupported. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
 We did not measure a sliding native KV cache. Degeneracy is the sample, not a
 filter that was applied and then forgotten. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
@@ -93,6 +97,9 @@ of an imposed $W$. \citet{ko2026} describe interlocutor-conditioned
 attractors; this protocol has no interlocutor. \citet{chen2026horizon}
 separate horizon, context, and memory; we impose $W$ by truncation and
 begin after the seed has left that window.
+\citet{wang2026random} pin the prompt and randomly evict generated
+reasoning tokens for KV-cache compression; we evict the seed completely
+and continue uninstructed.
 
 Surface-form degeneration under maximization decoding is documented
 \citep{holtzman2020}. Self-reinforcement of sentence repetition is the
@@ -169,13 +176,17 @@ Figure~\ref{fig:s1-sep} shows a domain-gap curve on that
 degenerate-majority panel; it is not a non-looping subsample.
 
 The lock is not universal across hosted generators.
-Table~\ref{tab:s2-rates} reports Stage~2 rates at $T{=}0.3$, $W{=}4096$
-with Clopper--Pearson intervals. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gemma-4-31b} is $0/8$ ($[0, 0.369]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gpt-oss-120b} is $8/8$ ($[0.631, 1]$), under an almost-$T$ caveat. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-qwen3-8b} on this arm is $7/8$ ($[0.473, 0.997]$), which includes $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-Direction (F2) is gemma versus $120$B, not a claim that every Qwen interval % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-excludes one half.
+Table~\ref{tab:s2-rates} splits Stage~2 rates by temperature, $W{=}4096$,
+$n{=}4$ per cell, Clopper--Pearson. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+The previously published $n{=}8$ rows pool $T\in\{0.3,1.0\}$: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gemma-4-31b} $0/8$ ($[0, 0.369]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gpt-oss-120b} $8/8$ ($[0.631, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-qwen3-8b} $7/8$ ($[0.473, 0.997]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+At $T{=}0.3$: gemma $0/4$ ($[0, 0.602]$), $120$B $4/4$ ($[0.398, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+Qwen $3/4$ ($[0.194, 0.994]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+At $T{=}1.0$: gemma $0/4$, $120$B $4/4$, Qwen $4/4$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+Direction (F2) is gemma versus $120$B at both temperatures. Qwen's $T{=}0.3$ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+interval includes $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
 
 A prefill-versus-raw arm on \texttt{or-qwen3-8b} is $7/8$ versus $8/8$; % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
 Newcombe difference CI includes $0$ (Fisher $p{=}1$). % artifacts/stage-2/mechanism/rates/fixed_point_rates.csv @ s2-mechanism-20260901T071519Z-dfbb173a
@@ -183,29 +194,31 @@ Newcombe difference CI includes $0$ (Fisher $p{=}1$). % artifacts/stage-2/mechan
 Stage~4 crossed temperature and window with $n{=}4$ per cell.
 At $T\le 1.0$, both $W{=}4096$ and $W{=}8192$ are $4/4$ ($[0.398, 1]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 At $T{=}1.5$, $W{=}4096$ is $0/4$ ($[0, 0.602]$); $W{=}8192$ is $2/4$ ($[0.068, 0.932]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
-Fisher exact $p$ for $4/4$ versus $0/4$ at $W{=}4096$ is $0.029$; that is a % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-cell contrast, not a temperature law. Hypothesis H5 (a temperature window of
+That $4/4$ versus $0/4$ cell contrast at $W{=}4096$ is not a temperature law. % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+Hypothesis H5 (a temperature window of
 non-looping confined motion) is absent: clean MSD $\alpha$ is defined only
 at $T{=}1.5$ and is subdiffusive. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 
 \begin{table}[t]
   \centering
-  \caption{Textual repetition-lock rates, Stage~2 model axis, $T{=}0.3$,
-    $W{=}4096$, 95\% Clopper--Pearson CI. Source: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates.csv};
-    \texttt{s2-rates-20260901T125506Z-41d2e88e}.
-    Gemma's $0/8$ is the existence proof that the Stage~1 freeze is not a % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    property of instruct models as a class.} % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+  \caption{Textual repetition-lock rates, Stage~2 model axis, split by
+    temperature, $W{=}4096$, $n{=}4$ per cell, 95\% Clopper--Pearson CI. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    Source: % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates\_by\_temperature.csv}.
+    Pooled $n{=}8$ over $T\in\{0.3,1.0\}$ remains in
+    \texttt{fixed\_point\_rates.csv} and is not a $T{=}0.3$ table. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    Gemma $0/4$ at both temperatures is the existence proof that the Stage~1 % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    freeze is not a property of instruct models as a class.} % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
   \label{tab:s2-rates}
-  \begin{tabular}{@{}lccc@{}}
+  \begin{tabular}{@{}lcccc@{}}
     \toprule
-    Generator & $n$ & lock rate & 95\% CI \\
+    Generator & $T{=}0.3$ & 95\% CI & $T{=}1.0$ & 95\% CI \\
     \midrule
-    \texttt{or-qwen3-8b} & $8$ & $7/8$ & $[0.473, 0.997]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gemma-4-31b} & $8$ & $0/8$ & $[0, 0.369]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-120b} & $8$ & $8/8$ & $[0.631, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-muse-glimmer-30b} & $8$ & $2/8$ & $[0.032, 0.651]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-20b} & $0$ reached $T$ & --- & --- \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
+    \texttt{or-qwen3-8b} & $3/4$ & $[0.194, 0.994]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gemma-4-31b} & $0/4$ & $[0, 0.602]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-120b} & $4/4$ & $[0.398, 1]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-muse-glimmer-30b} & $2/4$ & $[0.068, 0.932]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-20b} & \multicolumn{4}{c}{did not complete design $T$} \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
     \bottomrule
   \end{tabular}
 \end{table}
@@ -255,8 +268,9 @@ at $T{=}1.5$ and is subdiffusive. % artifacts/stage-4/grid/clean_alpha_by_cell.c
 \section{Last-band occupancy}
 \label{sec:occupancy}
 
-Given the lock, Stage~5--6 ask whether last-band centroids still show an
-ensemble domain gap. Twenty-eight trajectories at $W{=}4096$, $T{=}0.3$,
+Given the lock, Stage~5--6 ask whether last-band centroids of ten fixed
+seed texts remain distinguishable (between-seed vs within-seed). Twenty-eight
+trajectories at $W{=}4096$, $T{=}0.3$, % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 $B{=}1024$, twelve turnovers. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 Generate \texttt{s5-lock-occupancy-20260905T164327Z-6780902f};
 embed \texttt{s5-embed-lock-occupancy-20260906T030125Z-eab6e484};
@@ -264,13 +278,16 @@ degeneracy \texttt{s5-degeneracy-20260906T030145Z-deb4c3bd};
 gemini \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}.
 
 Let $D_{\mathrm{within}}$ be the mean cosine distance among last-band
-centroids that share a seed domain, and $D_{\mathrm{between}}$ the mean
-among different domains. The gap is
+centroids that share a seed text, and $D_{\mathrm{between}}$ the mean
+among different seed texts. The gap is
 $\Delta_{\mathrm{dom}}=D_{\mathrm{between}}-D_{\mathrm{within}}$.
-Domains are labelled separated when the trajectory-bootstrap 95\% CI % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Domain here means one labelled seed instance, not a sampled population.
+Seeds are labelled separated when the trajectory-bootstrap 95\% CI % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 excludes $0$ from above. That estimator already resamples with multiplicity % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
-(ADR-0019). An independent seed-pair matrix recompute agrees on sign to
+(ADR-0019). An independent seed-pair matrix recompute agrees on the point to
 $<0.002$ in all three spaces. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
+Those published CIs are not re-derived in this pass: occupancy embedding
+parquet is absent from the 2026-09-01 snapshot (ADR-0020). % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
 
 Table~\ref{tab:s6-f4} reports last-band F4. All three spaces are separated
 under that CI rule:
@@ -282,8 +299,14 @@ bound $0.029$ is an NHST pass, not architecture-independence. % artifacts/stage-
 Physics seed~1 has $47$ versus $48$ chunks, so its last-band % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
 $D_{\mathrm{within}}$ diagonal is undefined; F4 uses
 $n_{\mathrm{within}}{=}9$ pairs. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
-The last-band gap is ensemble distinguishability, not recovered prompt
-memory (H2).
+Leave-one-seed-out on the matrix keeps the gap positive in every space
+(minimum $0.128$). % artifacts/tmlr-correctness/occupancy_leave_one_seed_out.csv @ ADR-0020
+Within-pair randomisation of the $54$ unique finite pairs yields % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+$p{=}0.0001$ in each space ($0/9999$ permutations as large as the observed % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+gap, seed $0$). % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+That is a test on ten fixed seed texts, not a domain population.
+The last-band gap is between-seed distinguishability, not recovered prompt
+memory (H2) and not domain memory.
 
 A protocol diagnostic, not a headline: domain trajectories spend a mean fill
 fraction $0.853$, 95\% CI $[0.756, 0.936]$, in the last quarter, with mean % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
@@ -291,10 +314,11 @@ stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.c
 
 \begin{table}[t]
   \centering
-  \caption{F4 last-band domain gap, ten domain seeds, $n{=}20$,
-    $n_{\mathrm{within}}{=}9$. Source: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \caption{F4 last-band between-seed vs within-seed gap, ten fixed seed
+    texts, $n{=}20$, $n_{\mathrm{within}}{=}9$. Source: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
     \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
-    Separated means the 95\% CI excludes $0$ from above.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    Separated means the published 95\% CI excludes $0$ from above. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    CI recompute from occupancy vectors is pending (ADR-0020).} % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
   \label{tab:s6-f4}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -310,7 +334,7 @@ stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.c
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\linewidth]{stage-5/occupancy/domain_separation_vs_turnover.pdf}
-  \caption{Domain gap versus turnover in \texttt{bge-m3} and
+  \caption{Between-seed last-band gap versus turnover in \texttt{bge-m3} and
     \texttt{qwen3-embed-8b} on the Stage~5 locked panel. Last-band CIs
     exclude $0$ from above in both spaces.} % artifacts/stage-5/occupancy/domain_separation_vs_turnover.pdf @ s5-lock-occupancy-20260905T164327Z-6780902f
   \label{fig:s5-dom}
@@ -319,7 +343,7 @@ stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.c
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\linewidth]{stage-6/occupancy/domain_gap_three_spaces.pdf}
-  \caption{F4 domain gap versus turnover in three embedding spaces on the
+  \caption{F4 between-seed last-band gap versus turnover in three embedding spaces on the
     same $28$ trajectories. Last-band CIs exclude $0$; gemini lower bound % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
     is $0.029$. Levels $0.201$ / $0.390$ / $0.150$ are not interchangeable.} % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
   \label{fig:s6-f4}
@@ -411,14 +435,15 @@ Occupancy uses twelve turnovers, not an infinite afterlife. % docs/stages/stage-
 
 What is established, on this generator and protocol: after the seed leaves
 $W$, the typical $T{=}0.3$ trajectory is a textual repetition lock; last-band
-centroids still show an ensemble domain gap across ten seed domains in
+centroids still show a between-seed last-band gap across ten fixed seed
+texts in
 three embedding spaces (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 
 What is not established: H1; H5; we cannot claim architecture-independence of
 occupancy; a result for language models as a class; P1 versus P2; mixing
 times; replica collapse; one-fact twin sensitivity.
 
-\citet{zekri2024} remain the right uniqueness null. Domain-tagged last-band
+\citet{zekri2024} remain the right uniqueness null. Seed-tagged last-band
 gaps on a locked panel are compatible with more than one long-run occupancy
 region in embedding space. That compatibility is not a proof that the
 token-level chain has several stationary measures.
@@ -428,8 +453,14 @@ token-level chain has several stationary measures.
 
 Experiments through Stage~6 closed on git commit \texttt{ad1f244}.
 Stage~7 wrote the first manuscript. This correctness pass is ADR-0019
-on branch \texttt{cursor/tmlr-correctness-a7f7}; it does not mint
-\texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+and ADR-0020
+\ifdefined\TMLRANON
+(anonymous).
+\else
+on branch \texttt{cursor/tmlr-correctness-a7f7};
+\fi
+it does not mint
+\texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
 The GitHub tag \texttt{state-latest} is a mutable restore pointer, not a
 citable archival object.
 

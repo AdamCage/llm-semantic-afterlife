@@ -25,6 +25,7 @@ REQUIRED_CITE_KEYS = (
     "geng2026",
     "ko2026",
     "chen2026horizon",
+    "wang2026random",
     "wu2020vampnets",
     "paul2019core",
     "perez2025",
@@ -135,8 +136,21 @@ def test_no_point_mass_bernoulli_ci() -> None:
     for name, text in _papers():
         assert not re.search(r"\[0,\s*0\]", text), name
         assert not re.search(r"\[1,\s*1\]", text), name
+        assert "0.602" in text, name
+        assert "0.398" in text, name
         assert "0.369" in text, name
         assert "0.631" in text or "0.630" in text, name
+
+
+def test_stage2_table_is_per_temperature_n4() -> None:
+    for name, text in _papers():
+        lock = text.split(r"\label{sec:lock}")[1].split(r"\label{sec:occupancy}")[0]
+        assert "3/4" in lock, name
+        assert r"n{=}4" in lock, name
+        assert "fixed_point_rates_by_temperature" in lock, name
+        assert not re.search(r"T\{=\}0\.3.{0,120}0/8", lock), name
+        assert "Fisher exact" not in lock, name
+        assert "Точный Fisher" not in lock, name
 
 
 def test_cite_keys_resolve() -> None:
@@ -166,7 +180,8 @@ def test_bib_authors_match_verified_records() -> None:
     assert "Holtzman, Ari" in bib
     assert "Shumailov, Ilia" in bib
     assert "Mohamed, Amr" in bib
-    assert "Xu, Jin" in bib
+    assert "Qiu, Jielin" in bib
+    assert "Wang, Heng" in bib
     assert "VERIFIED" in related
     for key in ("Holtzman", "Shumailov", "Perez", "Mohamed", "Xu"):
         assert key in related
@@ -180,6 +195,7 @@ def test_verified_citations_are_logged() -> None:
         "Learning to Break the Loop",
         "The Curious Case of Neural Text Degeneration",
         "AI models collapse when trained on recursively generated data",
+        "Random Attention",
     ):
         assert marker in related
         idx = related.index(marker)
@@ -267,9 +283,13 @@ def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
         lowered = abstract.lower()
         assert "seed-domain identity" not in lowered, name
         assert "carries seed-domain" not in lowered, name
-        assert re.search(r"domain gap|distinguishability", abstract, re.I), name
+        assert re.search(r"domain gap|distinguishability|between-seed", abstract, re.I), name
         assert re.search(r"not recovered prompt memory", abstract, re.I), name
         assert "H2" in abstract, name
+        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
+        assert "ten fixed seed" in occupancy.lower() or "десяти фиксированных" in occupancy, name
+        assert "ADR-0020" in occupancy, name
+        assert "0.0001" in occupancy, name
 
 
 def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
@@ -289,6 +309,13 @@ def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
         assert re.search(r"raw\\_completion", limitations), name
         assert "Alibaba" in limitations, name
         assert "not synonyms" in limitations.lower() or "не синонимы" in limitations.lower(), name
+
+
+def test_compile_script_supports_anonymous() -> None:
+    script = (ROOT / "paper" / "compile.sh").read_text(encoding="utf-8")
+    assert "anonymous" in script
+    for name, text in _papers():
+        assert r"\ifdefined\TMLRANON" in text, name
 
 
 def test_russian_preamble_has_cyrillic_fonts() -> None:

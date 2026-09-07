@@ -22,7 +22,11 @@
 
 \title{Долговременная динамика блочной самообусловленной языковой генерации после вытеснения промпта\\
 \large Semantic Afterlife}
+\ifdefined\TMLRANON
+\author{Anonymous}
+\else
 \author{Adam Cage}
+\fi
 \date{}
 
 \begin{document}
@@ -37,8 +41,8 @@ $X_{k+1}=\mathrm{Tail}_W(X_k\oplus Y_k^{(B)})$,
 при $B{=}1024$ и $W{=}4096$ ($B/W{=}0.25$) на одном instruct-генераторе. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 После полного вытеснения seed текстовый repetition lock --- типичный исход
 при $T{=}0.3$ ($19/20$ доменных траекторий). % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
-Last-band occupancy сохраняет ансамблевый domain gap (F4 distinguishability);
-этот зазор --- not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Last-band occupancy сохраняет различимость десяти фиксированных seed-текстов
+(F4, between-seed); этот зазор --- not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 Гипотеза H1 (валидированные марковские модели состояний) не поддержана. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
 Скользящий нативный KV-кэш мы не измеряли. Degeneracy --- это выборка, а не
 фильтр, который применили и потом забыли. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
@@ -94,6 +98,9 @@ last-band occupancy после вытеснения.
 обусловленные собеседником; в этом протоколе собеседника нет.
 \citet{chen2026horizon} разделяют horizon, context и memory; мы навязываем $W$
 усечением и начинаем после того, как seed покинул это окно.
+\citet{wang2026random} закрепляют промпт и случайно вытесняют
+сгенерированные reasoning-токены для сжатия KV-кэша; мы полностью
+вытесняем seed и продолжаем без инструкции.
 
 Дегенерация поверхностной формы при максимизирующем декодировании задокументирована
 \citep{holtzman2020}. Самоподкрепление повторного предложения --- ближайшее
@@ -172,13 +179,17 @@ $T{=}0.3$ и $21/24$ при $T{=}1.0$. % docs/stages/stage-1/REPORT.md @ s1-dege
 панели с degenerate-majority; это не не-looping подвыборка.
 
 Lock не универсален среди hosted-генераторов.
-Таблица~\ref{tab:s2-rates} сообщает частоты этапа~2 при $T{=}0.3$, $W{=}4096$
-с интервалами Clopper--Pearson. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gemma-4-31b} --- $0/8$ ($[0, 0.369]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gpt-oss-120b} --- $8/8$ ($[0.631, 1]$), с оговоркой almost-$T$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-qwen3-8b} на этом плече --- $7/8$ ($[0.473, 0.997]$), что включает $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-Направление (F2) --- gemma против $120$B, а не утверждение, что каждый интервал Qwen % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-исключает одну половину.
+Таблица~\ref{tab:s2-rates} разделяет частоты этапа~2 по температуре, $W{=}4096$,
+$n{=}4$ на ячейку, Clopper--Pearson. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+Ранее опубликованные строки $n{=}8$ смешивают $T\in\{0.3,1.0\}$: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gemma-4-31b} --- $0/8$ ($[0, 0.369]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-gpt-oss-120b} --- $8/8$ ($[0.631, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+\texttt{or-qwen3-8b} --- $7/8$ ($[0.473, 0.997]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+При $T{=}0.3$: gemma $0/4$ ($[0, 0.602]$), $120$B $4/4$ ($[0.398, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+Qwen $3/4$ ($[0.194, 0.994]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+При $T{=}1.0$: gemma $0/4$, $120$B $4/4$, Qwen $4/4$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+Направление (F2) --- gemma против $120$B при обеих температурах. Интервал Qwen % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+при $T{=}0.3$ включает $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
 
 Плечо prefill-versus-raw на \texttt{or-qwen3-8b} --- $7/8$ против $8/8$; % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
 разностный CI Newcombe включает $0$ (Fisher $p{=}1$). % artifacts/stage-2/mechanism/rates/fixed_point_rates.csv @ s2-mechanism-20260901T071519Z-dfbb173a
@@ -186,29 +197,30 @@ Lock не универсален среди hosted-генераторов.
 Этап~4 пересёк температуру и окно при $n{=}4$ на ячейку.
 При $T\le 1.0$ и $W{=}4096$, и $W{=}8192$ дают $4/4$ ($[0.398, 1]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 При $T{=}1.5$, $W{=}4096$ даёт $0/4$ ($[0, 0.602]$); $W{=}8192$ даёт $2/4$ ($[0.068, 0.932]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
-Точный Fisher $p$ для $4/4$ против $0/4$ при $W{=}4096$ равен $0.029$; это % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-контраст ячеек, а не температурный закон. Гипотеза H5 (температурное окно
+Контраст ячеек $4/4$ против $0/4$ при $W{=}4096$ --- не температурный закон. % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+Гипотеза H5 (температурное окно
 не-looping удержанного движения) отсутствует: чистая MSD $\alpha$ определена
 только при $T{=}1.5$ и субдиффузионна. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
 
 \begin{table}[t]
   \centering
-  \caption{Частоты текстового repetition-lock, ось моделей этапа~2, $T{=}0.3$,
-    $W{=}4096$, 95\% CI Clopper--Pearson. Источник: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates.csv};
-    \texttt{s2-rates-20260901T125506Z-41d2e88e}.
-    $0/8$ у Gemma --- доказательство существования того, что заморозка этапа~1 не % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    свойство instruct-моделей как класса.} % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+  \caption{Частоты текстового repetition-lock, ось моделей этапа~2, по температуре,
+    $W{=}4096$, $n{=}4$ на ячейку, 95\% CI Clopper--Pearson. Источник: % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates\_by\_temperature.csv}.
+    Смешанные $n{=}8$ по $T\in\{0.3,1.0\}$ остаются в
+    \texttt{fixed\_point\_rates.csv} и не являются таблицей $T{=}0.3$. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+    $0/4$ у Gemma при обеих температурах --- доказательство существования того, что заморозка этапа~1 не % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    свойство instruct-моделей как класса.} % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
   \label{tab:s2-rates}
-  \begin{tabular}{@{}lccc@{}}
+  \begin{tabular}{@{}lcccc@{}}
     \toprule
-    Генератор & $n$ & частота lock & 95\% CI \\
+    Генератор & $T{=}0.3$ & 95\% CI & $T{=}1.0$ & 95\% CI \\
     \midrule
-    \texttt{or-qwen3-8b} & $8$ & $7/8$ & $[0.473, 0.997]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gemma-4-31b} & $8$ & $0/8$ & $[0, 0.369]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-120b} & $8$ & $8/8$ & $[0.631, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-muse-glimmer-30b} & $8$ & $2/8$ & $[0.032, 0.651]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-20b} & $0$ достигли $T$ & --- & --- \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
+    \texttt{or-qwen3-8b} & $3/4$ & $[0.194, 0.994]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gemma-4-31b} & $0/4$ & $[0, 0.602]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-120b} & $4/4$ & $[0.398, 1]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-muse-glimmer-30b} & $2/4$ & $[0.068, 0.932]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+    \texttt{or-gpt-oss-20b} & \multicolumn{4}{c}{не завершили design $T$} \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
     \bottomrule
   \end{tabular}
 \end{table}
@@ -258,8 +270,9 @@ Lock не универсален среди hosted-генераторов.
 \section{Last-band occupancy}
 \label{sec:occupancy}
 
-При наличии lock этапы~5--6 спрашивают, показывают ли last-band центроиды
-всё ещё ансамблевый domain gap. Двадцать восемь траекторий при $W{=}4096$, $T{=}0.3$,
+При наличии lock этапы~5--6 спрашивают, остаются ли last-band центроиды
+десяти фиксированных seed-текстов различимы (between-seed vs within-seed).
+Двадцать восемь траекторий при $W{=}4096$, $T{=}0.3$, % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 $B{=}1024$, двенадцать оборотов. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
 Generate \texttt{s5-lock-occupancy-20260905T164327Z-6780902f};
 embed \texttt{s5-embed-lock-occupancy-20260906T030125Z-eab6e484};
@@ -267,13 +280,16 @@ degeneracy \texttt{s5-degeneracy-20260906T030145Z-deb4c3bd};
 gemini \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}.
 
 Пусть $D_{\mathrm{within}}$ --- среднее косинусное расстояние между last-band
-центроидами, разделяющими домен seed, а $D_{\mathrm{between}}$ --- среднее
-между разными доменами. Зазор равен
+центроидами одного seed-текста, а $D_{\mathrm{between}}$ --- среднее
+между разными seed-текстами. Зазор равен
 $\Delta_{\mathrm{dom}}=D_{\mathrm{between}}-D_{\mathrm{within}}$.
-Домены помечаются разделёнными, когда 95\% CI траекторного bootstrap % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Домен здесь --- один размеченный экземпляр seed, не выборка из популяции.
+Seed помечаются разделёнными, когда 95\% CI траекторного bootstrap % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 исключает $0$ сверху. Этот оценщик уже ресэмплирует с кратностью % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
-(ADR-0019). Независимый пересчёт матрицы пар seed согласуется по знаку до
+(ADR-0019). Независимый пересчёт матрицы пар seed согласуется по точке до
 $<0.002$ во всех трёх пространствах. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
+Опубликованные CI в этом проходе не пересчитываются: parquet эмбеддингов
+occupancy нет в снимке 2026-09-01 (ADR-0020). % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
 
 Таблица~\ref{tab:s6-f4} сообщает last-band F4. Все три пространства разделены
 по этому правилу CI:
@@ -285,8 +301,14 @@ Gemini $0.029$ --- прохождение NHST, а не architecture-independenc
 У physics seed~1 $47$ против $48$ чанков, поэтому диагональ last-band % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
 $D_{\mathrm{within}}$ не определена; F4 использует
 $n_{\mathrm{within}}{=}9$ пар. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
-Last-band gap --- ансамблевая различимость, а не recovered prompt
-memory (H2).
+Leave-one-seed-out на матрице сохраняет зазор положительным во всех пространствах
+(минимум $0.128$). % artifacts/tmlr-correctness/occupancy_leave_one_seed_out.csv @ ADR-0020
+Рандомизация within-пар из $54$ уникальных конечных пар даёт % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+$p{=}0.0001$ в каждом пространстве ($0/9999$ перестановок не меньше % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+наблюдаемого зазора, seed $0$). % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+Это тест на десяти фиксированных seed-текстах, не на популяции доменов.
+Last-band gap --- различимость between-seed, а не recovered prompt
+memory (H2) и не domain memory.
 
 Протокольная диагностика, не заголовок: доменные траектории проводят среднюю
 долю заполнения $0.853$, 95\% CI $[0.756, 0.936]$, в последней четверти, при средней % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
@@ -294,10 +316,11 @@ memory (H2).
 
 \begin{table}[t]
   \centering
-  \caption{F4 last-band domain gap, десять доменных seed, $n{=}20$,
-    $n_{\mathrm{within}}{=}9$. Источник: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \caption{F4 last-band зазор between-seed vs within-seed, десять фиксированных
+    seed-текстов, $n{=}20$, $n_{\mathrm{within}}{=}9$. Источник: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
     \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
-    Separated означает, что 95\% CI исключает $0$ сверху.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    Separated означает, что опубликованный 95\% CI исключает $0$ сверху. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    Пересчёт CI с occupancy-векторов отложен (ADR-0020).} % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
   \label{tab:s6-f4}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -313,7 +336,7 @@ memory (H2).
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\linewidth]{stage-5/occupancy/domain_separation_vs_turnover.pdf}
-  \caption{Domain gap против оборота в \texttt{bge-m3} и
+  \caption{Between-seed last-band gap против оборота в \texttt{bge-m3} и
     \texttt{qwen3-embed-8b} на locked-панели этапа~5. Last-band CI
     исключают $0$ сверху в обоих пространствах.} % artifacts/stage-5/occupancy/domain_separation_vs_turnover.pdf @ s5-lock-occupancy-20260905T164327Z-6780902f
   \label{fig:s5-dom}
@@ -322,7 +345,7 @@ memory (H2).
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.92\linewidth]{stage-6/occupancy/domain_gap_three_spaces.pdf}
-  \caption{F4 domain gap против оборота в трёх пространствах эмбеддингов на
+  \caption{F4 between-seed last-band gap против оборота в трёх пространствах эмбеддингов на
     тех же $28$ траекториях. Last-band CI исключают $0$; нижняя граница gemini % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
     равна $0.029$. Уровни $0.201$ / $0.390$ / $0.150$ не взаимозаменяемы.} % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
   \label{fig:s6-f4}
@@ -414,7 +437,8 @@ Occupancy использует двенадцать оборотов, а не б
 
 Что установлено на этом генераторе и протоколе: после того как seed покидает
 $W$, типичная траектория при $T{=}0.3$ --- текстовый repetition lock; last-band
-центроиды всё ещё показывают ансамблевый domain gap по десяти доменам seed в
+центроиды всё ещё показывают between-seed last-band зазор по десяти фиксированным
+seed-текстам в
 трёх пространствах эмбеддингов (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 
 Что не установлено: H1; H5; мы не можем утверждать architecture-independence
@@ -422,7 +446,7 @@ occupancy; результат для языковых моделей как кл
 перемешивания; коллапс реплик; однофактовая чувствительность twins.
 
 \citet{zekri2024} остаются правильным нулём единственности. Last-band зазоры
-с меткой домена на locked-панели совместимы с более чем одной долговременной
+с меткой seed на locked-панели совместимы с более чем одной долговременной
 областью occupancy в пространстве эмбеддингов. Эта совместимость --- не
 доказательство того, что токенная цепь имеет несколько стационарных мер.
 
@@ -431,8 +455,14 @@ occupancy; результат для языковых моделей как кл
 
 Эксперименты через этап~6 закрыты на git-коммите \texttt{ad1f244}.
 Этап~7 написал первую рукопись. Этот correctness-проход --- ADR-0019
-на ветке \texttt{cursor/tmlr-correctness-a7f7}; он не чеканит
-\texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+и ADR-0020
+\ifdefined\TMLRANON
+(анонимно).
+\else
+на ветке \texttt{cursor/tmlr-correctness-a7f7};
+\fi
+он не чеканит
+\texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
 Тег GitHub \texttt{state-latest} --- изменяемый указатель восстановления, а не
 цитируемый архивный объект.
 
