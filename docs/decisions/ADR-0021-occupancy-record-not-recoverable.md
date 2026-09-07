@@ -84,5 +84,6 @@ Paper B stays parked. This is not Stage 8.
 ## Reversal cost
 
 If the named run directories reappear, restore parquet, recompute CIs
-from vectors, and amend this ADR. Do not treat a new generate as that
+from vectors, and amend this ADR. A new generate is a replication
+panel ([ADR-0022](ADR-0022-occupancy-replication-panel.md)), not that
 restore.
