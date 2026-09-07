@@ -288,8 +288,9 @@ Seed помечаются разделёнными, когда 95\% CI трае�
 исключает $0$ сверху. Этот оценщик уже ресэмплирует с кратностью % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
 (ADR-0019). Независимый пересчёт матрицы пар seed согласуется по точке до
 $<0.002$ во всех трёх пространствах. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Опубликованные CI в этом проходе не пересчитываются: parquet эмбеддингов
-occupancy нет в снимке 2026-09-01 (ADR-0020). % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+Опубликованные CI с эмбеддингов не пересчитываются: именованные occupancy-run
+невосстановимы (ADR-0021). Новая генерация чеканила бы новые \texttt{run\_id}
+и новые реализации, а не проверяла опубликованные интервалы. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
 
 Таблица~\ref{tab:s6-f4} сообщает last-band F4. Все три пространства разделены
 по этому правилу CI:
@@ -320,7 +321,8 @@ memory (H2) и не domain memory.
     seed-текстов, $n{=}20$, $n_{\mathrm{within}}{=}9$. Источник: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
     \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
     Separated означает, что опубликованный 95\% CI исключает $0$ сверху. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-    Пересчёт CI с occupancy-векторов отложен (ADR-0020).} % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+    Опубликованные 95\% CI --- исходные выходы анализа в этом CSV; % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+    исходные occupancy-векторы невосстановимы (ADR-0021).} % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
   \label{tab:s6-f4}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -429,6 +431,14 @@ bootstrap не используются как свидетельство.
 Точные совпадения этапа~2 составляли $100/60/20/20$ процентов по четырём hosted- % docs/stages/stage-2/REPORT.md @ s2-audit-determinism-20260901T015221Z-ab59afc8
 генераторам. Пары реплик не гарантированы как независимые реализации.
 
+\paragraph{Occupancy-векторы.}
+Именованные occupancy generate/embed run невосстановимы (ADR-0021).
+Опубликованные CI траекторного bootstrap --- исходные выходы анализа в
+закоммиченном CSV, не пересчёт с эмбеддингов. Независимо воспроизводимый
+вывод F4 в этом проходе --- матрица пар seed, leave-one-seed-out и
+рандомизация within-пар. Новая генерация была бы новой панелью, а не
+восстановлением этих интервалов. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+
 \paragraph{Конечный горизонт.}
 Occupancy использует двенадцать оборотов, а не бесконечный afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
 
@@ -454,15 +464,15 @@ occupancy; результат для языковых моделей как кл
 \label{sec:repro}
 
 Эксперименты через этап~6 закрыты на git-коммите \texttt{ad1f244}.
-Этап~7 написал первую рукопись. Этот correctness-проход --- ADR-0019
-и ADR-0020
+Этап~7 написал первую рукопись. Этот correctness-проход --- ADR-0019,
+ADR-0020 и ADR-0021
 \ifdefined\TMLRANON
 (анонимно).
 \else
 на ветке \texttt{cursor/tmlr-correctness-a7f7};
 \fi
 он не чеканит
-\texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+\texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
 Тег GitHub \texttt{state-latest} --- изменяемый указатель восстановления, а не
 цитируемый архивный объект.
 

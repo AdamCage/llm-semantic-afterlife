@@ -111,6 +111,12 @@ ADR plus a new config, not a silent widening of S4.
   multi-hour run without tailing logs.
 - **Artifact diff.** `afterlife diff` between two stage artifact sets, for
   reviewing the effect of a methodological change.
+- **Occupancy vector restore / F4 CI recompute from embeddings.** Named
+  S5/S6 run directories are not recoverable (ADR-0021). Regenerating
+  `stage5_lock_occupancy.yaml` would be a *new* panel (new `run_id`s,
+  non-deterministic hosted draws), not a restore of
+  `0.201 [0.065, 0.332]` / `0.390 [0.151, 0.593]` / `0.150 [0.029, 0.266]`.
+  Estimate first; do not reuse old ids. Not this correctness pass.
 - **DOI archiving.** Zenodo deposition of the artifact release at submission.
 
 ## Rejected (kept so we do not re-propose them)

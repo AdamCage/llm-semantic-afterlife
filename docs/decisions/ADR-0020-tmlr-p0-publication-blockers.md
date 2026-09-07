@@ -3,6 +3,8 @@
 Status: accepted
 Date: 2026-09-07
 Amends: [ADR-0019](ADR-0019-tmlr-correctness-pass.md)
+Amended by: [ADR-0021](ADR-0021-occupancy-record-not-recoverable.md)
+  (occupancy runs confirmed not recoverable; “pending CI recompute” withdrawn)
 
 ## Context
 
@@ -26,7 +28,7 @@ F4 CIs therefore cannot be re-derived here. Paper B stays parked.
    per labelled domain). Domain ≡ seed instance. Second inference from
    the committed seed-pair matrix: leave-one-seed-out and a
    within-pair randomisation test. Trajectory-bootstrap CI recompute
-   waits on occupancy embeddings.
+   from the named occupancy vectors is not possible; see ADR-0021.
 4. **F6.** Invalid CI columns leave the canonical `twin_last_band.csv`
    (and `twin_per_band.csv`) for a `*.legacy_invalid.csv` sidecar.
    Point Δ stays. F6 is not a headline.
@@ -52,11 +54,11 @@ F4 CIs therefore cannot be re-derived here. Paper B stays parked.
 ## Consequences
 
 - Headline F4 *points* and published trajectory-bootstrap CIs are
-  unchanged until embeddings exist. The paper states that CI recompute
-  from raw vectors is pending the occupancy archive.
-- Human checklist: restore `data/embeddings_*.parquet` into the named
-  S5/S6 run directories (or re-embed with new `run_id`s), cut an
-  immutable tag (do not move `state-latest`), merge after green PR CI.
+  unchanged. The paper no longer says CI recompute is pending: named
+  occupancy runs are not recoverable (ADR-0021). Independently
+  reproducible F4 inference is the seed-pair matrix.
+- Do not regenerate under old occupancy `run_id`s. A new panel is a
+  parked optional replication, not a restore.
 
 ## Reversal cost
 

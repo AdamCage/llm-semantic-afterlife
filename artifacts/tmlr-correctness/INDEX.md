@@ -12,4 +12,6 @@ Independent headline audit after the Bernoulli CI rewrite. No new generate.
 - [`occupancy_leave_one_seed_out.csv`](occupancy_leave_one_seed_out.csv) — leave-one-seed-out.
 - [`occupancy_within_pair_randomization.csv`](occupancy_within_pair_randomization.csv) — within-pair randomisation.
 - F6 canonical CSVs no longer carry `delta_ci_*`; sidecars are `*.legacy_invalid.csv` under `artifacts/stage-5/occupancy/` and `artifacts/stage-6/occupancy/`.
-- Trajectory-bootstrap F4 CIs are **not** recomputed (occupancy embeddings absent).
+- Trajectory-bootstrap F4 CIs are **not** recomputed. Named occupancy runs
+  are not recoverable (ADR-0021); published intervals are archival CSV
+  outputs. Independently reproducible F4 inference is the seed-pair matrix.

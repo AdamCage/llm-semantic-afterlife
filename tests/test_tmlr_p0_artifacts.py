@@ -58,6 +58,9 @@ def test_f4_randomization_and_loo_are_seed_texts_not_umap() -> None:
     assert by_space["gemini-embed-001"] == pytest.approx(0.150, abs=0.002)
     meta = (TMLR / "occupancy_within_pair_randomization.meta.json").read_text(encoding="utf-8")
     assert "Do not read a cluster count off UMAP" in meta
+    assert "ADR-0021" in meta
+    gap_meta = (TMLR / "occupancy_seed_pair_gap.meta.json").read_text(encoding="utf-8")
+    assert "not recoverable" in gap_meta
 
 
 def test_f6_canonical_has_no_ci_columns() -> None:

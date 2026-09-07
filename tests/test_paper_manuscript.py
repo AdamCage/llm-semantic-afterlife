@@ -289,7 +289,12 @@ def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
         occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
         assert "ten fixed seed" in occupancy.lower() or "десяти фиксированных" in occupancy, name
         assert "ADR-0020" in occupancy, name
+        assert "ADR-0021" in occupancy, name
         assert "0.0001" in occupancy, name
+        assert "pending" not in occupancy.lower(), name
+        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
+        assert "ADR-0021" in limitations, name
+        assert "not recoverable" in limitations.lower() or "невосстановимы" in limitations, name
 
 
 def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:

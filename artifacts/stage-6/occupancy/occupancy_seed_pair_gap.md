@@ -1,4 +1,4 @@
-**occupancy_seed_pair_gap** — F4 last-band gap from the committed seed-pair matrix: unweighted mean of finite within-seed diagonals versus unordered between-seed pairs. Inferential target is ten fixed seed texts, not a domain population. Trajectory-bootstrap CIs are not recomputed here (embeddings absent).
+**occupancy_seed_pair_gap** — F4 last-band gap from the committed seed-pair matrix: unweighted mean of finite within-seed diagonals versus unordered between-seed pairs. Inferential target is ten fixed seed texts, not a domain population. Trajectory-bootstrap CIs are not recomputed here (named occupancy runs are not recoverable; ADR-0021).
 
 | embedding        |   d_within |   d_between |    gap |   n_within_pairs |   n_between_pairs | method                   |
 |:-----------------|-----------:|------------:|-------:|-----------------:|------------------:|:-------------------------|

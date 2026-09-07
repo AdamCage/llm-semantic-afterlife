@@ -25,8 +25,9 @@ Closed `REPORT.md` numbers are not rewritten. The occupancy generate
 Invalid `delta_ci_*` columns moved to
 [`twin_last_band.legacy_invalid.csv`](../../../artifacts/stage-5/occupancy/twin_last_band.legacy_invalid.csv)
 and the matching `twin_per_band` sidecar. Canonical CSVs keep point
-$\Delta$. F4 trajectory-bootstrap CIs are still pending occupancy
-embeddings. Seed-pair leave-one-out and within-pair randomisation are in
+$\Delta$. F4 trajectory-bootstrap CIs cannot be re-derived from
+embeddings: named occupancy runs are not recoverable (ADR-0021).
+Seed-pair leave-one-out and within-pair randomisation are in
 [`artifacts/tmlr-correctness/`](../../../artifacts/tmlr-correctness/).
 Inferential target: ten fixed seed texts, not a domain population.
 

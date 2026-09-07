@@ -3,7 +3,8 @@
 
 ADR-0020. Per-temperature Stage 2 rates, F4 seed-pair leave-one-out and
 within-pair randomisation, and quarantine of invalid F6 CI columns.
-Spend is $0. Occupancy embedding parquet is not required.
+Spend is $0. Named occupancy run directories are not recoverable
+(ADR-0021). F4 CIs are not re-derived from embeddings.
 """
 
 from __future__ import annotations
@@ -127,13 +128,15 @@ def _write_f4(git_sha: str | None) -> None:
         "F4 last-band gap from the committed seed-pair matrix: unweighted mean "
         "of finite within-seed diagonals versus unordered between-seed pairs. "
         "Inferential target is ten fixed seed texts, not a domain population. "
-        "Trajectory-bootstrap CIs are not recomputed here (embeddings absent)."
+        "Trajectory-bootstrap CIs are not recomputed here "
+        "(named occupancy runs are not recoverable; ADR-0021)."
     )
     limitations = (
         "physics s1 has no last-band within diagonal (n_within_pairs=9). "
         "Leave-one-seed-out and within-pair randomisation are tests on these "
-        "ten texts. They do not replace trajectory-bootstrap CIs. Do not read "
-        "a cluster count off UMAP. Domain ≡ seed instance (ADR-0020)."
+        "ten texts. They do not re-derive trajectory-bootstrap CIs from "
+        "vectors (ADR-0021). Do not read a cluster count off UMAP. "
+        "Domain ≡ seed instance (ADR-0020)."
     )
     for out_dir in (TMLR, S6_OCC):
         save_table(
@@ -243,7 +246,10 @@ def main() -> None:
         "- F6 canonical CSVs no longer carry `delta_ci_*`; sidecars are "
         "`*.legacy_invalid.csv` under `artifacts/stage-5/occupancy/` and "
         "`artifacts/stage-6/occupancy/`.\n"
-        "- Trajectory-bootstrap F4 CIs are **not** recomputed (occupancy embeddings absent).\n"
+        "- Trajectory-bootstrap F4 CIs are **not** recomputed. Named occupancy "
+        "runs are not recoverable (ADR-0021); published intervals are archival "
+        "CSV outputs. Independently reproducible F4 inference is the seed-pair "
+        "matrix.\n"
     )
     text = index.read_text(encoding="utf-8") if index.is_file() else "# TMLR correctness\n"
     if "ADR-0020 P0 tables" not in text:

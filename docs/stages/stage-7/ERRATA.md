@@ -30,7 +30,17 @@ Manuscript table for Stage 2 is per temperature (`n=4`). F4 wording is
 between-seed vs within-seed on ten fixed texts. Fisher $p=0.029$ is not
 in the Stage 4 narrative. Random Attention (arXiv:2609.03430) is cited
 after VERIFIED. `paper/compile.sh anonymous` blanks the author and
-branch. F4 bootstrap CI recompute is still pending occupancy embeddings.
+branch. F4 bootstrap CIs are archival CSV outputs; named occupancy runs
+are not recoverable (ADR-0021).
+
+## ADR-0021 (2026-09-07)
+
+Named occupancy generate/embed run directories are not recoverable.
+Published F4 trajectory-bootstrap CIs are archival CSV outputs, not
+re-derived from vectors. Independently reproducible F4 inference is the
+seed-pair matrix (leave-one-out, within-pair randomisation). Do not
+regenerate under old `run_id`s; a new panel is not a restore.
+See [`ADR-0021`](../../decisions/ADR-0021-occupancy-record-not-recoverable.md).
 
 ## What did not change
 

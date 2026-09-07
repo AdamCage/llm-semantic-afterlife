@@ -286,8 +286,10 @@ Seeds are labelled separated when the trajectory-bootstrap 95\% CI % artifacts/s
 excludes $0$ from above. That estimator already resamples with multiplicity % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
 (ADR-0019). An independent seed-pair matrix recompute agrees on the point to
 $<0.002$ in all three spaces. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Those published CIs are not re-derived in this pass: occupancy embedding
-parquet is absent from the 2026-09-01 snapshot (ADR-0020). % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+Those published CIs are not re-derived from embeddings: named occupancy
+run directories are not recoverable (ADR-0021). Regenerating trajectories
+would mint new \texttt{run\_id}s and new draws, not verify the published
+intervals. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
 
 Table~\ref{tab:s6-f4} reports last-band F4. All three spaces are separated
 under that CI rule:
@@ -318,7 +320,8 @@ stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.c
     texts, $n{=}20$, $n_{\mathrm{within}}{=}9$. Source: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
     \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
     Separated means the published 95\% CI excludes $0$ from above. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-    CI recompute from occupancy vectors is pending (ADR-0020).} % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+    Published 95\% CIs are original analysis outputs in that CSV; % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+    source occupancy vectors are not recoverable (ADR-0021).} % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
   \label{tab:s6-f4}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -427,6 +430,14 @@ Gemini lower CI $0.029$ is not architecture-independence. % artifacts/stage-6/oc
 Stage~2 exact-match rates were $100/60/20/20$ percent across four hosted % docs/stages/stage-2/REPORT.md @ s2-audit-determinism-20260901T015221Z-ab59afc8
 generators. Replica pairs are not guaranteed independent draws.
 
+\paragraph{Occupancy vectors.}
+Named occupancy generate and embed run directories are not recoverable
+(ADR-0021). Published trajectory-bootstrap CIs are the original analysis
+outputs in the committed CSV, not re-derived from embeddings.
+Independently reproducible F4 inference in this pass is the seed-pair
+matrix, leave-one-seed-out, and within-pair randomisation. A new generate
+would be a new panel, not a restore of those intervals. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+
 \paragraph{Finite horizon.}
 Occupancy uses twelve turnovers, not an infinite afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
 
@@ -452,15 +463,15 @@ token-level chain has several stationary measures.
 \label{sec:repro}
 
 Experiments through Stage~6 closed on git commit \texttt{ad1f244}.
-Stage~7 wrote the first manuscript. This correctness pass is ADR-0019
-and ADR-0020
+Stage~7 wrote the first manuscript. This correctness pass is ADR-0019,
+ADR-0020, and ADR-0021
 \ifdefined\TMLRANON
 (anonymous).
 \else
 on branch \texttt{cursor/tmlr-correctness-a7f7};
 \fi
 it does not mint
-\texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0020-tmlr-p0-publication-blockers.md @ ADR-0020
+\texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
 The GitHub tag \texttt{state-latest} is a mutable restore pointer, not a
 citable archival object.
 

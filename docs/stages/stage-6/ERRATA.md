@@ -23,7 +23,8 @@ remain `s6-embed-third-space-20260906T082301Z-588eff8f` and
 Invalid F6 CI columns quarantined to `*.legacy_invalid.csv`. F4
 leave-one-out and within-pair randomisation ($p=0.0001$ in each space,
 $n_{\mathrm{perm}}=9999$) are tests on ten seed texts. Trajectory-bootstrap
-CI recompute remains pending embeddings.
+CI recompute remains impossible: occupancy run directories are not
+recoverable (ADR-0021).
 
 ## What did not change
 

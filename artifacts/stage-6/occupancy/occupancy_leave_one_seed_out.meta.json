@@ -2,7 +2,7 @@
   "name": "occupancy_leave_one_seed_out",
   "caption": "Leave-one-seed-out F4 gaps on the committed last-band seed-pair matrix. Each row drops one of the ten seed texts and recomputes mean(between) − mean(within) on the rest.",
   "alt_text": "Leave-one-seed-out F4 gaps on the committed last-band seed-pair matrix. Each row drops one of the ten seed texts and recomputes mean(between) − mean(within) on the rest.",
-  "limitations": "physics s1 has no last-band within diagonal (n_within_pairs=9). Leave-one-seed-out and within-pair randomisation are tests on these ten texts. They do not replace trajectory-bootstrap CIs. Do not read a cluster count off UMAP. Domain ≡ seed instance (ADR-0020).",
+  "limitations": "physics s1 has no last-band within diagonal (n_within_pairs=9). Leave-one-seed-out and within-pair randomisation are tests on these ten texts. They do not re-derive trajectory-bootstrap CIs from vectors (ADR-0021). Do not read a cluster count off UMAP. Domain ≡ seed instance (ADR-0020).",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
