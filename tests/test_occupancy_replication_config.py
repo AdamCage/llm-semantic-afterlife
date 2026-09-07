@@ -22,8 +22,8 @@ if str(SCRIPTS) not in sys.path:
 
 from assemble_occupancy_replication import (  # noqa: E402
     HEADLINE_STEMS,
-    copy_headline_csvs,
     _guard_out_dir,
+    copy_headline_csvs,
     missing_data_from_trajectories,
 )
 
