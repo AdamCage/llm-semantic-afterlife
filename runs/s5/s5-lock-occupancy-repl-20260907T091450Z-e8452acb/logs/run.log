@@ -11,3 +11,10 @@
 2026-09-07 09:35:52,870 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
 2026-09-07 09:37:24,063 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
 2026-09-07 09:37:36,044 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:41:16,909 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:41:23,076 WARNING  semantic_afterlife.providers openrouter /completions retry 2: http 429
+2026-09-07 09:43:35,874 WARNING  semantic_afterlife.providers openrouter /completions retry 1: http 429
+2026-09-07 09:47:39,247 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__surreal__s2: 86 steps, 49152 tokens, 48 chunks, $0.0624
+2026-09-07 09:47:39,248 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-07 09:48:05,384 INFO     semantic_afterlife.events completed or-qwen3-8b__W4096__T0p3__surreal__s1: 94 steps, 49152 tokens, 48 chunks, $0.0659
+2026-09-07 09:48:05,386 INFO     semantic_afterlife.events start or-qwen3-8b__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
