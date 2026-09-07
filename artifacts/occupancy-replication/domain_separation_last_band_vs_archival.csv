@@ -1,0 +1,4 @@
+embedding,archival_gap,archival_gap_ci_low,archival_gap_ci_high,replication_gap,replication_gap_ci_low,replication_gap_ci_high,replication_separated,sign_agrees
+bge-m3,0.200895,0.0652385,0.332212,0.208023,0.0907624,0.314455,True,True
+qwen3-embed-8b,0.390151,0.150537,0.593395,0.400274,0.220804,0.589638,True,True
+gemini-embed-001,0.150016,0.0289632,0.265854,0.152193,0.0730588,0.238653,True,True

@@ -248,10 +248,13 @@ def main() -> None:
         "Replication of the occupancy generate, not a restore of "
         "s5-lock-occupancy-20260905T164327Z-6780902f. Hosted sampling is not "
         "deterministic; level mismatch vs archival CIs is expected. Sign agreement "
-        "(CI excludes 0) is the claim. noise s2 FAILED at 49151/49152 with 47 chunks "
-        "kept; last-band D_within can be empty for unmatched 47-vs-48 pairs. "
-        "Do not replace archival 0.201 [0.065, 0.332]. Twin CIs are not headlined here. "
-        "philosophy s1, programming s2 and war s2 COMPLETED with 47 chunks."
+        "(CI excludes 0) is the claim. Band 12 has n_within_pairs=6 and "
+        "n_between_pairs=114 because four domain trajectories stop at turnover "
+        "11.75 (noise s2 FAILED; philosophy s1, programming s2, war s2 COMPLETED "
+        "with 47 chunks). Band 10 still has the full 80/1440 pair set and also "
+        "excludes 0; it is not the pre-registered F4 number. Do not impute missing "
+        "last-band pairs. Do not replace archival 0.201 [0.065, 0.332]. Twin CIs "
+        "are not headlined here."
     )
     save_table(
         last_band,
