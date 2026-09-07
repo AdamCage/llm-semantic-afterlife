@@ -1,5 +1,5 @@
 {
-  "command": "/workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes",
+  "command": "/workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
   "config_resolved": {
     "budget_usd": 8.0,
     "description": "Replication of the S5 lock occupancy grid including physics/surreal (28 trajectories). New run_ids. Do not overwrite Stage 5/6 headline CSVs.",
@@ -214,7 +214,9 @@
     "status": "M .gitignore\n M uv.lock\n?? artifacts/occupancy-replication/\n?? runs/"
   },
   "integrity": {},
-  "notes": [],
+  "notes": [
+    "resumed: /workspace/.venv/bin/afterlife generate --config configs/stages/stage5_lock_occupancy_replication.yaml --yes --resume-run s5-lock-occupancy-repl-20260907T091450Z-e8452acb"
+  ],
   "run_id": "s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
   "seeds": {
     "seed_bank": "configs/seeds/seed_bank_v1.yaml",
