@@ -288,9 +288,9 @@ Seed помечаются разделёнными, когда 95\% CI трае�
 исключает $0$ сверху. Этот оценщик уже ресэмплирует с кратностью % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
 (ADR-0019). Независимый пересчёт матрицы пар seed согласуется по точке до
 $<0.002$ во всех трёх пространствах. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Опубликованные CI с эмбеддингов не пересчитываются: именованные occupancy-run
-невосстановимы (ADR-0021). Новая генерация чеканила бы новые \texttt{run\_id}
-и новые реализации, а не проверяла опубликованные интервалы. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+Опубликованные CI с исходных эмбеддингов не пересчитываются: именованные
+occupancy-run этапов~5--6 невосстановимы (ADR-0021). Поздняя генерация
+28 траекторий --- новая панель (ADR-0022), а не restore этих интервалов. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
 
 Таблица~\ref{tab:s6-f4} сообщает last-band F4. Все три пространства разделены
 по этому правилу CI:
@@ -331,6 +331,42 @@ memory (H2) и не domain memory.
     \texttt{bge-m3} & $0.201$ & $[0.065, 0.332]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
     \texttt{qwen3-embed-8b} & $0.390$ & $[0.151, 0.593]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
     \texttt{gemini-embed-001} & $0.150$ & $[0.029, 0.266]$ & да \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Новая occupancy-генерация (ADR-0022) повторяет сетку из 28 траекторий. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
+Это не restore \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
+Generate \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb};
+embed \texttt{s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831};
+gemini \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}.
+Last-band зазоры:
+\texttt{bge-m3} $0.208$ $[0.091, 0.314]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+\texttt{qwen3-embed-8b} $0.400$ $[0.221, 0.590]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+\texttt{gemini-embed-001} $0.152$ $[0.073, 0.239]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s6-embed-third-space-20260907T181515Z-bcde0a11
+Знак согласуется с таблицей~\ref{tab:s6-f4} во всех трёх пространствах: каждый
+репликационный CI исключает $0$ сверху. Эти интервалы не заменяют % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+$0.201$ $[0.065, 0.332]$. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+У четырёх доменных траекторий $47$ чанков, поэтому last-band % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+$n_{\mathrm{within}}{=}6$ % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+(на band~$12$ счёт пар $6/114$). % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Band~$10$ по-прежнему полный набор $80/1440$ и тоже исключает $0$; это не % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+пререгистрированное last-band число.
+
+\begin{table}[t]
+  \centering
+  \caption{Репликация ADR-0022 таблицы~\ref{tab:s6-f4} на новой 28-траекторной
+    генерации, не restore. Согласие знака: оба CI исключают $0$ сверху. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Last-band $n_{\mathrm{within}}{=}6$, потому что у четырёх доменных траекторий $47$ чанков. % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Не заменять $0.201$ $[0.065, 0.332]$.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+  \label{tab:f4-repl}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    Пространство & архив & репликация & знак согласен \\
+    \midrule
+    \texttt{bge-m3} & $0.201$ $[0.065, 0.332]$ & $0.208$ $[0.091, 0.314]$ & да \\
+    \texttt{qwen3-embed-8b} & $0.390$ $[0.151, 0.593]$ & $0.400$ $[0.221, 0.590]$ & да \\
+    \texttt{gemini-embed-001} & $0.150$ $[0.029, 0.266]$ & $0.152$ $[0.073, 0.239]$ & да \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -432,12 +468,13 @@ bootstrap не используются как свидетельство.
 генераторам. Пары реплик не гарантированы как независимые реализации.
 
 \paragraph{Occupancy-векторы.}
-Именованные occupancy generate/embed run невосстановимы (ADR-0021).
-Опубликованные CI траекторного bootstrap --- исходные выходы анализа в
-закоммиченном CSV, не пересчёт с эмбеддингов. Независимо воспроизводимый
-вывод F4 в этом проходе --- матрица пар seed, leave-one-seed-out и
-рандомизация within-пар. Новая генерация была бы новой панелью, а не
-восстановлением этих интервалов. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+Именованные occupancy generate/embed run этапов~5--6 невосстановимы (ADR-0021).
+Опубликованные CI траекторного bootstrap в таблице~\ref{tab:s6-f4} --- исходные
+выходы анализа в закоммиченном CSV, не пересчёт с тех эмбеддингов.
+Независимо воспроизводимый вывод F4 на той архивной панели --- матрица пар seed,
+leave-one-seed-out и рандомизация within-пар.
+Новая генерация 28 траекторий (ADR-0022) --- репликация, а не restore
+$0.201$ $[0.065, 0.332]$; last-band $n_{\mathrm{within}}{=}6$ на этой панели. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
 
 \paragraph{Конечный горизонт.}
 Occupancy использует двенадцать оборотов, а не бесконечный afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
@@ -450,6 +487,8 @@ $W$, типичная траектория при $T{=}0.3$ --- текстовы
 центроиды всё ещё показывают between-seed last-band зазор по десяти фиксированным
 seed-текстам в
 трёх пространствах эмбеддингов (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+Новая генерация 28 траекторий согласуется по знаку во всех трёх пространствах и
+не заменяет архивные интервалы. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
 
 Что не установлено: H1; H5; мы не можем утверждать architecture-independence
 occupancy; результат для языковых моделей как класса; P1 против P2; времена
@@ -473,6 +512,8 @@ ADR-0020 и ADR-0021
 \fi
 он не чеканит
 \texttt{runs/s7}. Хостовые траты прохода --- $\$0$. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+Поздняя occupancy-репликация (ADR-0022) выставила $\$1.518$ generate и $\$0$ % artifacts/occupancy-replication/README.md @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+embed; это новая панель, не часть прохода на $\$0$. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
 Тег GitHub \texttt{state-latest} --- изменяемый указатель восстановления, а не
 цитируемый архивный объект.
 
@@ -490,7 +531,9 @@ ADR-0020 и ADR-0021
   \item Этап~4: \texttt{s4-w4096-new-temps-20260904T103121Z-589c8eb1},
         \texttt{s4-w8192-20260904T120057Z-ce82ce55}
   \item Этап~5 generate: \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}
+  \item Этап~5 replication generate: \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb}
   \item Этап~6 gemini: \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}
+  \item Occupancy-repl gemini: \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}
 \end{itemize}
 
 \bibliographystyle{plainnat}

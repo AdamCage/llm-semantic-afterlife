@@ -286,10 +286,10 @@ Seeds are labelled separated when the trajectory-bootstrap 95\% CI % artifacts/s
 excludes $0$ from above. That estimator already resamples with multiplicity % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
 (ADR-0019). An independent seed-pair matrix recompute agrees on the point to
 $<0.002$ in all three spaces. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Those published CIs are not re-derived from embeddings: named occupancy
-run directories are not recoverable (ADR-0021). Regenerating trajectories
-would mint new \texttt{run\_id}s and new draws, not verify the published
-intervals. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+Those published CIs are not re-derived from the original embeddings:
+named Stage~5--6 occupancy run directories are not recoverable
+(ADR-0021). A later 28-trajectory generate is a new panel (ADR-0022),
+not a restore of those intervals. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
 
 Table~\ref{tab:s6-f4} reports last-band F4. All three spaces are separated
 under that CI rule:
@@ -330,6 +330,42 @@ stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.c
     \texttt{bge-m3} & $0.201$ & $[0.065, 0.332]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
     \texttt{qwen3-embed-8b} & $0.390$ & $[0.151, 0.593]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
     \texttt{gemini-embed-001} & $0.150$ & $[0.029, 0.266]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+A new occupancy generate (ADR-0022) repeats the 28-trajectory grid. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
+It is not a restore of \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
+Generate \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb};
+embed \texttt{s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831};
+gemini \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}.
+Last-band gaps are
+\texttt{bge-m3} $0.208$ $[0.091, 0.314]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+\texttt{qwen3-embed-8b} $0.400$ $[0.221, 0.590]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+\texttt{gemini-embed-001} $0.152$ $[0.073, 0.239]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s6-embed-third-space-20260907T181515Z-bcde0a11
+Sign agrees with Table~\ref{tab:s6-f4} in all three spaces: each replication
+CI excludes $0$ from above. These intervals do not replace % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+$0.201$ $[0.065, 0.332]$. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+Four domain trajectories have $47$ chunks, so last-band % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+$n_{\mathrm{within}}{=}6$ % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+(band~$12$ pair counts $6/114$). % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Band~$10$ still has the full $80/1440$ pair set and also excludes $0$; it is % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+not the pre-registered last-band number.
+
+\begin{table}[t]
+  \centering
+  \caption{ADR-0022 replication of Table~\ref{tab:s6-f4} on a new 28-trajectory
+    generate, not a restore. Sign agreement: both CIs exclude $0$ from above. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Last-band $n_{\mathrm{within}}{=}6$ because four domain trajectories have $47$ chunks. % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Do not replace $0.201$ $[0.065, 0.332]$.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+  \label{tab:f4-repl}
+  \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    Space & archival & replication & sign agrees \\
+    \midrule
+    \texttt{bge-m3} & $0.201$ $[0.065, 0.332]$ & $0.208$ $[0.091, 0.314]$ & yes \\
+    \texttt{qwen3-embed-8b} & $0.390$ $[0.151, 0.593]$ & $0.400$ $[0.221, 0.590]$ & yes \\
+    \texttt{gemini-embed-001} & $0.150$ $[0.029, 0.266]$ & $0.152$ $[0.073, 0.239]$ & yes \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -431,12 +467,14 @@ Stage~2 exact-match rates were $100/60/20/20$ percent across four hosted % docs/
 generators. Replica pairs are not guaranteed independent draws.
 
 \paragraph{Occupancy vectors.}
-Named occupancy generate and embed run directories are not recoverable
-(ADR-0021). Published trajectory-bootstrap CIs are the original analysis
-outputs in the committed CSV, not re-derived from embeddings.
-Independently reproducible F4 inference in this pass is the seed-pair
-matrix, leave-one-seed-out, and within-pair randomisation. A new generate
-would be a new panel, not a restore of those intervals. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+Named Stage~5--6 occupancy generate and embed run directories are not
+recoverable (ADR-0021). Published trajectory-bootstrap CIs in
+Table~\ref{tab:s6-f4} are the original analysis outputs in the committed CSV,
+not re-derived from those embeddings.
+Independently reproducible F4 inference on that archival panel is the seed-pair
+matrix, leave-one-seed-out, and within-pair randomisation.
+A new 28-trajectory generate (ADR-0022) is a replication, not a restore of
+$0.201$ $[0.065, 0.332]$; last-band $n_{\mathrm{within}}{=}6$ on that panel. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
 
 \paragraph{Finite horizon.}
 Occupancy uses twelve turnovers, not an infinite afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
@@ -449,6 +487,8 @@ $W$, the typical $T{=}0.3$ trajectory is a textual repetition lock; last-band
 centroids still show a between-seed last-band gap across ten fixed seed
 texts in
 three embedding spaces (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+A new 28-trajectory generate agrees in sign in all three spaces and does not
+replace the archival intervals. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
 
 What is not established: H1; H5; we cannot claim architecture-independence of
 occupancy; a result for language models as a class; P1 versus P2; mixing
@@ -472,6 +512,8 @@ on branch \texttt{cursor/tmlr-correctness-a7f7};
 \fi
 it does not mint
 \texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+A later occupancy replication (ADR-0022) billed $\$1.518$ generate and $\$0$ % artifacts/occupancy-replication/README.md @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+embed; it is a new panel, not part of the $\$0$ pass. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
 The GitHub tag \texttt{state-latest} is a mutable restore pointer, not a
 citable archival object.
 
@@ -489,7 +531,9 @@ Primary \texttt{run\_id}s:
   \item Stage~4: \texttt{s4-w4096-new-temps-20260904T103121Z-589c8eb1},
         \texttt{s4-w8192-20260904T120057Z-ce82ce55}
   \item Stage~5 generate: \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}
+  \item Stage~5 replication generate: \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb}
   \item Stage~6 gemini: \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}
+  \item Occupancy-repl gemini: \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}
 \end{itemize}
 
 \bibliographystyle{plainnat}

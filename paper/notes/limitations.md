@@ -37,3 +37,8 @@ specific items from S5–S6 review.
     and register/persona remain alternative accounts of F4.
 12. **Forced continuation.** Externally sustained self-conditioning
     after repeated termination attempts. EOS-as-absorbing is Paper B.
+13. **Occupancy replication (ADR-0022).** A new 28-trajectory generate
+    is not a restore of the named S5/S6 run directories. Last-band
+    `n_within_pairs=6` (four domain trajectories have 47 chunks). Sign
+    agrees with archival `0.201 [0.065, 0.332]`; do not replace that
+    interval. Band 10 (80/1440) is not the pre-registered F4 number.

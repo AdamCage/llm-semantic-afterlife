@@ -31,5 +31,6 @@ rows not filtered.
 Last band is 12. Because four domain trajectories have 47 chunks, band 12
 has `n_within_pairs=6` and `n_between_pairs=114` (16 of 20 domain trajs).
 Band 10 still has the full 80/1440 pair set and also excludes 0; it is not
-the pre-registered F4 number. Do not impute. Do not overwrite
-`artifacts/stage-5/occupancy/` or `artifacts/stage-6/occupancy/`.
+Canonical tables: this directory. TMLR copies of headline CSVs:
+`artifacts/tmlr-correctness/occupancy-replication/`.
+Do not overwrite `artifacts/stage-5/occupancy/` or `artifacts/stage-6/occupancy/`.

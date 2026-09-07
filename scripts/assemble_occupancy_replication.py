@@ -2,7 +2,8 @@
 """Assemble ADR-0022 occupancy replication F4 CIs.
 
 One generate run holds the full 28-trajectory grid (physics/surreal included).
-Writes only under ``artifacts/occupancy-replication/``. Does **not** overwrite
+Writes under ``artifacts/occupancy-replication/`` and copies headline CSVs
+to ``artifacts/tmlr-correctness/occupancy-replication/``. Does **not** overwrite
 ``artifacts/stage-5/occupancy/`` or ``artifacts/stage-6/occupancy/``.
 
 ``noise s2`` FAILED at 49151/49152 (WindowProtocolError). Its 47 chunks remain
@@ -13,6 +14,7 @@ in the parquet; that is missing-data, not a silent drop. Last-band
 from __future__ import annotations
 
 import argparse
+import shutil
 import sys
 from pathlib import Path
 
@@ -66,6 +68,14 @@ FORBIDDEN_OUT = frozenset(
     }
 )
 EXPECTED_CHUNKS = 48
+TMLR_REPL = Path("artifacts/tmlr-correctness/occupancy-replication")
+HEADLINE_STEMS = (
+    "domain_separation_last_band",
+    "domain_separation_last_band_vs_archival",
+    "domain_separation_per_band",
+    "missing_data",
+)
+HEADLINE_SUFFIXES = (".csv", ".meta.json", ".md")
 
 
 def _guard_out_dir(out_dir: Path) -> Path:
@@ -80,6 +90,28 @@ def _guard_out_dir(out_dir: Path) -> Path:
     ):
         raise SystemExit(f"refusing to write under {resolved}: that is a Stage 5/6 occupancy tree")
     return out_dir
+
+
+def copy_headline_csvs(source: Path, dest: Path) -> Path:
+    """Copy F4 headline tables into the TMLR tree. ADR-0022 named this path."""
+    dest.mkdir(parents=True, exist_ok=True)
+    for stem in HEADLINE_STEMS:
+        for suffix in HEADLINE_SUFFIXES:
+            src = source / f"{stem}{suffix}"
+            if src.is_file():
+                shutil.copy2(src, dest / f"{stem}{suffix}")
+    readme = dest / "README.md"
+    readme.write_text(
+        "# Occupancy replication (ADR-0022) — TMLR copies\n"
+        "\n"
+        "Headline CSVs copied from `artifacts/occupancy-replication/`.\n"
+        "Canonical figures live there. This folder exists because ADR-0022\n"
+        "named `artifacts/tmlr-correctness/occupancy-replication/`.\n"
+        "This is **not** a restore of Stage 5/6 occupancy CSVs, and it does\n"
+        "not replace archival `0.201 [0.065, 0.332]`.\n",
+        encoding="utf-8",
+    )
+    return dest
 
 
 def _verdicts_table(path: Path, *, source: str, gen_run: str) -> pd.DataFrame:
@@ -367,7 +399,12 @@ def main() -> None:
         if not (root / path).is_file():
             raise SystemExit(f"archival CSV missing after assemble: {path}")
 
+    tmlr_dest = _guard_out_dir(root / TMLR_REPL)
+    if out_dir.resolve() != tmlr_dest.resolve():
+        copy_headline_csvs(out_dir, tmlr_dest)
+
     print(f"wrote replication F4 tables under {out_dir}")
+    print(f"copied headline CSVs to {tmlr_dest}")
     print(last_band.to_string(index=False))
     print(compare.to_string(index=False))
 

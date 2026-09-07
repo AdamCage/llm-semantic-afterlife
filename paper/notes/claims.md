@@ -25,6 +25,7 @@ that would exceed the record.
 | Gemini F6 last-band point Δ: all −0.012; not published as bootstrap CI | S6 | `artifacts/stage-6/occupancy/twin_last_band.csv` | same gemini embeds |
 | Gemini waterloo band 0 Δ 0.033 [0.001, 0.065] → band 12 −0.031 (sign flip) | S6 | `artifacts/stage-6/occupancy/twin_per_band.csv` | same |
 | Hosted project spend $16.34 of $200; S6 hosted $0 | ledger | `runs/_ledger/spend.jsonl` | — |
+| Occupancy-repl F4 last-band 0.208 [0.091, 0.314] / 0.400 [0.221, 0.590] / 0.152 [0.073, 0.239]; sign agrees with archival; n_within=6 | ADR-0022 | `artifacts/occupancy-replication/domain_separation_last_band.csv` | `s5-lock-occupancy-repl-20260907T091450Z-e8452acb`, `s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831`, `s6-embed-third-space-20260907T181515Z-bcde0a11` |
 
 ## Forbidden (do not write)
 
@@ -40,5 +41,7 @@ that would exceed the record.
 | P1 vs sliding was measured in S6 | parked (ADR-0017) |
 | Last-band occupancy still carries seed-domain identity / recovered prompt memory | F4 is an ensemble last-band domain gap; H2 is not recovered (S5/S6, ADR-0018) |
 | Occupancy protocol = P1 without naming `raw_completion` and Alibaba | glossary: P1 ≠ continuation mechanism; S5 generate was Alibaba `raw_completion` |
+| Replace archival 0.201 [0.065, 0.332] with the occupancy-repl interval | ADR-0022: replication sits beside archival; sign agreement is the claim; not a restore |
+| Headline occupancy-repl gap-vs-turnover in place of S5/S6 figures | replication is support, not the archival headline |
 
 Fill the Observed column of PLAN Q1–Q8 when the manuscript exists.

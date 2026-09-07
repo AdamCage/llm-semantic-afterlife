@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import subprocess
 import sys
 from pathlib import Path
@@ -20,6 +21,8 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 from assemble_occupancy_replication import (  # noqa: E402
+    HEADLINE_STEMS,
+    copy_headline_csvs,
     _guard_out_dir,
     missing_data_from_trajectories,
 )
@@ -56,6 +59,8 @@ def test_guard_refuses_stage5_and_stage6_occupancy() -> None:
 def test_guard_allows_replication_dir() -> None:
     target = REPO / "artifacts/occupancy-replication"
     assert _guard_out_dir(target) == target
+    tmlr = REPO / "artifacts/tmlr-correctness/occupancy-replication"
+    assert _guard_out_dir(tmlr) == tmlr
 
 
 def test_assemble_cli_refuses_stage5_occupancy_out() -> None:
@@ -103,3 +108,47 @@ def test_missing_data_keeps_failed_and_short_chunks() -> None:
         "or-qwen3-8b__W4096__T0p3__philosophy__s1",
     }
     assert "physics" not in " ".join(missing["trajectory_id"])
+
+
+ARCHIVAL_S6_F4_SHA256 = "4e04898462da7319d6649785277816db1d1a085513fe33efb6223d045838070a"
+
+
+def test_archival_stage6_f4_csv_unmoved() -> None:
+    path = REPO / "artifacts/stage-6/occupancy/domain_separation_last_band.csv"
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    assert digest == ARCHIVAL_S6_F4_SHA256
+
+
+def test_tmlr_headline_copies_match_canonical() -> None:
+    src = REPO / "artifacts/occupancy-replication"
+    dest = REPO / "artifacts/tmlr-correctness/occupancy-replication"
+    assert (dest / "README.md").is_file()
+    readme = (dest / "README.md").read_text(encoding="utf-8")
+    assert "not" in readme.lower() and "restore" in readme.lower()
+    for stem in HEADLINE_STEMS:
+        left = src / f"{stem}.csv"
+        right = dest / f"{stem}.csv"
+        assert left.is_file(), left
+        assert right.is_file(), right
+        left_hash = hashlib.sha256(left.read_bytes()).digest()
+        right_hash = hashlib.sha256(right.read_bytes()).digest()
+        assert left_hash == right_hash
+        frame = pd.read_csv(left)
+        if stem == "domain_separation_last_band":
+            by_space = {row.embedding: row for row in frame.itertuples(index=False)}
+            assert by_space["bge-m3"].gap == pytest.approx(0.208, abs=0.001)
+            assert by_space["qwen3-embed-8b"].gap == pytest.approx(0.400, abs=0.001)
+            assert by_space["gemini-embed-001"].gap == pytest.approx(0.152, abs=0.001)
+            assert bool(by_space["bge-m3"].separated)
+        if stem == "domain_separation_last_band_vs_archival":
+            assert frame["sign_agrees"].all()
+            archival = {row.embedding: row.archival_gap for row in frame.itertuples(index=False)}
+            assert archival["bge-m3"] == pytest.approx(0.201, abs=0.001)
+
+
+def test_copy_headline_csvs_writes_pointer_readme(tmp_path: Path) -> None:
+    src = REPO / "artifacts/occupancy-replication"
+    dest = tmp_path / "occupancy-replication"
+    copy_headline_csvs(src, dest)
+    assert (dest / "domain_separation_last_band.csv").is_file()
+    assert "0.201 [0.065, 0.332]" in (dest / "README.md").read_text(encoding="utf-8")

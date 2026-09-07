@@ -20,6 +20,7 @@ illustrations only. F6 is not a headline figure.
 | S5/S6 lock rate by seed | `*/occupancy/lock_rate_by_seed.*` | k/n; love 1/2 |
 | Twin last-band points | `*/occupancy/twin_last_band.*` | n=2; CIs not bootstrap (ADR-0019) |
 | Protocol by quarter | `*/occupancy/protocol_by_quarter.*` | fill/stop; forced continuation |
+| Occupancy-repl F4 vs archival | `artifacts/occupancy-replication/domain_separation_last_band_vs_archival.*` | sign agreement; not a restore; n_within=6; do not swap in as the headline figure |
 | S1 separation | `artifacts/stage-1/separation-bge-m3/` | 94% lock panel |
 | S2 model-axis rates | `artifacts/stage-2/model-axis/rates/` | gemma 0/8; Clopper–Pearson |
 | S3 k_stability | `artifacts/stage-3/dynamics/` | `validated=0` |

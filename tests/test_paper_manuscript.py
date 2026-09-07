@@ -292,8 +292,10 @@ def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
         assert "ADR-0021" in occupancy, name
         assert "0.0001" in occupancy, name
         assert "pending" not in occupancy.lower(), name
+        assert "ADR-0022" in occupancy, name
         limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
         assert "ADR-0021" in limitations, name
+        assert "ADR-0022" in limitations, name
         assert "not recoverable" in limitations.lower() or "невосстановимы" in limitations, name
 
 
@@ -329,3 +331,43 @@ def test_russian_preamble_has_cyrillic_fonts() -> None:
     assert "babel" in text
     assert "russian" in text
     assert "lmodern" not in text
+
+
+def _table_block(tex: str, label: str) -> str:
+    marker = "\\label{" + label + "}"
+    idx = tex.index(marker)
+    start = tex.rfind(r"\begin{table}", 0, idx)
+    end = tex.index(r"\end{table}", idx)
+    return tex[start:end]
+
+
+def test_f4_replication_beside_archival() -> None:
+    """ADR-0022: report replication next to archival CIs; do not replace them."""
+    for name, text in _papers():
+        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
+        assert "ADR-0022" in occupancy, name
+        assert "0.208" in occupancy, name
+        assert "0.400" in occupancy, name
+        assert "0.152" in occupancy, name
+        lowered = occupancy.lower()
+        assert "not a restore" in lowered or "не restore" in occupancy, name
+        archival = _table_block(text, "tab:s6-f4")
+        assert "0.201" in archival, name
+        assert "[0.065, 0.332]" in archival, name
+        assert "0.208" not in archival, name
+        assert "0.400" not in archival, name
+        assert "0.152" not in archival, name
+        repl = _table_block(text, "tab:f4-repl")
+        assert "0.201" in repl, name
+        assert "0.208" in repl, name
+        assert "0.400" in repl, name
+        assert "0.152" in repl, name
+        assert r"n_{\mathrm{within}}{=}6" in occupancy, name
+        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
+        assert "ADR-0022" in limitations, name
+        assert "0.201" in limitations, name
+        repro = text.split(r"\label{sec:repro}")[1]
+        assert "1.518" in repro, name
+        notes = (NOTES / "claims.md").read_text(encoding="utf-8")
+        assert "0.208" in notes
+        assert "not a restore" in notes.lower()
