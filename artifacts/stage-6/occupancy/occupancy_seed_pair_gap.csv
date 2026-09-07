@@ -1,0 +1,4 @@
+embedding,d_within,d_between,gap,n_within_pairs,n_between_pairs,method
+bge-m3,0.288107,0.487623,0.199516,9,45,unique_finite_seed_pairs
+qwen3-embed-8b,0.346552,0.736699,0.390146,9,45,unique_finite_seed_pairs
+gemini-embed-001,0.200211,0.348707,0.148496,9,45,unique_finite_seed_pairs

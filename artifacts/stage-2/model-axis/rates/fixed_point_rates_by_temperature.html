@@ -1,0 +1,210 @@
+<style type="text/css">
+#T_df8cf caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0.4em 0;
+  font-size: 1.05em;
+}
+#T_df8cf th {
+  background-color: #F2F4F7;
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 2px solid #4D4D4D;
+}
+#T_df8cf td {
+  padding: 0.3em 0.6em;
+}
+#T_df8cf tr:nth-child(even) {
+  background-color: #FAFBFC;
+}
+#T_df8cf table {
+  border-collapse: collapse;
+  font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
+  font-size: 0.92em;
+}
+#T_df8cf_row0_col1, #T_df8cf_row0_col2, #T_df8cf_row0_col3, #T_df8cf_row0_col4, #T_df8cf_row0_col6, #T_df8cf_row1_col2, #T_df8cf_row1_col3, #T_df8cf_row1_col4, #T_df8cf_row1_col6, #T_df8cf_row2_col1, #T_df8cf_row4_col1, #T_df8cf_row5_col5, #T_df8cf_row6_col1, #T_df8cf_row7_col2, #T_df8cf_row7_col3, #T_df8cf_row7_col4, #T_df8cf_row7_col6, #T_df8cf_row8_col1 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_df8cf_row0_col5, #T_df8cf_row1_col1, #T_df8cf_row1_col5, #T_df8cf_row2_col2, #T_df8cf_row2_col3, #T_df8cf_row2_col4, #T_df8cf_row2_col5, #T_df8cf_row2_col6, #T_df8cf_row3_col1, #T_df8cf_row3_col2, #T_df8cf_row3_col3, #T_df8cf_row3_col4, #T_df8cf_row3_col5, #T_df8cf_row3_col6, #T_df8cf_row4_col5, #T_df8cf_row5_col1, #T_df8cf_row6_col5, #T_df8cf_row7_col1, #T_df8cf_row7_col5, #T_df8cf_row8_col5, #T_df8cf_row9_col1, #T_df8cf_row9_col2, #T_df8cf_row9_col3, #T_df8cf_row9_col4, #T_df8cf_row9_col5, #T_df8cf_row9_col6 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+#T_df8cf_row4_col2, #T_df8cf_row4_col6, #T_df8cf_row5_col6 {
+  background-color: #c6dbef;
+  color: #000000;
+}
+#T_df8cf_row4_col3 {
+  background-color: #f4f9fe;
+  color: #000000;
+}
+#T_df8cf_row4_col4 {
+  background-color: #66abd4;
+  color: #f1f1f1;
+}
+#T_df8cf_row5_col2 {
+  background-color: #abd0e6;
+  color: #000000;
+}
+#T_df8cf_row5_col3 {
+  background-color: #f3f8fe;
+  color: #000000;
+}
+#T_df8cf_row5_col4 {
+  background-color: #1e6db2;
+  color: #f1f1f1;
+}
+#T_df8cf_row6_col2, #T_df8cf_row6_col6 {
+  background-color: #6aaed6;
+  color: #f1f1f1;
+}
+#T_df8cf_row6_col3 {
+  background-color: #d6e5f4;
+  color: #000000;
+}
+#T_df8cf_row6_col4 {
+  background-color: #115ca5;
+  color: #f1f1f1;
+}
+#T_df8cf_row8_col2, #T_df8cf_row8_col6 {
+  background-color: #2070b4;
+  color: #f1f1f1;
+}
+#T_df8cf_row8_col3 {
+  background-color: #71b1d7;
+  color: #f1f1f1;
+}
+#T_df8cf_row8_col4 {
+  background-color: #083471;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_df8cf">
+  <caption>Stage 2 model-axis repetition-lock rates split by temperature. Each cell is n=4 except or-gpt-oss-20b, which did not complete the design T. 95% Clopper–Pearson. The pooled n=8 table fixed_point_rates.csv remains; it is not a T=0.3 table.</caption>
+  <thead>
+    <tr>
+      <th id="T_df8cf_level0_col0" class="col_heading level0 col0" >generator</th>
+      <th id="T_df8cf_level0_col1" class="col_heading level0 col1" >temperature</th>
+      <th id="T_df8cf_level0_col2" class="col_heading level0 col2" >rate</th>
+      <th id="T_df8cf_level0_col3" class="col_heading level0 col3" >ci_low</th>
+      <th id="T_df8cf_level0_col4" class="col_heading level0 col4" >ci_high</th>
+      <th id="T_df8cf_level0_col5" class="col_heading level0 col5" >n</th>
+      <th id="T_df8cf_level0_col6" class="col_heading level0 col6" >n_positive</th>
+      <th id="T_df8cf_level0_col7" class="col_heading level0 col7" >method</th>
+      <th id="T_df8cf_level0_col8" class="col_heading level0 col8" >k_over_n</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_df8cf_row0_col0" class="data row0 col0" >or-gemma-4-31b</td>
+      <td id="T_df8cf_row0_col1" class="data row0 col1" >0.3000</td>
+      <td id="T_df8cf_row0_col2" class="data row0 col2" >0.0000</td>
+      <td id="T_df8cf_row0_col3" class="data row0 col3" >0.0000</td>
+      <td id="T_df8cf_row0_col4" class="data row0 col4" >0.6024</td>
+      <td id="T_df8cf_row0_col5" class="data row0 col5" >4</td>
+      <td id="T_df8cf_row0_col6" class="data row0 col6" >0</td>
+      <td id="T_df8cf_row0_col7" class="data row0 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row0_col8" class="data row0 col8" >0/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row1_col0" class="data row1 col0" >or-gemma-4-31b</td>
+      <td id="T_df8cf_row1_col1" class="data row1 col1" >1.0000</td>
+      <td id="T_df8cf_row1_col2" class="data row1 col2" >0.0000</td>
+      <td id="T_df8cf_row1_col3" class="data row1 col3" >0.0000</td>
+      <td id="T_df8cf_row1_col4" class="data row1 col4" >0.6024</td>
+      <td id="T_df8cf_row1_col5" class="data row1 col5" >4</td>
+      <td id="T_df8cf_row1_col6" class="data row1 col6" >0</td>
+      <td id="T_df8cf_row1_col7" class="data row1 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row1_col8" class="data row1 col8" >0/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row2_col0" class="data row2 col0" >or-gpt-oss-120b</td>
+      <td id="T_df8cf_row2_col1" class="data row2 col1" >0.3000</td>
+      <td id="T_df8cf_row2_col2" class="data row2 col2" >1.0000</td>
+      <td id="T_df8cf_row2_col3" class="data row2 col3" >0.3976</td>
+      <td id="T_df8cf_row2_col4" class="data row2 col4" >1.0000</td>
+      <td id="T_df8cf_row2_col5" class="data row2 col5" >4</td>
+      <td id="T_df8cf_row2_col6" class="data row2 col6" >4</td>
+      <td id="T_df8cf_row2_col7" class="data row2 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row2_col8" class="data row2 col8" >4/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row3_col0" class="data row3 col0" >or-gpt-oss-120b</td>
+      <td id="T_df8cf_row3_col1" class="data row3 col1" >1.0000</td>
+      <td id="T_df8cf_row3_col2" class="data row3 col2" >1.0000</td>
+      <td id="T_df8cf_row3_col3" class="data row3 col3" >0.3976</td>
+      <td id="T_df8cf_row3_col4" class="data row3 col4" >1.0000</td>
+      <td id="T_df8cf_row3_col5" class="data row3 col5" >4</td>
+      <td id="T_df8cf_row3_col6" class="data row3 col6" >4</td>
+      <td id="T_df8cf_row3_col7" class="data row3 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row3_col8" class="data row3 col8" >4/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row4_col0" class="data row4 col0" >or-gpt-oss-20b</td>
+      <td id="T_df8cf_row4_col1" class="data row4 col1" >0.3000</td>
+      <td id="T_df8cf_row4_col2" class="data row4 col2" >0.2500</td>
+      <td id="T_df8cf_row4_col3" class="data row4 col3" >0.0063</td>
+      <td id="T_df8cf_row4_col4" class="data row4 col4" >0.8059</td>
+      <td id="T_df8cf_row4_col5" class="data row4 col5" >4</td>
+      <td id="T_df8cf_row4_col6" class="data row4 col6" >1</td>
+      <td id="T_df8cf_row4_col7" class="data row4 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row4_col8" class="data row4 col8" >1/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row5_col0" class="data row5 col0" >or-gpt-oss-20b</td>
+      <td id="T_df8cf_row5_col1" class="data row5 col1" >1.0000</td>
+      <td id="T_df8cf_row5_col2" class="data row5 col2" >0.3333</td>
+      <td id="T_df8cf_row5_col3" class="data row5 col3" >0.0084</td>
+      <td id="T_df8cf_row5_col4" class="data row5 col4" >0.9057</td>
+      <td id="T_df8cf_row5_col5" class="data row5 col5" >3</td>
+      <td id="T_df8cf_row5_col6" class="data row5 col6" >1</td>
+      <td id="T_df8cf_row5_col7" class="data row5 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row5_col8" class="data row5 col8" >1/3</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row6_col0" class="data row6 col0" >or-muse-glimmer-30b</td>
+      <td id="T_df8cf_row6_col1" class="data row6 col1" >0.3000</td>
+      <td id="T_df8cf_row6_col2" class="data row6 col2" >0.5000</td>
+      <td id="T_df8cf_row6_col3" class="data row6 col3" >0.0676</td>
+      <td id="T_df8cf_row6_col4" class="data row6 col4" >0.9324</td>
+      <td id="T_df8cf_row6_col5" class="data row6 col5" >4</td>
+      <td id="T_df8cf_row6_col6" class="data row6 col6" >2</td>
+      <td id="T_df8cf_row6_col7" class="data row6 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row6_col8" class="data row6 col8" >2/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row7_col0" class="data row7 col0" >or-muse-glimmer-30b</td>
+      <td id="T_df8cf_row7_col1" class="data row7 col1" >1.0000</td>
+      <td id="T_df8cf_row7_col2" class="data row7 col2" >0.0000</td>
+      <td id="T_df8cf_row7_col3" class="data row7 col3" >0.0000</td>
+      <td id="T_df8cf_row7_col4" class="data row7 col4" >0.6024</td>
+      <td id="T_df8cf_row7_col5" class="data row7 col5" >4</td>
+      <td id="T_df8cf_row7_col6" class="data row7 col6" >0</td>
+      <td id="T_df8cf_row7_col7" class="data row7 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row7_col8" class="data row7 col8" >0/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row8_col0" class="data row8 col0" >or-qwen3-8b</td>
+      <td id="T_df8cf_row8_col1" class="data row8 col1" >0.3000</td>
+      <td id="T_df8cf_row8_col2" class="data row8 col2" >0.7500</td>
+      <td id="T_df8cf_row8_col3" class="data row8 col3" >0.1941</td>
+      <td id="T_df8cf_row8_col4" class="data row8 col4" >0.9937</td>
+      <td id="T_df8cf_row8_col5" class="data row8 col5" >4</td>
+      <td id="T_df8cf_row8_col6" class="data row8 col6" >3</td>
+      <td id="T_df8cf_row8_col7" class="data row8 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row8_col8" class="data row8 col8" >3/4</td>
+    </tr>
+    <tr>
+      <td id="T_df8cf_row9_col0" class="data row9 col0" >or-qwen3-8b</td>
+      <td id="T_df8cf_row9_col1" class="data row9 col1" >1.0000</td>
+      <td id="T_df8cf_row9_col2" class="data row9 col2" >1.0000</td>
+      <td id="T_df8cf_row9_col3" class="data row9 col3" >0.3976</td>
+      <td id="T_df8cf_row9_col4" class="data row9 col4" >1.0000</td>
+      <td id="T_df8cf_row9_col5" class="data row9 col5" >4</td>
+      <td id="T_df8cf_row9_col6" class="data row9 col6" >4</td>
+      <td id="T_df8cf_row9_col7" class="data row9 col7" >clopper_pearson</td>
+      <td id="T_df8cf_row9_col8" class="data row9 col8" >4/4</td>
+    </tr>
+  </tbody>
+</table>

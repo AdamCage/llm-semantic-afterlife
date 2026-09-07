@@ -1,8 +1,8 @@
 {
   "name": "twin_per_band",
-  "caption": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. \u0394 = D_twin_matched \u2212 D_control.",
-  "alt_text": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. \u0394 = D_twin_matched \u2212 D_control.",
-  "limitations": "Divergent iff last-band CI excludes 0 from above; else collapsed. That rule is an NHST default, not an equivalence test. Waterloo point \u0394 did not go to 0; reactor never excluded 0. ADR-0019: published twin CI columns used set(chosen) and are not bootstrap intervals. Point \u0394 is the observed mean. Occupancy embeddings were absent from the 2026-09-01 snapshot, so CIs were not re-derived. n=2; no detected divergence is not semantic collapse.",
+  "caption": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control. Invalid CI columns: sibling *.legacy_invalid.csv.",
+  "alt_text": "F6 twin contrast per turnover band. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control. Invalid CI columns: sibling *.legacy_invalid.csv.",
+  "limitations": "Divergent iff last-band CI excludes 0 from above; else collapsed. That rule is an NHST default, not an equivalence test. Waterloo point Δ did not go to 0; reactor never excluded 0. ADR-0019: published twin CI columns used set(chosen) and are not bootstrap intervals. Point Δ is the observed mean. Occupancy embeddings were absent from the 2026-09-01 snapshot, so CIs were not re-derived. n=2; no detected divergence is not semantic collapse. ADR-0020: invalid CI columns used set(chosen) and are not bootstrap intervals; they live in the sibling *.legacy_invalid.csv sidecar. Canonical table keeps point Δ. Do not treat the sidecar as a CI.",
   "run_ids": [
     "s5-lock-occupancy-20260905T164327Z-6780902f",
     "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
@@ -10,8 +10,8 @@
     "s2-mechanism-20260901T071519Z-dfbb173a",
     "s2-embed-mechanism-20260901T131051Z-55761049"
   ],
-  "git_sha": "4a89cabe4678e6ccdc05b0f2e32628c5be1d3863",
+  "git_sha": "6e40a15d9decfb45a9c555d9736c8a02261e8347",
   "config_sha256": null,
   "units": {},
-  "generated_at": "2026-09-06T03:27:10+00:00"
+  "generated_at": "2026-09-07T08:18:30+00:00"
 }
