@@ -1,0 +1,24 @@
+2026-09-07 17:51:32,005 INFO     semantic_afterlife.events run s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831 (live)
+2026-09-07 17:51:32,006 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-07 17:51:41,173 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:51:53,638 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:51:58,647 WARNING  semantic_afterlife.providers routerai /embeddings retry 2: http 503
+2026-09-07 17:52:08,252 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:52:12,347 WARNING  semantic_afterlife.providers routerai /embeddings retry 2: http 503
+2026-09-07 17:53:25,204 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:53:47,895 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:53:53,224 WARNING  semantic_afterlife.providers routerai /embeddings retry 2: http 503
+2026-09-07 17:54:07,126 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:54:42,165 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:54:49,504 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:54:57,655 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:55:10,262 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:55:20,661 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:55:28,998 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:55:39,450 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:56:05,902 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:56:47,919 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:56:56,069 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:57:49,124 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 17:58:08,728 WARNING  semantic_afterlife.providers routerai /embeddings retry 1: http 503
+2026-09-07 18:14:08,621 INFO     semantic_afterlife.events completed s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831 — spent $0.0000 (project $10.54 of $200.00)
