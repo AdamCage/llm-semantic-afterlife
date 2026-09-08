@@ -353,7 +353,8 @@ def leave_one_seed_out_gaps(frame: pd.DataFrame) -> pd.DataFrame:
     rows: list[dict[str, object]] = []
     for dropped in seeds:
         kept = domain[
-            (domain["seed_row"].astype(str) != dropped) & (domain["seed_col"].astype(str) != dropped)
+            (domain["seed_row"].astype(str) != dropped)
+            & (domain["seed_col"].astype(str) != dropped)
         ]
         stats = last_band_gap_from_matrix(kept)
         rows.append({"dropped_seed": dropped, **stats})

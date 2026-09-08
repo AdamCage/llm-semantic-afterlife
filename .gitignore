@@ -24,6 +24,8 @@ runs/s5/*
 !runs/s5/s5-lock-occupancy-repl-*/**
 !runs/s5/s5-embed-lock-occupancy-repl-*/
 !runs/s5/s5-embed-lock-occupancy-repl-*/**
+!runs/s5/s5-degeneracy-20260907T175009Z-f5accf8a/
+!runs/s5/s5-degeneracy-20260907T175009Z-f5accf8a/**
 !runs/s6/
 runs/s6/*
 !runs/s6/s6-embed-third-space-*/

@@ -207,9 +207,7 @@ def compute_twin_contrast(
             for draw in range(params.n_boot):
                 drawn = rng.integers(0, n_traj, size=n_traj)
                 counts = np.bincount(drawn, minlength=n_traj)
-                boot[draw] = weighted_band_delta(
-                    left_idx, right_idx, is_twin, distances, counts
-                )
+                boot[draw] = weighted_band_delta(left_idx, right_idx, is_twin, distances, counts)
             finite = boot[np.isfinite(boot)]
             if finite.size == 0:
                 low = high = float("nan")

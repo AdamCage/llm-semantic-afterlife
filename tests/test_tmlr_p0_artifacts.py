@@ -17,12 +17,12 @@ TMLR = ROOT / "artifacts/tmlr-correctness"
 
 def test_stage2_per_temperature_is_n4_not_pooled_t03() -> None:
     frame = pd.read_csv(S2 / "fixed_point_rates_by_temperature.csv")
-    qwen_03 = frame.loc[
-        (frame["generator"] == "or-qwen3-8b") & (frame["temperature"] == 0.3)
-    ].iloc[0]
-    qwen_1 = frame.loc[
-        (frame["generator"] == "or-qwen3-8b") & (frame["temperature"] == 1.0)
-    ].iloc[0]
+    qwen_03 = frame.loc[(frame["generator"] == "or-qwen3-8b") & (frame["temperature"] == 0.3)].iloc[
+        0
+    ]
+    qwen_1 = frame.loc[(frame["generator"] == "or-qwen3-8b") & (frame["temperature"] == 1.0)].iloc[
+        0
+    ]
     gemma_03 = frame.loc[
         (frame["generator"] == "or-gemma-4-31b") & (frame["temperature"] == 0.3)
     ].iloc[0]

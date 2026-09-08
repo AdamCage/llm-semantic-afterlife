@@ -207,9 +207,7 @@ class TestSeedPairInference:
         result = within_pair_randomization(_toy_domain_matrix(), n_perm=199, seed=0)
         assert result["gap"] == pytest.approx(0.75)
         assert result["n_perm"] == 199
-        assert float(result["p_value"]) == pytest.approx(
-            (1.0 + int(result["n_extreme"])) / 200.0
-        )
+        assert float(result["p_value"]) == pytest.approx((1.0 + int(result["n_extreme"])) / 200.0)
         # Two smallest of five unique distances: 1 / C(5,2) = 0.1 of permutations.
         assert 0.02 < float(result["p_value"]) < 0.20
 
