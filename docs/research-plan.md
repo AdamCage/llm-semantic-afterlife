@@ -6,15 +6,16 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S7` closed APPROVED WITH CHANGES 2026-09-06: a TMLR-shaped
-manuscript from closed S0–S6 artifacts exists at `paper/main.tex`.
-F4 is an ensemble last-band domain gap, not recovered prompt memory
-(H2). Occupancy protocol is P1 `raw_completion` served by Alibaba.
+**Status.** `S7` closed APPROVED WITH CHANGES 2026-09-06. A TMLR
+correctness pass (ADR-0019) is in progress on the closed S0–S7 record:
+protocol `B`, horizon semantics, twin bootstrap, Bernoulli CIs, and
+manuscript wording. Not Stage 8; no new generate. F4 remains an
+ensemble last-band domain gap, not recovered prompt memory (H2).
+Occupancy protocol is P1 `raw_completion` served by Alibaba, `B=1024`.
 H1 unsupported; H5 absent. Hosted **$0**. Mechanical gate FAIL
 `runs.complete` is the writing-stage exception (ADR-0018). Planned
-stages S0–S7 are complete; there is no S8. `S6` closed APPROVED WITH
-CHANGES (`ad1f244`). Project ceiling **$200** (ADR-0013). Last
-revised 2026-09-06.
+stages S0–S7 are complete; there is no S8. Project ceiling **$200**
+(ADR-0013). Last revised 2026-09-06.
 
 ---
 

@@ -1,67 +1,67 @@
-**twin_per_band** — F6 twin contrast per turnover band in three spaces. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control.
+**twin_per_band** — F6 twin contrast per turnover band in three spaces. scope=all is the pooled twins; family scopes are waterloo and reactor. Δ = D_twin_matched − D_control. Invalid CI columns: sibling *.legacy_invalid.csv.
 
-|   band | scope                           |      delta |   d_twin |   d_control |   delta_ci_low |   delta_ci_high | divergent   |   n_twin_pairs |   n_control_pairs | embedding        |
-|-------:|:--------------------------------|-----------:|---------:|------------:|---------------:|----------------:|:------------|---------------:|------------------:|:-----------------|
-|      0 | all                             |  0.03126   |   0.1729 |     0.1416  |     -0.05875   |         0.08795 | False       |             28 |                28 | bge-m3           |
-|      0 | reactor-stable+reactor-unstable |  0.0144    |   0.188  |     0.1736  |     -0.05875   |         0.08754 | False       |             14 |                14 | bge-m3           |
-|      0 | waterloo-lost+waterloo-won      |  0.04812   |   0.1578 |     0.1096  |      0.02137   |         0.07486 | True        |             14 |                14 | bge-m3           |
-|      2 | all                             |  0.02595   |   0.2017 |     0.1757  |     -0.1513    |         0.1483  | False       |             32 |                32 | bge-m3           |
-|      2 | reactor-stable+reactor-unstable |  0.009702  |   0.2466 |     0.2369  |     -0.1289    |         0.1483  | False       |             16 |                16 | bge-m3           |
-|      2 | waterloo-lost+waterloo-won      |  0.04221   |   0.1568 |     0.1146  |      0.000931  |         0.08348 | True        |             16 |                16 | bge-m3           |
-|      4 | all                             |  0.02225   |   0.2066 |     0.1843  |     -0.1111    |         0.112   | False       |             32 |                32 | bge-m3           |
-|      4 | reactor-stable+reactor-unstable |  0.003163  |   0.2287 |     0.2255  |     -0.09699   |         0.1033  | False       |             16 |                16 | bge-m3           |
-|      4 | waterloo-lost+waterloo-won      |  0.04133   |   0.1845 |     0.1432  |     -0.00521   |         0.08787 | False       |             16 |                16 | bge-m3           |
-|      6 | all                             |  0.02475   |   0.2137 |     0.189   |     -0.07326   |         0.1349  | False       |             32 |                32 | bge-m3           |
-|      6 | reactor-stable+reactor-unstable |  0.007959  |   0.2095 |     0.2015  |     -0.07326   |         0.08918 | False       |             16 |                16 | bge-m3           |
-|      6 | waterloo-lost+waterloo-won      |  0.04153   |   0.2179 |     0.1764  |     -0.06481   |         0.1479  | False       |             16 |                16 | bge-m3           |
-|      8 | all                             |  0.02945   |   0.2359 |     0.2064  |     -0.1392    |         0.2262  | False       |             32 |                32 | bge-m3           |
-|      8 | reactor-stable+reactor-unstable |  0.01096   |   0.2102 |     0.1992  |     -0.07157   |         0.09349 | False       |             16 |                16 | bge-m3           |
-|      8 | waterloo-lost+waterloo-won      |  0.04795   |   0.2615 |     0.2136  |     -0.1392    |         0.2351  | False       |             16 |                16 | bge-m3           |
-|     10 | all                             |  0.02757   |   0.2888 |     0.2613  |     -0.3678    |         0.4632  | False       |             32 |                32 | bge-m3           |
-|     10 | reactor-stable+reactor-unstable |  0.007719  |   0.2046 |     0.1969  |     -0.07706   |         0.0925  | False       |             16 |                16 | bge-m3           |
-|     10 | waterloo-lost+waterloo-won      |  0.04742   |   0.373  |     0.3256  |     -0.3683    |         0.4632  | False       |             16 |                16 | bge-m3           |
-|     12 | all                             |  0.02819   |   0.2968 |     0.2686  |     -0.394     |         0.4748  | False       |              4 |                 4 | bge-m3           |
-|     12 | reactor-stable+reactor-unstable |  0.007719  |   0.2046 |     0.1969  |     -0.07706   |         0.0925  | False       |              2 |                 2 | bge-m3           |
-|     12 | waterloo-lost+waterloo-won      |  0.04866   |   0.3889 |     0.3403  |     -0.394     |         0.4914  | False       |              2 |                 2 | bge-m3           |
-|      0 | all                             |  0.05077   |   0.1828 |     0.132   |     -0.03407   |         0.1123  | False       |             28 |                28 | qwen3-embed-8b   |
-|      0 | reactor-stable+reactor-unstable |  0.03518   |   0.1788 |     0.1436  |     -0.04405   |         0.1144  | False       |             14 |                14 | qwen3-embed-8b   |
-|      0 | waterloo-lost+waterloo-won      |  0.06636   |   0.1867 |     0.1204  |      0.03439   |         0.09832 | True        |             14 |                14 | qwen3-embed-8b   |
-|      2 | all                             |  0.0444    |   0.219  |     0.1746  |     -0.163     |         0.1757  | False       |             32 |                32 | qwen3-embed-8b   |
-|      2 | reactor-stable+reactor-unstable |  0.02341   |   0.2598 |     0.2364  |     -0.1296    |         0.1764  | False       |             16 |                16 | qwen3-embed-8b   |
-|      2 | waterloo-lost+waterloo-won      |  0.06538   |   0.1783 |     0.1129  |      0.04424   |         0.08653 | True        |             16 |                16 | qwen3-embed-8b   |
-|      4 | all                             |  0.04526   |   0.2388 |     0.1936  |     -0.1408    |         0.1755  | False       |             32 |                32 | qwen3-embed-8b   |
-|      4 | reactor-stable+reactor-unstable |  0.03077   |   0.2669 |     0.2361  |     -0.1178    |         0.1793  | False       |             16 |                16 | qwen3-embed-8b   |
-|      4 | waterloo-lost+waterloo-won      |  0.05974   |   0.2108 |     0.151   |      0.01688   |         0.1026  | True        |             16 |                16 | qwen3-embed-8b   |
-|      6 | all                             |  0.04338   |   0.2539 |     0.2106  |     -0.0931    |         0.1902  | False       |             32 |                32 | qwen3-embed-8b   |
-|      6 | reactor-stable+reactor-unstable |  0.04887   |   0.2718 |     0.2229  |     -0.09251   |         0.1902  | False       |             16 |                16 | qwen3-embed-8b   |
-|      6 | waterloo-lost+waterloo-won      |  0.03789   |   0.2361 |     0.1982  |     -0.08032   |         0.1561  | False       |             16 |                16 | qwen3-embed-8b   |
-|      8 | all                             |  0.03148   |   0.2892 |     0.2577  |     -0.2221    |         0.2493  | False       |             32 |                32 | qwen3-embed-8b   |
-|      8 | reactor-stable+reactor-unstable |  0.04938   |   0.2773 |     0.228   |     -0.1045    |         0.2032  | False       |             16 |                16 | qwen3-embed-8b   |
-|      8 | waterloo-lost+waterloo-won      |  0.01358   |   0.301  |     0.2875  |     -0.2221    |         0.2493  | False       |             16 |                16 | qwen3-embed-8b   |
-|     10 | all                             |  0.02847   |   0.3642 |     0.3357  |     -0.5131    |         0.5501  | False       |             32 |                32 | qwen3-embed-8b   |
-|     10 | reactor-stable+reactor-unstable |  0.05381   |   0.277  |     0.2232  |     -0.09213   |         0.1998  | False       |             16 |                16 | qwen3-embed-8b   |
-|     10 | waterloo-lost+waterloo-won      |  0.003126  |   0.4514 |     0.4483  |     -0.5438    |         0.5501  | False       |             16 |                16 | qwen3-embed-8b   |
-|     12 | all                             |  0.02269   |   0.3917 |     0.369   |     -0.6878    |         0.6707  | False       |              4 |                 4 | qwen3-embed-8b   |
-|     12 | reactor-stable+reactor-unstable |  0.05391   |   0.2769 |     0.223   |     -0.09168   |         0.1995  | False       |              2 |                 2 | qwen3-embed-8b   |
-|     12 | waterloo-lost+waterloo-won      | -0.008544  |   0.5065 |     0.515   |     -0.6878    |         0.6707  | False       |              2 |                 2 | qwen3-embed-8b   |
-|      0 | all                             |  0.02528   |   0.1198 |     0.09451 |     -0.01877   |         0.06466 | False       |             28 |                28 | gemini-embed-001 |
-|      0 | reactor-stable+reactor-unstable |  0.01775   |   0.111  |     0.09324 |     -0.01877   |         0.05427 | False       |             14 |                14 | gemini-embed-001 |
-|      0 | waterloo-lost+waterloo-won      |  0.03281   |   0.1286 |     0.09577 |      0.0009588 |         0.06466 | True        |             14 |                14 | gemini-embed-001 |
-|      2 | all                             |  0.01629   |   0.1418 |     0.1256  |     -0.06708   |         0.0863  | False       |             32 |                32 | gemini-embed-001 |
-|      2 | reactor-stable+reactor-unstable |  0.01783   |   0.1628 |     0.1449  |     -0.05794   |         0.09359 | False       |             16 |                16 | gemini-embed-001 |
-|      2 | waterloo-lost+waterloo-won      |  0.01475   |   0.1209 |     0.1062  |     -0.01357   |         0.04306 | False       |             16 |                16 | gemini-embed-001 |
-|      4 | all                             | -0.0003436 |   0.1455 |     0.1458  |     -0.07316   |         0.07471 | False       |             32 |                32 | gemini-embed-001 |
-|      4 | reactor-stable+reactor-unstable |  0.0007738 |   0.1602 |     0.1595  |     -0.07316   |         0.07471 | False       |             16 |                16 | gemini-embed-001 |
-|      4 | waterloo-lost+waterloo-won      | -0.001461  |   0.1307 |     0.1322  |     -0.03976   |         0.03684 | False       |             16 |                16 | gemini-embed-001 |
-|      6 | all                             | -0.0005599 |   0.1633 |     0.1638  |     -0.1163    |         0.1022  | False       |             32 |                32 | gemini-embed-001 |
-|      6 | reactor-stable+reactor-unstable |  0.007711  |   0.1607 |     0.153   |     -0.06951   |         0.08493 | False       |             16 |                16 | gemini-embed-001 |
-|      6 | waterloo-lost+waterloo-won      | -0.008831  |   0.1659 |     0.1747  |     -0.1198    |         0.1022  | False       |             16 |                16 | gemini-embed-001 |
-|      8 | all                             | -0.01222   |   0.1738 |     0.186   |     -0.1823    |         0.1086  | False       |             32 |                32 | gemini-embed-001 |
-|      8 | reactor-stable+reactor-unstable |  0.01243   |   0.161  |     0.1486  |     -0.06411   |         0.08897 | False       |             16 |                16 | gemini-embed-001 |
-|      8 | waterloo-lost+waterloo-won      | -0.03687   |   0.1865 |     0.2234  |     -0.1823    |         0.1086  | False       |             16 |                16 | gemini-embed-001 |
-|     10 | all                             | -0.01591   |   0.1868 |     0.2027  |     -0.2397    |         0.165   | False       |             32 |                32 | gemini-embed-001 |
-|     10 | reactor-stable+reactor-unstable |  0.008078  |   0.1605 |     0.1524  |     -0.071     |         0.08716 | False       |             16 |                16 | gemini-embed-001 |
-|     10 | waterloo-lost+waterloo-won      | -0.0399    |   0.2132 |     0.2531  |     -0.2448    |         0.165   | False       |             16 |                16 | gemini-embed-001 |
-|     12 | all                             | -0.0117    |   0.2019 |     0.2136  |     -0.2855    |         0.2226  | False       |              4 |                 4 | gemini-embed-001 |
-|     12 | reactor-stable+reactor-unstable |  0.008078  |   0.1605 |     0.1524  |     -0.071     |         0.08716 | False       |              2 |                 2 | gemini-embed-001 |
-|     12 | waterloo-lost+waterloo-won      | -0.03148   |   0.2433 |     0.2748  |     -0.2855    |         0.2226  | False       |              2 |                 2 | gemini-embed-001 |
+|   band | scope                           |      delta |   d_twin |   d_control | divergent   |   n_twin_pairs |   n_control_pairs | embedding        |
+|-------:|:--------------------------------|-----------:|---------:|------------:|:------------|---------------:|------------------:|:-----------------|
+|      0 | all                             |  0.03126   |   0.1729 |     0.1416  | False       |             28 |                28 | bge-m3           |
+|      0 | reactor-stable+reactor-unstable |  0.0144    |   0.188  |     0.1736  | False       |             14 |                14 | bge-m3           |
+|      0 | waterloo-lost+waterloo-won      |  0.04812   |   0.1578 |     0.1096  | True        |             14 |                14 | bge-m3           |
+|      2 | all                             |  0.02595   |   0.2017 |     0.1757  | False       |             32 |                32 | bge-m3           |
+|      2 | reactor-stable+reactor-unstable |  0.009702  |   0.2466 |     0.2369  | False       |             16 |                16 | bge-m3           |
+|      2 | waterloo-lost+waterloo-won      |  0.04221   |   0.1568 |     0.1146  | True        |             16 |                16 | bge-m3           |
+|      4 | all                             |  0.02225   |   0.2066 |     0.1843  | False       |             32 |                32 | bge-m3           |
+|      4 | reactor-stable+reactor-unstable |  0.003163  |   0.2287 |     0.2255  | False       |             16 |                16 | bge-m3           |
+|      4 | waterloo-lost+waterloo-won      |  0.04133   |   0.1845 |     0.1432  | False       |             16 |                16 | bge-m3           |
+|      6 | all                             |  0.02475   |   0.2137 |     0.189   | False       |             32 |                32 | bge-m3           |
+|      6 | reactor-stable+reactor-unstable |  0.007959  |   0.2095 |     0.2015  | False       |             16 |                16 | bge-m3           |
+|      6 | waterloo-lost+waterloo-won      |  0.04153   |   0.2179 |     0.1764  | False       |             16 |                16 | bge-m3           |
+|      8 | all                             |  0.02945   |   0.2359 |     0.2064  | False       |             32 |                32 | bge-m3           |
+|      8 | reactor-stable+reactor-unstable |  0.01096   |   0.2102 |     0.1992  | False       |             16 |                16 | bge-m3           |
+|      8 | waterloo-lost+waterloo-won      |  0.04795   |   0.2615 |     0.2136  | False       |             16 |                16 | bge-m3           |
+|     10 | all                             |  0.02757   |   0.2888 |     0.2613  | False       |             32 |                32 | bge-m3           |
+|     10 | reactor-stable+reactor-unstable |  0.007719  |   0.2046 |     0.1969  | False       |             16 |                16 | bge-m3           |
+|     10 | waterloo-lost+waterloo-won      |  0.04742   |   0.373  |     0.3256  | False       |             16 |                16 | bge-m3           |
+|     12 | all                             |  0.02819   |   0.2968 |     0.2686  | False       |              4 |                 4 | bge-m3           |
+|     12 | reactor-stable+reactor-unstable |  0.007719  |   0.2046 |     0.1969  | False       |              2 |                 2 | bge-m3           |
+|     12 | waterloo-lost+waterloo-won      |  0.04866   |   0.3889 |     0.3403  | False       |              2 |                 2 | bge-m3           |
+|      0 | all                             |  0.05077   |   0.1828 |     0.132   | False       |             28 |                28 | qwen3-embed-8b   |
+|      0 | reactor-stable+reactor-unstable |  0.03518   |   0.1788 |     0.1436  | False       |             14 |                14 | qwen3-embed-8b   |
+|      0 | waterloo-lost+waterloo-won      |  0.06636   |   0.1867 |     0.1204  | True        |             14 |                14 | qwen3-embed-8b   |
+|      2 | all                             |  0.0444    |   0.219  |     0.1746  | False       |             32 |                32 | qwen3-embed-8b   |
+|      2 | reactor-stable+reactor-unstable |  0.02341   |   0.2598 |     0.2364  | False       |             16 |                16 | qwen3-embed-8b   |
+|      2 | waterloo-lost+waterloo-won      |  0.06538   |   0.1783 |     0.1129  | True        |             16 |                16 | qwen3-embed-8b   |
+|      4 | all                             |  0.04526   |   0.2388 |     0.1936  | False       |             32 |                32 | qwen3-embed-8b   |
+|      4 | reactor-stable+reactor-unstable |  0.03077   |   0.2669 |     0.2361  | False       |             16 |                16 | qwen3-embed-8b   |
+|      4 | waterloo-lost+waterloo-won      |  0.05974   |   0.2108 |     0.151   | True        |             16 |                16 | qwen3-embed-8b   |
+|      6 | all                             |  0.04338   |   0.2539 |     0.2106  | False       |             32 |                32 | qwen3-embed-8b   |
+|      6 | reactor-stable+reactor-unstable |  0.04887   |   0.2718 |     0.2229  | False       |             16 |                16 | qwen3-embed-8b   |
+|      6 | waterloo-lost+waterloo-won      |  0.03789   |   0.2361 |     0.1982  | False       |             16 |                16 | qwen3-embed-8b   |
+|      8 | all                             |  0.03148   |   0.2892 |     0.2577  | False       |             32 |                32 | qwen3-embed-8b   |
+|      8 | reactor-stable+reactor-unstable |  0.04938   |   0.2773 |     0.228   | False       |             16 |                16 | qwen3-embed-8b   |
+|      8 | waterloo-lost+waterloo-won      |  0.01358   |   0.301  |     0.2875  | False       |             16 |                16 | qwen3-embed-8b   |
+|     10 | all                             |  0.02847   |   0.3642 |     0.3357  | False       |             32 |                32 | qwen3-embed-8b   |
+|     10 | reactor-stable+reactor-unstable |  0.05381   |   0.277  |     0.2232  | False       |             16 |                16 | qwen3-embed-8b   |
+|     10 | waterloo-lost+waterloo-won      |  0.003126  |   0.4514 |     0.4482  | False       |             16 |                16 | qwen3-embed-8b   |
+|     12 | all                             |  0.02269   |   0.3917 |     0.369   | False       |              4 |                 4 | qwen3-embed-8b   |
+|     12 | reactor-stable+reactor-unstable |  0.05391   |   0.2769 |     0.223   | False       |              2 |                 2 | qwen3-embed-8b   |
+|     12 | waterloo-lost+waterloo-won      | -0.008544  |   0.5065 |     0.515   | False       |              2 |                 2 | qwen3-embed-8b   |
+|      0 | all                             |  0.02528   |   0.1198 |     0.09451 | False       |             28 |                28 | gemini-embed-001 |
+|      0 | reactor-stable+reactor-unstable |  0.01775   |   0.111  |     0.09324 | False       |             14 |                14 | gemini-embed-001 |
+|      0 | waterloo-lost+waterloo-won      |  0.03281   |   0.1286 |     0.09577 | True        |             14 |                14 | gemini-embed-001 |
+|      2 | all                             |  0.01629   |   0.1418 |     0.1256  | False       |             32 |                32 | gemini-embed-001 |
+|      2 | reactor-stable+reactor-unstable |  0.01783   |   0.1628 |     0.1449  | False       |             16 |                16 | gemini-embed-001 |
+|      2 | waterloo-lost+waterloo-won      |  0.01475   |   0.1209 |     0.1062  | False       |             16 |                16 | gemini-embed-001 |
+|      4 | all                             | -0.0003436 |   0.1455 |     0.1458  | False       |             32 |                32 | gemini-embed-001 |
+|      4 | reactor-stable+reactor-unstable |  0.0007738 |   0.1602 |     0.1595  | False       |             16 |                16 | gemini-embed-001 |
+|      4 | waterloo-lost+waterloo-won      | -0.001461  |   0.1307 |     0.1322  | False       |             16 |                16 | gemini-embed-001 |
+|      6 | all                             | -0.0005599 |   0.1633 |     0.1638  | False       |             32 |                32 | gemini-embed-001 |
+|      6 | reactor-stable+reactor-unstable |  0.007711  |   0.1607 |     0.153   | False       |             16 |                16 | gemini-embed-001 |
+|      6 | waterloo-lost+waterloo-won      | -0.008831  |   0.1659 |     0.1747  | False       |             16 |                16 | gemini-embed-001 |
+|      8 | all                             | -0.01222   |   0.1738 |     0.186   | False       |             32 |                32 | gemini-embed-001 |
+|      8 | reactor-stable+reactor-unstable |  0.01243   |   0.161  |     0.1486  | False       |             16 |                16 | gemini-embed-001 |
+|      8 | waterloo-lost+waterloo-won      | -0.03687   |   0.1865 |     0.2234  | False       |             16 |                16 | gemini-embed-001 |
+|     10 | all                             | -0.01591   |   0.1868 |     0.2027  | False       |             32 |                32 | gemini-embed-001 |
+|     10 | reactor-stable+reactor-unstable |  0.008078  |   0.1605 |     0.1524  | False       |             16 |                16 | gemini-embed-001 |
+|     10 | waterloo-lost+waterloo-won      | -0.0399    |   0.2132 |     0.2531  | False       |             16 |                16 | gemini-embed-001 |
+|     12 | all                             | -0.0117    |   0.2019 |     0.2136  | False       |              4 |                 4 | gemini-embed-001 |
+|     12 | reactor-stable+reactor-unstable |  0.008078  |   0.1605 |     0.1524  | False       |              2 |                 2 | gemini-embed-001 |
+|     12 | waterloo-lost+waterloo-won      | -0.03148   |   0.2433 |     0.2748  | False       |              2 |                 2 | gemini-embed-001 |

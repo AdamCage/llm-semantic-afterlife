@@ -8,14 +8,15 @@ Models Beyond the Context Horizon*
 [`research-plan.md`](research-plan.md). При расхождениях английская версия
 считается основной.
 
-**Статус.** `S7` закрыт APPROVED WITH CHANGES 2026-09-06: TMLR-черновик
-из закрытых артефактов S0–S6 лежит в `paper/main.tex`. F4 — ансамблевый
-last-band domain gap, не recovered prompt memory (H2). Occupancy-протокол —
-P1 `raw_completion` у Alibaba. H1 не поддержан; H5 нет. Hosted **$0**.
-FAIL `runs.complete` — исключение письменной стадии (ADR-0018).
-Плановые этапы S0–S7 завершены; S8 нет. `S6` закрыт APPROVED WITH
-CHANGES (`ad1f244`). Потолок проекта **$200** (ADR-0013). Последняя
-правка 2026-09-06.
+**Статус.** `S7` закрыт APPROVED WITH CHANGES 2026-09-06. Идёт TMLR
+correctness pass (ADR-0019) по закрытому record S0–S7: `B` в протоколе,
+семантика горизонта, twin bootstrap, Bernoulli CI, формулировки
+manuscript. Это не Stage 8 и не новый generate. F4 — ансамблевый
+last-band domain gap, не recovered prompt memory (H2). Occupancy —
+P1 `raw_completion` у Alibaba, `B=1024`. H1 не поддержан; H5 нет.
+Hosted **$0**. FAIL `runs.complete` — исключение письменной стадии
+(ADR-0018). Плановые этапы S0–S7 завершены; S8 нет. Потолок проекта
+**$200** (ADR-0013). Последняя правка 2026-09-06.
 
 ---
 

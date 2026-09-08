@@ -1,0 +1,10 @@
+analysis: degeneracy
+params:
+  fixed_point_threshold: 0.0122
+  loop_chunk_fraction: 0.5
+  loop_repetition_threshold: 0.083
+  ngram: 3
+  novelty_threshold: 0.872
+  self_similarity_threshold: 0.98
+  shingle_n: 5
+source_run_id: s5-lock-occupancy-repl-20260907T091450Z-e8452acb

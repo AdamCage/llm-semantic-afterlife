@@ -1,0 +1,18 @@
+{
+  "name": "last_band_distance_matrix_bge_m3",
+  "caption": "Last-band mean cosine-distance matrix among the ten domain seeds in bge-m3. Diagonal cells are D_within (same seed, two stochastic replicates). Off-diagonal cells are mean last-band between-seed distance. Computed in the original embedding space; this is an occupancy map, not a cluster count.",
+  "alt_text": "Last-band mean cosine-distance matrix among the ten domain seeds in bge-m3. Diagonal cells are D_within (same seed, two stochastic replicates). Off-diagonal cells are mean last-band between-seed distance. Computed in the original embedding space; this is an occupancy map, not a cluster count.",
+  "limitations": "A large off-diagonal distance means two locked trajectories sit apart in this representation. It does not recover the seed, name a semantic state, or transfer to another embedding. Twin pairs are excluded so they cannot shrink D_between.",
+  "run_ids": [
+    "s5-lock-occupancy-repl-20260907T091450Z-e8452acb",
+    "s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831",
+    "s6-embed-third-space-20260907T181515Z-bcde0a11"
+  ],
+  "git_sha": "c8e37c5d6c4b6fad2e8718b0f97eb081f0561f02",
+  "config_sha256": null,
+  "units": {
+    "distance": "1 − cosine similarity",
+    "last_band": "turnover band start"
+  },
+  "generated_at": "2026-09-07T18:20:51+00:00"
+}

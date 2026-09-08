@@ -1,0 +1,14 @@
+{
+  "name": "fixed_point_rates_by_temperature",
+  "caption": "Stage 2 model-axis repetition-lock rates split by temperature. Each cell is n=4 except or-gpt-oss-20b, which did not complete the design T. 95% Clopper–Pearson. The pooled n=8 table fixed_point_rates.csv remains; it is not a T=0.3 table.",
+  "alt_text": "Stage 2 model-axis repetition-lock rates split by temperature. Each cell is n=4 except or-gpt-oss-20b, which did not complete the design T. 95% Clopper–Pearson. The pooled n=8 table fixed_point_rates.csv remains; it is not a T=0.3 table.",
+  "limitations": "Pooled 0/8, 7/8, 8/8 mix T=0.3 with T=1.0. Direction (F2) is still gemma versus 120B. Qwen is 3/4 at T=0.3 and 4/4 at T=1.0; the pooled 7/8 interval that includes 0.5 is not a T=0.3 claim. Lock flag is at_fixed_point on geometry_scalars.csv, the same column as the pooled table.",
+  "run_ids": [
+    "s2-model-axis-20260901T015457Z-ab59afc8",
+    "s2-rates-20260901T125506Z-41d2e88e"
+  ],
+  "git_sha": "6e40a15d9decfb45a9c555d9736c8a02261e8347",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-07T08:18:29+00:00"
+}

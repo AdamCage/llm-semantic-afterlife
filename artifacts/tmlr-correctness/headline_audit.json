@@ -1,0 +1,259 @@
+{
+  "git_sha": "727ff2f75e360bab444f198182f23494b34a5768",
+  "snapshot": "state-latest is 2026-09-01T01:35Z and does not contain S5/S6 embedding parquet. F4 CIs and F6 CIs were not re-bootstrapped from raw embeddings in this pass.",
+  "f4_points": [
+    {
+      "embedding": "bge-m3",
+      "published_gap": 0.200895,
+      "published_d_within": 0.288107,
+      "published_d_between": 0.489002,
+      "matrix_gap": 0.19951615555555552,
+      "matrix_d_within": 0.2881068888888889,
+      "matrix_d_between": 0.48762304444444443,
+      "sign_agrees": true,
+      "point_abs_diff": 0.0013788444444444714
+    },
+    {
+      "embedding": "qwen3-embed-8b",
+      "published_gap": 0.390151,
+      "published_d_within": 0.346552,
+      "published_d_between": 0.736703,
+      "matrix_gap": 0.390146411111111,
+      "matrix_d_within": 0.34655214444444443,
+      "matrix_d_between": 0.7366985555555554,
+      "sign_agrees": true,
+      "point_abs_diff": 4.588888889045517e-06
+    },
+    {
+      "embedding": "gemini-embed-001",
+      "published_gap": 0.150016,
+      "published_d_within": 0.200211,
+      "published_d_between": 0.350228,
+      "matrix_gap": 0.14849561111111104,
+      "matrix_d_within": 0.20021141111111113,
+      "matrix_d_between": 0.34870702222222216,
+      "sign_agrees": true,
+      "point_abs_diff": 0.0015203888888889738
+    }
+  ],
+  "bernoulli": [
+    {
+      "table": "stage-2/model-axis",
+      "generator": "or-gemma-4-31b",
+      "k": 0,
+      "n": 8,
+      "csv_ci": [
+        0.0,
+        0.369417
+      ],
+      "clopper_pearson": [
+        0.0,
+        0.36941664755281917
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-2/model-axis",
+      "generator": "or-gpt-oss-120b",
+      "k": 8,
+      "n": 8,
+      "csv_ci": [
+        0.630583,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.6305833524471808,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-2/model-axis",
+      "generator": "or-gpt-oss-20b",
+      "k": 2,
+      "n": 7,
+      "csv_ci": [
+        0.0366926,
+        0.709579
+      ],
+      "clopper_pearson": [
+        0.036692566176085566,
+        0.7095791362626572
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-2/model-axis",
+      "generator": "or-muse-glimmer-30b",
+      "k": 2,
+      "n": 8,
+      "csv_ci": [
+        0.031854,
+        0.650856
+      ],
+      "clopper_pearson": [
+        0.03185402624994424,
+        0.650855794412824
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-2/model-axis",
+      "generator": "or-qwen3-8b",
+      "k": 7,
+      "n": 8,
+      "csv_ci": [
+        0.47349,
+        0.99684
+      ],
+      "clopper_pearson": [
+        0.4734903291247935,
+        0.9968402764687481
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 4096,
+      "temperature": 0.3,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 4096,
+      "temperature": 0.7,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 4096,
+      "temperature": 1.0,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 4096,
+      "temperature": 1.5,
+      "k": 0,
+      "n": 4,
+      "csv_ci": [
+        0.0,
+        0.602365
+      ],
+      "clopper_pearson": [
+        0.0,
+        0.6023646356164746
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 8192,
+      "temperature": 0.3,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 8192,
+      "temperature": 0.7,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 8192,
+      "temperature": 1.0,
+      "k": 4,
+      "n": 4,
+      "csv_ci": [
+        0.397635,
+        1.0
+      ],
+      "clopper_pearson": [
+        0.3976353643835254,
+        1.0
+      ],
+      "csv_matches": true
+    },
+    {
+      "table": "stage-4/grid",
+      "W": 8192,
+      "temperature": 1.5,
+      "k": 2,
+      "n": 4,
+      "csv_ci": [
+        0.067586,
+        0.932414
+      ],
+      "clopper_pearson": [
+        0.06758598648854298,
+        0.932414013511457
+      ],
+      "csv_matches": true
+    }
+  ],
+  "lock": {
+    "k": 19,
+    "n": 20,
+    "k_over_n": "19/20",
+    "seeds_with_a_lock": "10/10",
+    "clopper_pearson": [
+      0.7512672372279723,
+      0.9987349105020502
+    ],
+    "matches_committed": true
+  },
+  "f6": {
+    "status": "bootstrap_invalid_until_embeddings",
+    "reason": "twins.py used set(chosen), dropping resample multiplicities. Point \u0394 values in twin_last_band.csv are still the observed means; published CI columns are not bootstrap intervals."
+  }
+}

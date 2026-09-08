@@ -1,0 +1,4 @@
+2026-09-07 17:50:09,218 INFO     semantic_afterlife.events run s5-degeneracy-20260907T175009Z-f5accf8a (live)
+2026-09-07 17:50:09,220 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-07 17:50:10,639 INFO     semantic_afterlife.reporting table degeneracy_verdicts -> /tmp/occupancy-repl-artifacts/stage-5/degeneracy
+2026-09-07 17:50:10,641 INFO     semantic_afterlife.events completed s5-degeneracy-20260907T175009Z-f5accf8a — spent $0.0000 (project $10.54 of $200.00)

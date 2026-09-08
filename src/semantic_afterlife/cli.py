@@ -1419,10 +1419,10 @@ def analyze_twins(
 ) -> None:
     """Twin-seed Δ = D_twin_matched − D_control, last-band verdict.
 
-    Pairs that differ by one factual proposition are compared at the same
-    stochastic seed. The control is same-seed different-stochastic distance
-    among those members. A last-band CI excluding 0 from above is divergent;
-    otherwise collapsed. Not a metastable-state claim.
+    Twin pairs are short counterfactual narratives. The control is same-seed
+    different-stochastic distance among those members. A last-band CI
+    excluding 0 from above is divergent; otherwise no detected divergence.
+    ``CI ∋ 0`` is not semantic collapse. Not a metastable-state claim.
     """
     settings = get_settings()
     configure_logging(settings.afterlife_log_level)
@@ -1486,7 +1486,7 @@ def analyze_twins(
         verdict = (
             "twins remain divergent at the last band"
             if result.scalars["divergent_at_last_band"]
-            else "twins collapsed to the control at the last band"
+            else "no detected last-band divergence (CI includes 0; not collapse)"
         )
         console().print(
             f"[bold]{verdict}[/bold]  |  last-band Δ "
@@ -1524,10 +1524,12 @@ def analyze_rates(
     run: Annotated[str, typer.Option("--run", "-r", help="degeneracy or generation run_id")],
     group_by: Annotated[str, typer.Option(help="comma-separated grouping columns")] = "generator",
 ) -> None:
-    """Fixed-point rate with a trajectory-level bootstrap CI.
+    """Repetition-lock rate with a Clopper–Pearson CI.
 
     Reads ``at_fixed_point`` from a degeneracy run, or computes degeneracy from
-    a generation run's chunks. The replicate unit is the trajectory.
+    a generation run's chunks. The replicate unit is the trajectory. The public
+    name of the flag is a textual repetition lock, not an exact period-1
+    recurrence.
     """
     settings = get_settings()
     configure_logging(settings.afterlife_log_level)
@@ -1577,10 +1579,10 @@ def analyze_rates(
             group_column=groups[0],
             run_ids=[run, context.run_id],
             caption=(
-                "Fraction of trajectories at a textual fixed point, with a 95% bootstrap "
-                "CI over trajectories. The dashed line is 0.5, the Stage 2 direction "
+                "Fraction of trajectories labelled a textual repetition lock, with a 95% "
+                "Clopper–Pearson CI. The dashed line is 0.5, the Stage 2 direction "
                 "threshold (F2). A cell whose interval includes 0.5 does not decide a "
-                "direction."
+                "direction. Intervals at 0/n and n/n are not point masses."
             ),
             limitations=(
                 "The verdict is the calibrated late-phase shingle Jaccard, not a semantic "

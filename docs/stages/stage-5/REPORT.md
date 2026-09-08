@@ -1,5 +1,7 @@
 # Stage 5 report — distinguishable domain locks; twins not last-band divergent
 
+> **Errata (2026-09-06).** See [`ERRATA.md`](ERRATA.md) (ADR-0019). Occupancy YAML was already $B=1024$; F6 CIs are not valid bootstrap intervals; `collapsed` is withdrawn. `run_id`s are unchanged.
+
 **Status.** Closed 2026-09-06. Overall verdict: **PASS**.
 Scientific review: **APPROVED WITH CHANGES**
 ([`REVIEW.md`](REVIEW.md)). F6 prose matches the interval

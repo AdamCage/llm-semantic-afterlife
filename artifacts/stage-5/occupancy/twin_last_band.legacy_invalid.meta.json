@@ -1,0 +1,17 @@
+{
+  "name": "twin_last_band.legacy_invalid",
+  "caption": "Quarantined F6 CI columns from twin_last_band. Not bootstrap intervals (ADR-0019 set(chosen)). Kept so the withdrawn numbers remain inspectable. Do not cite as CIs.",
+  "alt_text": "Quarantined F6 CI columns from twin_last_band. Not bootstrap intervals (ADR-0019 set(chosen)). Kept so the withdrawn numbers remain inspectable. Do not cite as CIs.",
+  "limitations": "ADR-0020: invalid CI columns used set(chosen) and are not bootstrap intervals; they live in the sibling *.legacy_invalid.csv sidecar. Canonical table keeps point Δ. Do not treat the sidecar as a CI.",
+  "run_ids": [
+    "s5-lock-occupancy-20260905T164327Z-6780902f",
+    "s5-embed-lock-occupancy-20260906T030125Z-eab6e484",
+    "s5-degeneracy-20260906T030145Z-deb4c3bd",
+    "s2-mechanism-20260901T071519Z-dfbb173a",
+    "s2-embed-mechanism-20260901T131051Z-55761049"
+  ],
+  "git_sha": "6e40a15d9decfb45a9c555d9736c8a02261e8347",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-07T08:18:30+00:00"
+}

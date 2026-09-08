@@ -1,0 +1,4 @@
+embedding,scope,n_trajectories,last_band,d_within,d_between,gap,gap_ci_low,gap_ci_high,separated
+bge-m3,domain_10,20,12,0.274321,0.482344,0.208023,0.0907624,0.314455,True
+qwen3-embed-8b,domain_10,20,12,0.334007,0.734281,0.400274,0.220804,0.589638,True
+gemini-embed-001,domain_10,20,12,0.171891,0.324085,0.152193,0.0730588,0.238653,True

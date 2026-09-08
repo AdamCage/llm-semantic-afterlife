@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Compile the English and/or Russian manuscripts to paper/releases/.
-# Usage: bash paper/compile.sh [en|ru|all]
+# Usage: bash paper/compile.sh [en|ru|all|anonymous]
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -48,8 +48,34 @@ case "${KIND}" in
     compile_one main.tex main semantic-afterlife-en.pdf
     compile_one main.ru.tex main.ru semantic-afterlife-ru.pdf
     ;;
+  anonymous)
+    # TMLR-anonymous English PDF. Identified EN/RU releases are unchanged.
+    echo "=== pdflatex anonymous main.tex ==="
+    unset BSTINPUTS || true
+    export BIBINPUTS="${ROOT}:"
+    (
+      cd "${ROOT}"
+      pdflatex -interaction=nonstopmode -halt-on-error \
+        -output-directory="${BUILD}" -jobname="anonymous" \
+        "\def\TMLRANON{1}\input{main.tex}"
+      bibtex "build/anonymous"
+      pdflatex -interaction=nonstopmode -halt-on-error \
+        -output-directory="${BUILD}" -jobname="anonymous" \
+        "\def\TMLRANON{1}\input{main.tex}"
+      pdflatex -interaction=nonstopmode -halt-on-error \
+        -output-directory="${BUILD}" -jobname="anonymous" \
+        "\def\TMLRANON{1}\input{main.tex}"
+    )
+    if [[ ! -s "${BUILD}/anonymous.bbl" ]]; then
+      echo "empty bibliography: ${BUILD}/anonymous.bbl" >&2
+      cat "${BUILD}/anonymous.blg" >&2 || true
+      exit 1
+    fi
+    cp "${BUILD}/anonymous.pdf" "${RELEASES}/semantic-afterlife-anonymous.pdf"
+    echo "wrote ${RELEASES}/semantic-afterlife-anonymous.pdf"
+    ;;
   *)
-    echo "usage: $0 [en|ru|all]" >&2
+    echo "usage: $0 [en|ru|all|anonymous]" >&2
     exit 2
     ;;
 esac

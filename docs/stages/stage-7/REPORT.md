@@ -1,5 +1,7 @@
 # Stage 7 report — manuscript from S0–S6 artifacts
 
+> **Errata (2026-09-06).** See [`ERRATA.md`](ERRATA.md) (ADR-0019). The manuscript was rewritten as a TMLR existence case; closed writing-contract verdicts stand. No `runs/s7`.
+
 **Status.** Closed 2026-09-06. Overall verdict: **PASS** on the
 writing contract (F1–F10). Mechanical `afterlife review --stage s7`
 **FAIL**s `runs.complete` by design (ADR-0018; no generate

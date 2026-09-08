@@ -3,6 +3,23 @@
 Ideas that are good but out of scope for the current stage. Parking an idea here
 is how we keep stages from expanding. Nothing here is a commitment.
 
+## Parked from ADR-0019 (TMLR-readiness; Paper B)
+
+Not this correctness pass. A later factorial study, if opened, asks what
+determines the long-run regime of a self-conditioned LM after eviction:
+
+- **Paper B factorial.** Model family × post-training (base vs instruct) ×
+  `W` × `B` × temperature × EOS policy × hierarchical seeds × more replicas.
+- **Matched Qwen3-8B-Base vs Instruct** at the occupancy operating point.
+- **EOS as absorbing state** / survival hazard; logit-level EOS suppression
+  on local weights.
+- **Native sliding (P2) vs P1** at matched `W, B, τ`.
+- **True one-token-span twin bank** and 10 domains × 5–10 texts/domain.
+- **Orthogonal seed banks** (topic-fixed/style-varies and the reverse).
+- **Wikipedia-scale degeneracy null** and threshold sensitivity.
+- **Exact period-k recurrence** on the generated stream.
+- **F6 equivalence (TOST)** with a pre-registered margin and `n ≫ 2`.
+
 ## Parked from the Stage 6 opening (ADR-0017)
 
 Kitchen-sink S6 sketch, not this opening:
@@ -94,6 +111,13 @@ ADR plus a new config, not a silent widening of S4.
   multi-hour run without tailing logs.
 - **Artifact diff.** `afterlife diff` between two stage artifact sets, for
   reviewing the effect of a methodological change.
+- ~~**Occupancy vector restore / F4 CI recompute from embeddings.**~~
+  Closed as a *replication*, not a restore (ADR-0022): generate
+  `s5-lock-occupancy-repl-20260907T091450Z-e8452acb`, tables under
+  `artifacts/occupancy-replication/` (TMLR copies under
+  `artifacts/tmlr-correctness/occupancy-replication/`). Sign agrees in
+  three spaces; archival `0.201 [0.065, 0.332]` is not replaced.
+  Last-band `n_within=6` is missing data, not imputed.
 - **DOI archiving.** Zenodo deposition of the artifact release at submission.
 
 ## Rejected (kept so we do not re-propose them)

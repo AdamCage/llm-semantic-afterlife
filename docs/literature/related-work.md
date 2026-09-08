@@ -99,6 +99,91 @@ experimental variable. Their recurrence is exact string matching; ours is
 semantic near-recurrence in embedding space, with RQA and MSM machinery. They
 have no analogue of the context horizon.
 
+### `VERIFIED` Heng Wang, Qiu, Zhao, Qian, Yang, Han, Ji, Savarese, Heinecke, Huan Wang, *Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning*, arXiv:2609.03430 (3 Sep 2026)
+
+KV-cache eviction for long chain-of-thought. Random Attention **keeps the
+prompt** and then evicts non-prompt tokens by independent uniform draws
+per attention head, with no importance score. Across four models and six
+reasoning tasks it matches stronger selectors at matched budget; the
+authors argue the prompt is the fragile part of the cache and the
+generated trace is redundant enough to survive random eviction.
+
+**Our delta:** they *pin the prompt* and randomly drop generated reasoning
+tokens under a task. We *evict the seed completely* (`t_h = W`) and watch
+uninstructed continuation of the remaining tail. Their object is serving
+efficiency for reasoning; ours is occupancy after the initial condition
+has physically left `W`. Do not cite this paper as evidence that random
+eviction preserves seed identity in our protocol — they never drop the
+prompt.
+
+### `VERIFIED` Perez, Kovač, Léger, Colas, Molinaro, Derex, Oudeyer, Moulin-Frier, *When LLMs Play the Telephone Game: Cultural Attractors as Conceptual Tools to Evaluate LLMs in Multi-turn Settings*, ICLR 2025 (OpenReview hash `dbdea7859f1d2fc10f2c9e79b8f5ae54`; arXiv:2407.04503)
+
+Transmission chains: each agent receives the *whole* previous text and an
+instruction (`rephrase` / `take inspiration` / `continue`). Tracks toxicity,
+positivity, difficulty, and length. Finds instruction-dependent attractors;
+open-ended instructions attract more strongly than constrained ones.
+
+**Our delta:** they pass the entire previous document under an instructed
+transform. We pass a *finite tail* of uninstructed continuation, then
+*evict the seed* and keep going for many turnovers of `W`. Their attractor
+is a property of a telephone chain; ours is occupancy after prompt eviction
+on a blockwise re-prompt kernel. We do not inherit their “cultural attractor”
+language as a finding about our trajectories.
+
+### `VERIFIED` Mohamed, Geng, Vazirgiannis, Shang, *LLM as a Broken Telephone: Iterative Generation Distorts Information*, ACL 2025 (`2025.acl-long.371`, pp. 7493–7509; arXiv:2502.20258)
+
+Translation chains: distortion accumulates with iteration; temperature
+increases distortion. Adjacent to Geng et al. Markovian generation chains
+(same group, replacement-of-state protocol).
+
+**Our delta:** translation is a meaning-preserving map with a target language.
+Our occupancy panel is free continuation of a sliding tail with no translation
+objective. Temperature in their setting lengthens distortion; our Stage 4
+cell at `T=1.5`, `W=4096` is the existence of a *non-locking* regime on one
+generator, not a mixing-time or distortion law.
+
+## 2a. Surface-form degeneration — closest alternative explanation of the lock
+
+### `VERIFIED` Holtzman, Buys, Du, Forbes, Choi, *The Curious Case of Neural Text Degeneration*, ICLR 2020 (arXiv:1904.09751)
+
+Maximization-based decoding (beam search) yields bland, repetitive loops;
+nucleus (`top-p`) sampling is proposed as a remedy. The phenomenology — a
+model that “gets stuck in repetitive loops” — is the surface of our
+textual repetition lock.
+
+**Our delta:** they study decoding *within a single prompt-conditioned
+generation*. We measure what happens when that generation is *fed back as
+the next prompt* after the original seed has left a finite window, for many
+turnovers, at fixed temperature, with a calibrated lock detector. Nucleus
+sampling is not our intervention; occupancy is not a decoding-strategy
+paper.
+
+### `VERIFIED` Xu, Liu, Yan, Cai, Li, Li, *Learning to Break the Loop: Analyzing and Mitigating Repetitions for Neural Text Generation*, NeurIPS 2022 (arXiv:2206.02369)
+
+Quantifies a **self-reinforcement** of sentence-level repetition: the more
+times a sentence appears in the context, the higher the probability of
+continuing it. Closest mechanistic alternative to our lock: once a high-
+probability sentence is emitted, the finite tail makes copying it even
+more likely.
+
+**Our delta:** they analyse and mitigate the loop inside one generation (DITTO
+training). We *keep forcing continuation past stop* on a hosted instruct
+model, so the lock is the typical low-`T` occupancy of an *externally
+sustained* self-conditioning process, not a claim that greedy decoding
+invented repetition. Xu et al. are the alternative explanation a reviewer
+should reach for; we name them rather than claiming a new degeneration
+mechanism.
+
+### `VERIFIED` Shumailov, Shumaylov, Zhao, Papernot, Anderson, Gal, *AI models collapse when trained on recursively generated data*, Nature 631:755–759 (2024), doi:10.1038/s41586-024-07566-y
+
+Training-time collapse: recursively generated data as the *next training
+set* erases distribution tails. Geng et al. already distinguish this from
+runtime recurrence.
+
+**Our delta, stated as a prohibition:** a textual repetition lock at inference
+is **not** model collapse. We never retrain. Citing Shumailov is only to
+keep those two words from being used interchangeably.
+
 ## 3. Attractors in multi-agent interaction — the closest work by claim
 
 ### `VERIFIED` Ko & Geiping, *Attractor States Emerge in Multi-Turn LLM Conversations*, arXiv:2606.30571
@@ -232,31 +317,32 @@ Sentences that **cannot** appear in the paper:
   mean timescale separation.
 - "We show that temperature controls exploration." — Zekri et al. derive it
   theoretically; Geng et al. observe it; Wang et al. find cycles that survive it.
-- "Attractor" without demonstrated timescale separation. Default to
-  *metastable state*.
+- "Runtime lock is model collapse." — Shumailov et al. is
+  *training-time* recursive training. We never retrain.
 
 ## 7. The one-sentence delta
 
-> We study unbounded free-running autoregressive generation under an **imposed**
-> finite sliding context window, and characterise the semantic dynamics of the
-> regime that begins once the initial condition has been fully evicted from the
-> model's state — measuring memory persistence, diffusion scaling, metastability
-> and time-irreversibility as functions of window size, temperature and model.
+> Finite-tail self-conditioning after explicit prompt eviction, over many
+> turnovers of an imposed `W`, with stochastic replicas, a post-eviction
+> domain-occupancy test, and protocol diagnostics (block fill, stop,
+> degeneracy). Not “we discovered attractors.”
 
-No verified paper occupies this sentence. The three nearest either keep the full
-history in context (Ko & Geiping), replace the state entirely at each step under
-a transformation instruction (Wang et al.; Geng et al.), or work analytically in
-token space without measuring the approach in semantic space (Zekri et al.).
+No verified paper occupies that sentence. Telephone-game papers keep the whole
+previous text and an instruction (Perez et al.; Mohamed et al.). Paraphrase
+and Markovian chains replace the state under a transform (Wang et al.; Geng
+et al.). Multi-agent attractors keep an interlocutor and the growing history
+(Ko & Geiping). Holtzman and Xu describe in-window degeneration; Shumailov
+is training-time collapse. Zekri et al. work analytically in token space.
 
 ## 8. Remaining verification queue
 
-Verification of the scoping citations is complete. Still outstanding, and now the
-priority since the nearest neighbours are known:
+Telephone / degeneration / training-time collapse entries above were verified
+2026-09-06 for the TMLR correctness pass (ADR-0019). Random Attention
+(arXiv:2609.03430) was verified 2026-09-07 (ADR-0020). Still outstanding:
 
 | Item | Action | Owner stage |
 | --- | --- | --- |
-| Systematic search | arXiv/ACL/Semantic Scholar for: free-running generation, self-conditioned generation, sliding-window generation dynamics, unbounded/open-ended generation degeneration | S1 |
-| Self-consuming loops / model collapse | Shumailov et al. and the critiques (Schaeffer et al.) — a *training-time* phenomenon we must distinguish explicitly, as Geng et al. do | S1 |
-| Text degeneration | nucleus sampling and repetition literature (Holtzman et al. and successors) — different question, overlapping phenomenology with our degeneracy diagnostics | S1 |
-| Metastability estimation | PCCA+ and non-reversible MSM literature, for the estimator we actually use in S3 | S3 |
+| Systematic search | arXiv/ACL/Semantic Scholar for: free-running generation, self-conditioned generation, sliding-window generation dynamics, unbounded/open-ended generation degeneration | parked with Paper B |
+| Metastability estimation | PCCA+ and non-reversible MSM literature, for the estimator we actually use in S3 | S3 (closed: `validated=0`) |
 | Semantic-drift measurement | existing definitions of semantic drift in generation, to avoid reinventing a metric under a new name | S2 |
+| “Execution Horizon Laws / 31-model census” | **Not found** under that title (search 2026-09-07: arXiv, web). A lookalike, *The Illusion of Diminishing Returns: Measuring Long Horizon Execution in LLMs* (arXiv:2509.09677), is a multi-turn *task-execution* benchmark with the prompt retained. It is **not** a substitute; do not cite it as this project's neighbour without a written delta, and do not cite it at all until VERIFIED for a reason other than the missing title. | ADR-0020 |

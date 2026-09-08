@@ -436,14 +436,14 @@ def twins_figure(
             "Twin-seed contrast Δ = D_twin_matched − D_control per turnover band, "
             "for the pooled twins and for each family, per embedding space, "
             "with a 95% trajectory-bootstrap CI. Divergent iff the last-band CI "
-            "excludes 0 from above; otherwise collapsed. Not a metastable-state "
-            "label."
+            "excludes 0 from above; otherwise no detected divergence. Not a "
+            "metastable-state label and not semantic collapse."
         ),
         run_ids=run_ids,
         git_sha=git_sha,
         limitations=(
             "n=2 last-band pairs per family. A last-band CI that includes 0 is "
-            "the operational collapsed verdict, not occupancy of one lock and "
+            "no detected divergence, not occupancy of one lock and "
             "not a vanished contrast. Waterloo bge-m3 point Δ stayed ~0.05 from "
             "band 0 (then divergent) to band 12 (CI grew to include 0 and a "
             "domain-sized gap). Reactor never excluded 0, including at band 0. "
@@ -778,9 +778,10 @@ def main() -> None:
             run_ids=run_ids,
             git_sha=git_sha,
             limitations=(
-                "Divergent iff last-band CI excludes 0 from above; else collapsed. "
-                "That rule is an NHST default, not an equivalence test. Waterloo "
-                "point Δ did not go to 0; reactor never excluded 0."
+                "Divergent iff last-band CI excludes 0 from above; else no "
+                "detected divergence. That rule is an NHST default, not an "
+                "equivalence test. Waterloo point Δ did not go to 0; reactor "
+                "never excluded 0."
             ),
         ),
     )
@@ -797,7 +798,7 @@ def main() -> None:
             git_sha=git_sha,
             limitations=(
                 "n=2 last-band pairs per family. A last-band CI that includes 0 "
-                "is the operational collapsed verdict, not occupancy of one lock. "
+                "is no detected divergence, not occupancy of one lock. "
                 "Waterloo bge-m3 point Δ stayed ~0.05 from band 0 (then divergent) "
                 "to band 12 (CI grew to include 0 and a domain-sized gap). Reactor "
                 "never excluded 0, including at band 0. Extra replicates would be "

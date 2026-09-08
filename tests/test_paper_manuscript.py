@@ -1,7 +1,9 @@
-"""Lexical and path checks for the Stage 7 manuscript.
+"""Lexical and path checks for the TMLR manuscript (ADR-0019).
 
 The paper is assembled from closed-stage artifacts. These tests catch
 claim overruns and broken includes that a TeX compile would not.
+English ``main.tex`` is canonical; ``main.ru.tex`` is a translation and
+must carry the same quantitative claims, cite keys, and figure paths.
 """
 
 from __future__ import annotations
@@ -17,6 +19,22 @@ RELATED = ROOT / "docs" / "literature" / "related-work.md"
 NOTES = ROOT / "paper" / "notes"
 ARTIFACTS = ROOT / "artifacts"
 
+REQUIRED_CITE_KEYS = (
+    "zekri2024",
+    "wang2025",
+    "geng2026",
+    "ko2026",
+    "chen2026horizon",
+    "wang2026random",
+    "wu2020vampnets",
+    "paul2019core",
+    "perez2025",
+    "mohamed2025",
+    "xu2022",
+    "holtzman2020",
+    "shumailov2024",
+)
+
 
 def _tex() -> str:
     return PAPER.read_text(encoding="utf-8")
@@ -28,6 +46,13 @@ def _tex_ru() -> str:
 
 def _papers() -> list[tuple[str, str]]:
     return [("en", _tex()), ("ru", _tex_ru())]
+
+
+def _cite_keys(tex: str) -> set[str]:
+    used: set[str] = set()
+    for group in re.findall(r"\\cite[tp]?\{([^}]+)\}", tex):
+        used.update(k.strip() for k in group.split(","))
+    return used
 
 
 def test_manuscript_exists() -> None:
@@ -53,11 +78,23 @@ def test_related_work_has_no_lead_backticks() -> None:
     assert "`LEAD`" not in text
 
 
-def test_gemini_whisker_and_not_thick_robustness() -> None:
+def test_occupancy_block_is_1024() -> None:
+    for name, text in _papers():
+        assert re.search(r"B\{=\}1024", text), name
+        assert not re.search(r"B\{=\}512", text), name
+        protocol = text.split(r"\label{sec:p1}")[1].split(r"\label{sec:cost}")[0]
+        assert "1024" in protocol, name
+        assert "0.25" in protocol or r"B/W" in protocol, name
+
+
+def test_gemini_lower_bound_named_not_architecture_independence() -> None:
     for name, text in _papers():
         assert "0.029" in text, name
-        assert "whisker" in text.lower(), name
-        assert re.search(r"not\s+thick robustness|не\s+толстая robustness", text, re.I), name
+        for match in re.finditer(r".{0,80}architecture-independen[ct]e.{0,80}", text, re.I):
+            window = match.group(0).lower()
+            assert any(tok in window for tok in ("not", "cannot", "no ", "не ")), (
+                f"{name}: {window}"
+            )
 
 
 def test_h1_not_claimed_established() -> None:
@@ -87,44 +124,50 @@ def test_architecture_independence_only_negated() -> None:
             )
 
 
-def test_collapsed_is_not_one_lock() -> None:
+def test_no_detected_divergence_is_not_one_lock() -> None:
     for name, text in _papers():
         lowered = text.lower()
-        assert "operational" in lowered, name
         assert "not occupancy of one" in lowered or "не occupancy одного" in lowered, name
+        assert "no detected divergence" in lowered or "underpowered" in lowered, name
         assert not re.search(r"collapsed(?: twins)? occupy one lock", text, re.I), name
 
 
-def test_no_unverified_citations() -> None:
-    text = _tex() + _tex_ru() + BIB.read_text(encoding="utf-8")
-    for banned in ("Holtzman", "Shumailov", "nucleus sampling"):
-        assert banned not in text, banned
+def test_no_point_mass_bernoulli_ci() -> None:
+    for name, text in _papers():
+        assert not re.search(r"\[0,\s*0\]", text), name
+        assert not re.search(r"\[1,\s*1\]", text), name
+        assert "0.602" in text, name
+        assert "0.398" in text, name
+        assert "0.369" in text, name
+        assert "0.631" in text or "0.630" in text, name
+
+
+def test_stage2_table_is_per_temperature_n4() -> None:
+    for name, text in _papers():
+        lock = text.split(r"\label{sec:lock}")[1].split(r"\label{sec:occupancy}")[0]
+        assert "3/4" in lock, name
+        assert r"n{=}4" in lock, name
+        assert "fixed_point_rates_by_temperature" in lock, name
+        assert not re.search(r"T\{=\}0\.3.{0,120}0/8", lock), name
+        assert "Fisher exact" not in lock, name
+        assert "Точный Fisher" not in lock, name
 
 
 def test_cite_keys_resolve() -> None:
     bib = BIB.read_text(encoding="utf-8")
     defined = set(re.findall(r"@\w+\{([^,]+),", bib))
     for name, tex in _papers():
-        keys = set(re.findall(r"\\cite[tp]?\{([^}]+)\}", tex))
-        used: set[str] = set()
-        for group in keys:
-            used.update(k.strip() for k in group.split(","))
+        used = _cite_keys(tex)
         missing = used - defined
         assert not missing, f"{name}: {missing}"
-    for required in (
-        "zekri2024",
-        "wang2025",
-        "geng2026",
-        "ko2026",
-        "chen2026horizon",
-        "wu2020vampnets",
-        "paul2019core",
-    ):
-        assert required in defined, required
+        for required in REQUIRED_CITE_KEYS:
+            assert required in defined, required
+            assert required in used, f"{name}: missing cite {required}"
 
 
 def test_bib_authors_match_verified_records() -> None:
     bib = BIB.read_text(encoding="utf-8")
+    related = RELATED.read_text(encoding="utf-8")
     assert "Zekri, Oussama" in bib
     assert "Odonnat, Ambroise" in bib
     assert "Wang, Zhilin" in bib
@@ -133,6 +176,30 @@ def test_bib_authors_match_verified_records() -> None:
     assert "Chen, Mingguang" in bib
     assert "Wu, Hao" in bib
     assert "Paul, Fabian" in bib
+    assert "Perez, J" in bib
+    assert "Holtzman, Ari" in bib
+    assert "Shumailov, Ilia" in bib
+    assert "Mohamed, Amr" in bib
+    assert "Qiu, Jielin" in bib
+    assert "Wang, Heng" in bib
+    assert "VERIFIED" in related
+    for key in ("Holtzman", "Shumailov", "Perez", "Mohamed", "Xu"):
+        assert key in related
+
+
+def test_verified_citations_are_logged() -> None:
+    related = RELATED.read_text(encoding="utf-8")
+    for marker in (
+        "When LLMs Play the Telephone Game",
+        "LLM as a Broken Telephone",
+        "Learning to Break the Loop",
+        "The Curious Case of Neural Text Degeneration",
+        "AI models collapse when trained on recursively generated data",
+        "Random Attention",
+    ):
+        assert marker in related
+        idx = related.index(marker)
+        assert "VERIFIED" in related[max(0, idx - 400) : idx]
 
 
 def test_includegraphics_paths_exist_under_artifacts() -> None:
@@ -210,22 +277,30 @@ def test_release_pdfs_exist() -> None:
 
 
 def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
-    """S7 review blocker 1: F4 is ensemble gap, not recovered identity."""
+    """F4 is ensemble gap, not recovered identity."""
     for name, text in _papers():
         abstract = text.split(r"\begin{abstract}")[1].split(r"\end{abstract}")[0]
         lowered = abstract.lower()
         assert "seed-domain identity" not in lowered, name
         assert "carries seed-domain" not in lowered, name
-        assert re.search(r"domain gap|distinguishability", abstract, re.I), name
+        assert re.search(r"domain gap|distinguishability|between-seed", abstract, re.I), name
         assert re.search(r"not recovered prompt memory", abstract, re.I), name
         assert "H2" in abstract, name
-        before_whisker = re.split(r"whisker|волосок", abstract, flags=re.I)[0].lower()
-        assert "three embedding spaces" not in before_whisker, name
-        assert "трёх пространствах" not in before_whisker, name
+        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
+        assert "ten fixed seed" in occupancy.lower() or "десяти фиксированных" in occupancy, name
+        assert "ADR-0020" in occupancy, name
+        assert "ADR-0021" in occupancy, name
+        assert "0.0001" in occupancy, name
+        assert "pending" not in occupancy.lower(), name
+        assert "ADR-0022" in occupancy, name
+        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
+        assert "ADR-0021" in limitations, name
+        assert "ADR-0022" in limitations, name
+        assert "not recoverable" in limitations.lower() or "невосстановимы" in limitations, name
 
 
 def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
-    """S7 review blocker 2: P1 is not the continuation mechanism."""
+    """P1 is not the continuation mechanism."""
     for name, text in _papers():
         protocol = text.split(r"\label{sec:p1}")[1].split(r"\label{sec:cost}")[0]
         assert re.search(r"raw\\_completion", protocol), name
@@ -241,3 +316,58 @@ def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
         assert re.search(r"raw\\_completion", limitations), name
         assert "Alibaba" in limitations, name
         assert "not synonyms" in limitations.lower() or "не синонимы" in limitations.lower(), name
+
+
+def test_compile_script_supports_anonymous() -> None:
+    script = (ROOT / "paper" / "compile.sh").read_text(encoding="utf-8")
+    assert "anonymous" in script
+    for name, text in _papers():
+        assert r"\ifdefined\TMLRANON" in text, name
+
+
+def test_russian_preamble_has_cyrillic_fonts() -> None:
+    text = _tex_ru()
+    assert "T2A" in text
+    assert "babel" in text
+    assert "russian" in text
+    assert "lmodern" not in text
+
+
+def _table_block(tex: str, label: str) -> str:
+    marker = "\\label{" + label + "}"
+    idx = tex.index(marker)
+    start = tex.rfind(r"\begin{table}", 0, idx)
+    end = tex.index(r"\end{table}", idx)
+    return tex[start:end]
+
+
+def test_f4_replication_beside_archival() -> None:
+    """ADR-0022: report replication next to archival CIs; do not replace them."""
+    for name, text in _papers():
+        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
+        assert "ADR-0022" in occupancy, name
+        assert "0.208" in occupancy, name
+        assert "0.400" in occupancy, name
+        assert "0.152" in occupancy, name
+        lowered = occupancy.lower()
+        assert "not a restore" in lowered or "не restore" in occupancy, name
+        archival = _table_block(text, "tab:s6-f4")
+        assert "0.201" in archival, name
+        assert "[0.065, 0.332]" in archival, name
+        assert "0.208" not in archival, name
+        assert "0.400" not in archival, name
+        assert "0.152" not in archival, name
+        repl = _table_block(text, "tab:f4-repl")
+        assert "0.201" in repl, name
+        assert "0.208" in repl, name
+        assert "0.400" in repl, name
+        assert "0.152" in repl, name
+        assert r"n_{\mathrm{within}}{=}6" in occupancy, name
+        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
+        assert "ADR-0022" in limitations, name
+        assert "0.201" in limitations, name
+        repro = text.split(r"\label{sec:repro}")[1]
+        assert "1.518" in repro, name
+        notes = (NOTES / "claims.md").read_text(encoding="utf-8")
+        assert "0.208" in notes
+        assert "not a restore" in notes.lower()

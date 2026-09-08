@@ -1,22 +1,27 @@
-"""Rates over trajectories, with bootstrap CIs over the replicate unit.
+"""Rates over trajectories, with uncertainty over the replicate unit.
 
-Stage 2's headline quantities are Bernoulli rates — fixed-point incidence per
-generator, reviewer-register incidence per mechanism — not continuous means.
-The replicate unit is still the trajectory: resampling chunks would shrink every
-interval because successive steps are autocorrelated by construction.
+Stage 2's headline quantities are Bernoulli rates — repetition-lock
+incidence per generator, reviewer-register incidence per mechanism — not
+continuous means. The replicate unit is still the trajectory.
 
-A rate whose interval includes 0.5 does not decide a direction. That is the
-point of carrying a CI on eight trajectories rather than a point estimate.
+A percentile bootstrap of 0/1 flags yields ``[0, 0]`` at ``0/n`` and
+``[1, 1]`` at ``n/n``. Those intervals are not a statement about a population
+probability (ADR-0019). Rates therefore use Clopper–Pearson exact
+intervals. Two-sample contrasts report a Newcombe difference CI and a
+Fisher exact *p*-value.
+
+A rate whose interval includes 0.5 does not decide a direction.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 import pandas as pd
-
-from .geometry import bootstrap_mean_ci
+from scipy.stats import binomtest, fisher_exact
+from statsmodels.stats.proportion import confint_proportions_2indep
 
 TRAJECTORY_ID_PARTS = ("generator", "W", "temperature", "semantic_seed", "stochastic_seed")
 
@@ -39,14 +44,46 @@ def parse_trajectory_id(trajectory_id: str) -> dict[str, object]:
     }
 
 
-def rate_ci(flags: np.ndarray, *, seed: int = 0, n_boot: int = 2000) -> dict[str, float]:
-    """Bootstrap CI for a Bernoulli rate. ``flags`` is one 0/1 per trajectory."""
+def clopper_pearson_ci(k: int, n: int, *, alpha: float = 0.05) -> tuple[float, float]:
+    """Exact binomial interval for a Bernoulli rate. ``k`` successes in ``n`` trials."""
+    if n <= 0:
+        return (float("nan"), float("nan"))
+    if k < 0 or k > n:
+        raise ValueError(f"need 0 ≤ k ≤ n, got k={k}, n={n}")
+    interval = binomtest(k, n).proportion_ci(confidence_level=1.0 - alpha, method="exact")
+    return (float(interval.low), float(interval.high))
+
+
+def rate_ci(flags: np.ndarray, *, seed: int = 0, n_boot: int = 2000) -> dict[str, Any]:
+    """Clopper–Pearson CI for a Bernoulli rate. ``flags`` is one 0/1 per trajectory.
+
+    ``seed`` and ``n_boot`` are accepted for call-site compatibility and ignored:
+    the interval is exact, not a resample.
+    """
+    del seed, n_boot
     x = np.asarray(flags, dtype=np.float64)
     x = x[np.isfinite(x)]
-    result = bootstrap_mean_ci(x, n_boot=n_boot, seed=seed)
-    result["n_positive"] = int(np.round(x.sum())) if x.size else 0
-    result["rate"] = result.pop("mean")
-    return result
+    n = int(x.size)
+    if n == 0:
+        return {
+            "rate": float("nan"),
+            "ci_low": float("nan"),
+            "ci_high": float("nan"),
+            "n": 0,
+            "n_positive": 0,
+            "method": "clopper_pearson",
+        }
+    k = int(np.round(x.sum()))
+    k = min(max(k, 0), n)
+    low, high = clopper_pearson_ci(k, n)
+    return {
+        "rate": k / n,
+        "ci_low": low,
+        "ci_high": high,
+        "n": n,
+        "n_positive": k,
+        "method": "clopper_pearson",
+    }
 
 
 def rate_difference_ci(
@@ -55,37 +92,49 @@ def rate_difference_ci(
     *,
     seed: int = 0,
     n_boot: int = 2000,
-) -> dict[str, float]:
-    """Unpaired bootstrap CI for ``rate(a) - rate(b)``.
+) -> dict[str, Any]:
+    """Unpaired Newcombe CI for ``rate(a) - rate(b)``, plus Fisher exact *p*.
 
     The two arms are different generators or mechanisms, so the trajectories
-    are not paired. Independent resampling is the honest interval; a paired
-    bootstrap would invent a pairing the experiment does not have.
+    are not paired. A percentile bootstrap of the two means is the wrong
+    interval at ``0/n`` and ``n/n`` (ADR-0019). ``seed`` and ``n_boot`` are
+    ignored.
     """
+    del seed, n_boot
     a = np.asarray(flags_a, dtype=np.float64)
     b = np.asarray(flags_b, dtype=np.float64)
     a = a[np.isfinite(a)]
     b = b[np.isfinite(b)]
-    if a.size == 0 or b.size == 0:
+    n_a, n_b = int(a.size), int(b.size)
+    if n_a == 0 or n_b == 0:
         return {
             "diff": float("nan"),
             "ci_low": float("nan"),
             "ci_high": float("nan"),
-            "n_a": int(a.size),
-            "n_b": int(b.size),
+            "n_a": n_a,
+            "n_b": n_b,
+            "fisher_p": float("nan"),
+            "method": "newcomb",
         }
-    rng = np.random.default_rng(seed)
-    draws_a = rng.integers(0, a.size, size=(n_boot, a.size))
-    draws_b = rng.integers(0, b.size, size=(n_boot, b.size))
-    diffs = a[draws_a].mean(axis=1) - b[draws_b].mean(axis=1)
+    k_a = int(np.round(a.sum()))
+    k_b = int(np.round(b.sum()))
+    k_a, k_b = min(max(k_a, 0), n_a), min(max(k_b, 0), n_b)
+    low, high = confint_proportions_2indep(
+        k_a, n_a, k_b, n_b, method="newcomb", compare="diff", alpha=0.05
+    )
+    table = np.array([[k_a, n_a - k_a], [k_b, n_b - k_b]], dtype=np.int64)
+    fisher = fisher_exact(table, alternative="two-sided")
+    fisher_p = float(fisher.pvalue)
     return {
-        "diff": float(a.mean() - b.mean()),
-        "ci_low": float(np.quantile(diffs, 0.025)),
-        "ci_high": float(np.quantile(diffs, 0.975)),
-        "n_a": int(a.size),
-        "n_b": int(b.size),
-        "rate_a": float(a.mean()),
-        "rate_b": float(b.mean()),
+        "diff": float(k_a / n_a - k_b / n_b),
+        "ci_low": float(low),
+        "ci_high": float(high),
+        "n_a": n_a,
+        "n_b": n_b,
+        "rate_a": float(k_a / n_a),
+        "rate_b": float(k_b / n_b),
+        "fisher_p": fisher_p,
+        "method": "newcomb",
     }
 
 

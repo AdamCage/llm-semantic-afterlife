@@ -1,0 +1,55 @@
+# ===========================================================================
+# Occupancy replication — full 28-trajectory lock panel (ADR-0022)
+# ---------------------------------------------------------------------------
+# Not a restore of s5-lock-occupancy-20260905T164327Z-6780902f.
+# S2.2 physics/surreal reuse is gone, so those four cells are generated here.
+# Protocol matches S5.1: W=4096, T=0.3, B=S=chunk=1024, 12 turnovers, P1.
+# Human spend cap $10. YAML refuse $8 is not a spend target.
+# ===========================================================================
+
+include:
+  - configs/models/generators_openrouter.yaml
+  - configs/embeddings/embeddings.yaml
+
+stage: s5
+name: lock-occupancy-repl
+description: >-
+  Replication of the S5 lock occupancy grid including physics/surreal
+  (28 trajectories). New run_ids. Do not overwrite Stage 5/6 headline CSVs.
+
+generators:
+  - or-qwen3-8b
+
+embeddings: [bge-m3, qwen3-embed-8b]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152 # 12 turnovers
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds:
+  - physics
+  - surreal
+  - finance
+  - biology
+  - war
+  - love
+  - recipe
+  - programming
+  - philosophy
+  - noise
+  - waterloo-won
+  - waterloo-lost
+  - reactor-stable
+  - reactor-unstable
+
+stochastic_seeds: [1, 2]
+
+max_concurrent: 2
+budget_usd: 8.0

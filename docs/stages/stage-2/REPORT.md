@@ -1,5 +1,7 @@
 # Stage 2 — Report
 
+> **Errata (2026-09-06).** See [`ERRATA.md`](ERRATA.md) (ADR-0019). Closed verdicts stand; published Bernoulli CIs were revised from percentile bootstrap to Clopper–Pearson. `run_id`s are unchanged.
+
 **Verdict: PARTIAL.** The stage's own question is answered, and the answer
 splits. Convergence past the horizon is **not** a property of language models
 as a class. It is common on qwen3-8b (both continuation mechanisms) and on

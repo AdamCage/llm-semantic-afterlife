@@ -38,6 +38,8 @@ class WindowState:
     past_horizon: bool
     roundtrip_ok: bool
     turnovers: float
+    eviction_start_tokens: int
+    full_eviction_tokens: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,9 +84,29 @@ class SlidingWindow:
     # -- derived quantities --------------------------------------------------
 
     @property
-    def horizon_tokens(self) -> int:
-        """``t_h = W − L_0``: generated tokens after which no seed token remains."""
+    def eviction_start_tokens(self) -> int:
+        """Generated tokens at which the window first fills to ``W``.
+
+        Equal to ``max(0, W − L_0)``. The next generated token is the first
+        that can drop a seed token. This is *not* full eviction. Historical
+        generate manifests stored this quantity under the name
+        ``horizon_tokens`` (ADR-0019).
+        """
         return max(0, self.W - self.seed_tokens)
+
+    @property
+    def full_eviction_tokens(self) -> int:
+        """Generated tokens after which no seed token remains in the window.
+
+        ``Tail_W(seed_{L_0} ⊕ generated_g)`` still contains seed tokens for
+        every ``g < W`` when ``L_0 > 0``. Empty seeds are already evicted.
+        """
+        return self.W if self.seed_tokens > 0 else 0
+
+    @property
+    def horizon_tokens(self) -> int:
+        """Full-eviction horizon ``t_h``: alias of ``full_eviction_tokens``."""
+        return self.full_eviction_tokens
 
     @property
     def seed_tokens_in_window(self) -> int:
@@ -133,14 +155,11 @@ class SlidingWindow:
             kept = ids[-self.W :]
             self._buffer = self.tokenizer.decode(kept)
             self._buffer_tokens = len(kept)
-            # decode/encode must be stable, otherwise the boundary drifts.
-            self._last_roundtrip_ok = (
-                len(self.tokenizer.encode(self._buffer)) == self._buffer_tokens
-            )
+            self._last_roundtrip_ok = self._tail_roundtrip_ok(kept, self._buffer)
         else:
             self._buffer = combined
             self._buffer_tokens = len(ids)
-            self._last_roundtrip_ok = True
+            self._last_roundtrip_ok = self._tail_roundtrip_ok(ids, self._buffer)
 
         if self._buffer_tokens > self.W:
             raise WindowProtocolError(
@@ -158,7 +177,21 @@ class SlidingWindow:
             past_horizon=self.past_horizon,
             roundtrip_ok=self._last_roundtrip_ok,
             turnovers=self.turnovers(),
+            eviction_start_tokens=self.eviction_start_tokens,
+            full_eviction_tokens=self.full_eviction_tokens,
         )
+
+    def _tail_roundtrip_ok(self, expected_ids: list[int], text: str) -> bool:
+        """``decode(encode(x)) == x`` and token-id equality after ``Tail_W``.
+
+        Historical JSONL logged a weaker length check
+        ``len(encode(decode(ids[-W:]))) == W``. New steps use identity plus
+        ``encode(decode(ids[-W:])) == ids[-W:]``. Do not rewrite old events.
+        """
+        reencoded = self.tokenizer.encode(text)
+        if reencoded != expected_ids:
+            return False
+        return self.tokenizer.decode(reencoded) == text
 
 
 class TokenChunker:

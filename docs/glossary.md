@@ -26,17 +26,18 @@ it is long-term memory emerging from long-context generation alone.
 | block | `B` | tokens *requested* per API call. |
 | stride | `S` | tokens by which the window actually advances per step. `S = B` is the request; the realised value lies in `[0, B]` because models emit stop tokens early, and its distribution is measured and reported (methodology §0.1). |
 | block fill | — | realised completion tokens divided by `B`. Model- and context-dependent; measured, never assumed. |
-| step | `t` (index `k`) | one API call: prompt `Tail_W`, receive ≤ `B` tokens. |
+| step | `t` (index `k`) | one API call: prompt `Tail_W`, receive ≤ `B` tokens. The process is blockwise, not token-by-token sliding. |
 | trajectory length | `T` | total generated tokens in one trajectory, excluding the seed. |
 | turnover | `R = T/W` | how many times the entire memory has been replaced. The honest measure of observation length. |
-| context horizon | `t_h` | generated-token count after which no seed token remains in the window; `t_h = W − L_0`. |
+| eviction start | `t_start` | generated-token count at which the window first fills: `max(0, W − L_0)`. The next token can drop seed. |
+| context horizon | `t_h` | generated-token count after which no seed token remains in the window. For `L_0 > 0`, `t_h = W`. Not `W − L_0`. |
 | seed | — | the initial text. **Semantic seed** = its content/topic; **stochastic seed** = the integer passed to the sampler. Never abbreviate to "seed" alone in writing. |
 | chunk | — | analysis unit: exactly `chunk_size` (default 1024) generator tokens, **non-overlapping**. |
 | protocol P1 | — | re-prompt: send `Tail_W` as a fresh prompt each step. Primary. |
 | protocol P2 | — | true sliding attention with KV eviction. Local control only. |
 | continuation mechanism | — | `raw_completion` / `assistant_prefill` / `chat_instructed`. |
 | forcing condition | — | `unforced` (no system prompt) vs. `fixed` (a recorded system prompt present at every step). |
-| burn-in | — | discarded pre-horizon segment. Default `t < W`; sensitivity at `t < 3W`. |
+| burn-in | — | discarded pre-horizon segment. Default `t < W` (full eviction); sensitivity at `t < 3W`. |
 
 ## Representation
 
@@ -61,8 +62,10 @@ it is long-term memory emerging from long-context generation alone.
 | probability current | `J_ij` | `π_i T_ij − π_j T_ji`. Non-zero ⇒ genuine non-equilibrium circulation. |
 | semantic half-life | `T_½` | generated tokens after which half the measurable seed information is gone (see `methodology.md` §3.4). Reported in tokens and in units of `W`. |
 | basin of attraction | — | set of semantic seeds whose trajectories end in a given macrostate; occupancy reported as a fraction with CI. |
-| metastable | — | long-lived but not permanent. **Default word.** "Attractor" is reserved for demonstrated timescale separation; "fixed point" for demonstrated convergence. |
+| textual repetition lock | — | calibrated n-gram / late shingle / embedding-similarity verdict for a near-recurrent textual regime. Combines a short cycle with a period-1 freeze; not an exact `X_{t+1}=X_t` test. |
+| metastable | — | long-lived but not permanent. **Default word.** "Attractor" is reserved for demonstrated timescale separation; "fixed point" only for demonstrated exact recurrence. |
 | degeneracy | — | collapse into repetition loops or entropy collapse. A measured dynamical state, never a filtering criterion. |
+| no detected divergence | — | twin last-band Δ CI includes 0. Not semantic collapse, not Δ ≈ 0, not occupancy of one lock. |
 
 ## Infrastructure
 
@@ -87,3 +90,6 @@ it is long-term memory emerging from long-context generation alone.
 - **"Converges"** — only with a stated criterion and a CI.
 - **"Semantic state"** — reserved for validated MSM macrostates.
 - **"Deterministic"** — never asserted of an LLM API; we report a measured rate.
+- **"Fixed point"** — only for demonstrated exact recurrence. The degeneracy
+  detector reports a *textual repetition lock* (fixed point or short cycle).
+- **"Collapsed"** — not a label for `CI ∋ 0`. That is *no detected divergence*.

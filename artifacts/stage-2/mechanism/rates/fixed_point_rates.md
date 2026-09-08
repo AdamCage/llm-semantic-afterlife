@@ -1,6 +1,6 @@
-**fixed_point_rates** — Fraction of trajectories at a textual fixed point, with a 95% bootstrap CI over trajectories. The dashed line is 0.5, the Stage 2 direction threshold (F2). A cell whose interval includes 0.5 does not decide a direction.
+**fixed_point_rates** — Repetition-lock rate on the Stage 2 mechanism arm, 95% Clopper–Pearson CI. raw_completion versus assistant_prefill on or-qwen3-8b.
 
-| generator           |   ci_low |   ci_high |   n |   n_positive |   rate |
-|:--------------------|---------:|----------:|----:|-------------:|-------:|
-| or-qwen3-8b         |    1     |         1 |   8 |            8 |  1     |
-| or-qwen3-8b-prefill |    0.625 |         1 |   8 |            7 |  0.875 |
+| generator           |   ci_low |   ci_high |   n |   n_positive |   rate | method          |
+|:--------------------|---------:|----------:|----:|-------------:|-------:|:----------------|
+| or-qwen3-8b         |   0.6306 |    1      |   8 |            8 |  1     | clopper_pearson |
+| or-qwen3-8b-prefill |   0.4735 |    0.9968 |   8 |            7 |  0.875 | clopper_pearson |

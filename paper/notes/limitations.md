@@ -18,21 +18,27 @@ specific items from S5–S6 review.
    because RouterAI usage/yaml price were empty.
 4. **Finite trajectories.** Occupancy is 12 turnovers at `W=4096`.
    Asymptotic claims are out of scope.
-5. **Metastability vs fixed points.** S3 found no validated MSM
-   macrostate. A lock (surface-form degeneracy) is not a semantic
-   basin. Prefer “lock” and “last-band occupancy contrast.”
+5. **Metastability vs lock.** S3 found no validated MSM
+   macrostate. A textual repetition lock is not a semantic basin.
 6. **One generator, one protocol, one lock operating point.**
-   `or-qwen3-8b`, P1 `raw_completion`, T=0.3, `W=4096` for S5–S6.
-   S2 already showed other generators disagree.
-7. **n=2 per seed.** Twin last-band CIs are two pairs per family.
-   Including 0 is not an equivalence test.
-8. **F4 whisker and physics s1.** Gemini last-band gap 0.150
+   `or-qwen3-8b`, P1 `raw_completion`, Alibaba, T=0.3, `W=4096`,
+   `B=1024` for S5–S6. S2 already showed other generators disagree.
+7. **n=2 per seed.** F6 is underpowered. Twins are not one-fact
+   pairs. Published twin CIs are not bootstrap intervals (ADR-0019).
+8. **F4 lower bound and physics s1.** Gemini last-band gap 0.150
    [0.029, 0.266] on n=20, `n_within_pairs=9`. Reused S2.2 physics
    s1 has 47 chunks vs 48; last-band `D_within` diagonal is NaN.
-9. **F6 collapsed ≠ one lock.** Gemini waterloo sign-flips from
-   0.033 at band 0 to −0.031 at band 12. Do not narrate the S5
-   `bge-m3` point-Δ≈0.05 story as gemini’s.
+9. **F6 no detected divergence ≠ one lock.** Point Δ only; CIs
+   withheld. Do not narrate the S5 `bge-m3` point-Δ≈0.05 story as
+   gemini’s.
 10. **Degeneracy is the sample.** Thresholds 0.083 / Jaccard
-    0.0122 were calibrated earlier and not moved. love s1 is kept.
-11. **No hosted base model.** S0/ADR-0006. S3.0 local gemma-3-1b-pt
-    at `W=256` does not transfer to `W=4096`.
+    0.0122 from Carroll+Darwin. love s1 is kept.
+11. **No hosted base model.** S0/ADR-0006. Instruction-tuning
+    and register/persona remain alternative accounts of F4.
+12. **Forced continuation.** Externally sustained self-conditioning
+    after repeated termination attempts. EOS-as-absorbing is Paper B.
+13. **Occupancy replication (ADR-0022).** A new 28-trajectory generate
+    is not a restore of the named S5/S6 run directories. Last-band
+    `n_within_pairs=6` (four domain trajectories have 47 chunks). Sign
+    agrees with archival `0.201 [0.065, 0.332]`; do not replace that
+    interval. Band 10 (80/1440) is not the pre-registered F4 number.

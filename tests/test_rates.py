@@ -1,8 +1,8 @@
 """Rate estimators recover known Bernoulli answers.
 
-Stage 2 reports fixed-point and register rates with bootstrap CIs over
-trajectories. An interval that cannot cover a known rate on synthetic flags
-cannot be trusted on eight real ones.
+Stage 2 reports repetition-lock rates with Clopper–Pearson CIs over
+trajectories. An interval that collapses to ``[0, 0]`` or ``[1, 1]`` at
+small ``n`` cannot be trusted as a population probability (ADR-0019).
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ import pytest
 
 from semantic_afterlife.analysis.rates import (
     assign_quarter,
+    clopper_pearson_ci,
     grouped_rates,
     marker_register_flag,
     parse_trajectory_id,
@@ -44,13 +45,35 @@ def test_rate_ci_recovers_known_proportion() -> None:
     assert stats["ci_low"] < 0.25 < stats["ci_high"]
     assert stats["n"] == 400
     assert stats["n_positive"] == int(flags.sum())
+    assert stats["method"] == "clopper_pearson"
 
 
-def test_rate_ci_all_ones_is_degenerate_but_honest() -> None:
+def test_rate_ci_all_ones_is_not_a_point_mass() -> None:
     stats = rate_ci(np.ones(8), seed=0)
     assert stats["rate"] == 1.0
-    assert stats["ci_low"] == 1.0
+    assert stats["ci_low"] == pytest.approx(0.6305833524471808)
     assert stats["ci_high"] == 1.0
+    assert stats["ci_low"] < 1.0
+
+
+def test_rate_ci_all_zeros_is_not_a_point_mass() -> None:
+    stats = rate_ci(np.zeros(8), seed=0)
+    assert stats["rate"] == 0.0
+    assert stats["ci_low"] == 0.0
+    assert stats["ci_high"] == pytest.approx(0.3694166475528192)
+    assert stats["ci_high"] > 0.0
+
+
+def test_clopper_pearson_matches_named_tables() -> None:
+    low, high = clopper_pearson_ci(4, 4)
+    assert low == pytest.approx(0.3976353643835254)
+    assert high == 1.0
+    low0, high0 = clopper_pearson_ci(0, 4)
+    assert low0 == 0.0
+    assert high0 == pytest.approx(0.6023646356164746)
+    low19, high19 = clopper_pearson_ci(19, 20)
+    assert low19 == pytest.approx(0.7512672372279723)
+    assert high19 == pytest.approx(0.9987349105020502)
 
 
 def test_rate_difference_ci_recovers_known_gap() -> None:
@@ -61,6 +84,17 @@ def test_rate_difference_ci_recovers_known_gap() -> None:
     assert stats["diff"] == pytest.approx(a.mean() - b.mean())
     assert stats["ci_low"] < 0.6 < stats["ci_high"]
     assert stats["ci_low"] > 0.0
+    assert stats["fisher_p"] < 1e-20
+
+
+def test_rate_difference_four_vs_zero_is_not_certainty() -> None:
+    stats = rate_difference_ci(np.ones(4), np.zeros(4), seed=0)
+    assert stats["diff"] == 1.0
+    assert stats["ci_low"] == pytest.approx(0.30718973500360847)
+    assert stats["ci_high"] == 1.0
+    assert stats["fisher_p"] == pytest.approx(0.028571428571428567)
+    weak = rate_difference_ci(np.ones(4), np.array([1, 1, 0, 0], dtype=float), seed=0)
+    assert weak["fisher_p"] == pytest.approx(0.42857142857142855)
 
 
 def test_grouped_rates_one_row_per_cell() -> None:

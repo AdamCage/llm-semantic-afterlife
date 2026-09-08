@@ -27,4 +27,6 @@ Auxiliary files go to `paper/build/` (gitignored).
 Every quantitative sentence in both TeX files carries a same-line
 comment with an artifact path and `run_id`. Cite only `VERIFIED`
 entries from `docs/literature/related-work.md`. Stage 7 minted no
-generate `run_id`.
+generate `run_id`. The Russian file tracks the ADR-0019 English
+rewrite (blockwise kernel, `B=1024`, Clopper–Pearson intervals,
+H1 unsupported / H5 absent / F6 not a headline).
