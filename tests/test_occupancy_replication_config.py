@@ -113,10 +113,14 @@ def test_missing_data_keeps_failed_and_short_chunks() -> None:
 ARCHIVAL_S6_F4_SHA256 = "4e04898462da7319d6649785277816db1d1a085513fe33efb6223d045838070a"
 
 
+def _sha256_lf(path: Path) -> str:
+    """Hash after LF-normalising. Windows checkout of ``text=auto`` is CRLF."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def test_archival_stage6_f4_csv_unmoved() -> None:
     path = REPO / "artifacts/stage-6/occupancy/domain_separation_last_band.csv"
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    assert digest == ARCHIVAL_S6_F4_SHA256
+    assert _sha256_lf(path) == ARCHIVAL_S6_F4_SHA256
 
 
 def test_tmlr_headline_copies_match_canonical() -> None:
@@ -130,8 +134,8 @@ def test_tmlr_headline_copies_match_canonical() -> None:
         right = dest / f"{stem}.csv"
         assert left.is_file(), left
         assert right.is_file(), right
-        left_hash = hashlib.sha256(left.read_bytes()).digest()
-        right_hash = hashlib.sha256(right.read_bytes()).digest()
+        left_hash = hashlib.sha256(left.read_bytes().replace(b"\r\n", b"\n")).digest()
+        right_hash = hashlib.sha256(right.read_bytes().replace(b"\r\n", b"\n")).digest()
         assert left_hash == right_hash
         frame = pd.read_csv(left)
         if stem == "domain_separation_last_band":
