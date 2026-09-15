@@ -96,3 +96,14 @@ __all__ = [
     "vamp_fit",
     "weighted_band_delta",
 ]
+
+from .persistence import (
+    PersistenceParams,
+    TrajectoryEmbed,
+    capped_late_jaccard,
+    gap_vs_turnover,
+    log_turnover_bands,
+    prefix_lock_escape,
+    seed_cluster_bootstrap,
+)
+

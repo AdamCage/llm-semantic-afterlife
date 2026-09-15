@@ -1,0 +1,10 @@
+# S9 Qwen3-Embedding-8B only. Run after BGE, generator unloaded (ADR-0024).
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-embed-qwen
+description: >-
+  S9 local Qwen3-Embedding-8B over a generate run. One space per invocation.
+embeddings: [local-qwen3-embed-8b]
+generators:
+  - pb-qwen3-8b-instruct

@@ -1,0 +1,9 @@
+2026-09-11 00:09:26,289 INFO     semantic_afterlife.events run s8-paperb-smoke-gemma4-12b-base-20260910T210919Z-2cf3ff6d (live)
+2026-09-11 00:09:26,291 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-11 00:09:30,485 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W32__T0p3__physics__s1: W=32 T=32 (1.0 turnovers)
+2026-09-11 00:09:33,652 WARNING  semantic_afterlife.providers.local ConditionalGeneration auto class missing; trying CausalLM for google/gemma-4-12B (Gemma4UnifiedForConditionalGeneration)
+2026-09-11 00:09:33,654 INFO     semantic_afterlife.providers.local loading local model google/gemma-4-12B device=cuda dtype=bfloat16 attn=sdpa loader=AutoModelForCausalLM
+2026-09-11 00:37:59,218 INFO     semantic_afterlife.events loaded google/gemma-4-12B Gemma4UnifiedForConditionalGeneration via AutoModelForCausalLM rev=023679ed352de9bb66cc873c9009ce3482585c08 peak_vram_mib=7381.7 in 1764.436s
+2026-09-11 00:38:03,198 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W32__T0p3__physics__s1: 1 steps, 32 tokens, 1 chunks, $0.0000
+2026-09-11 00:38:03,200 INFO     semantic_afterlife.events unloaded google/gemma-4-12B peak_vram_mib=7381.7
+2026-09-11 00:38:03,462 INFO     semantic_afterlife.events completed s8-paperb-smoke-gemma4-12b-base-20260910T210919Z-2cf3ff6d — spent $0.0000 (project $10.54 of $50.00)

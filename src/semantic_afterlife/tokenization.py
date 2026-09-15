@@ -148,11 +148,14 @@ def _download_tokenizer_json(repo: str, revision: str | None, cache_dir: Path) -
     from huggingface_hub.errors import EntryNotFoundError
 
     try:
+        from .config import get_settings
+
         path = hf_hub_download(
             repo_id=repo,
             filename="tokenizer.json",
             revision=revision,
             cache_dir=str(cache_dir),
+            token=get_settings().hf_token,
         )
     except EntryNotFoundError as exc:
         raise TokenizerError(

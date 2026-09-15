@@ -1,0 +1,8 @@
+# Wave 2 smoke — one generator per run (ADR-0024). T=32 only. Last checkpoint.
+include:
+  - configs/stages/stage8_paperb_foundations.yaml
+
+name: paperb-smoke-gemma4-12b-it
+description: S8 Wave 2 smoke, 32 tokens, Gemma-4-12B-it NF4. OOM → stop, no E4B.
+generators:
+  - pb-gemma4-12b-it

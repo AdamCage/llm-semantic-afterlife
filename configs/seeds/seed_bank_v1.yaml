@@ -6,8 +6,10 @@
 # 1. Every seed is *continuation-shaped*: declarative prose mid-flow, never a
 #    question or an instruction. A base model must be able to continue it
 #    without being asked to, since asking is external forcing.
-# 2. Domains are maximally far apart, so that a probe distinguishing them past
-#    the horizon is measuring semantic content rather than register.
+# 2. Domains are spread far apart as initial conditions so a late-window
+#    probe can detect seed-conditioned ensemble persistence. One text per
+#    domain does **not** identify semantic content versus register, style,
+#    or other covariates that travel with that text (ADR-0026).
 # 3. Comparable length (~90-140 tokens), so eviction start
 #    t_fill = W - L_0 does not vary much between trajectories.
 #    Full eviction is t_h = W when L_0 > 0 (ADR-0019). Do not call

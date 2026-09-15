@@ -101,6 +101,16 @@ def step_seed(stochastic_seed: int, step: int, attempt: int = 0) -> int:
     return int(sequence.generate_state(1, dtype=np.uint32)[0]) % (2**31 - 1)
 
 
+def _local_extra(generator: GeneratorConfig) -> dict[str, Any]:
+    """Copy extra_body and pin tokenizer/model revisions from the generator fields."""
+    extra = dict(generator.extra_body)
+    extra.setdefault("tokenizer_repo", generator.tokenizer_repo)
+    if generator.tokenizer_revision:
+        extra.setdefault("tokenizer_revision", generator.tokenizer_revision)
+        extra.setdefault("revision", generator.tokenizer_revision)
+    return extra
+
+
 def build_request(
     generator: GeneratorConfig,
     sampling: SamplingConfig,
@@ -130,10 +140,11 @@ def build_request(
         "service_tier": generator.service_tier,
         "country": generator.country,
         # Per-model protocol payload, e.g. the reasoning switch measured in S0.3b.
-        "extra": dict(generator.extra_body),
+        "extra": _local_extra(generator),
     }
 
-    if generator.continuation == "raw_completion":
+    serialization = getattr(generator, "serialization", "raw_bytes")
+    if serialization == "raw_bytes" or generator.continuation == "raw_completion":
         return CompletionRequest(prompt=prompt, **common)
 
     messages: list[dict[str, str]] = []
@@ -642,7 +653,20 @@ class PlannedTrajectory:
 
 
 def plan_trajectories(config: ExperimentConfig, seed_bank: Any) -> list[PlannedTrajectory]:
-    """Expand the experiment matrix into a concrete, ordered list of trajectories."""
+    """Expand the experiment matrix into a concrete, ordered list of trajectories.
+
+    Generators are the outer loop (contiguous per model). Paper B still requires
+    **one local generator per generate run** so concurrency cannot load two CUDA
+    checkpoints (ADR-0024).
+    """
+    local_slugs = [g.slug for g in config.generators if g.api == "local"]
+    if len(local_slugs) > 1:
+        from ..errors import ConfigError
+
+        raise ConfigError(
+            "Paper B local runs require one generator per generate config "
+            f"(got local slugs {local_slugs}); split YAML (ADR-0024)"
+        )
     planned: list[PlannedTrajectory] = []
     for generator in config.generators:
         for window in config.windows:

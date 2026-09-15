@@ -1,0 +1,15 @@
+# S9.4 — Qwen Base INT8 control. Same F2 list as Instruct INT8.
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-base-int8
+description: S9 INT8 Base control. Same five seeds × s1,s2.
+generators:
+  - pb-qwen3-8b-base-int8
+semantic_seeds:
+  - physics
+  - biology
+  - love
+  - programming
+  - surreal
+stochastic_seeds: [1, 2]

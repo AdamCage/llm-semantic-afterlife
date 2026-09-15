@@ -1,0 +1,92 @@
+budget_usd: 0.0
+description: S9 primary Instruct cell. Local Qwen/Qwen3-8B NF4. Not or-qwen3-8b.
+embeddings:
+- api: local
+  architecture: bidirectional-encoder
+  expected_dim: 1024
+  max_batch: 16
+  model_id: BAAI/bge-m3
+  normalise: true
+  notes: Paper B primary space. XLM-RoBERTa encoder. CPU or GPU after generator unload.
+    Content-addressed cache sha256(model_id ‖ text). Not the RouterAI slug `bge-m3`.
+  price_usd_per_m_input: 0.0
+  slug: local-bge-m3
+- api: local
+  architecture: causal-decoder
+  expected_dim: 4096
+  max_batch: 8
+  model_id: Qwen/Qwen3-Embedding-8B
+  normalise: true
+  notes: Paper B primary space. Causal-decoder geometry. Load NF4 on GPU sequentially
+    after generator unload (ADR-0024). Not the RouterAI slug `qwen3-embed-8b`. Third
+    space (gemini) is not an S9–S11 exit criterion.
+  price_usd_per_m_input: 0.0
+  slug: local-qwen3-embed-8b
+generators:
+- allow_fallbacks: false
+  api: local
+  continuation: raw_completion
+  continuation_instruction: null
+  country: null
+  expected_block_fill: 1.0
+  extra_body:
+    attn_implementation: sdpa
+    bnb_4bit_compute_dtype: bfloat16
+    bnb_4bit_quant_type: nf4
+    bnb_4bit_use_double_quant: true
+    device_map: cuda
+    dtype: bfloat16
+    enable_thinking: false
+    load_in_4bit: true
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+    serialization: raw_bytes
+    text_only: true
+  is_base_model: false
+  max_reasoning_tokens: 0
+  model_id: Qwen/Qwen3-8B
+  native_context: null
+  notes: Paper B Qwen Instruct, NF4. Not the hosted OpenRouter or-qwen3-8b cell (ADR-0023).
+    enable_thinking=false; a step with think tokens fails. Think-arm parked.
+  prefill_user_stub: null
+  price_usd_per_m_input: 0.0
+  price_usd_per_m_output: 0.0
+  provider_slug: local
+  serialization: raw_bytes
+  service_tier: null
+  slug: pb-qwen3-8b-instruct
+  system_prompt: null
+  tokenizer_repo: Qwen/Qwen3-8B
+  tokenizer_revision: b968826d9c46dd6066d109eabc6255188de91218
+max_concurrent: 1
+name: paperb-qwen-instruct-nf4
+sampling:
+- logprobs: false
+  repetition_penalty: null
+  temperature: 0.3
+  top_k: null
+  top_logprobs: null
+  top_p: 1.0
+seed_bank: configs/seeds/seed_bank_v1.yaml
+semantic_seeds:
+- physics
+- finance
+- biology
+- war
+- love
+- recipe
+- programming
+- philosophy
+- surreal
+- noise
+stage: s9
+stochastic_seeds:
+- 1
+- 2
+- 3
+- 4
+windows:
+- W: 4096
+  block_size: 1024
+  chunk_size: 1024
+  protocol: P1_reprompt
+  target_tokens: 49152

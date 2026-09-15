@@ -74,11 +74,27 @@ it is long-term memory emerging from long-context generation alone.
 | `run_id` | `<stage>-<slug>-<UTC timestamp>-<8 hex of config hash>`; identifies one result-producing invocation. |
 | run | a directory under `runs/` with manifest, resolved config, event log, raw requests, data, status. |
 | artifact | a small publication-grade output under `artifacts/`, always with tidy source data and metadata. Committed. |
-| stage | `S0`…`S7`; the unit of work, with `PLAN.md` before and `REPORT.md` after. |
+| stage | `S0`…`S13`; the unit of work, with `PLAN.md` before and `REPORT.md` after. Paper A is S0–S7; Paper B is S8–S13. |
 | ADR | append-only decision record in `docs/decisions/`. |
 | ledger | `runs/_ledger/spend.jsonl`; append-only cost record and budget enforcement. |
 | L1 / L2 / L3 | reproducibility levels: statistically equivalent / analysis-exact / bit-exact replay. |
 | execution mode | `live` (real API) / `replay` (cache only, fails on miss) / `mock` (deterministic synthetic, free). |
+
+## Paper B (S8–S13)
+
+| Term | Symbol | Definition |
+| --- | --- | --- |
+| serialization | — | How the seed becomes model input. **`raw_bytes`**: Base and Instruct receive the same `encode(seed)` (primary). **`native_chat`**: documented secondary; template bytes recorded; never pooled with `raw_bytes`. |
+| horizon ladder | L0 / L1 / L2 | L0: \(R=12\), \(T=49152\), all ten conditions. L1: \(R=48\), supervisor yes only. L2: long token horizon on a tiny cohort after S9–S11. Scientific axis is tokens, not wall-clock. |
+| seed-conditioned gap | \(G_t\) | \(d_{\mathrm{between}}(t)-d_{\mathrm{within}}(t)\) vs turnover. L0 confirmatory #1. Two local spaces; seed-cluster bootstrap; LOO. |
+| time-to-lock | \(\tau_{\mathrm{lock}}\) | Turnovers (or tokens) until confirmed lock. L0 confirmatory #2. |
+| time-to-escape | \(\tau_{\mathrm{escape}}\) | Time from confirmed lock to confirmed escape, censored at common \(T_{\min}\). **Only** L2 confirmatory estimand. |
+| `N_confirm` | 3 | Consecutive turnovers required to confirm lock (`degenerate=true`) or escape (`degenerate=false` after lock). Frozen (ADR-0023 F1). |
+| lock / escape machine | — | `unlocked → locked → escaped`. Same degeneracy construct in and out. Exact-cycle hash is diagnosis, not the verdict. |
+| long-lived repetition lock | — | Allowed name for a lock with no confirmed escape through \(T\). **Not** an absorbing state. |
+| late fingerprint | — | Recurrent textual / window signature used for diversity counts and within- vs between-seed agreement. **Not** a semantic state. |
+| seed-cluster bootstrap | — | Resample seeds; inside a seed, resample descendants with multiplicity. Not Greenwood on “40 iid trajectories”. |
+| INT8 F2 seeds | — | `physics`, `biology`, `love`, `programming`, `surreal` × `s1,s2`. Frozen before NF4 Paper B. |
 
 ## Words we do not use loosely
 
@@ -93,3 +109,5 @@ it is long-term memory emerging from long-context generation alone.
 - **"Fixed point"** — only for demonstrated exact recurrence. The degeneracy
   detector reports a *textual repetition lock* (fixed point or short cycle).
 - **"Collapsed"** — not a label for `CI ∋ 0`. That is *no detected divergence*.
+- **"Absorbing"** — not a property of a repetition lock. Write *no confirmed escape through \(T\)*.
+- **"Semantic-domain memory"** — not identified by one text per domain (ADR-0026). Say *seed-conditioned ensemble persistence*.

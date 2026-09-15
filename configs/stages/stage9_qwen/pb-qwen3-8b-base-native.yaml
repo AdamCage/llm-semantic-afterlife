@@ -1,0 +1,12 @@
+# S9.5 — Native-chat reduced (Base). Same deferral as Instruct native.
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-base-native
+description: Deferred native-chat arm. Do not generate until PLAN E3 is green.
+generators:
+  - pb-qwen3-8b-base
+semantic_seeds:
+  - physics
+  - biology
+stochastic_seeds: [1, 2]

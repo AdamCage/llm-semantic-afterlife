@@ -1,0 +1,86 @@
+2026-09-12 04:47:00,153 INFO     semantic_afterlife.events run s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc (live)
+2026-09-12 04:47:00,155 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-12 04:47:00,939 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 04:47:03,396 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B-Base device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-12 04:47:10,938 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B-Base Qwen3ForCausalLM via Qwen3ForCausalLM rev=49e3418fbbbca6ecbdf9608b4d22e5a407081db4 peak_vram_mib=5887.6 in 7.485s
+2026-09-12 05:18:48,863 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__physics__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 05:18:48,873 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 05:50:27,817 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__physics__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 05:50:27,820 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 06:22:15,139 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__physics__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 06:22:15,150 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 06:54:03,610 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__physics__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 06:54:03,613 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 07:25:45,581 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__finance__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 07:25:45,585 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 07:57:32,921 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__finance__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 07:57:32,925 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 08:29:19,713 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__finance__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 08:29:19,716 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 09:01:03,915 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__finance__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 09:01:03,918 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 09:32:53,493 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__biology__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 09:32:53,500 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 09:33:04,474 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__biology__s2: 1 steps, 282 tokens, 0 chunks, $0.0000
+2026-09-12 09:33:04,477 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 10:05:01,414 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__biology__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 10:05:01,417 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 10:36:47,456 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__biology__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 10:36:47,459 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 11:08:38,231 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__war__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 11:08:38,236 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 11:40:34,459 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__war__s2: 55 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 11:40:34,462 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 12:12:31,963 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__war__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 12:12:31,967 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 12:44:23,361 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__war__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 12:44:23,364 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 13:16:13,897 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__love__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 13:16:13,900 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 13:48:13,073 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__love__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 13:48:13,076 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__love__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:20:01,695 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__love__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 14:20:01,707 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__love__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:44,538 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__love__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 14:51:44,547 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__recipe__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:45,503 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__recipe__s1: 1 steps, 7 tokens, 0 chunks, $0.0000
+2026-09-12 14:51:45,506 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__recipe__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:46,534 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__recipe__s2: 1 steps, 9 tokens, 0 chunks, $0.0000
+2026-09-12 14:51:46,538 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__recipe__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:47,824 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__recipe__s3: 1 steps, 13 tokens, 0 chunks, $0.0000
+2026-09-12 14:51:47,827 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__recipe__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:48,879 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__recipe__s4: 2 steps, 8 tokens, 0 chunks, $0.0000
+2026-09-12 14:51:48,883 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__programming__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 14:51:49,549 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__programming__s1: 1 steps, 4 tokens, 0 chunks, $0.0000
+2026-09-12 14:51:49,552 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__programming__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 15:23:47,991 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__programming__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 15:23:47,996 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__programming__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 15:23:48,706 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__programming__s3: 1 steps, 6 tokens, 0 chunks, $0.0000
+2026-09-12 15:23:48,712 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__programming__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 15:54:08,075 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__programming__s4: 53 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 15:54:08,079 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__philosophy__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 16:24:39,747 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__philosophy__s1: 52 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 16:24:39,757 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__philosophy__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 16:55:11,223 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__philosophy__s2: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 16:55:11,228 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__philosophy__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 16:55:17,017 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__philosophy__s3: 2 steps, 138 tokens, 0 chunks, $0.0000
+2026-09-12 16:55:17,023 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__philosophy__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 17:25:47,960 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__philosophy__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 17:25:47,963 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__surreal__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 17:56:26,738 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__surreal__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 17:56:26,741 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__surreal__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 18:27:00,799 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__surreal__s2: 55 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 18:27:00,805 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__surreal__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 18:27:21,963 INFO     semantic_afterlife.events failed pb-qwen3-8b-base__W4096__T0p3__surreal__s3: 1 steps, 561 tokens, 0 chunks, $0.0000
+2026-09-12 18:27:21,970 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__surreal__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 18:57:46,764 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__surreal__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 18:57:46,773 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__noise__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 19:28:32,264 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__noise__s1: 60 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 19:28:32,274 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__noise__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 20:00:10,876 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__noise__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 20:00:10,880 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__noise__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 20:32:15,225 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__noise__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 20:32:15,228 INFO     semantic_afterlife.events start pb-qwen3-8b-base__W4096__T0p3__noise__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-12 21:04:32,674 INFO     semantic_afterlife.events completed pb-qwen3-8b-base__W4096__T0p3__noise__s4: 60 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-12 21:04:32,676 INFO     semantic_afterlife.events unloaded Qwen/Qwen3-8B-Base peak_vram_mib=6815.5
+2026-09-12 21:04:33,486 INFO     semantic_afterlife.events completed s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc — spent $0.0000 (project $10.54 of $50.00)

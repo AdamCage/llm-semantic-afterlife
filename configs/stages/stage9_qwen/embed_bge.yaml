@@ -1,0 +1,11 @@
+# S9 BGE-M3 only. Qwen3-Embedding-8B is a later sequential pass after
+# this embedder is unloaded (ADR-0024). Not a generate config.
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-embed-bge
+description: >-
+  S9 local BGE-M3 over a generate run. One space per invocation.
+embeddings: [local-bge-m3]
+generators:
+  - pb-qwen3-8b-instruct

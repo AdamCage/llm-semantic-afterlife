@@ -1,0 +1,8 @@
+# S9.2 — Qwen3-8B Base NF4, raw_bytes, 10 × 4, 12W.
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-base-nf4
+description: S9 primary Base cell. Local Qwen/Qwen3-8B-Base NF4.
+generators:
+  - pb-qwen3-8b-base

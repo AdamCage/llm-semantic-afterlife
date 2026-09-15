@@ -198,6 +198,10 @@ class GeneratorConfig(StrictModel):
         "every extra step re-sends the whole window, the input-token forecast scales as 1/fill. "
         "S0.7 measured 0.88 for mistral-nemo; leaving this at 1.0 underestimated input by 20.7%",
     )
+    serialization: Literal["raw_bytes", "native_chat"] = Field(
+        default="raw_bytes",
+        description="Paper B prompt serialization (ADR-0023). raw_bytes keeps Base/Instruct seed bytes identical; native_chat is the reduced secondary arm.",
+    )
     max_reasoning_tokens: int = Field(
         default=0,
         ge=0,

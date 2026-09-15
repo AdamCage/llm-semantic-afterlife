@@ -1,0 +1,8 @@
+2026-09-11 02:31:34,121 INFO     semantic_afterlife.events run s8-paperb-micro-gemma4-12b-it-20260910T233125Z-f89a95a4 (live)
+2026-09-11 02:31:34,123 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-11 02:31:35,288 INFO     semantic_afterlife.events start pb-gemma4-12b-it__W4096__T0p3__physics__s1: W=4096 T=8192 (2.0 turnovers)
+2026-09-11 02:31:38,068 INFO     semantic_afterlife.providers.local loading local model google/gemma-4-12B-it device=cuda dtype=bfloat16 attn=sdpa loader=Gemma4UnifiedForConditionalGeneration
+2026-09-11 02:31:45,080 INFO     semantic_afterlife.events loaded google/gemma-4-12B-it Gemma4UnifiedForConditionalGeneration via Gemma4UnifiedForConditionalGeneration rev=707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7 peak_vram_mib=7381.7 in 6.948s
+2026-09-11 02:33:20,491 INFO     semantic_afterlife.events failed pb-gemma4-12b-it__W4096__T0p3__physics__s1: 2 steps, 222 tokens, 0 chunks, $0.0000
+2026-09-11 02:33:20,496 INFO     semantic_afterlife.events unloaded google/gemma-4-12B-it peak_vram_mib=7700.9
+2026-09-11 02:33:20,703 INFO     semantic_afterlife.events failed s8-paperb-micro-gemma4-12b-it-20260910T233125Z-f89a95a4 — spent $0.0000 (project $10.54 of $50.00)
