@@ -12,16 +12,19 @@ is deferred (PLAN E3).
 | pass | status |
 | --- | --- |
 | S8 REPORT says protocol fit | **yes** — [`../stage-8/REPORT.md`](../stage-8/REPORT.md) |
-| S9.1 Instruct NF4 40 × 12W | **RUNNING** `s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6` |
-| S9.2 Base NF4 40 × 12W | queued (after S9.1) |
-| S9.3 Instruct INT8 F2 10 | **resumed** `s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498` |
-| S9.4 Base INT8 F2 10 | queued |
+| S9.1 Instruct NF4 40 × 12W | **COMPLETED** 38/40 |
+| S9.2 Base NF4 40 × 12W | **COMPLETED** 31/40 |
+| S9.3 Instruct INT8 F2 10 | **COMPLETED** 9/10 |
+| S9.4 Base INT8 F2 10 | **COMPLETED** 8/10 |
 | S9.5 native-chat 8 | **deferred** |
-| Embed + degeneracy + \(G_t\) | not started |
+| Degeneracy | **COMPLETED** four generate runs |
+| BGE-M3 local embed | **COMPLETED** |
+| Hosted `qwen3-embed-8b` | **COMPLETED** (ADR-0027, $0) |
+| \(G_t\) / lock / REPORT | **next** |
 
 **Matrix (YAML wins).** 2 × 10 × 4 NF4 `raw_bytes` = 80 traj;
 INT8 5 × 2 × 2 = 20. `W=4096`, `T=49152`. Configs:
 [`configs/stages/stage9_qwen/`](../../../configs/stages/stage9_qwen/).
 
-Budget **$0 API**. Exclusive-GPU sketch **~44 h** NF4 + INT8 after.
-One `afterlife generate` at a time.
+Generate + local BGE **$0**. Hosted Qwen-embed cap $5 (ADR-0027);
+realised **$0**. No S10 until REPORT.

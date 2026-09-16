@@ -42,5 +42,5 @@ Discard tok/s if `nvidia-smi` shows a second compute process.
 - `status:` generate closed; embed + degeneracy next
 - `run_ids:` this table (86/100 full 12W; 14 empty-completion FAILED, kept)
 - `blockers:` native-chat serialization (`build_request` still raw)
-- `next_agent:` `summarise_run` → degeneracy → BGE-M3 embed → Qwen-embed
+- `next_agent:` hosted `qwen3-embed-8b` (RouterAI, ADR-0027) → \(G_t\) both spaces
 - `do_not: S10; native-chat; dual GPU; OpenRouter Instruct`

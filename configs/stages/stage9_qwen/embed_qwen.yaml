@@ -1,10 +1,14 @@
-# S9 Qwen3-Embedding-8B only. Run after BGE, generator unloaded (ADR-0024).
+# S9 hosted Qwen3-Embedding-8B (ADR-0027). RouterAI first — same slug
+# as Paper A. Not a generate config. Do not mix OpenRouter in this run
+# (embedding cache is keyed by model_id only).
 include:
   - configs/stages/stage9_qwen/_base.yaml
+  - configs/embeddings/embeddings.yaml
 
-name: paperb-qwen-embed-qwen
+name: paperb-qwen-embed-qwen-hosted
 description: >-
-  S9 local Qwen3-Embedding-8B over a generate run. One space per invocation.
-embeddings: [local-qwen3-embed-8b]
+  S9 hosted qwen/qwen3-embedding-8b via RouterAI over a generate run.
+embeddings: [qwen3-embed-8b]
 generators:
   - pb-qwen3-8b-instruct
+budget_usd: 5.0

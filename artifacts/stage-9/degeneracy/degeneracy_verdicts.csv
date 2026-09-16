@@ -1,0 +1,9 @@
+trajectory_id,degenerate,n_chunks,n_chunks_post_horizon,looping_fraction,unproductive_fraction,mean_novel_shingle_fraction,min_novel_shingle_fraction,late_pairwise_similarity_median,late_pairwise_similarity_max,mean_ngram_repetition,max_ngram_repetition,mean_type_token_ratio,mean_entropy_bits,mean_compression_ratio,entropy_trend_per_turnover,at_fixed_point,degeneracy_mode
+pb-qwen3-8b-base-int8__W4096__T0p3__biology__s1,True,48,44,1,1,0.00852273,0,0.9375,1,0.983516,0.983891,0.011496,2.97643,0.0211055,-0.000110325,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__love__s1,True,48,44,1,1,0,0,1,1,0.994127,0.994131,0.00585932,2.32192,0.0139027,-8.41336e-09,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__love__s2,True,48,44,1,1,0,0,1,1,0.997062,0.997063,0.00292972,0.999999,0.0119851,6.53841e-09,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__physics__s1,True,48,44,1,1,0.00363636,0,1,1,0.974951,0.975197,0.0204854,4.06858,0.0266915,-2.33724e-05,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__physics__s2,True,48,44,1,1,0,0,1,1,0.970476,0.970657,0.0235958,4.10051,0.0293907,0.000144214,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__programming__s2,True,48,44,1,1,0,0,1,1,0.921322,0.921444,0.0360725,4.61484,0.0479944,0.000132068,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__surreal__s1,True,48,44,1,1,0,0,1,1,0.997065,0.997065,0.00292969,1.58496,0.00915522,0,1,3
+pb-qwen3-8b-base-int8__W4096__T0p3__surreal__s2,True,48,44,1,1,0,0,1,1,0.989589,0.989595,0.0080789,2.73216,0.0169465,4.57841e-06,1,3

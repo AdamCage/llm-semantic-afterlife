@@ -78,7 +78,7 @@ Shared knobs: [`_base.yaml`](../../../configs/stages/stage9_qwen/_base.yaml).
 | temperature / `top_p` | 0.3 / 1.0 |
 | domain seeds | `physics, finance, biology, war, love, recipe, programming, philosophy, surreal, noise` |
 | stochastic | `{1,2,3,4}` |
-| embeddings (after unload) | `local-bge-m3`, `local-qwen3-embed-8b` |
+| embeddings (after unload) | `local-bge-m3` (local); `qwen3-embed-8b` hosted RouterAI, OpenRouter fallback ([ADR-0027](../../decisions/ADR-0027-s9-hosted-qwen-embed.md)) |
 | `max_concurrent` | 1 |
 | `budget_usd` | 0.0 |
 
@@ -93,8 +93,8 @@ Ordered. Degeneracy before geometry. One GPU process.
    (`scripts/s9_run_matrix.sh`). Resume with `--resume-run` only.
 2. `python scripts/summarise_run.py <run_id>` per generate: block
    fill, stop rate, round-trip, reasoning=0, served provider `local`.
-3. `afterlife embed` on each completed generate, both local spaces,
-   generator unloaded first (ADR-0024).
+3. `afterlife embed` on each completed generate: local BGE-M3, then
+   hosted `qwen3-embed-8b` (ADR-0027). Generator already unloaded.
 4. `afterlife analyze degeneracy` before any \(G_t\).
 5. Persistence / separation: \(G_t\) (seed-cluster bootstrap, LOO),
    prefix \(\tau_{\mathrm{lock}}\) (`N_confirm=3`), fingerprint
@@ -113,12 +113,12 @@ Written before 12W data.
 | E2 | INT8 F2 complete | 20/20 completed, or PARTIAL with a recorded OOM / loader reason (no silent drop) |
 | E3 | Native-chat | executed only after `build_request` distinguishes `native_chat` from `raw_completion`; otherwise **deferred** (not a silent `raw_bytes` rerun) |
 | E4 | Degeneracy first | no \(G_t\) / lock table published from a run that skipped `analyze degeneracy` |
-| E5 | \(G_t\) both spaces | last-band \(G_t\) + seed-cluster interval + LOO-by-seed in BGE-M3 and Qwen-embed, NF4 `raw_bytes` only |
+| E5 | \(G_t\) both spaces | last-band \(G_t\) + seed-cluster interval + LOO-by-seed in local BGE-M3 and hosted `qwen3-embed-8b`, NF4 `raw_bytes` only |
 | E6 | Lock construct | F1 thresholds + `N_confirm=3` unchanged; hash is diagnostic only; language is *long-lived repetition lock* |
 | E7 | No hosted Instruct | every S9 generate step `served_provider=local`; no `or-qwen3-8b` cell |
 | E8 | Protocol | thinking tokens = 0 on completed steps; tokenizer round-trip failures named; fill and stop reported |
 | E9 | One GPU | no two `afterlife generate` coresident |
-| E10 | Spend | hosted ledger increment **$0.00** for S9 generate/embed |
+| E10 | Spend | generate + local BGE **$0.00**; hosted Qwen-embed may increment the ledger, **cap $5** (ADR-0027) |
 
 ## 6. Pre-registered predictions
 
@@ -128,7 +128,7 @@ Empty `observed` is filled by the report.
 | --- | --- | ---: | --- |
 | P1 | Instruct NF4: ≥8/10 domain seeds have ≥1 confirmed lock (`N_confirm=3`) by 12W | 0.55 | |
 | P2 | Base NF4 seed-level lock rate (seeds with ≥1 lock) is **lower** than Instruct | 0.60 | |
-| P3 | Instruct last-band \(G_t > 0\) in **both** local spaces | 0.50 | |
+| P3 | Instruct last-band \(G_t > 0\) in **both** spaces (local BGE-M3 and hosted Qwen-embed) | 0.50 | |
 | P4 | Sign of Instruct last-band \(G_t\) **agrees** across BGE-M3 and Qwen-embed | 0.55 | |
 | P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | |
 | P6 | Mean block fill on NF4 12W ≥ 0.95 (same `W`/`B` as the microbench) | 0.70 | |
@@ -140,14 +140,15 @@ NF4, four descendants not two.
 
 ## 7. Budget and wall-clock
 
-- **API / ledger:** **$0**. YAML `budget_usd: 0.0`. Stop and ask
-  before any hosted call (including Gemini).
+- **API / ledger:** generate + local BGE **$0**. Hosted Qwen-embed
+  (ADR-0027) `budget_usd: 5.0`. Stop and ask before Gemini or before
+  raising that $5 ceiling.
 - **Wall-clock (measured Instruct microbench):** 80 × 0.550 h ≈
   **44 h** NF4 exclusive GPU. INT8 20 traj ≈ **11 h** if tok/s
   matches; re-measure. Native-chat deferred.
 - **Stop-and-ask:** hosted $; INT8 OOM; thinking-storm; raising `T`
   above 12W; starting S10; changing F1; second GPU generate;
-  swapping in OpenRouter Qwen.
+  swapping in OpenRouter Qwen as a *generator*.
 
 ## 8. Risks specific to this stage
 

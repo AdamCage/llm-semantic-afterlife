@@ -40,15 +40,19 @@ runs/s8/*
 runs/s9/*
 !runs/s9/s9-paperb-*/
 !runs/s9/s9-paperb-*/**
+!runs/s9/s9-embed-*/
+!runs/s9/s9-embed-*/**
+!runs/s9/s9-degeneracy-*/
+!runs/s9/s9-degeneracy-*/**
 .cache/
 scratch/
 
-# Content-addressed caches: responses, embeddings and tokenizer files. All
-# regenerable, and large (a single tokenizer.json is ~2 MB; Stage 1 will produce
-# ~15k cached responses). The response cache IS the mechanism for level-L3
-# reproduction without an API key, but it ships as a versioned artifact release
-# alongside the paper, not in the working tree.
-cache/
+# Response and tokenizer caches stay out of git (large, regenerable).
+# The S9 embedding cache is tracked so hosted Qwen-embed and local BGE
+# are not recomputed after a VM wipe (ADR-0027).
+cache/*
+!cache/embeddings/
+!cache/embeddings/**
 
 # ---------------------------------------------------------------------------
 # Python

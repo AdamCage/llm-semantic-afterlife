@@ -8,7 +8,8 @@
 # LocalClient.embed delegates to LocalEmbedClient. `afterlife embed` on
 # these slugs must not fall back to a hosted API.
 #
-# Qwen3-Embedding-8B NF4 runs only after the generator is unloaded.
+# Qwen3-Embedding-8B NF4 is the local option. S9 uses the hosted
+# Paper A slug instead (ADR-0027).
 # Gemini Embedding 001 is optional hosted, estimate + human yes, and is
 # not in this file.
 # ===========================================================================
