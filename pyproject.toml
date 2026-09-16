@@ -81,6 +81,8 @@ local = [
     "torch>=2.4",
     "transformers>=4.51",
     "accelerate>=1.0",
+    "bitsandbytes>=0.44",
+    "sentence-transformers>=3.0",
 ]
 
 [project.scripts]

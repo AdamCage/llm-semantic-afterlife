@@ -1,0 +1,15 @@
+# S9.3 — Qwen Instruct INT8 control. F2 seeds × s1,s2 only (ADR-0023).
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-instruct-int8
+description: S9 INT8 Instruct control. Concordance is limitations, not a third L0 headline.
+generators:
+  - pb-qwen3-8b-instruct-int8
+semantic_seeds:
+  - physics
+  - biology
+  - love
+  - programming
+  - surreal
+stochastic_seeds: [1, 2]

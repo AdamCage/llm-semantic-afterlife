@@ -1,0 +1,5 @@
+2026-09-11 01:22:25,852 INFO     semantic_afterlife.events run s8-paperb-micro-olmo3-7b-base-20260910T222217Z-e3cc4b7f (live)
+2026-09-11 01:22:25,854 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-11 01:22:26,142 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s1: W=4096 T=8192 (2.0 turnovers)
+2026-09-11 01:22:28,856 INFO     semantic_afterlife.providers.local loading local model allenai/Olmo-3-1025-7B device=cuda dtype=bfloat16 attn=sdpa loader=Olmo3ForCausalLM
+2026-09-11 01:22:34,698 INFO     semantic_afterlife.events loaded allenai/Olmo-3-1025-7B Olmo3ForCausalLM via Olmo3ForCausalLM rev=a81bae42db3975be1671e27b9c9a56da1a9f980f peak_vram_mib=4822.9 in 7.153s

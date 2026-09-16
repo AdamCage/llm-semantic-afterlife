@@ -12,8 +12,10 @@ secrets/
 # ---------------------------------------------------------------------------
 # `runs/` holds raw trajectories and full logs: large, regenerable from configs.
 # Small, publication-grade artifacts live in `artifacts/` and ARE committed.
-# Occupancy replication (ADR-0022) is tracked so the panel cannot vanish with
-# a VM. Do not un-ignore other stages. Secrets stay in `.env`, never here.
+# Occupancy replication (ADR-0022) and Paper B local generate (S8 smoke /
+# S9 Qwen 12W) are tracked so a VM wipe cannot erase the computational
+# record. Secrets stay in `.env`, never here. Weights and `cache/` stay
+# ignored.
 runs/*
 !runs/.gitkeep
 !runs/_ledger/
@@ -30,15 +32,27 @@ runs/s5/*
 runs/s6/*
 !runs/s6/s6-embed-third-space-*/
 !runs/s6/s6-embed-third-space-*/**
+!runs/s8/
+runs/s8/*
+!runs/s8/s8-paperb-*/
+!runs/s8/s8-paperb-*/**
+!runs/s9/
+runs/s9/*
+!runs/s9/s9-paperb-*/
+!runs/s9/s9-paperb-*/**
+!runs/s9/s9-embed-*/
+!runs/s9/s9-embed-*/**
+!runs/s9/s9-degeneracy-*/
+!runs/s9/s9-degeneracy-*/**
 .cache/
 scratch/
 
-# Content-addressed caches: responses, embeddings and tokenizer files. All
-# regenerable, and large (a single tokenizer.json is ~2 MB; Stage 1 will produce
-# ~15k cached responses). The response cache IS the mechanism for level-L3
-# reproduction without an API key, but it ships as a versioned artifact release
-# alongside the paper, not in the working tree.
-cache/
+# Response and tokenizer caches stay out of git (large, regenerable).
+# The S9 embedding cache is tracked so hosted Qwen-embed and local BGE
+# are not recomputed after a VM wipe (ADR-0027).
+cache/*
+!cache/embeddings/
+!cache/embeddings/**
 
 # ---------------------------------------------------------------------------
 # Python

@@ -1,0 +1,14 @@
+# Wave 2 microbench — 2 turnovers at W=4096. Not S9 (12W / T=49152).
+include:
+  - configs/stages/stage8_paperb_foundations.yaml
+
+name: paperb-micro-qwen3-8b-instruct
+description: S8 Wave 2 microbench, physics × s1 × 2 turnovers, Qwen Instruct NF4.
+generators:
+  - pb-qwen3-8b-instruct
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 8192
+    chunk_size: 1024
+    protocol: P1_reprompt

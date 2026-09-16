@@ -1,0 +1,15 @@
+{
+  "name": "persistence_gt_bands",
+  "caption": "G_t = d_between − d_within per integer turnover band in local-bge-m3, cell base-int8. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "alt_text": "G_t = d_between − d_within per integer turnover band in local-bge-m3, cell base-int8. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "limitations": "Positive G_t is seed-conditioned persistence in this space, not a semantic state and not an absorbing lock. This directory is one cell, not the pooled Qwen family.",
+  "run_ids": [
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87",
+    "s9-embed-paperb-qwen-embed-bge-20260915T053326Z-5b7d1cb9",
+    "s9-persistence-local-bge-m3-20260916T052413Z-824d9551"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:14+00:00"
+}

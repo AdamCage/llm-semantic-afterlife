@@ -1,0 +1,64 @@
+# ===========================================================================
+# S8 — Paper B foundations smoke (ADR-0023, ADR-0024)
+# ---------------------------------------------------------------------------
+# Validates the LOCAL LOADING CONTRACT, not a hypothesis. 32 generated
+# tokens × 10 NF4 checkpoints. This is NOT the 12W occupancy matrix
+# (that is S9–S11: W=4096, T=49152).
+#
+# WindowConfig requires T ≥ W, so W=32, B=32, T=32. Do not raise
+# target_tokens in this file to sneak in a scientific horizon.
+#
+# INT8 twins exist in generators_local_paperb.yaml and are NOT selected
+# here. Native-chat is not selected here.
+#
+# protocol: P1_reprompt only. P2 is parked and inert in the runner;
+# setting it would lie in the manifest (ADR-0024).
+#
+# Ten slugs in one YAML let `afterlife plan` expand the cell list.
+# Live GPU smoke is one generator per run_id (or A→unload→B) after
+# Wave 1. Do not generate until: Wave 0 CENSUS, Wave 1 _LOAD_KEYS,
+# human yes. This kickoff does not generate.
+#
+# If PLAN.md and this file disagree, this file wins.
+# ===========================================================================
+
+include:
+  - configs/models/generators_local_paperb.yaml
+  - configs/embeddings/embeddings_local.yaml
+
+stage: s8
+name: paperb-foundations
+description: >-
+  Paper B harness smoke: 32 new tokens on each of ten local NF4
+  checkpoints. No scientific claim. Not the 12W matrix.
+
+generators:
+  - pb-qwen3-8b-base
+  - pb-qwen3-8b-instruct
+  - pb-olmo3-7b-base
+  - pb-olmo3-7b-sft
+  - pb-olmo3-7b-dpo
+  - pb-olmo3-7b-rlvr
+  - pb-ministral-8b-base
+  - pb-ministral-8b-instruct
+  - pb-gemma4-12b-base
+  - pb-gemma4-12b-it
+
+embeddings: [local-bge-m3, local-qwen3-embed-8b]
+
+windows:
+  - W: 32
+    block_size: 32
+    target_tokens: 32
+    chunk_size: 32
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds: [physics]
+stochastic_seeds: [1]
+
+max_concurrent: 1
+budget_usd: 0.0

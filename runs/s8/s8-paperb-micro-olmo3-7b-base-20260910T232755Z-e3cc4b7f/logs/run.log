@@ -1,0 +1,8 @@
+2026-09-11 02:28:02,505 INFO     semantic_afterlife.events run s8-paperb-micro-olmo3-7b-base-20260910T232755Z-e3cc4b7f (live)
+2026-09-11 02:28:02,507 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-11 02:28:02,789 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s1: W=4096 T=8192 (2.0 turnovers)
+2026-09-11 02:28:05,722 INFO     semantic_afterlife.providers.local loading local model allenai/Olmo-3-1025-7B device=cuda dtype=bfloat16 attn=sdpa loader=Olmo3ForCausalLM
+2026-09-11 02:28:11,698 INFO     semantic_afterlife.events loaded allenai/Olmo-3-1025-7B Olmo3ForCausalLM via Olmo3ForCausalLM rev=a81bae42db3975be1671e27b9c9a56da1a9f980f peak_vram_mib=4822.9 in 5.918s
+2026-09-11 02:31:17,020 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__physics__s1: 8 steps, 8192 tokens, 8 chunks, $0.0000
+2026-09-11 02:31:17,022 INFO     semantic_afterlife.events unloaded allenai/Olmo-3-1025-7B peak_vram_mib=7206.3
+2026-09-11 02:31:17,264 INFO     semantic_afterlife.events completed s8-paperb-micro-olmo3-7b-base-20260910T232755Z-e3cc4b7f — spent $0.0000 (project $10.54 of $50.00)

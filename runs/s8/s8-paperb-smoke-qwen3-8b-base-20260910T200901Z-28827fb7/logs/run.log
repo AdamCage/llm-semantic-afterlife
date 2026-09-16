@@ -1,0 +1,3 @@
+2026-09-10 23:09:08,197 INFO     semantic_afterlife.events run s8-paperb-smoke-qwen3-8b-base-20260910T200901Z-28827fb7 (live)
+2026-09-10 23:09:08,199 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-10 23:09:08,304 INFO     semantic_afterlife.events failed s8-paperb-smoke-qwen3-8b-base-20260910T200901Z-28827fb7 — spent $0.0000 (project $10.54 of $50.00)

@@ -1,0 +1,41 @@
+# ===========================================================================
+# Paper B local representation spaces (ADR-0023, ADR-0024)
+# ---------------------------------------------------------------------------
+# Two primary spaces, architecturally different in kind — same pairing as
+# Paper A, different serving stack. `api: local`. Do not route these slugs
+# through RouterAI in Paper B stage configs.
+#
+# LocalClient.embed delegates to LocalEmbedClient. `afterlife embed` on
+# these slugs must not fall back to a hosted API.
+#
+# Qwen3-Embedding-8B NF4 is the local option. S9 uses the hosted
+# Paper A slug instead (ADR-0027).
+# Gemini Embedding 001 is optional hosted, estimate + human yes, and is
+# not in this file.
+# ===========================================================================
+
+embedding_library:
+  local-bge-m3:
+    model_id: BAAI/bge-m3
+    api: local
+    architecture: bidirectional-encoder
+    expected_dim: 1024
+    max_batch: 16
+    price_usd_per_m_input: 0.0
+    notes: >-
+      Paper B primary space. XLM-RoBERTa encoder. CPU or GPU after
+      generator unload. Content-addressed cache sha256(model_id ‖ text).
+      Not the RouterAI slug `bge-m3`.
+
+  local-qwen3-embed-8b:
+    model_id: Qwen/Qwen3-Embedding-8B
+    api: local
+    architecture: causal-decoder
+    expected_dim: 4096
+    max_batch: 8
+    price_usd_per_m_input: 0.0
+    notes: >-
+      Paper B primary space. Causal-decoder geometry. Load NF4 on GPU
+      sequentially after generator unload (ADR-0024). Not the RouterAI
+      slug `qwen3-embed-8b`. Third space (gemini) is not an S9–S11
+      exit criterion.

@@ -1,0 +1,22 @@
+# Fallback only if RouterAI is unset or refuses (ADR-0027).
+# Do not run this after a RouterAI pass on the same texts — cache
+# keys collide (model_id only).
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+  - configs/embeddings/embeddings.yaml
+
+name: paperb-qwen-embed-qwen-or
+description: >-
+  S9 hosted qwen/qwen3-embedding-8b via OpenRouter. Fallback only.
+embeddings:
+  - slug: qwen3-embed-8b
+    model_id: qwen/qwen3-embedding-8b
+    api: openrouter
+    architecture: causal-decoder
+    expected_dim: 4096
+    max_batch: 8
+    price_usd_per_m_input: null
+    notes: OpenRouter fallback for ADR-0027. Same model_id as RouterAI.
+generators:
+  - pb-qwen3-8b-instruct
+budget_usd: 5.0

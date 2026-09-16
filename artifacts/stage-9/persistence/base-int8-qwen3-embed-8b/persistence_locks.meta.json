@@ -1,0 +1,15 @@
+{
+  "name": "persistence_locks",
+  "caption": "Prefix long-lived repetition lock (F1 + N_confirm=3) for base-int8 in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "alt_text": "Prefix long-lived repetition lock (F1 + N_confirm=3) for base-int8 in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "limitations": "Hash is diagnostic only and is not in this table.",
+  "run_ids": [
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87",
+    "s9-embed-paperb-qwen-embed-qwen-hosted-20260915T065143Z-05c4d516",
+    "s9-persistence-qwen3-embed-8b-20260916T054933Z-69fe70ad"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:15+00:00"
+}

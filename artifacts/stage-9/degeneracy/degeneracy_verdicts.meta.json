@@ -1,0 +1,20 @@
+{
+  "name": "degeneracy_verdicts",
+  "caption": "Per-trajectory F1 degeneracy diagnostics for all four S9 generate runs. A chunk loops when 3-gram repetition exceeds 0.083 (99th percentile of natural English at this chunk size). A trajectory is degenerate when at least 50% of post-horizon chunks loop.",
+  "alt_text": "Per-trajectory F1 degeneracy diagnostics for all four S9 generate runs. A chunk loops when 3-gram repetition exceeds 0.083 (99th percentile of natural English at this chunk size). A trajectory is degenerate when at least 50% of post-horizon chunks loop.",
+  "limitations": "Degeneracy is a surface-form measure. Lexical variety can coexist with semantic stasis. This table is why G_t is not read as confinement without a lock label.",
+  "run_ids": [
+    "s9-degeneracy-20260915T052651Z-cde06a72",
+    "s9-degeneracy-20260915T052717Z-bb8ac8f7",
+    "s9-degeneracy-20260915T052732Z-cae40780",
+    "s9-degeneracy-20260915T052744Z-691234df",
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87",
+    "s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc",
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:15+00:00"
+}

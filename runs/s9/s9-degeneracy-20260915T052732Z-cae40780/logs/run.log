@@ -1,0 +1,4 @@
+2026-09-15 08:27:42,916 INFO     semantic_afterlife.events run s9-degeneracy-20260915T052732Z-cae40780 (live)
+2026-09-15 08:27:42,918 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-15 08:27:43,212 INFO     semantic_afterlife.reporting table degeneracy_verdicts -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-9/degeneracy
+2026-09-15 08:27:43,233 INFO     semantic_afterlife.events completed s9-degeneracy-20260915T052732Z-cae40780 — spent $0.0000 (project $10.54 of $50.00)

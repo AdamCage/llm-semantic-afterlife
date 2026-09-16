@@ -1,0 +1,15 @@
+{
+  "name": "persistence_gt_bands",
+  "caption": "G_t = d_between − d_within per integer turnover band in qwen3-embed-8b, cell instruct-int8. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "alt_text": "G_t = d_between − d_within per integer turnover band in qwen3-embed-8b, cell instruct-int8. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "limitations": "Positive G_t is seed-conditioned persistence in this space, not a semantic state and not an absorbing lock. This directory is one cell, not the pooled Qwen family.",
+  "run_ids": [
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-embed-paperb-qwen-embed-qwen-hosted-20260915T064725Z-55778666",
+    "s9-persistence-qwen3-embed-8b-20260916T054819Z-96e1c2e3"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:14+00:00"
+}

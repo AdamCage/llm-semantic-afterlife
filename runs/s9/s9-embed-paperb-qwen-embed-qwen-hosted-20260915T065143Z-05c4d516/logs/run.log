@@ -1,0 +1,3 @@
+2026-09-15 09:51:52,804 INFO     semantic_afterlife.events run s9-embed-paperb-qwen-embed-qwen-hosted-20260915T065143Z-05c4d516 (live)
+2026-09-15 09:51:52,805 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-15 09:54:56,611 INFO     semantic_afterlife.events completed s9-embed-paperb-qwen-embed-qwen-hosted-20260915T065143Z-05c4d516 — spent $0.0000 (project $10.54 of $50.00)

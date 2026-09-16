@@ -1,0 +1,8 @@
+2026-09-10 23:21:24,584 INFO     semantic_afterlife.events run s8-paperb-smoke-qwen3-8b-instruct-20260910T202114Z-c1a44453 (live)
+2026-09-10 23:21:24,586 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-10 23:21:27,836 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W32__T0p3__physics__s1: W=32 T=32 (1.0 turnovers)
+2026-09-10 23:21:33,043 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=AutoModelForCausalLM
+2026-09-10 23:31:37,699 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via AutoModelForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 631.171s
+2026-09-10 23:31:40,074 INFO     semantic_afterlife.events completed pb-qwen3-8b-instruct__W32__T0p3__physics__s1: 1 steps, 32 tokens, 1 chunks, $0.0000
+2026-09-10 23:31:40,076 INFO     semantic_afterlife.events unloaded Qwen/Qwen3-8B peak_vram_mib=5887.6
+2026-09-10 23:31:40,370 INFO     semantic_afterlife.events completed s8-paperb-smoke-qwen3-8b-instruct-20260910T202114Z-c1a44453 — spent $0.0000 (project $10.54 of $50.00)

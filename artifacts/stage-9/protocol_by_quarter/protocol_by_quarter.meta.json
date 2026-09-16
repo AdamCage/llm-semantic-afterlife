@@ -1,0 +1,16 @@
+{
+  "name": "protocol_by_quarter",
+  "caption": "Block fill and stop rate by trajectory-quarter (four even step bins per trajectory, then mean across trajectories in the cell). Not a run-level mean.",
+  "alt_text": "Block fill and stop rate by trajectory-quarter (four even step bins per trajectory, then mean across trajectories in the cell). Not a run-level mean.",
+  "limitations": "Fill and stop are P1 order parameters. A late collapse would make a free-running reading false. Quarters are within-trajectory, so a FAILED empty cell with no steps is absent.",
+  "run_ids": [
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6",
+    "s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc",
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:16+00:00"
+}

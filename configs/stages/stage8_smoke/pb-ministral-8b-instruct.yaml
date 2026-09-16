@@ -1,0 +1,8 @@
+# Wave 2 smoke — one generator per run (ADR-0024). T=32 only.
+include:
+  - configs/stages/stage8_paperb_foundations.yaml
+
+name: paperb-smoke-ministral-8b-instruct
+description: S8 Wave 2 smoke, 32 tokens, Ministral-3-8B-Instruct-2512-BF16 NF4.
+generators:
+  - pb-ministral-8b-instruct

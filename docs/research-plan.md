@@ -6,16 +6,22 @@ Models Beyond the Context Horizon*
 **Target venue.** TMLR (primary) / ICLR; ACL-family as fallback.
 Russian mirror of this document: [`research-plan.ru.md`](research-plan.ru.md).
 
-**Status.** `S7` closed APPROVED WITH CHANGES 2026-09-06. A TMLR
-correctness pass (ADR-0019) is in progress on the closed S0–S7 record:
-protocol `B`, horizon semantics, twin bootstrap, Bernoulli CIs, and
-manuscript wording. Not Stage 8; no new generate. F4 remains an
-ensemble last-band domain gap, not recovered prompt memory (H2).
-Occupancy protocol is P1 `raw_completion` served by Alibaba, `B=1024`.
-H1 unsupported; H5 absent. Hosted **$0**. Mechanical gate FAIL
-`runs.complete` is the writing-stage exception (ADR-0018). Planned
-stages S0–S7 are complete; there is no S8. Project ceiling **$200**
-(ADR-0013). Last revised 2026-09-06.
+**Status.** Paper A stages S0–S7 remain closed as recorded (`S7`
+APPROVED WITH CHANGES 2026-09-06). The TMLR correctness pass
+(ADR-0019…0022) is a writing / occupancy-replication pass on that
+record: protocol `B`, horizon semantics, twin bootstrap, Bernoulli
+CIs, manuscript wording. It does not reopen S0–S7 generate. Paper A
+F4 remains an ensemble last-band domain gap, not recovered prompt
+memory (H2). Occupancy protocol is P1 `raw_completion` served by
+Alibaba, `B=1024`. H1 unsupported; H5 absent.
+
+**Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
+stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
+(2026-09-16). Frozen order: **S10 OLMo → S11 Ministral+Gemma →
+S12 horizon → S13**. S9–S11 is a complete story; S12 is strengthening
+or *no confirmed escape through T*. Local generate is $0 ledger;
+project ceiling **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
+still binds any hosted Gemini subset. Last revised 2026-09-16.
 
 ---
 
@@ -376,10 +382,68 @@ F6 last-band Δ CIs include 0. H1 unsupported (`validated=0`); H5
 absent. Hosted **$0**. Gate FAIL `runs.complete` is expected
 (writing stage); do not mint `runs/s7`.
 
-Planned stages S0–S7 are complete. There is no S8. Venue
-submission, Zenodo, and parked arms (ADR-0017) are not a stage.
+Paper A planned stages S0–S7 are complete. Venue submission, Zenodo,
+and parked Paper A arms (ADR-0017) are not a stage. **Paper B
+(S8+) is opened by ADR-0023**; it does not reopen or rewrite this
+S0–S7 record.
 
 **Budget.** $0 API.
+
+### S8 — Paper B foundations (harness + 32-token smoke) `report drafted`
+
+Opened 2026-09-09. Plan:
+[`docs/stages/stage-8/PLAN.md`](stages/stage-8/PLAN.md).
+[ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md),
+[ADR-0024](decisions/ADR-0024-local-nf4-lifecycle.md),
+[ADR-0025](decisions/ADR-0025-persistence-metrics-and-horizon-ladder.md),
+[ADR-0026](decisions/ADR-0026-seed-bank-v1-rationale-not-identification.md).
+
+No scientific claims. Ten local NF4 checkpoints, 32 generated tokens
+each, unload, doctor, tests. YAML:
+[`configs/stages/stage8_paperb_foundations.yaml`](../configs/stages/stage8_paperb_foundations.yaml)
+(`W=B=T=32`). Not the 12W matrix. Hosted **$0**. Weights are disk,
+not ledger; no download until Wave 0 census + human yes.
+
+**Budget.** $0 API.
+
+### S9 — Qwen Base vs Instruct at 12W `closed 2026-09-16`
+
+Opened 2026-09-11 after [S8 REPORT](stages/stage-8/REPORT.md) (protocol
+fit) and human yes. Plan: [`docs/stages/stage-9/PLAN.md`](stages/stage-9/PLAN.md).
+Report: [`docs/stages/stage-9/REPORT.md`](stages/stage-9/REPORT.md).
+Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
+Phrase blockers applied 2026-09-16. Human authorised `--no-ff`.
+Causal anchor. 86/100 full 12W; 14 empty-completion FAILED, kept.
+Two estimands: completer persistence Base≈Instruct (early-onset
+repetition lock, no escape through 12W, late-window \(G_t>0\) =
+register / loop-family separation); completion worse on Base
+(NF4 9/40 vs 2/40). Fingerprint agreement was not computed.
+S10 is next; do not pool with Qwen.
+
+### S10 — OLMo post-training ladder at 12W `planned`
+
+Four checkpoints (Base → SFT → DPO → RLVR), same 12W matrix. Main
+mechanistic figure. Do not pool with Qwen. Predictions in both
+primary local spaces.
+
+### S11 — Ministral replication + Gemma generalization at 12W `planned`
+
+Ministral Base/Instruct `raw_bytes` plus reduced native-chat; then
+Gemma 4 12B Base/IT. Gemma is architectural generalization, not a
+causal attention ablation. Gemma OOM → stop; no silent substitute.
+
+### S12 — Horizon ladder `planned`
+
+Only after S9–S11. L2 confirmatory estimand is \(\tau_{\mathrm{escape}}\)
+(F3 locked-seed rule). Optional L2-persistence-to-lock is a separate
+arm if L0 has almost no locks. Language: *no confirmed escape through
+\(T_{\min}\)*, not absorbing.
+
+### S13 — Cross-family synthesis `planned`
+
+Figures and `paper/notes/` from S9–S11 as the complete Paper B story;
+S12 as strengthening or a separate no-escape-through-T result.
+`paper/main.tex` only with human yes.
 
 ## 5. Models — as measured in S0, not as hoped
 
@@ -419,18 +483,34 @@ Two protocol facts follow from S0 and apply to every model:
 We do not claim to have measured base language models. That limitation belongs in
 the method section, not the appendix.
 
+**Paper B local four-family (ADR-0023; does not replace the S0 table).**
+Official BF16 Hub weights → one bitsandbytes NF4 recipe. Hosted
+`or-qwen3-8b` is not the Instruct half of the new contrast.
+
+| Family | Checkpoints | Role |
+| --- | --- | --- |
+| Qwen3-8B | `Qwen/Qwen3-8B-Base`, `Qwen/Qwen3-8B` (+ INT8 twins) | causal anchor / post-training (S9) |
+| OLMo 3 7B | `Olmo-3-1025-7B`, Instruct-SFT, Instruct-DPO, Instruct (RLVR) | mechanistic ladder (S10); Hub ids confirmed in Wave 0 |
+| Ministral 3 8B | Base-2512, Instruct-2512-BF16 | matched replication (S11) |
+| Gemma 4 12B | `gemma-4-12B`, `gemma-4-12B-it` | architectural generalization (S11); OOM → stop |
+
 ## 6. Representation spaces
 
 | | Qwen3-Embedding-8B | BGE-M3 | Gemini Embedding 001 |
 | --- | --- | --- | --- |
 | Architecture | causal decoder (`Qwen3ForCausalLM`) | bidirectional encoder (XLM-RoBERTa) | closed |
 | Dimension | 4096 | 1024 | — |
-| Role | primary | primary (independent architecture) | S6 sanity check |
+| Role | Paper A primary; Paper B via `local-qwen3-embed-8b` | Paper A primary; Paper B via `local-bge-m3` | S6 sanity check; optional hosted Paper B subset |
 
 The two primary spaces are architecturally *different in kind*, which is what
 makes cross-space agreement evidence about the generator rather than about
 embedding models. Chunk boundaries are defined in **generator** tokens; each
 embedding model tokenises the same raw text its own way, and that is fine.
+
+Paper B serves the two primaries locally
+([`configs/embeddings/embeddings_local.yaml`](../configs/embeddings/embeddings_local.yaml)).
+Gemini remains optional hosted (estimate + human yes), not an S9–S11
+exit criterion.
 
 ## 7. Standing methodological commitments
 
@@ -464,7 +544,9 @@ fill=1 print / $8 YAML refuse
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
 S7 closed 2026-09-06. Review APPROVED WITH CHANGES; manuscript
 assembled from S0–S6 artifacts; F4 is a domain gap, not H2.
-Human authorised `--no-ff` close. Planned stages complete.
+Human authorised `--no-ff` close. Paper A planned stages are
+complete. Paper B S8+ is open (ADR-0023); local generate is $0
+ledger. Any hosted Gemini subset still needs estimate + human yes.
 Full risk register:
 [`risks.md`](risks.md).
 

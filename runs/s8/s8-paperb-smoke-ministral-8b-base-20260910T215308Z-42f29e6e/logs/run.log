@@ -1,0 +1,8 @@
+2026-09-11 00:53:17,414 INFO     semantic_afterlife.events run s8-paperb-smoke-ministral-8b-base-20260910T215308Z-42f29e6e (live)
+2026-09-11 00:53:17,416 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-11 00:53:17,994 INFO     semantic_afterlife.events start pb-ministral-8b-base__W32__T0p3__physics__s1: W=32 T=32 (1.0 turnovers)
+2026-09-11 00:53:22,750 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-09-11 01:04:27,181 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 693.965s
+2026-09-11 01:04:29,631 INFO     semantic_afterlife.events completed pb-ministral-8b-base__W32__T0p3__physics__s1: 1 steps, 32 tokens, 1 chunks, $0.0000
+2026-09-11 01:04:29,632 INFO     semantic_afterlife.events unloaded mistralai/Ministral-3-8B-Base-2512 peak_vram_mib=6425.2
+2026-09-11 01:04:29,911 INFO     semantic_afterlife.events completed s8-paperb-smoke-ministral-8b-base-20260910T215308Z-42f29e6e — spent $0.0000 (project $10.54 of $50.00)

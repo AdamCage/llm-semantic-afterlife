@@ -1,0 +1,19 @@
+{
+  "name": "microbench",
+  "caption": "Wave 2 microbench: physics \u00d7 s1 \u00d7 W=4096 \u00d7 T=8192 (2 turnovers) \u00d7 4 family heads. Shows exclusive-GPU decode tok/s and step latency for S9\u2013S11 wall-clock. Does not start the 12W matrix. Gemma IT failed empty-completion and is not a tok/s source.",
+  "alt_text": "Wave 2 microbench: physics \u00d7 s1 \u00d7 W=4096 \u00d7 T=8192 (2 turnovers) \u00d7 4 family heads. Shows exclusive-GPU decode tok/s and step latency for S9\u2013S11 wall-clock. Does not start the 12W matrix. Gemma IT failed empty-completion and is not a tok/s source.",
+  "limitations": "Smoke is T=32 / W=32, not a 12W scientific horizon. tok/s on smoke includes a tiny decode and is not the S9 operating point. UMAP is not used. No G_t or lock claim.",
+  "run_ids": [
+    "s8-paperb-micro-qwen3-8b-instruct-20260910T221623Z-61c9ad74",
+    "s8-paperb-micro-ministral-8b-instruct-20260910T233421Z-e528749b",
+    "s8-paperb-micro-olmo3-7b-base-20260910T232755Z-e3cc4b7f",
+    "s8-paperb-micro-gemma4-12b-it-20260910T233125Z-f89a95a4"
+  ],
+  "git_sha": "bc06b36",
+  "units": {
+    "peak_vram_mib": "MiB allocated peak as reported by torch",
+    "tok_s": "new tokens / generate() wall seconds",
+    "block_fill": "completion_tokens / requested max_tokens"
+  },
+  "generated_at": "2026-09-10T23:40:25.901081+00:00"
+}

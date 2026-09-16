@@ -8,15 +8,21 @@ Models Beyond the Context Horizon*
 [`research-plan.md`](research-plan.md). При расхождениях английская версия
 считается основной.
 
-**Статус.** `S7` закрыт APPROVED WITH CHANGES 2026-09-06. Идёт TMLR
-correctness pass (ADR-0019) по закрытому record S0–S7: `B` в протоколе,
-семантика горизонта, twin bootstrap, Bernoulli CI, формулировки
-manuscript. Это не Stage 8 и не новый generate. F4 — ансамблевый
-last-band domain gap, не recovered prompt memory (H2). Occupancy —
-P1 `raw_completion` у Alibaba, `B=1024`. H1 не поддержан; H5 нет.
-Hosted **$0**. FAIL `runs.complete` — исключение письменной стадии
-(ADR-0018). Плановые этапы S0–S7 завершены; S8 нет. Потолок проекта
-**$200** (ADR-0013). Последняя правка 2026-09-06.
+**Статус.** Этапы Paper A S0–S7 закрыты как записано (`S7` APPROVED
+WITH CHANGES 2026-09-06). TMLR correctness pass (ADR-0019…0022) — это
+письменный / replication-проход по тому record, не reopen generate
+S0–S7. F4 Paper A — ансамблевый last-band domain gap, не recovered
+prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
+`B=1024`. H1 не поддержан; H5 нет.
+
+**Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
+этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
+Порядок заморожен: **S10 OLMo → S11 Ministral+Gemma → S12 horizon →
+S13**. S9–S11 — законченная история.
+Локальный generate — $0 в ledger; потолок проекта **$200**
+(ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
+2026-09-09. Канонический текст — английский
+[`research-plan.md`](research-plan.md).
 
 ---
 
@@ -312,10 +318,34 @@ domain gap, не recovered prompt memory (H2). Occupancy-протокол
 H1 не поддержан (`validated=0`); H5 нет. Hosted **$0**. FAIL
 `runs.complete` ожидаем; не создавать `runs/s7`.
 
-Плановые этапы S0–S7 завершены. S8 нет. Подача на площадку, Zenodo
-и руки на парковке (ADR-0017) — не этап.
+Плановые этапы Paper A S0–S7 завершены. Подача на площадку, Zenodo
+и руки Paper A на парковке (ADR-0017) — не этап. **Paper B (S8+)
+открыта ADR-0023**; этот record S0–S7 не переписывается.
 
 **Бюджет.** $0 API.
+
+### S8 — основания Paper B (harness + smoke 32 токена) `report drafted`
+
+Открыт 2026-09-09. План:
+[`docs/stages/stage-8/PLAN.md`](stages/stage-8/PLAN.md).
+ADR-0023…0026. Без научных claims. Десять локальных NF4
+checkpoint × 32 токена. Не матрица 12W. Hosted **$0**.
+
+### S9 — Qwen Base vs Instruct на 12W `закрыт 2026-09-16`
+
+Открыт 2026-09-11 после отчёта S8 и human yes. План:
+[`docs/stages/stage-9/PLAN.md`](stages/stage-9/PLAN.md).
+Отчёт: [`docs/stages/stage-9/REPORT.md`](stages/stage-9/REPORT.md).
+Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
+Три правки формулировок внесены. Human дал `--no-ff`.
+Два эстиманда: persistence на completers Base≈Instruct; completion
+хуже у Base (9/40 vs 2/40). Следующий этап — S10; с Qwen не пулить.
+
+### S10–S13 `planned`
+
+Порядок заморожен: S10 OLMo → S11 Ministral+Gemma → S12 горизонт →
+S13 синтез. Подтверждающие оценки и freeze F1–F4 — в английском
+плане и ADR-0023 / ADR-0025.
 
 ## 5. Модели
 
@@ -381,7 +411,8 @@ Hosted Stage 5 **$1.3385** против оценки fill=1 $1.06 / YAML $8
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
 S7 закрыт 2026-09-06. Рецензия APPROVED WITH CHANGES; рукопись из
 артефактов S0–S6; F4 — domain gap, не H2. Человек разрешил
-`--no-ff` close. Плановые этапы завершены.
+`--no-ff` close. Этапы Paper A завершены. Paper B S8+ открыта
+(ADR-0023); локальный generate — $0 в ledger.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

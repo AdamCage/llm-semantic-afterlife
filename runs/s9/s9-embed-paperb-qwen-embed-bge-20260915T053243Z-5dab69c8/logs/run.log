@@ -1,0 +1,4 @@
+2026-09-15 08:32:52,570 INFO     semantic_afterlife.events run s9-embed-paperb-qwen-embed-bge-20260915T053243Z-5dab69c8 (live)
+2026-09-15 08:32:52,572 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-15 08:32:55,524 INFO     semantic_afterlife.providers.local_embed loading local embedder BAAI/bge-m3 device=cuda
+2026-09-15 08:33:25,517 INFO     semantic_afterlife.events completed s9-embed-paperb-qwen-embed-bge-20260915T053243Z-5dab69c8 — spent $0.0000 (project $10.54 of $50.00)

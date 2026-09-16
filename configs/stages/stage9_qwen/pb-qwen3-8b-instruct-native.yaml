@@ -1,0 +1,16 @@
+# S9.5 — Native-chat reduced (Instruct). DO NOT GENERATE until
+# build_request treats native_chat independently of raw_completion.
+# Seeds: F2 physics, biology × s1,s2 (ADR-0023).
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-instruct-native
+description: >-
+  Deferred native-chat arm. Executing this file today would silently
+  emit raw_bytes. See stage-9 PLAN E3.
+generators:
+  - pb-qwen3-8b-instruct
+semantic_seeds:
+  - physics
+  - biology
+stochastic_seeds: [1, 2]

@@ -1,0 +1,5 @@
+cell,generate_run_id,n_planned,n_unique_trajectories,n_finished_events,n_completed,n_failed,n_steps,block_fill_mean,block_fill_min,stop_rate,reasoning_tokens_sum,roundtrip_failures,served_providers
+instruct-nf4,s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6,40,40,40,38,2,1831,0.998688,0.021,0.00163845,0,0,local
+base-nf4,s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc,40,40,40,31,9,1553,0.963211,0.004,0.0701867,0,0,local
+instruct-int8,s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498,10,10,11,9,1,435,0.997533,0.058,0.0045977,0,0,local
+base-int8,s9-paperb-qwen-base-int8-20260914T091655Z-11069a87,10,10,10,8,2,386,0.995842,0.006,0.00518135,0,0,local

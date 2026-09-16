@@ -1,0 +1,25 @@
+{
+  "name": "smoke_10x32",
+  "caption": "Wave 2 NF4 smoke: 32 new tokens \u00d7 10 Paper B checkpoints. Shows load class, Hub revision, peak VRAM, decode tok/s, fill, stop, thinking. Does not measure G_t, lock, or 12W occupancy.",
+  "alt_text": "Wave 2 NF4 smoke: 32 new tokens \u00d7 10 Paper B checkpoints. Shows load class, Hub revision, peak VRAM, decode tok/s, fill, stop, thinking. Does not measure G_t, lock, or 12W occupancy.",
+  "limitations": "Smoke is T=32 / W=32, not a 12W scientific horizon. tok/s on smoke includes a tiny decode and is not the S9 operating point. UMAP is not used. No G_t or lock claim.",
+  "run_ids": [
+    "s8-paperb-smoke-qwen3-8b-base-20260910T200925Z-28827fb7",
+    "s8-paperb-smoke-qwen3-8b-instruct-20260910T202114Z-c1a44453",
+    "s8-paperb-smoke-olmo3-7b-base-20260910T203216Z-a08dbea4",
+    "s8-paperb-smoke-olmo3-7b-sft-20260910T204127Z-e446abc8",
+    "s8-paperb-smoke-olmo3-7b-dpo-20260910T205044Z-1d237e73",
+    "s8-paperb-smoke-olmo3-7b-rlvr-20260910T205941Z-2fc2def8",
+    "s8-paperb-smoke-ministral-8b-base-20260910T215816Z-42f29e6e",
+    "s8-paperb-smoke-ministral-8b-instruct-20260910T220441Z-1c1fd482",
+    "s8-paperb-smoke-gemma4-12b-base-20260910T210919Z-2cf3ff6d",
+    "s8-paperb-smoke-gemma4-12b-it-20260910T213805Z-58e90177"
+  ],
+  "git_sha": "bc06b36",
+  "units": {
+    "peak_vram_mib": "MiB allocated peak as reported by torch",
+    "tok_s": "new tokens / generate() wall seconds",
+    "block_fill": "completion_tokens / requested max_tokens"
+  },
+  "generated_at": "2026-09-10T23:40:25.897623+00:00"
+}

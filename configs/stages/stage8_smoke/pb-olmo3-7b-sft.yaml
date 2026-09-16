@@ -1,0 +1,8 @@
+# Wave 2 smoke — one generator per run (ADR-0024). T=32 only.
+include:
+  - configs/stages/stage8_paperb_foundations.yaml
+
+name: paperb-smoke-olmo3-7b-sft
+description: S8 Wave 2 smoke, 32 tokens, OLMo-3-7B-Instruct-SFT NF4.
+generators:
+  - pb-olmo3-7b-sft

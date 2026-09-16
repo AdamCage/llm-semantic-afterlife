@@ -1,0 +1,10 @@
+# S9.1 — Qwen3-8B Instruct NF4, raw_bytes, 10 × 4, 12W.
+# One generator. Do not add a second slug.
+include:
+  - configs/stages/stage9_qwen/_base.yaml
+
+name: paperb-qwen-instruct-nf4
+description: >-
+  S9 primary Instruct cell. Local Qwen/Qwen3-8B NF4. Not or-qwen3-8b.
+generators:
+  - pb-qwen3-8b-instruct

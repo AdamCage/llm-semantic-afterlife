@@ -1,0 +1,15 @@
+{
+  "name": "persistence_locks",
+  "caption": "Prefix long-lived repetition lock (F1 + N_confirm=3) for instruct-nf4 in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "alt_text": "Prefix long-lived repetition lock (F1 + N_confirm=3) for instruct-nf4 in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "limitations": "Hash is diagnostic only and is not in this table.",
+  "run_ids": [
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6",
+    "s9-embed-paperb-qwen-embed-qwen-hosted-20260915T061135Z-f7e02b57",
+    "s9-persistence-qwen3-embed-8b-20260916T052454Z-c734ab5c"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:14+00:00"
+}

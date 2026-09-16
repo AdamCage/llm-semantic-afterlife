@@ -1,0 +1,8 @@
+2026-09-10 23:41:34,206 INFO     semantic_afterlife.events run s8-paperb-smoke-olmo3-7b-sft-20260910T204127Z-e446abc8 (live)
+2026-09-10 23:41:34,208 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-10 23:41:35,852 INFO     semantic_afterlife.events start pb-olmo3-7b-sft__W32__T0p3__physics__s1: W=32 T=32 (1.0 turnovers)
+2026-09-10 23:41:39,801 INFO     semantic_afterlife.providers.local loading local model allenai/Olmo-3-7B-Instruct-SFT device=cuda dtype=bfloat16 attn=sdpa loader=AutoModelForCausalLM
+2026-09-10 23:50:40,052 INFO     semantic_afterlife.events loaded allenai/Olmo-3-7B-Instruct-SFT Olmo3ForCausalLM via AutoModelForCausalLM rev=e1452fc572d51966ff4aaeb25118b891eb93e549 peak_vram_mib=4822.9 in 564.039s
+2026-09-10 23:50:42,264 INFO     semantic_afterlife.events completed pb-olmo3-7b-sft__W32__T0p3__physics__s1: 1 steps, 32 tokens, 1 chunks, $0.0000
+2026-09-10 23:50:42,267 INFO     semantic_afterlife.events unloaded allenai/Olmo-3-7B-Instruct-SFT peak_vram_mib=4822.9
+2026-09-10 23:50:42,535 INFO     semantic_afterlife.events completed s8-paperb-smoke-olmo3-7b-sft-20260910T204127Z-e446abc8 — spent $0.0000 (project $10.54 of $50.00)

@@ -1134,6 +1134,86 @@ def occupancy_vs_turnover_figure(
     return figure, tidy, meta
 
 
+def persistence_gt_figure(
+    per_band: pd.DataFrame,
+    *,
+    W: int,
+    embedding: str,
+    run_ids: list[str],
+    name: str = "persistence_gt",
+) -> tuple[go.Figure, pd.DataFrame, FigureMeta]:
+    """G_t versus turnover with seed-cluster CI. Not a 2-D projection."""
+    figure = go.Figure()
+    if {"G_lo", "G_hi"}.issubset(per_band.columns):
+        figure.add_trace(
+            go.Scatter(
+                x=pd.concat([per_band["band_mid"], per_band["band_mid"][::-1]], ignore_index=True),
+                y=pd.concat([per_band["G_hi"], per_band["G_lo"][::-1]], ignore_index=True),
+                fill="toself",
+                fillcolor=_rgba(ROLE_COLORS["ci"], 0.18),
+                line={"width": 0},
+                name="95% seed-cluster CI",
+                hoverinfo="skip",
+            )
+        )
+    figure.add_trace(
+        go.Scatter(
+            x=per_band["band_mid"],
+            y=per_band["G"],
+            mode="lines+markers",
+            name="G_t",
+            line={"width": 2.8, "color": PALETTE[0]},
+            marker={"size": 8},
+            hovertemplate="t/W=%{x:.2f}<br>G=%{y:.4f}<extra></extra>",
+        )
+    )
+    figure.add_hline(y=0.0, line={"color": ROLE_COLORS["baseline"], "width": 1.4, "dash": "dash"})
+    figure.add_vline(
+        x=1.0,
+        line={"color": ROLE_COLORS["horizon"], "width": 1.8},
+        annotation={
+            "text": "context horizon",
+            "font": {"color": ROLE_COLORS["horizon"], "size": 10},
+        },
+    )
+    figure.update_layout(
+        template=plotly_template(),
+        title=(
+            f"Seed-conditioned persistence G_t — {embedding}<br>"
+            f"<sub>W = {W:,}. Seed-cluster bootstrap, not 40 iid trajectories. "
+            "A lock is not an absorbing state.</sub>"
+        ),
+        height=520,
+        xaxis_title="window turnovers t/W",
+        yaxis_title="G_t = d_between − d_within",
+    )
+    tidy = per_band.copy()
+    last = per_band.iloc[-1]
+    last_g = float(last["G"])
+    ci_note = ""
+    if "G_lo" in per_band.columns:
+        ci_note = f" Last-band G={last_g:.4f} [{float(last['G_lo']):.4f}, {float(last['G_hi']):.4f}]."
+    meta = FigureMeta(
+        name=name,
+        caption=(
+            f"Paper B confirmatory G_t in {embedding}, W={W:,}. "
+            "G_t = d_between(t) − d_within(t) on L2-normalised embeddings. "
+            "The band is a seed-cluster bootstrap (resample seeds; descendants "
+            f"travel with their seed).{ci_note} This is not a UMAP cluster count."
+        ),
+        run_ids=run_ids,
+        alt_text=f"G_t versus turnover in {embedding}.",
+        limitations=(
+            "A positive G_t is seed-conditioned ensemble persistence in this "
+            "representation, not semantic-domain memory and not a metastable "
+            "state. The lock construct is labelled separately and is not "
+            "absorbing. INT8 is concordance, not a third headline."
+        ),
+        extra={"W": W, "embedding": embedding},
+    )
+    return figure, tidy, meta
+
+
 def _rgba(hex_colour: str, alpha: float) -> str:
     hex_colour = hex_colour.lstrip("#")
     r, g, b = (int(hex_colour[i : i + 2], 16) for i in (0, 2, 4))
