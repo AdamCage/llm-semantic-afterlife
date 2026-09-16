@@ -1,0 +1,16 @@
+{
+  "name": "empty_completions",
+  "caption": "Generate cells that finished FAILED. Kept in the S9 sample; not silently dropped. E1/E2 are PARTIAL for this reason.",
+  "alt_text": "Generate cells that finished FAILED. Kept in the S9 sample; not silently dropped. E1/E2 are PARTIAL for this reason.",
+  "limitations": "Absence from G_t is missing data, not a lock or an escape.",
+  "run_ids": [
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6",
+    "s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc",
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:16+00:00"
+}

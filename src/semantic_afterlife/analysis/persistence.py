@@ -230,6 +230,69 @@ def seed_cluster_bootstrap(
     return out
 
 
+def loo_by_seed(
+    trajectories: list[TrajectoryEmbed],
+    *,
+    band_edges: np.ndarray,
+) -> pd.DataFrame:
+    """Last-band G_t after dropping one seed at a time (headline robustness)."""
+    seeds = sorted({t.seed_id for t in trajectories})
+    if len(seeds) < 3:
+        raise AnalysisError("LOO-by-seed needs at least three seeds")
+    rows: list[dict[str, float | str]] = []
+    for held in seeds:
+        subset = [t for t in trajectories if t.seed_id != held]
+        frame = gap_vs_turnover(subset, band_edges=band_edges)
+        last = frame.iloc[-1]
+        rows.append(
+            {
+                "held_out_seed": held,
+                "band_left": float(last["band_left"]),
+                "band_right": float(last["band_right"]),
+                "G": float(last["G"]),
+                "d_within": float(last["d_within"]),
+                "d_between": float(last["d_between"]),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def trajectories_from_embed_frame(
+    frame: pd.DataFrame,
+    *,
+    min_chunks: int = 8,
+) -> list[TrajectoryEmbed]:
+    """Build ``TrajectoryEmbed`` rows from an ``embeddings_*.parquet`` frame."""
+    embedding_columns = [c for c in frame.columns if c.startswith("e") and c[1:].isdigit()]
+    if not embedding_columns:
+        raise AnalysisError("embedding frame has no e0..eN columns")
+    out: list[TrajectoryEmbed] = []
+    for trajectory_id, block in frame.groupby("trajectory_id", sort=True):
+        block = block.sort_values("chunk_index")
+        if len(block) < min_chunks:
+            continue
+        W = float(block["W"].iloc[0])
+        turnovers = block["token_end"].to_numpy(dtype=np.float64) / W
+        seed = str(block["semantic_seed"].iloc[0])
+        out.append(
+            TrajectoryEmbed(
+                trajectory_id=str(trajectory_id),
+                seed_id=seed,
+                embeddings=block[embedding_columns].to_numpy(dtype=np.float64),
+                turnovers=turnovers,
+            )
+        )
+    if len(out) < 2:
+        raise AnalysisError("not enough trajectories with min_chunks for G_t")
+    return out
+
+
+def integer_l0_band_edges(max_turnover: float) -> np.ndarray:
+    """Right-open integer bands ``[1,2), …, [k, k+1)`` covering L0 last chunk at 12.0."""
+    last = max(int(np.floor(max_turnover)), 1) + 1
+    return np.arange(1.0, float(last) + 1.0, 1.0, dtype=np.float64)
+
+
 def capped_late_jaccard(
     shingle_sets: list[set[tuple[str, ...]]],
     *,

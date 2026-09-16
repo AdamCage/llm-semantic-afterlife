@@ -1,6 +1,8 @@
 # Stage 9 — Does post-training change Qwen3-8B late-regime persistence at 12W?
 
-**Status.** Opened 2026-09-11 after Stage 8 REPORT declared the local
+**Status.** Closed 2026-09-16 (`--no-ff`). Review **APPROVED WITH
+CHANGES**; phrase blockers applied in [`REPORT.md`](REPORT.md).
+Opened 2026-09-11 after Stage 8 REPORT declared the local
 P1 path fit for Qwen and the human authorised 12W generate. Decisions:
 [ADR-0023](../../decisions/ADR-0023-paper-b-local-four-family.md),
 [ADR-0024](../../decisions/ADR-0024-local-nf4-lifecycle.md),
@@ -126,14 +128,14 @@ Empty `observed` is filled by the report.
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | ---: | --- |
-| P1 | Instruct NF4: ≥8/10 domain seeds have ≥1 confirmed lock (`N_confirm=3`) by 12W | 0.55 | |
-| P2 | Base NF4 seed-level lock rate (seeds with ≥1 lock) is **lower** than Instruct | 0.60 | |
-| P3 | Instruct last-band \(G_t > 0\) in **both** spaces (local BGE-M3 and hosted Qwen-embed) | 0.50 | |
-| P4 | Sign of Instruct last-band \(G_t\) **agrees** across BGE-M3 and Qwen-embed | 0.55 | |
-| P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | |
-| P6 | Mean block fill on NF4 12W ≥ 0.95 (same `W`/`B` as the microbench) | 0.70 | |
-| P7 | INT8 vs NF4, Instruct, five F2 seeds: **same sign** of last-band \(G_t\) (not a 0.01 numeric match) | 0.45 | |
-| P8 | If Base≈Instruct on both lock rate and last-band \(G_t\) sign, that is a finding (autoregressive dynamics), not a failed contrast | — | |
+| P1 | Instruct NF4: ≥8/10 domain seeds have ≥1 confirmed lock (`N_confirm=3`) by 12W | 0.55 | **true** (10/10). [`REPORT.md`](REPORT.md) |
+| P2 | Base NF4 seed-level lock rate (seeds with ≥1 lock) is **lower** than Instruct | 0.60 | **9/10 vs 10/10** only because `recipe` has no completed traj. Completed Base seeds lock 9/9 |
+| P3 | Instruct last-band \(G_t > 0\) in **both** spaces (local BGE-M3 and hosted Qwen-embed) | 0.50 | **true** (0.1514 and 0.3046; both CIs exclude 0) |
+| P4 | Sign of Instruct last-band \(G_t\) **agrees** across BGE-M3 and Qwen-embed | 0.55 | **true** (both +) |
+| P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | **true** |
+| P6 | Mean block fill on NF4 12W ≥ 0.95 (same `W`/`B` as the microbench) | 0.70 | **true** run-level; Base Q1 0.773 from empty-completion deaths |
+| P7 | INT8 vs NF4, Instruct, five F2 seeds: **same sign** of last-band \(G_t\) (not a 0.01 numeric match) | 0.45 | **true** both spaces; BGE INT8 CI includes 0 |
+| P8 | If Base≈Instruct on both lock rate and last-band \(G_t\) sign, that is a finding (autoregressive dynamics), not a failed contrast | — | **completer estimand** (31/31 vs 38/38; \(G_t\) sign +/+). Second estimand: Base completion worse (9/40 vs 2/40; `recipe` 0/4 vs 4/4) |
 
 P1 is deliberately below Paper A’s 10/10 / 19/20: different stack,
 NF4, four descendants not two.

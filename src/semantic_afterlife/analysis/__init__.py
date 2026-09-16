@@ -102,8 +102,11 @@ from .persistence import (
     TrajectoryEmbed,
     capped_late_jaccard,
     gap_vs_turnover,
+    integer_l0_band_edges,
     log_turnover_bands,
+    loo_by_seed,
     prefix_lock_escape,
     seed_cluster_bootstrap,
+    trajectories_from_embed_frame,
 )
 

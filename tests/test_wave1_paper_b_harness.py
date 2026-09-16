@@ -11,7 +11,9 @@ from semantic_afterlife.analysis.persistence import (
     TrajectoryEmbed,
     capped_late_jaccard,
     gap_vs_turnover,
+    integer_l0_band_edges,
     log_turnover_bands,
+    loo_by_seed,
     prefix_lock_escape,
 )
 from semantic_afterlife.config import (
@@ -305,6 +307,27 @@ def test_prefix_lock_escape_recovery() -> None:
     assert result.tau_lock == 7.0
     assert result.confirmed_escape
     assert result.tau_escape == 22.0
+
+
+def test_loo_by_seed_drops_one() -> None:
+    rng = np.random.default_rng(2)
+    turnovers = np.linspace(1.0, 12.0, 12)
+    trajectories = []
+    for seed_i, center in enumerate((np.ones(4), -np.ones(4), np.array([1.0, -1.0, 1.0, -1.0]))):
+        for rep in range(2):
+            emb = np.stack([center + 0.02 * rng.normal(size=4) for _ in turnovers])
+            trajectories.append(
+                TrajectoryEmbed(
+                    trajectory_id=f"s{seed_i}-r{rep}",
+                    seed_id=f"seed{seed_i}",
+                    embeddings=emb,
+                    turnovers=turnovers,
+                )
+            )
+    edges = integer_l0_band_edges(12.0)
+    loo = loo_by_seed(trajectories, band_edges=edges)
+    assert set(loo["held_out_seed"]) == {"seed0", "seed1", "seed2"}
+    assert len(loo) == 3
 
 
 def test_capped_jaccard_runs() -> None:

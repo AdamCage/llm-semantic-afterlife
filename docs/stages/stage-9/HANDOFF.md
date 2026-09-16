@@ -1,18 +1,13 @@
 # Stage 9 — HANDOFF
 
-Scientific contract: [`PLAN.md`](PLAN.md). S8 close:
+Scientific contract: [`PLAN.md`](PLAN.md). Executor record:
+[`REPORT.md`](REPORT.md). S8 close:
 [`../stage-8/REPORT.md`](../stage-8/REPORT.md).
 
 WSL: `UV_PROJECT_ENVIRONMENT=/home/adam/.venvs/llm-semantic-afterlife`,
-`HF_HOME=/home/adam/hf-paperb`. Inner runner:
-[`scripts/s9_run_one.sh`](../../../scripts/s9_run_one.sh).
-INT8 resume: [`scripts/s9_resume_int8.sh`](../../../scripts/s9_resume_int8.sh)
-(logs under `/home/adam/s9`, warnings not streamed). Native-chat is
-**not** in that script.
+`HF_HOME=/home/adam/hf-paperb`.
 
 ## Live generate
-
-Update this table when each run mints an id.
 
 | Pass | Config | `run_id` | STATUS |
 | --- | --- | --- | --- |
@@ -21,9 +16,15 @@ Update this table when each run mints an id.
 | S9.3 | `configs/stages/stage9_qwen/pb-qwen3-8b-instruct-int8.yaml` | `s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498` | COMPLETED 9/10 |
 | S9.4 | `configs/stages/stage9_qwen/pb-qwen3-8b-base-int8.yaml` | `s9-paperb-qwen-base-int8-20260914T091655Z-11069a87` | COMPLETED 8/10 |
 
-Resume: `uv run afterlife generate --config <yaml> --resume-run <id> --yes`.
+14 empty-completion FAILED cells kept. Native-chat not executed.
 
-Discard tok/s if `nvidia-smi` shows a second compute process.
+## Return contract
+
+- `status:` closed 2026-09-16. Human authorised `--no-ff`. S10 is a new branch from `main`.
+- `run_ids:` generate table + 8 embed + 4 degeneracy + 8 persistence (see REPORT)
+- `blockers:` native-chat serialization (`build_request` still raw)
+- `next_agent:` scientific supervisor after a green mechanical gate
+- `do_not: S10; native-chat; dual GPU; OpenRouter Instruct; paper/main.tex`
 
 ## Do not
 
@@ -36,11 +37,3 @@ Discard tok/s if `nvidia-smi` shows a second compute process.
 - Cut `B` / swap checkpoint
 - Write `paper/main.tex`
 - Commit unless the human asks
-
-## Return contract
-
-- `status:` generate closed; embed + degeneracy next
-- `run_ids:` this table (86/100 full 12W; 14 empty-completion FAILED, kept)
-- `blockers:` native-chat serialization (`build_request` still raw)
-- `next_agent:` hosted `qwen3-embed-8b` (RouterAI, ADR-0027) → \(G_t\) both spaces
-- `do_not: S10; native-chat; dual GPU; OpenRouter Instruct`

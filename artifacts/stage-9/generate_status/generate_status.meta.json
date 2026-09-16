@@ -1,0 +1,16 @@
+{
+  "name": "generate_status",
+  "caption": "S9 generate completeness and run-level protocol scalars. n_completed is STATUS=COMPLETED at target_tokens=49152. n_failed are empty-completion cells kept in the sample (not dropped).",
+  "alt_text": "S9 generate completeness and run-level protocol scalars. n_completed is STATUS=COMPLETED at target_tokens=49152. n_failed are empty-completion cells kept in the sample (not dropped).",
+  "limitations": "A run-level mean hides drift; use protocol_by_quarter for fill and stop.",
+  "run_ids": [
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6",
+    "s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc",
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87"
+  ],
+  "git_sha": "4687dc27ef487fb46a664354fe2c6e04cacf846d",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-16T17:57:15+00:00"
+}

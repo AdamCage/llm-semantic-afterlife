@@ -16,9 +16,9 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 `B=1024`. H1 не поддержан; H5 нет.
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
-этапы **S8–S13**. S8 — harness / smoke на 32 токена, без научных
-claims. Порядок заморожен: **S9 Qwen → S10 OLMo → S11
-Ministral+Gemma → S12 horizon → S13**. S9–S11 — законченная история.
+этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
+Порядок заморожен: **S10 OLMo → S11 Ministral+Gemma → S12 horizon →
+S13**. S9–S11 — законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
 (ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
 2026-09-09. Канонический текст — английский
@@ -331,12 +331,15 @@ H1 не поддержан (`validated=0`); H5 нет. Hosted **$0**. FAIL
 ADR-0023…0026. Без научных claims. Десять локальных NF4
 checkpoint × 32 токена. Не матрица 12W. Hosted **$0**.
 
-### S9 — Qwen Base vs Instruct на 12W `opened`
+### S9 — Qwen Base vs Instruct на 12W `закрыт 2026-09-16`
 
 Открыт 2026-09-11 после отчёта S8 и human yes. План:
 [`docs/stages/stage-9/PLAN.md`](stages/stage-9/PLAN.md).
-80 траекторий NF4 `raw_bytes` + 20 INT8. Native-chat отложен.
-S10 не стартует до REPORT S9.
+Отчёт: [`docs/stages/stage-9/REPORT.md`](stages/stage-9/REPORT.md).
+Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
+Три правки формулировок внесены. Human дал `--no-ff`.
+Два эстиманда: persistence на completers Base≈Instruct; completion
+хуже у Base (9/40 vs 2/40). Следующий этап — S10; с Qwen не пулить.
 
 ### S10–S13 `planned`
 

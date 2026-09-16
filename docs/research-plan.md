@@ -16,12 +16,12 @@ memory (H2). Occupancy protocol is P1 `raw_completion` served by
 Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
-stages **S8–S13**. S8 is harness / 32-token smoke, no scientific
-claims. Frozen order: **S9 Qwen → S10 OLMo → S11 Ministral+Gemma →
+stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
+(2026-09-16). Frozen order: **S10 OLMo → S11 Ministral+Gemma →
 S12 horizon → S13**. S9–S11 is a complete story; S12 is strengthening
 or *no confirmed escape through T*. Local generate is $0 ledger;
 project ceiling **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
-still binds any hosted Gemini subset. Last revised 2026-09-09.
+still binds any hosted Gemini subset. Last revised 2026-09-16.
 
 ---
 
@@ -406,15 +406,19 @@ not ledger; no download until Wave 0 census + human yes.
 
 **Budget.** $0 API.
 
-### S9 — Qwen Base vs Instruct at 12W `opened`
+### S9 — Qwen Base vs Instruct at 12W `closed 2026-09-16`
 
 Opened 2026-09-11 after [S8 REPORT](stages/stage-8/REPORT.md) (protocol
 fit) and human yes. Plan: [`docs/stages/stage-9/PLAN.md`](stages/stage-9/PLAN.md).
-Causal anchor. Primary `raw_bytes`: 2 checkpoints × 10 seeds × 4
-descendants. INT8 control: F2 five seeds × `s1,s2` × 2 checkpoints =
-20. Native-chat reduced: deferred until `build_request` distinguishes
-`native_chat` from `raw_completion`. Two local spaces. Confirmatory
-order: \(G_t\) → \(\tau_{\mathrm{lock}}\) → fingerprint agreement.
+Report: [`docs/stages/stage-9/REPORT.md`](stages/stage-9/REPORT.md).
+Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
+Phrase blockers applied 2026-09-16. Human authorised `--no-ff`.
+Causal anchor. 86/100 full 12W; 14 empty-completion FAILED, kept.
+Two estimands: completer persistence Base≈Instruct (early-onset
+repetition lock, no escape through 12W, late-window \(G_t>0\) =
+register / loop-family separation); completion worse on Base
+(NF4 9/40 vs 2/40). Fingerprint agreement was not computed.
+S10 is next; do not pool with Qwen.
 
 ### S10 — OLMo post-training ladder at 12W `planned`
 

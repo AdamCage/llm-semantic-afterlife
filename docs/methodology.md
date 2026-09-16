@@ -267,6 +267,16 @@ paper.
   Crossed twin pairs (different stochastic seeds) are not
   `D_twin_matched` and are not the control.
 
+- **Paper B \(G_t\)** (ADR-0025). Same contrast as `D_between − D_within`,
+  reported versus log-spaced (or, at L0 ≤ 12 turnovers, integer) turnover
+  bands. Uncertainty is a **seed-cluster bootstrap**: resample seeds, and
+  inside a drawn seed keep its descendants with multiplicity. Do not
+  bootstrap chunks. Do not treat 40 trajectories as iid. LOO-by-seed is
+  headline robustness. The prefix lock machine (`unlocked → locked →
+  escaped`, `N_confirm=3`) uses the F1 degeneracy classifier, not a
+  window hash. The lock is not absorbing; write *no confirmed escape
+  through \(T\)*.
+
 ### 3.3 Diffusion
 
 ```

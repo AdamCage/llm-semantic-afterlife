@@ -1288,6 +1288,182 @@ def analyze_degeneracy(
         console().print(f"run_id: [bold]{context.run_id}[/bold]")
 
 
+@analyze_app.command("persistence")
+def analyze_persistence(
+    run: Annotated[str, typer.Option("--run", "-r", help="embed run_id holding embeddings")],
+    embedding: Annotated[str, typer.Option("--embedding", "-e")] = "",
+) -> None:
+    """Paper B confirmatory G_t (seed-cluster + LOO) and prefix lock times.
+
+    Degeneracy first: lock uses the F1 classifier, not a window hash. The
+    lock is not absorbing. Do not treat 40 trajectories as iid Bernoulli.
+    """
+    settings = get_settings()
+    configure_logging(settings.afterlife_log_level)
+    source = settings.paths.find_run(run)
+    manifest = read_manifest(source.manifest)
+
+    candidates = sorted(source.data_dir.glob("embeddings_*.parquet"))
+    if not candidates:
+        raise typer.BadParameter(f"run {run} has no embeddings; run `afterlife embed` first")
+    chosen = source.embeddings(embedding) if embedding else candidates[0]
+    if not chosen.is_file():
+        raise typer.BadParameter(f"{chosen.name} not found in run {run}")
+    slug = chosen.stem.removeprefix("embeddings_")
+
+    import numpy as np
+
+    from .analysis.persistence import (
+        PersistenceParams,
+        integer_l0_band_edges,
+        loo_by_seed,
+        prefix_lock_escape,
+        seed_cluster_bootstrap,
+        trajectories_from_embed_frame,
+    )
+    from .reporting.tables import save_table
+    from .viz.export import FigureMeta, save_plotly_figure
+    from .viz.figures import persistence_gt_figure
+
+    params = PersistenceParams()
+    config_resolved = {
+        "analysis": "persistence",
+        "source_run_id": run,
+        "embedding": slug,
+        "params": params.model_dump(),
+    }
+    with run_context(
+        stage=str(manifest.get("stage", "s9")),
+        slug=f"persistence-{slug}",
+        config_resolved=config_resolved,
+        config_sha256=sha256_obj(config_resolved),
+        settings=settings,
+    ) as context:
+        frame = pd.read_parquet(chosen)
+        trajectories = trajectories_from_embed_frame(frame)
+        max_t = max(float(t.turnovers.max()) for t in trajectories)
+        band_edges = integer_l0_band_edges(max_t)
+        per_band = seed_cluster_bootstrap(trajectories, band_edges=band_edges, params=params)
+        loo = loo_by_seed(trajectories, band_edges=band_edges)
+
+        per_band.to_parquet(context.paths.data_dir / "persistence_gt.parquet", index=False)
+        loo.to_parquet(context.paths.data_dir / "persistence_loo.parquet", index=False)
+
+        lock_rows: list[dict[str, Any]] = []
+        chunks_source = _source_chunks(source)
+        if chunks_source is not None:
+            _verdicts, per_chunk = _degeneracy_labels(chunks_source)
+            for traj in trajectories:
+                block = per_chunk[per_chunk["trajectory_id"] == traj.trajectory_id].sort_values(
+                    "chunk_index"
+                )
+                if block.empty:
+                    continue
+                result = prefix_lock_escape(
+                    block["looping"].to_numpy(dtype=bool),
+                    block["turnover"].to_numpy(dtype=np.float64),
+                    n_confirm=params.n_confirm,
+                    trajectory_id=traj.trajectory_id,
+                )
+                lock_rows.append(
+                    {
+                        "trajectory_id": traj.trajectory_id,
+                        "seed_id": traj.seed_id,
+                        "confirmed_lock": result.confirmed_lock,
+                        "confirmed_escape": result.confirmed_escape,
+                        "tau_lock": result.tau_lock,
+                        "tau_escape": result.tau_escape,
+                    }
+                )
+        locks = pd.DataFrame(lock_rows)
+        if not locks.empty:
+            locks.to_parquet(context.paths.data_dir / "persistence_locks.parquet", index=False)
+
+        last = per_band.iloc[-1]
+        last_g = float(last["G"])
+        last_lo = float(last["G_lo"])
+        last_hi = float(last["G_hi"])
+        _print_frame(
+            per_band,
+            f"G_t ({slug})",
+            columns=["band_left", "band_right", "band_mid", "d_within", "d_between", "G", "G_lo", "G_hi"],
+        )
+        console().print(
+            f"[bold]last-band G_t = {last_g:.4f}[/bold]  "
+            f"seed-cluster 95% CI [{last_lo:.4f}, {last_hi:.4f}]  |  {slug}"
+        )
+        if not locks.empty:
+            n_lock = int(locks["confirmed_lock"].sum())
+            n_esc = int(locks["confirmed_escape"].sum())
+            console().print(
+                f"confirmed lock {n_lock}/{len(locks)}; confirmed escape {n_esc}/{len(locks)} "
+                f"(N_confirm={params.n_confirm}; not absorbing)"
+            )
+
+        W = int(frame["W"].iloc[0])
+        figure, tidy, meta = persistence_gt_figure(
+            per_band,
+            W=W,
+            embedding=slug,
+            run_ids=[run, context.run_id],
+        )
+        meta.git_sha = context.manifest.git.get("sha")
+        save_plotly_figure(figure, context.artifacts_dir / f"persistence-{slug}", meta, data=tidy)
+        save_table(
+            per_band,
+            context.artifacts_dir / f"persistence-{slug}",
+            FigureMeta(
+                name="persistence_gt_bands",
+                caption=(
+                    f"G_t = d_between − d_within per integer turnover band in {slug}. "
+                    "CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj."
+                ),
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations=(
+                    "Positive G_t is seed-conditioned persistence in this space, "
+                    "not a semantic state and not an absorbing lock."
+                ),
+            ),
+        )
+        if not locks.empty:
+            save_table(
+                locks,
+                context.artifacts_dir / f"persistence-{slug}",
+                FigureMeta(
+                    name="persistence_locks",
+                    caption=(
+                        "Prefix long-lived repetition lock (F1 + N_confirm=3). "
+                        "Language: confirmed lock / no confirmed escape through T. "
+                        "Not an absorbing state."
+                    ),
+                    run_ids=[run, context.run_id],
+                    git_sha=context.manifest.git.get("sha"),
+                    limitations="Hash is diagnostic only and is not in this table.",
+                ),
+            )
+        save_table(
+            loo,
+            context.artifacts_dir / f"persistence-{slug}",
+            FigureMeta(
+                name="persistence_loo",
+                caption="Last-band G_t after dropping one semantic seed (LOO-by-seed).",
+                run_ids=[run, context.run_id],
+                git_sha=context.manifest.git.get("sha"),
+                limitations="A single held-out seed can flip a marginal last-band sign.",
+            ),
+        )
+        context.finish(
+            embedding=slug,
+            last_band_G=last_g,
+            last_band_G_lo=last_lo,
+            last_band_G_hi=last_hi,
+            n_trajectories=len(trajectories),
+            n_confirmed_lock=int(locks["confirmed_lock"].sum()) if not locks.empty else 0,
+        )
+        console().print(f"run_id: [bold]{context.run_id}[/bold]")
+
+
 @analyze_app.command("separation")
 def analyze_separation(
     run: Annotated[str, typer.Option("--run", "-r", help="run_id holding the embeddings")],
