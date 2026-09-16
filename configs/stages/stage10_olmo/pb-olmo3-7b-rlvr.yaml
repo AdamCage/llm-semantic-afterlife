@@ -1,0 +1,9 @@
+# S10.4 — OLMo-3-7B-Instruct (RLVR) NF4, raw_bytes, 10 × 4, 12W.
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-rlvr-nf4
+description: >-
+  S10 Instruct head (RLVR). Not Olmo-3-7B-Think-*.
+generators:
+  - pb-olmo3-7b-rlvr

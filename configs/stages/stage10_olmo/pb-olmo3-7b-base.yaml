@@ -1,0 +1,10 @@
+# S10.1 — OLMo-3-1025-7B Base NF4, raw_bytes, 10 × 4, 12W.
+# One generator. Do not add a second slug.
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-base-nf4
+description: >-
+  S10 ladder foot. Local allenai/Olmo-3-1025-7B NF4. Not Think.
+generators:
+  - pb-olmo3-7b-base

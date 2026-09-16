@@ -1,0 +1,9 @@
+# S10 BGE-M3 only. Hosted Qwen-embed is a later sequential pass (ADR-0028).
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-embed-bge
+description: S10 local BGE-M3 over a generate run. One space per invocation.
+embeddings: [local-bge-m3]
+generators:
+  - pb-olmo3-7b-base

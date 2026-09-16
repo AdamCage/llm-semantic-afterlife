@@ -17,10 +17,11 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
-(2026-09-16). Frozen order: **S10 OLMo → S11 Ministral+Gemma →
-S12 horizon → S13**. S9–S11 is a complete story; S12 is strengthening
-or *no confirmed escape through T*. Local generate is $0 ledger;
-project ceiling **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
+(2026-09-16). **S10 OLMo 12W is opened** (2026-09-16). Frozen
+order: **S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**.
+S9–S11 is a complete story; S12 is strengthening or *no confirmed
+escape through T*. Local generate is $0 ledger; project ceiling
+**$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
 still binds any hosted Gemini subset. Last revised 2026-09-16.
 
 ---
@@ -418,13 +419,18 @@ Two estimands: completer persistence Base≈Instruct (early-onset
 repetition lock, no escape through 12W, late-window \(G_t>0\) =
 register / loop-family separation); completion worse on Base
 (NF4 9/40 vs 2/40). Fingerprint agreement was not computed.
-S10 is next; do not pool with Qwen.
+S10 is opened; do not pool with Qwen.
 
-### S10 — OLMo post-training ladder at 12W `planned`
+### S10 — OLMo post-training ladder at 12W `opened 2026-09-16`
 
-Four checkpoints (Base → SFT → DPO → RLVR), same 12W matrix. Main
-mechanistic figure. Do not pool with Qwen. Predictions in both
-primary local spaces.
+Opened after S9 `--no-ff`. Plan:
+[`docs/stages/stage-10/PLAN.md`](stages/stage-10/PLAN.md).
+Four checkpoints (Base → SFT → DPO → RLVR), same 12W matrix
+(`W=4096`, `B=1024`, `T=49152`). INT8 is the two ends (Base,
+RLVR; 20 traj). Native-chat deferred. Second space is hosted
+`qwen3-embed-8b` ([ADR-0028](decisions/ADR-0028-s10-hosted-qwen-embed.md)).
+Do not pool with Qwen. Do not start generate until estimate +
+human yes. Two estimands: completer persistence and completion.
 
 ### S11 — Ministral replication + Gemma generalization at 12W `planned`
 

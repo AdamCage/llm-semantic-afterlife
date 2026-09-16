@@ -1,0 +1,15 @@
+# S10.6 — OLMo RLVR INT8 control. F2 seeds × s1,s2 only (ADR-0023).
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-rlvr-int8
+description: S10 INT8 RLVR control. Two ends of the ladder, not SFT/DPO INT8.
+generators:
+  - pb-olmo3-7b-rlvr-int8
+semantic_seeds:
+  - physics
+  - biology
+  - love
+  - programming
+  - surreal
+stochastic_seeds: [1, 2]

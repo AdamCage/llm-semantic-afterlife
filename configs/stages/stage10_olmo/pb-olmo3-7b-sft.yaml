@@ -1,0 +1,8 @@
+# S10.2 — OLMo-3-7B-Instruct-SFT NF4, raw_bytes, 10 × 4, 12W.
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-sft-nf4
+description: S10 SFT rung. Do not pool with Qwen Instruct.
+generators:
+  - pb-olmo3-7b-sft
