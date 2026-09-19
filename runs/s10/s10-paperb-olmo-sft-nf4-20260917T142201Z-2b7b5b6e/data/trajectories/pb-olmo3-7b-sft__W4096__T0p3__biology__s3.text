@@ -1,0 +1,46 @@
+ to explain the absence of the full complement of cytosolic PDI and calnexin. The mutant protein was not recognized as a misfolded secretory protein, but as a resident cytosolic chaperone. This was the first time that a resident cytosolic chaperone had been identified, and it was a remarkable example of how the cell could be coaxed into adopting a completely novel secretory strategy.<|im_end|>
+<|im_start|>assistant
+This passage describes a **novel mechanism for protein secretion** discovered through studying a mutant line, using ribosome profiling and analysis of the secretory pathway. Here’s a breakdown of the key points and implications:
+
+---
+
+### **Key Findings:**
+
+1. **Stall at a Specific Codon:**
+   - The mutant protein stalls precisely at the third codon of the signal peptide.
+   - This results in **truncated products accumulating in the cytosol**, not in the lumen of the endoplasmic reticulum (ER).
+
+2. **Role of Local Charge and Exit Tunnel:**
+   - The **local charge of the emerging peptide** (i.e., the amino acid sequence and charge at the site of stalling) is altered.
+   - This change affects the **residence time in the exit tunnel** of the ER translocon, preventing normal translocation into the ER lumen.
+
+3. **Unfolded Protein Response (UPR):**
+   - The UPR is **constitutively active at a low level** downstream.
+   - This reshapes the secretory program without triggering apoptosis.
+   - **Cytosolic PDI and calnexin are absent** because the mutant protein is not recognized as a misfolded secretory protein.
+
+4. **New Resident Chaperone:**
+   - The mutant protein is **not recognized as a secretory protein** but instead **accumulates as a resident cytosolic chaperone**.
+   - This is the **first identification of a resident cytosolic chaperone** mediating secretion.
+
+5. **Cellular Adaptation:**
+   - The cell adopts a **novel secretory strategy** by co-opting this chaperone, demonstrating plasticity in the secretory pathway.
+
+---
+
+### **Implications:**
+
+- **Mechanism of Secretion:** The study reveals a previously unknown mechanism where a **mutant protein’s altered charge** can block translocation, redirecting it to the cytosol and allowing the cell to repurpose it as a chaperone.
+- **Chaperone Role:** The mutant protein acts as a **resident cytosolic chaperone**, suggesting that the secretory pathway can be "rewired" to use cytosolic proteins for secretion.
+- **Cellular Plasticity:** The cell can adapt to secretion defects by activating the UPR and repurposing proteins, without apoptosis, highlighting the flexibility of the secretory machinery.
+
+---
+
+### **Summary Statement:**
+
+This study uncovers a **novel mechanism** where a mutant protein’s altered charge causes a stall in the ER translocon, leading to cytosolic accumulation. Instead of being targeted for degradation, the mutant protein is repurposed as a **resident cytosolic chaperone**, enabling the cell to adopt a new secretory strategy via constitutive UPR activation. This is the first example of a cytosolic chaperone mediating secretion and demonstrates the remarkable adaptability of the secretory pathway.
+
+---
+
+**In essence:**  
+A mutation in the signal peptide causes a stall in the ER, redirecting the protein to the cytosol where it acts as a resident chaperone, allowing the cell to repurpose the secretory pathway in a novel way.

@@ -10,38 +10,34 @@ If PLAN prose and YAML disagree, **YAML wins**.
 DPO → RLVR), at 12W P1 `raw_bytes`, do completer persistence and
 completion differ across adjacent ladder edges?
 
-**Status.** Kickoff. Generate **blocked** until estimate + human «да».
+**Status.** Computations complete 2026-09-18. REPORT written.
+Mechanical gate passed. Awaiting scientific review. Do not start S11.
 
 | pass | status |
 | --- | --- |
 | S9 closed `--no-ff` | **yes** |
-| S10.1 Base NF4 40 × 12W | pending |
-| S10.2 SFT NF4 40 × 12W | pending |
-| S10.3 DPO NF4 40 × 12W | pending |
-| S10.4 RLVR NF4 40 × 12W | pending |
-| S10.5 Base INT8 F2 10 | pending |
-| S10.6 RLVR INT8 F2 10 | pending |
+| S10.1 Base NF4 40 × 12W | **27/13** `…6d7b4be3` COMPLETED |
+| S10.2 SFT NF4 40 × 12W | **19/21** `…2b7b5b6e` COMPLETED |
+| S10.3 DPO NF4 40 × 12W | **3/37** `…64ad9f9f` COMPLETED |
+| S10.4 RLVR NF4 40 × 12W | **4/36** `…30b5b3fc` COMPLETED |
+| S10.5 Base INT8 F2 10 | **5/5** `…2b2cdfd8` COMPLETED |
+| S10.6 RLVR INT8 F2 10 | **0/10** `…7125ccca` FAILED (empty-completion; kept) |
 | S10.7 native-chat | **deferred** |
-| Degeneracy before \(G_t\) | pending |
-| BGE-M3 local embed | pending |
-| Hosted `qwen3-embed-8b` | pending (ADR-0028, cap $5) |
-| \(G_t\) / lock both spaces | pending |
-| Adjacent-edge table | pending |
-| REPORT | not started |
+| Degeneracy before \(G_t\) | **done** (six `s10-degeneracy-*`) |
+| BGE-M3 local embed | **done** |
+| Hosted `qwen3-embed-8b` | **done** (ledger $0.00) |
+| \(G_t\) / lock both spaces | **done** ([`REPORT.md`](REPORT.md)) |
+| Adjacent-edge table | both spaces; no sign flip |
+| REPORT | written; E1/E2/E5 PARTIAL |
 
 | File | Role |
 | --- | --- |
 | [`PLAN.md`](PLAN.md) | question, matrix, exit criteria, predictions |
-| [`HANDOFF.md`](HANDOFF.md) | next executor: generate after human «да» |
+| [`REPORT.md`](REPORT.md) | verdicts, scored predictions, threats |
+| [`HANDOFF.md`](HANDOFF.md) | scientific reviewer |
 | [`configs/stages/stage10_olmo/`](../../../configs/stages/stage10_olmo/) | generate + embed YAML |
-| [`artifacts/stage-10/`](../../../artifacts/stage-10/) | publication-grade outputs (empty at kickoff) |
-| [`scripts/s10_run_one.sh`](../../../scripts/s10_run_one.sh) | one generate |
-| [`scripts/s10_run_matrix.sh`](../../../scripts/s10_run_matrix.sh) | S10.1→S10.6 sequential |
-| [`scripts/s10_embed_bge.sh`](../../../scripts/s10_embed_bge.sh) | local BGE-M3 |
-| [`scripts/s10_embed_qwen_hosted.sh`](../../../scripts/s10_embed_qwen_hosted.sh) | hosted Qwen-embed |
+| [`artifacts/stage-10/`](../../../artifacts/stage-10/) | publication-grade outputs |
 
 Do not pool with S9 Qwen. Do not start S11 from this folder.
-Generate + local BGE **$0** (180 traj, 8.85M output tokens).
-Hosted Qwen-embed cap **$5**. Exclusive-GPU sketch **~93 h**
-(OLMo Base microbench 0.517 h/traj). Project remaining
-**$189.46 / $200**.
+Generate + local BGE **$0**. Hosted Qwen-embed **$0.00** / cap $5.
+Project **$10.54 / $200**.

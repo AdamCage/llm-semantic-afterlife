@@ -1,0 +1,3 @@
+superseded_at: 2026-09-18T20:41:23+00:00
+reason: duplicate BGE persist; analysis-resume re-ran the same embed
+superseded_by: s10-persistence-local-bge-m3-20260918T183928Z-a488eb25

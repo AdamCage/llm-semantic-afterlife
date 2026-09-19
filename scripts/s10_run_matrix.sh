@@ -12,14 +12,27 @@ MASTER="$LOGDIR/matrix.log"
 
 run_one() {
   local cfg="$1"
-  echo "BEGIN $cfg $(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$MASTER"
-  bash "$ROOT/scripts/s10_run_one.sh" "$cfg"
+  shift
+  echo "BEGIN $cfg $* $(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$MASTER"
+  bash "$ROOT/scripts/s10_run_one.sh" "$cfg" "$@"
   local rc=$?
   echo "END $cfg rc=$rc $(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$MASTER"
   return "$rc"
 }
 
-run_one configs/stages/stage10_olmo/pb-olmo3-7b-base.yaml
+BASE_CFG=configs/stages/stage10_olmo/pb-olmo3-7b-base.yaml
+BASE_RUN=s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+BASE_STATUS=""
+if [ -f "$ROOT/runs/s10/$BASE_RUN/STATUS" ]; then
+  BASE_STATUS="$(tr -d '\r\n' < "$ROOT/runs/s10/$BASE_RUN/STATUS")"
+fi
+if [ "$BASE_STATUS" = "COMPLETED" ]; then
+  echo "SKIP $BASE_CFG already COMPLETED $BASE_RUN" | tee -a "$MASTER"
+elif [ -n "$BASE_STATUS" ]; then
+  run_one "$BASE_CFG" --resume-run "$BASE_RUN"
+else
+  run_one "$BASE_CFG"
+fi
 run_one configs/stages/stage10_olmo/pb-olmo3-7b-sft.yaml
 run_one configs/stages/stage10_olmo/pb-olmo3-7b-dpo.yaml
 run_one configs/stages/stage10_olmo/pb-olmo3-7b-rlvr.yaml

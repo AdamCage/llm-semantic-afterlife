@@ -1,0 +1,3 @@
+2026-09-18 21:10:48,668 INFO     semantic_afterlife.events run s10-embed-paperb-olmo-embed-qwen-hosted-20260918T181024Z-56bec26e (live)
+2026-09-18 21:10:48,670 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-18 21:22:34,220 INFO     semantic_afterlife.events completed s10-embed-paperb-olmo-embed-qwen-hosted-20260918T181024Z-56bec26e — spent $0.0000 (project $10.54 of $200.00)

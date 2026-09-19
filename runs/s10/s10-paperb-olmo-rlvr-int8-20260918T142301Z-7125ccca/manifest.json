@@ -1,0 +1,585 @@
+{
+  "command": "/home/adam/.venvs/llm-semantic-afterlife/bin/afterlife generate --config configs/stages/stage10_olmo/pb-olmo3-7b-rlvr-int8.yaml --yes",
+  "config_resolved": {
+    "budget_usd": 0.0,
+    "description": "S10 INT8 RLVR control. Two ends of the ladder, not SFT/DPO INT8.",
+    "embeddings": [
+      {
+        "api": "local",
+        "architecture": "bidirectional-encoder",
+        "expected_dim": 1024,
+        "max_batch": 16,
+        "model_id": "BAAI/bge-m3",
+        "normalise": true,
+        "notes": "Paper B primary space. XLM-RoBERTa encoder. CPU or GPU after generator unload. Content-addressed cache sha256(model_id ‖ text). Not the RouterAI slug `bge-m3`.",
+        "price_usd_per_m_input": 0.0,
+        "slug": "local-bge-m3"
+      }
+    ],
+    "generators": [
+      {
+        "allow_fallbacks": false,
+        "api": "local",
+        "continuation": "raw_completion",
+        "continuation_instruction": null,
+        "country": null,
+        "expected_block_fill": 1.0,
+        "extra_body": {
+          "attn_implementation": "sdpa",
+          "device_map": "cuda",
+          "dtype": "bfloat16",
+          "load_in_8bit": true,
+          "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+          "serialization": "raw_bytes",
+          "text_only": true
+        },
+        "is_base_model": false,
+        "max_reasoning_tokens": 0,
+        "model_id": "allenai/Olmo-3-7B-Instruct",
+        "native_context": null,
+        "notes": "INT8 control twin of pb-olmo3-7b-rlvr (Instruct head). Same F2 list. Not SFT/DPO INT8 — F2 is the two ends of the ladder.",
+        "prefill_user_stub": null,
+        "price_usd_per_m_input": 0.0,
+        "price_usd_per_m_output": 0.0,
+        "provider_slug": "local",
+        "serialization": "raw_bytes",
+        "service_tier": null,
+        "slug": "pb-olmo3-7b-rlvr-int8",
+        "system_prompt": null,
+        "tokenizer_repo": "allenai/Olmo-3-7B-Instruct",
+        "tokenizer_revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc"
+      }
+    ],
+    "max_concurrent": 1,
+    "name": "paperb-olmo-rlvr-int8",
+    "sampling": [
+      {
+        "logprobs": false,
+        "repetition_penalty": null,
+        "temperature": 0.3,
+        "top_k": null,
+        "top_logprobs": null,
+        "top_p": 1.0
+      }
+    ],
+    "seed_bank": "configs/seeds/seed_bank_v1.yaml",
+    "semantic_seeds": [
+      "physics",
+      "biology",
+      "love",
+      "programming",
+      "surreal"
+    ],
+    "stage": "s10",
+    "stochastic_seeds": [
+      1,
+      2
+    ],
+    "windows": [
+      {
+        "W": 4096,
+        "block_size": 1024,
+        "chunk_size": 1024,
+        "protocol": "P1_reprompt",
+        "target_tokens": 49152
+      }
+    ]
+  },
+  "config_sha256": "7125cccaf9d7ac793003fa069b0ad79ce5889df324ac1d7402f614eb1fb87138",
+  "endpoints": {
+    "tokenizers": {
+      "pb-olmo3-7b-rlvr-int8": {
+        "fingerprint": "sha256:7738a25c46a6043a0e2e605138851baa450269ce9d800af6ca9bf6192e45510c",
+        "repo": "allenai/Olmo-3-7B-Instruct",
+        "revision": "6e5971d9eba42665f5bd5a0fcf047f299ce1dccc",
+        "slug": "allenai__Olmo-3-7B-Instruct",
+        "type": "HFTokenizer",
+        "vocab_size": 100278
+      }
+    }
+  },
+  "environment": {
+    "machine": "x86_64",
+    "packages": {
+      "accelerate": "1.15.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.14.2",
+      "ast_serialize": "0.8.0",
+      "bitsandbytes": "0.50.2",
+      "certifi": "2026.7.22",
+      "cfgv": "3.5.0",
+      "choreographer": "1.3.0",
+      "click": "8.5.0",
+      "contourpy": "1.3.3",
+      "coverage": "7.16.0",
+      "cuda-bindings": "13.3.1",
+      "cuda-pathfinder": "1.8.1",
+      "cuda-toolkit": "13.0.3.0",
+      "cycler": "0.12.1",
+      "distlib": "0.4.3",
+      "filelock": "3.32.4",
+      "fonttools": "4.63.0",
+      "formulaic": "1.2.2",
+      "fsspec": "2026.7.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.6.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface_hub": "1.29.0",
+      "identify": "2.6.19",
+      "idna": "3.19",
+      "iniconfig": "2.3.0",
+      "interface_meta": "2.0.1",
+      "jinja2": "3.1.6",
+      "joblib": "1.5.3",
+      "kaleido": "1.3.0",
+      "kiwisolver": "1.5.1",
+      "librt": "0.15.0",
+      "logistro": "2.0.1",
+      "markdown-it-py": "4.2.0",
+      "markupsafe": "3.0.3",
+      "matplotlib": "3.11.1",
+      "mdurl": "0.1.2",
+      "mpmath": "1.3.0",
+      "mypy": "2.3.1",
+      "mypy_extensions": "1.1.0",
+      "narwhals": "2.25.0",
+      "networkx": "3.6.1",
+      "nodeenv": "1.10.0",
+      "numpy": "2.4.6",
+      "nvidia-cublas": "13.1.1.3",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cudnn-cu13": "9.24.0.43",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-cusparselt-cu13": "0.8.1",
+      "nvidia-nccl-cu13": "2.30.7",
+      "nvidia-nvjitlink": "13.4.52",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvtx": "13.0.85",
+      "orjson": "3.12.0",
+      "packaging": "26.3",
+      "pandas": "3.0.5",
+      "pathspec": "1.1.1",
+      "patsy": "1.0.3",
+      "pillow": "12.3.0",
+      "platformdirs": "4.11.5",
+      "plotly": "7.0.0",
+      "pluggy": "1.6.0",
+      "pre_commit": "4.6.2",
+      "psutil": "7.2.2",
+      "pyarrow": "25.0.1",
+      "pydantic": "2.13.5",
+      "pydantic-settings": "2.15.0",
+      "pydantic_core": "2.46.5",
+      "pygments": "2.21.0",
+      "pyparsing": "3.3.2",
+      "pytest": "9.1.1",
+      "pytest-asyncio": "1.4.0",
+      "pytest-cov": "7.1.0",
+      "python-dateutil": "2.9.0.post0",
+      "python-discovery": "1.6.0",
+      "python-dotenv": "1.2.3",
+      "pyyaml": "6.0.3",
+      "regex": "2026.9.3",
+      "rich": "15.0.0",
+      "ruff": "0.16.5",
+      "safetensors": "0.8.0",
+      "scikit-learn": "1.9.0",
+      "scipy": "1.17.1",
+      "seaborn": "0.13.2",
+      "semantic-afterlife": "0.1.0",
+      "sentence-transformers": "6.0.1",
+      "setuptools": "84.0.0",
+      "shellingham": "1.5.4",
+      "simplejson": "4.1.2",
+      "six": "1.17.0",
+      "statsmodels": "0.15.0",
+      "sympy": "1.14.0",
+      "tabulate": "0.10.0",
+      "tenacity": "9.1.4",
+      "threadpoolctl": "3.6.0",
+      "tokenizers": "0.23.1",
+      "torch": "2.14.0",
+      "tqdm": "4.70.0",
+      "transformers": "5.17.0",
+      "triton": "3.8.0",
+      "typer": "0.27.2",
+      "types-pyyaml": "6.0.12.20260815",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "virtualenv": "21.7.7",
+      "wrapt": "2.3.0"
+    },
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "python": "3.11.15 (main, Jul 23 2026, 14:43:45) [Clang 22.1.3 ]",
+    "python_executable": "/home/adam/.venvs/llm-semantic-afterlife/bin/python3"
+  },
+  "execution_mode": "live",
+  "finished_at": "2026-09-18T15:04:03+00:00",
+  "git": {
+    "branch": "stage-10",
+    "describe": null,
+    "dirty": false,
+    "sha": "f82e450d483c1a7fa6d8a10dd6b0cb6593185e98"
+  },
+  "integrity": {
+    "config.resolved.yaml": "8228f51888d015262db815f5f7fff2e6d21e2a11238078975ecb615144a13492",
+    "data/chunks.parquet": "a54352a80b6834f3aa881cbdbda51db709cf18ab955de7c112e3aa68a86ff809",
+    "data/trajectories.parquet": "26fe194017449bf2ee761976c791da15cb372bc661e2de1e9ab5c00f2abe30f8",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1.steps.jsonl": "942ab25bcef0a8afc76f884cd592e66d2882e132d0404e410f851dd8fcd56452",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1.text": "2f8a22b175ce5aaa011b6946824300c7ac5975d5d1a7ea36187047b83e404349",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2.steps.jsonl": "595ea4caacf99341916daa9c65306fae56ac3398cae50df457e45e4bba5529cd",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2.text": "e2490751741ff9c49665c36160f0f2b0f2e99f19aea747d5c0302a0113c599d4",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1.steps.jsonl": "a687b2c2223565da5cdda3adaef8db6bf6e67a2a0f777b6f73e06d43521e64d1",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1.text": "595eb3e73cc94601b6cf898a56801476fbb840a3fe79f49460aafd1c137bdb9c",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2.steps.jsonl": "0855d0253defa5ececac1a9c5b8824eedf1bdd4647661f7d1610933773e19939",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2.text": "66c389b12b09168328e10842fc7f097df6be1edd8c75ceff164d5807f0b72172",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1.steps.jsonl": "1bed89a4d154c0202f54bfd1af86f48b7a359bf85f14bd230ef33cb5cd90c189",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1.text": "b2659fa3acd7bacb779eafccd797e7cbcb339bfc799d5062e3577f5e5577fdcc",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2.steps.jsonl": "cc7e82492cc0cbd5dcff18db39645597f357ec85b3b180ec3d24c17ce3d1c1aa",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2.text": "6509ee0089495d56aeeedbe2f7c638ef9d98da58b4c817eafa11635e786ff79d",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1.steps.jsonl": "8bec322f206236d83afe938a216d0a911364e543243b9979a00565b8d6b30b22",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1.text": "c48a682032fce4d2596b5382954f3e4958de0c4bd8b0c7eac9979baeb9fdb5b0",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2.steps.jsonl": "801d52ea442a35ce1e5b9ceb7b003f1c4aef6db9ac4f89ac534278fb6bac3960",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2.text": "d9118b2d6ce2da04632a8c5392713f32b8ecdd2f11a873283ae6df40ecc0d4c9",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1.steps.jsonl": "d920454f18a19faf4d390946d0d35587f910a04f28120db71463c4404ff7c19c",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1.text": "d970e9faa02ea85e28505a147fb6743e23671caede642264c946d8971de701b3",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2.steps.jsonl": "64ef175be4dec5d673ba1b17a8896a2cbc1161d69933bbb4ba5d16c89ff5ce19",
+    "data/trajectories/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2.text": "2b516320f521bf837864d0715986a2c2d507fef8999c3bb0547523c92a82d2b7",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1.jsonl": "946b13876a0ea9b225d9ed71db5c4eb6bfef185ee288bdf1be5a1ab9b4229271",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2.jsonl": "08f2e1f8594dcae348401f67002574af786c13afada3944eb0f9e257bb7029ed",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1.jsonl": "5612ff6f55b32d44a854df0204edc3128238fb7c82d9fb7be674e128dd2dcf85",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2.jsonl": "60bd66df5b9fdd0aee095a5925a759c4f8612875f89141f3ab434fed13e457a0",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1.jsonl": "80c9486544c42497d41e2eb0de6b9379408aefd6fef0bec8fc541fc6a607e43a",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2.jsonl": "274388bf56698f64d0d13ac709514666c69b194affbe29e7af9eb83b4cfd5095",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1.jsonl": "d0718b311dac054dd7b295edcb8b0b01c424fd01fcfd8e89162906280205ac27",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2.jsonl": "4c992e6d83145084468c26aa48802c465258397d0bc5052595cb5d7151667077",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1.jsonl": "d1ef288e6cee301be070c49ca761e6ba40fc9e7f3ba233b0f5ef15cd6112e66a",
+    "requests/pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2.jsonl": "b3d70b89881576454aec0f28b5a0e6f0435879167811143c40ac9081f09adee5"
+  },
+  "notes": [],
+  "run_id": "s10-paperb-olmo-rlvr-int8-20260918T142301Z-7125ccca",
+  "seeds": {
+    "seed_bank": "configs/seeds/seed_bank_v1.yaml",
+    "semantic": {
+      "biology": {
+        "chars": 628,
+        "domain": "biology"
+      },
+      "finance": {
+        "chars": 612,
+        "domain": "finance"
+      },
+      "love": {
+        "chars": 560,
+        "domain": "intimate narrative"
+      },
+      "noise": {
+        "chars": 438,
+        "domain": "low-structure text"
+      },
+      "philosophy": {
+        "chars": 648,
+        "domain": "philosophy"
+      },
+      "physics": {
+        "chars": 680,
+        "domain": "physics"
+      },
+      "programming": {
+        "chars": 619,
+        "domain": "software engineering"
+      },
+      "reactor-stable": {
+        "chars": 503,
+        "domain": "counterfactual engineering"
+      },
+      "reactor-unstable": {
+        "chars": 519,
+        "domain": "counterfactual engineering"
+      },
+      "recipe": {
+        "chars": 553,
+        "domain": "culinary procedure"
+      },
+      "surreal": {
+        "chars": 568,
+        "domain": "surreal fiction"
+      },
+      "war": {
+        "chars": 632,
+        "domain": "military history"
+      },
+      "waterloo-lost": {
+        "chars": 545,
+        "domain": "counterfactual history"
+      },
+      "waterloo-won": {
+        "chars": 534,
+        "domain": "counterfactual history"
+      }
+    },
+    "stochastic": [
+      1,
+      2
+    ]
+  },
+  "settings": {
+    "budget_usd_per_run": 7.0,
+    "budget_usd_total": 200.0,
+    "execution_mode": "live",
+    "hf_token_fingerprint": "sha256:58b1b1028b56",
+    "max_concurrent_trajectories": 4,
+    "max_retries": 6,
+    "openrouter_base_url": "https://openrouter.ai/api/v1",
+    "openrouter_key_fingerprint": "sha256:d265656e95cd",
+    "request_timeout_s": 300.0,
+    "routerai_base_url": "https://routerai.ru/api/v1",
+    "routerai_key_fingerprint": "sha256:6f131d07d89e",
+    "usd_per_rub": 0.0125
+  },
+  "stage": "s10",
+  "started_at": "2026-09-18T14:24:01+00:00",
+  "status": "FAILED",
+  "totals": {
+    "n_chunks": 14,
+    "n_completed": 0,
+    "n_trajectories": 10,
+    "per_run_ceiling_usd": 7.0,
+    "project_spend_usd": 10.544993,
+    "remaining_project_usd": 189.455007,
+    "run_spend_usd": 0.0,
+    "total_ceiling_usd": 200.0
+  },
+  "trajectories": {
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1": {
+      "completion_tokens_total": 656,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3972,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 656,
+      "horizon_tokens": 4096,
+      "n_chunks": 0,
+      "n_steps": 1,
+      "prompt_tokens_total": 4024,
+      "roundtrip_failures": 0,
+      "seed_tokens": 124,
+      "served_providers": {
+        "local": 6
+      },
+      "status": "FAILED",
+      "stop_event_rate": 1.0,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s1"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2": {
+      "completion_tokens_total": 965,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3972,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 965,
+      "horizon_tokens": 4096,
+      "n_chunks": 0,
+      "n_steps": 2,
+      "prompt_tokens_total": 6640,
+      "roundtrip_failures": 0,
+      "seed_tokens": 124,
+      "served_providers": {
+        "local": 7
+      },
+      "status": "FAILED",
+      "stop_event_rate": 1.0,
+      "stop_events": 2,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__biology__s2"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1": {
+      "completion_tokens_total": 1341,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3978,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 1341,
+      "horizon_tokens": 4096,
+      "n_chunks": 1,
+      "n_steps": 3,
+      "prompt_tokens_total": 9977,
+      "roundtrip_failures": 0,
+      "seed_tokens": 118,
+      "served_providers": {
+        "local": 8
+      },
+      "status": "FAILED",
+      "stop_event_rate": 0.6667,
+      "stop_events": 2,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s1"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2": {
+      "completion_tokens_total": 577,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3978,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 577,
+      "horizon_tokens": 4096,
+      "n_chunks": 0,
+      "n_steps": 1,
+      "prompt_tokens_total": 3593,
+      "roundtrip_failures": 0,
+      "seed_tokens": 118,
+      "served_providers": {
+        "local": 6
+      },
+      "status": "FAILED",
+      "stop_event_rate": 1.0,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__love__s2"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1": {
+      "completion_tokens_total": 2643,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3971,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 2643,
+      "horizon_tokens": 4096,
+      "n_chunks": 2,
+      "n_steps": 3,
+      "prompt_tokens_total": 17287,
+      "roundtrip_failures": 0,
+      "seed_tokens": 125,
+      "served_providers": {
+        "local": 8
+      },
+      "status": "FAILED",
+      "stop_event_rate": 0.3333,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s1"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2": {
+      "completion_tokens_total": 2658,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3971,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 2658,
+      "horizon_tokens": 4096,
+      "n_chunks": 2,
+      "n_steps": 3,
+      "prompt_tokens_total": 17362,
+      "roundtrip_failures": 0,
+      "seed_tokens": 125,
+      "served_providers": {
+        "local": 8
+      },
+      "status": "FAILED",
+      "stop_event_rate": 0.3333,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__physics__s2"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1": {
+      "completion_tokens_total": 947,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3987,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 947,
+      "horizon_tokens": 4096,
+      "n_chunks": 0,
+      "n_steps": 1,
+      "prompt_tokens_total": 5389,
+      "roundtrip_failures": 0,
+      "seed_tokens": 109,
+      "served_providers": {
+        "local": 6
+      },
+      "status": "FAILED",
+      "stop_event_rate": 1.0,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s1"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2": {
+      "completion_tokens_total": 820,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3987,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 820,
+      "horizon_tokens": 4096,
+      "n_chunks": 0,
+      "n_steps": 1,
+      "prompt_tokens_total": 4754,
+      "roundtrip_failures": 0,
+      "seed_tokens": 109,
+      "served_providers": {
+        "local": 6
+      },
+      "status": "FAILED",
+      "stop_event_rate": 1.0,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__programming__s2"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1": {
+      "completion_tokens_total": 1135,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3993,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 1135,
+      "horizon_tokens": 4096,
+      "n_chunks": 1,
+      "n_steps": 2,
+      "prompt_tokens_total": 7420,
+      "roundtrip_failures": 0,
+      "seed_tokens": 103,
+      "served_providers": {
+        "local": 7
+      },
+      "status": "FAILED",
+      "stop_event_rate": 0.5,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s1"
+    },
+    "pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2": {
+      "completion_tokens_total": 9142,
+      "cost_usd": 0.0,
+      "empty_completions": 5,
+      "error": "trajectory pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "eviction_start_tokens": 3993,
+      "full_eviction_tokens": 4096,
+      "generated_tokens": 9141,
+      "horizon_tokens": 4096,
+      "n_chunks": 8,
+      "n_steps": 9,
+      "prompt_tokens_total": 47515,
+      "roundtrip_failures": 0,
+      "seed_tokens": 103,
+      "served_providers": {
+        "local": 14
+      },
+      "status": "FAILED",
+      "stop_event_rate": 0.1111,
+      "stop_events": 1,
+      "trajectory_id": "pb-olmo3-7b-rlvr-int8__W4096__T0p3__surreal__s2"
+    }
+  },
+  "usd_per_rub": 0.0125
+}

@@ -1,0 +1,25 @@
+ the market did not know when. The only way to know when was to wait.<|im_end|>
+<|im_start|>assistant
+Certainly! Here’s a summary and explanation of the passage:
+
+---
+
+**Summary:**
+
+The passage describes a situation in the derivatives market where a key funding leg (a specific type of transaction) is moving independently from the cash market, which is unusual. Normally, these two markets should be connected by arbitrage—meaning, if there’s a price difference, traders can quickly correct it. However, because collateral (the assets used to secure these transactions) is scarce, repo rates (the rate at which this collateral is borrowed) have risen above the expected levels. When a dealer cannot finance at the rate implied by the forward market, the difference is no longer an arbitrage opportunity but a strategic choice about which market to follow. The risk manager points out that while the spread between the two markets will eventually converge, the market does not know when that will happen. The only way to find out is to wait and observe how the markets behave.
+
+---
+
+**Key Points:**
+
+- **Arbitrage** is when markets correct price differences quickly.
+- **Repo rates** (collateral borrowing rates) are above market expectations.
+- **Funding leg** (a specific transaction) is moving independently of the cash market.
+- **Scarcity of collateral** causes repo rates to rise.
+- When financing is not possible at the forward market rate, the difference becomes a **balance-sheet decision** (traders must choose which market to follow).
+- The **risk manager** notes that the spread will eventually converge, but the timing is unknown, so patience is required.
+
+---
+
+**In essence:**  
+When collateral is scarce and repo rates rise, the funding leg and cash market can diverge, and the market must wait to see when they will converge again. This divergence is not an error but a strategic decision for the market participants.

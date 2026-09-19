@@ -17,12 +17,13 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
-(2026-09-16). **S10 OLMo 12W is opened** (2026-09-16). Frozen
+(2026-09-16). **S10 OLMo 12W computations are complete**
+(2026-09-18); awaiting scientific review. Frozen
 order: **S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**.
 S9–S11 is a complete story; S12 is strengthening or *no confirmed
 escape through T*. Local generate is $0 ledger; project ceiling
 **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
-still binds any hosted Gemini subset. Last revised 2026-09-16.
+still binds any hosted Gemini subset. Last revised 2026-09-18.
 
 ---
 
@@ -419,18 +420,21 @@ Two estimands: completer persistence Base≈Instruct (early-onset
 repetition lock, no escape through 12W, late-window \(G_t>0\) =
 register / loop-family separation); completion worse on Base
 (NF4 9/40 vs 2/40). Fingerprint agreement was not computed.
-S10 is opened; do not pool with Qwen.
+S10 computations are complete; do not pool with Qwen.
 
-### S10 — OLMo post-training ladder at 12W `opened 2026-09-16`
+### S10 — OLMo post-training ladder at 12W `computations complete 2026-09-18`
 
 Opened after S9 `--no-ff`. Plan:
 [`docs/stages/stage-10/PLAN.md`](stages/stage-10/PLAN.md).
+Report: [`docs/stages/stage-10/REPORT.md`](stages/stage-10/REPORT.md).
 Four checkpoints (Base → SFT → DPO → RLVR), same 12W matrix
 (`W=4096`, `B=1024`, `T=49152`). INT8 is the two ends (Base,
 RLVR; 20 traj). Native-chat deferred. Second space is hosted
-`qwen3-embed-8b` ([ADR-0028](decisions/ADR-0028-s10-hosted-qwen-embed.md)).
-Do not pool with Qwen. Do not start generate until estimate +
-human yes. Two estimands: completer persistence and completion.
+`qwen3-embed-8b` ([ADR-0028](decisions/ADR-0028-s10-hosted-qwen-embed.md)),
+ledger $0.00. Completion collapses down the ladder (13/40 → 21/40
+→ 37/40 → 36/40 empty-completion). Completers lock; escape 0.
+DPO last-band \(G_t\) unidentified, not a sign flip. Awaiting
+scientific review. Do not start S11. Do not pool with Qwen.
 
 ### S11 — Ministral replication + Gemma generalization at 12W `planned`
 

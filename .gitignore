@@ -13,8 +13,8 @@ secrets/
 # `runs/` holds raw trajectories and full logs: large, regenerable from configs.
 # Small, publication-grade artifacts live in `artifacts/` and ARE committed.
 # Occupancy replication (ADR-0022) and Paper B local generate (S8 smoke /
-# S9 Qwen 12W) are tracked so a VM wipe cannot erase the computational
-# record. Secrets stay in `.env`, never here. Weights and `cache/` stay
+# S9 Qwen 12W / S10 OLMo 12W) are tracked so a VM wipe cannot erase the
+# computational record. Secrets stay in `.env`, never here. Weights stay
 # ignored.
 runs/*
 !runs/.gitkeep
@@ -44,12 +44,22 @@ runs/s9/*
 !runs/s9/s9-embed-*/**
 !runs/s9/s9-degeneracy-*/
 !runs/s9/s9-degeneracy-*/**
+!runs/s10/
+runs/s10/*
+!runs/s10/s10-paperb-*/
+!runs/s10/s10-paperb-*/**
+!runs/s10/s10-embed-*/
+!runs/s10/s10-embed-*/**
+!runs/s10/s10-degeneracy-*/
+!runs/s10/s10-degeneracy-*/**
+!runs/s10/s10-persistence-*/
+!runs/s10/s10-persistence-*/**
 .cache/
 scratch/
 
 # Response and tokenizer caches stay out of git (large, regenerable).
-# The S9 embedding cache is tracked so hosted Qwen-embed and local BGE
-# are not recomputed after a VM wipe (ADR-0027).
+# Embedding cache is tracked so hosted Qwen-embed and local BGE are not
+# recomputed after a VM wipe (ADR-0027 / ADR-0028).
 cache/*
 !cache/embeddings/
 !cache/embeddings/**

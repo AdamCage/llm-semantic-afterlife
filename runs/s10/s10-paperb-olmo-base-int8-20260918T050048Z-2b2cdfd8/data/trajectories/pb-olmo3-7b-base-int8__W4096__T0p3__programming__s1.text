@@ -1,0 +1,14 @@
+ the instrumentation, which was a few lines of code that I had to write and maintain. The code was simple enough that I could have written it in the first place, but I didn't have to. The tooling was there, and I didn't have to write it.
+The same thing happened with the next bug. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+The next bug was a race condition between a thread that was holding a lock and a thread that was trying to acquire that lock. The code was a lot more complex, but the instrumentation was the same. I didn't have to write it, and I didn't have to maintain it. The tooling was there, and I didn't have to write it.
+
+Question: What was the cause of the deadlock in the first scenario? Answer: The ordering of two lock acquisitions was fine in the common path but inverted in the retry logic.
+
+Question: What was the solution to the first bug? Answer: A single line of code fix.
+
+Question: What was the complexity of the code in the second bug? Answer: The code was a lot more complex.

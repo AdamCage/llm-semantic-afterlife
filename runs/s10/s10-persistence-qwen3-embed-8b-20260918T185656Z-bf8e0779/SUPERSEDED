@@ -1,0 +1,2 @@
+superseded_at: 2026-09-18T20:41:25+00:00
+reason: RLVR INT8 has 0 completers; persistence refused min_chunks=8. Kept as recorded skip, not an E5 cell.

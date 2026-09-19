@@ -1321,6 +1321,7 @@ def analyze_persistence(
         seed_cluster_bootstrap,
         trajectories_from_embed_frame,
     )
+    from .errors import AnalysisError
     from .reporting.tables import save_table
     from .viz.export import FigureMeta, save_plotly_figure
     from .viz.figures import persistence_gt_figure
@@ -1344,10 +1345,16 @@ def analyze_persistence(
         max_t = max(float(t.turnovers.max()) for t in trajectories)
         band_edges = integer_l0_band_edges(max_t)
         per_band = seed_cluster_bootstrap(trajectories, band_edges=band_edges, params=params)
-        loo = loo_by_seed(trajectories, band_edges=band_edges)
+        try:
+            loo = loo_by_seed(trajectories, band_edges=band_edges)
+        except AnalysisError as exc:
+            # Small-n rungs (DPO/RLVR completers) can have <3 seeds. G_t still stands.
+            context.note(f"LOO-by-seed skipped: {exc}")
+            loo = pd.DataFrame()
 
         per_band.to_parquet(context.paths.data_dir / "persistence_gt.parquet", index=False)
-        loo.to_parquet(context.paths.data_dir / "persistence_loo.parquet", index=False)
+        if not loo.empty:
+            loo.to_parquet(context.paths.data_dir / "persistence_loo.parquet", index=False)
 
         lock_rows: list[dict[str, Any]] = []
         chunks_source = _source_chunks(source)

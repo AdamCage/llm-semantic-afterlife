@@ -1,0 +1,4 @@
+2026-09-18 20:14:05,329 INFO     semantic_afterlife.events run s10-degeneracy-20260918T171337Z-44f96a1e (live)
+2026-09-18 20:14:05,331 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-18 20:14:05,937 INFO     semantic_afterlife.reporting table degeneracy_verdicts -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-10/degeneracy
+2026-09-18 20:14:05,958 INFO     semantic_afterlife.events completed s10-degeneracy-20260918T171337Z-44f96a1e — spent $0.0000 (project $10.54 of $200.00)

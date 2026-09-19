@@ -1,0 +1,27 @@
+2026-09-18 21:16:06,950 INFO     semantic_afterlife.events run s10-persistence-local-bge-m3-20260918T181540Z-a488eb25 (live)
+2026-09-18 21:16:06,952 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-18 21:17:41,818 WARNING  semantic_afterlife.viz static export of persistence_gt failed (png): 
+
+Kaleido requires Google Chrome to be installed.
+
+Either download and install Chrome yourself following Google's instructions for your operating system,
+or install it from your terminal by running:
+
+    $ plotly_get_chrome
+
+
+2026-09-18 21:17:42,515 WARNING  semantic_afterlife.viz static export of persistence_gt failed (svg): 
+
+Kaleido requires Google Chrome to be installed.
+
+Either download and install Chrome yourself following Google's instructions for your operating system,
+or install it from your terminal by running:
+
+    $ plotly_get_chrome
+
+
+2026-09-18 21:17:42,538 INFO     semantic_afterlife.viz figure persistence_gt -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-10/persistence-local-bge-m3
+2026-09-18 21:17:42,601 INFO     semantic_afterlife.reporting table persistence_gt_bands -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-10/persistence-local-bge-m3
+2026-09-18 21:17:42,631 INFO     semantic_afterlife.reporting table persistence_locks -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-10/persistence-local-bge-m3
+2026-09-18 21:17:42,659 INFO     semantic_afterlife.reporting table persistence_loo -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-10/persistence-local-bge-m3
+2026-09-18 21:17:42,683 INFO     semantic_afterlife.events completed s10-persistence-local-bge-m3-20260918T181540Z-a488eb25 — spent $0.0000 (project $10.54 of $200.00)
