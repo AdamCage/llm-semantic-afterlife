@@ -1,13 +1,12 @@
 # Stage 10 report — OLMo 3 7B post-training ladder kills completion, not the lock
 
-**Status.** Computations complete 2026-09-18. Mechanical gate
-**passed**. Scientific review **APPROVED WITH CHANGES**
-([`REVIEW.md`](REVIEW.md)); two phrase blockers applied below.
-Overall: **PARTIAL** on matrix completeness (E1/E2 empty-completion
-attrition, named and kept) and on E5 identification (DPO last-band
-unidentified; RLVR LOO skipped); **PASS** on the runnable confirmatory
-contrast that exists. S11 not started. Native-chat still deferred.
-Do not merge until the human authorises `--no-ff`.
+**Status.** Closed 2026-09-19. Scientific review **APPROVED WITH
+CHANGES** ([`REVIEW.md`](REVIEW.md)); phrase blockers applied.
+Human authorised `--no-ff` close. Overall: **PARTIAL** on matrix
+completeness (E1/E2 empty-completion attrition, named and kept)
+and on E5 identification (DPO last-band unidentified; RLVR LOO
+skipped); **PASS** on the runnable confirmatory contrast that
+exists. Native-chat still deferred. S11 not started.
 
 Headline, **two estimands**. On this local OLMo 3 7B Instruct line
 (Base → SFT → DPO → RLVR), P1 `raw_bytes`, `W=4096`, T=0.3, 12

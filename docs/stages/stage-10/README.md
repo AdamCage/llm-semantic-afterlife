@@ -10,9 +10,9 @@ If PLAN prose and YAML disagree, **YAML wins**.
 DPO → RLVR), at 12W P1 `raw_bytes`, do completer persistence and
 completion differ across adjacent ladder edges?
 
-**Status.** Computations complete 2026-09-18. REVIEW **APPROVED
-WITH CHANGES**; two phrase blockers applied. Awaiting human
-`--no-ff`. Do not start S11.
+**Status.** Closed 2026-09-19 (`--no-ff`). REVIEW **APPROVED
+WITH CHANGES**; phrase blockers applied. Do not start S11
+from this folder until the next stage is opened.
 
 | pass | status |
 | --- | --- |

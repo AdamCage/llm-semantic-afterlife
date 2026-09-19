@@ -1,6 +1,7 @@
 # Stage 10 — Does the OLMo 3 7B post-training ladder change 12W persistence?
 
-**Status.** Opened 2026-09-16 after Stage 9 `--no-ff` close. Decisions:
+**Status.** Closed 2026-09-19 after `--no-ff`. Opened 2026-09-16
+after Stage 9 `--no-ff` close. Decisions:
 [ADR-0023](../../decisions/ADR-0023-paper-b-local-four-family.md),
 [ADR-0024](../../decisions/ADR-0024-local-nf4-lifecycle.md),
 [ADR-0025](../../decisions/ADR-0025-persistence-metrics-and-horizon-ladder.md),

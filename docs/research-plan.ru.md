@@ -17,13 +17,12 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
-**S10 OLMo 12W: вычисления закрыты** (2026-09-18); ревью APPROVED
-WITH CHANGES, блокеры фраз внесены. Порядок заморожен:
+**S10 OLMo 12W закрыт** (2026-09-19). Порядок заморожен:
 **S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
 законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
 (ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
-2026-09-18. Канонический текст — английский
+2026-09-19. Канонический текст — английский
 [`research-plan.md`](research-plan.md).
 
 ---
@@ -341,24 +340,20 @@ checkpoint × 32 токена. Не матрица 12W. Hosted **$0**.
 Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
 Три правки формулировок внесены. Human дал `--no-ff`.
 Два эстиманда: persistence на completers Base≈Instruct; completion
-хуже у Base (9/40 vs 2/40). S10: вычисления закрыты; с Qwen не пулить.
+хуже у Base (9/40 vs 2/40). S10 закрыт; с Qwen не пулить.
 
-### S10 — лестница OLMo 3 7B на 12W `вычисления закрыты 2026-09-18`
+### S10 — лестница OLMo 3 7B на 12W `закрыт 2026-09-19`
 
 Открыт после `--no-ff` S9. План:
 [`docs/stages/stage-10/PLAN.md`](stages/stage-10/PLAN.md).
 Отчёт: [`docs/stages/stage-10/REPORT.md`](stages/stage-10/REPORT.md).
-Четыре чекпоинта (Base → SFT → DPO → RLVR), та же матрица 12W.
-INT8 — два конца (Base, RLVR; 20 траекторий). Native-chat отложен.
-Второе пространство — hosted `qwen3-embed-8b` (ADR-0028), ledger
-$0.00. Completion падает от Base до DPO и выходит на пол
-DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40 empty-completion).
-Lock-table траектории лочатся; escape 0. У Base NF4 last-band CI
-исключает 0 в обоих пространствах; RLVR last-band \(G_t>0\)
-**не установлен** (точка `+`, CI включает 0). Last-band \(G_t\)
-у DPO не идентифицирован, это не смена знака. Ревью APPROVED
-WITH CHANGES; блокеры фраз внесены. S11 не стартовать. С Qwen
-не пулить.
+Review: [`docs/stages/stage-10/REVIEW.md`](stages/stage-10/REVIEW.md).
+Human дал `--no-ff`. Completion падает от Base до DPO и выходит
+на пол DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40). Lock-table
+траектории лочатся; escape 0. RLVR last-band \(G_t>0\) не
+установлен. Last-band \(G_t\) у DPO не идентифицирован, это не
+смена знака. S11 не стартовать, пока этап не открыт. С Qwen не
+пулить.
 
 ### S11–S13 `planned`
 
