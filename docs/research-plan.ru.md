@@ -17,11 +17,12 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
-Порядок заморожен: **S10 OLMo → S11 Ministral+Gemma → S12 horizon →
-S13**. S9–S11 — законченная история.
+**S10 OLMo 12W закрыт** (2026-09-19). Порядок заморожен:
+**S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
+законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
 (ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
-2026-09-09. Канонический текст — английский
+2026-09-19. Канонический текст — английский
 [`research-plan.md`](research-plan.md).
 
 ---
@@ -339,13 +340,26 @@ checkpoint × 32 токена. Не матрица 12W. Hosted **$0**.
 Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
 Три правки формулировок внесены. Human дал `--no-ff`.
 Два эстиманда: persistence на completers Base≈Instruct; completion
-хуже у Base (9/40 vs 2/40). Следующий этап — S10; с Qwen не пулить.
+хуже у Base (9/40 vs 2/40). S10 закрыт; с Qwen не пулить.
 
-### S10–S13 `planned`
+### S10 — лестница OLMo 3 7B на 12W `закрыт 2026-09-19`
 
-Порядок заморожен: S10 OLMo → S11 Ministral+Gemma → S12 горизонт →
-S13 синтез. Подтверждающие оценки и freeze F1–F4 — в английском
-плане и ADR-0023 / ADR-0025.
+Открыт после `--no-ff` S9. План:
+[`docs/stages/stage-10/PLAN.md`](stages/stage-10/PLAN.md).
+Отчёт: [`docs/stages/stage-10/REPORT.md`](stages/stage-10/REPORT.md).
+Review: [`docs/stages/stage-10/REVIEW.md`](stages/stage-10/REVIEW.md).
+Human дал `--no-ff`. Completion падает от Base до DPO и выходит
+на пол DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40). Lock-table
+траектории лочатся; escape 0. RLVR last-band \(G_t>0\) не
+установлен. Last-band \(G_t\) у DPO не идентифицирован, это не
+смена знака. S11 не стартовать, пока этап не открыт. С Qwen не
+пулить.
+
+### S11–S13 `planned`
+
+Порядок заморожен: S11 Ministral+Gemma → S12 горизонт → S13 синтез.
+Подтверждающие оценки и freeze F1–F4 — в английском плане и
+ADR-0023 / ADR-0025.
 
 ## 5. Модели
 

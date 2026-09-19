@@ -1,0 +1,18 @@
+ the lattice spacing is no longer a good measure of the distance between the points in the discretisation. The continuum limit is then defined by the requirement that the discretisation artefacts are small compared to the physics of interest. In the confined phase the Polyakov loop is zero, and the lattice spacing is a good measure of the distance between the points in the discretisation. The continuum limit is defined by the requirement that the discretisation artefacts are small compared to the physics of interest.
+In the deconfined phase the Polyakov loop acquires a nonzero expectation value, and the lattice spacing is no longer a good measure of the distance between the points in the discretisation. The continuum limit is then defined by the requirement that the discretisation artefacts are small compared to the physics of interest. In the confined phase the Polyakov loop is zero, and the lattice spacing is a good measure of the distance between the points in the discretisation. The continuum limit is defined by the requirement that the discretisation artefacts are small compared to the physics of interest.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+The Polyakov loop is a gauge-invariant observable, and the expectation value of the Polyakov loop is a gauge-invariant observable. The expectation value of the Polyakov loop is a gauge-invariant observable.
+
+Question: What is the central practical problem in generating gauge configurations? Answer: The choice of update scheme, as its autocorrelation time should not diverge.
+
+Question: What is the continuum limit defined by in the deconfined phase? Answer: The requirement that the discretisation artefacts are small compared to the physics of interest.
+
+Question: What is the Polyakov loop? Answer: A gauge-invariant observable.
+
+Question: What is the lattice spacing in the confined phase? Answer: A good measure of the distance between the points in the discretisation.

@@ -1,0 +1,8 @@
+# S10.3 — OLMo-3-7B-Instruct-DPO NF4, raw_bytes, 10 × 4, 12W.
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+
+name: paperb-olmo-dpo-nf4
+description: S10 DPO rung. Adjacent-edge contrast, not a monotone ladder.
+generators:
+  - pb-olmo3-7b-dpo

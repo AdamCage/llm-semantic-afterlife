@@ -1,0 +1,12 @@
+analysis: persistence
+embedding: qwen3-embed-8b
+params:
+  alpha: 0.05
+  late_jaccard_cap_chunks: 64
+  log_band_start: 1.0
+  max_turnover: null
+  n_boot: 2000
+  n_confirm: 3
+  n_log_bands: 12
+  seed: 0
+source_run_id: s10-embed-paperb-olmo-embed-qwen-hosted-20260918T181024Z-56bec26e

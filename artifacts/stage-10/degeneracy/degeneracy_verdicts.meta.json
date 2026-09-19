@@ -1,0 +1,24 @@
+{
+  "name": "degeneracy_verdicts",
+  "caption": "Per-trajectory F1 degeneracy diagnostics for all six S10 generate runs. A chunk loops when 3-gram repetition exceeds 0.083 (99th percentile of natural English at this chunk size).",
+  "alt_text": "Per-trajectory F1 degeneracy diagnostics for all six S10 generate runs. A chunk loops when 3-gram repetition exceeds 0.083 (99th percentile of natural English at this chunk size).",
+  "limitations": "Degeneracy is a surface-form measure. This table is why G_t is not read as confinement without a lock label.",
+  "run_ids": [
+    "s10-degeneracy-20260918T171337Z-44f96a1e",
+    "s10-degeneracy-20260918T171407Z-10e3ea7c",
+    "s10-degeneracy-20260918T171436Z-c8957f3c",
+    "s10-degeneracy-20260918T171503Z-6f77e6a8",
+    "s10-degeneracy-20260918T171528Z-e67f3e54",
+    "s10-degeneracy-20260918T171552Z-6fcba65c",
+    "s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8",
+    "s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3",
+    "s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f",
+    "s10-paperb-olmo-rlvr-int8-20260918T142301Z-7125ccca",
+    "s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc",
+    "s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e"
+  ],
+  "git_sha": "f82e450d483c1a7fa6d8a10dd6b0cb6593185e98",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-18T20:43:38+00:00"
+}

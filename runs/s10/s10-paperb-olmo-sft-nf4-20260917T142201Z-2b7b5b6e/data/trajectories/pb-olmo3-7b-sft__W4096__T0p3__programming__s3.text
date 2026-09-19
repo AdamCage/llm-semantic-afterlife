@@ -1,0 +1,11 @@
+ the debugging process.<|im_end|>
+<|im_start|>assistant
+Your summary is clear and well-structured. Here’s a slightly refined version for clarity and flow, if you’d like to use it elsewhere:
+
+---
+
+The deadlock only occurred under load, which suggested that the ordering of the two lock acquisitions was correct in the common path, but reversed somewhere in the retry logic. Static analysis provided no insight, as the second lock acquisition was handled through a callback registered three modules away. Instrumenting every lock acquisition with the owning thread and a monotonic sequence number quickly revealed the cycle: the retry path re-entered the cache before releasing the connection, and under contention, this re-entry occasionally raced a background eviction. The fix was a single line, but the most interesting part was the debugging process itself.
+
+---
+
+Let me know if you’d like to elaborate on the debugging process or the solution!

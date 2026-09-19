@@ -1,0 +1,20 @@
+ the gauge configurations are generated with a different algorithm. The two algorithms are not the same, and the difference in autocorrelation time is the reason why the two phases have different critical exponents.
+The lattice spacing sets the ultraviolet cutoff, and everything else in the calculation follows from that single choice.
+This is not true. The lattice spacing sets the ultraviolet cutoff, but the lattice spacing is not a single choice. It is a parameter of the theory, and it is not a single number. It is a function of the momentum of the modes that are being integrated over. The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+The lattice spacing is not a single number, and it is not a single choice. It is a function of the momentum of the modes that are being integrated over.
+
+Question: What happens to the correlation length when the coupling is tuned towards the critical surface? Answer: The correlation length grows without bound in units of the spacing.
+
+Question: What is the reason why the two phases have different critical exponents? Answer: The difference in autocorrelation time between the two algorithms used to generate gauge configurations.
+
+Question: What is the main practical problem in generating gauge configurations? Answer: The choice of update scheme, as its autocorrelation time should not itself diverge.

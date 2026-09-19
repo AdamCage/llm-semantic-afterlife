@@ -1,0 +1,13 @@
+# S10 hosted Qwen3-Embedding-8B (ADR-0028). RouterAI first.
+# Not a generate config. Do not mix OpenRouter in this run.
+include:
+  - configs/stages/stage10_olmo/_base.yaml
+  - configs/embeddings/embeddings.yaml
+
+name: paperb-olmo-embed-qwen-hosted
+description: >-
+  S10 hosted qwen/qwen3-embedding-8b via RouterAI over a generate run.
+embeddings: [qwen3-embed-8b]
+generators:
+  - pb-olmo3-7b-base
+budget_usd: 5.0

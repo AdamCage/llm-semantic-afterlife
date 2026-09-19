@@ -1,0 +1,137 @@
+2026-09-16 23:50:43,416 INFO     semantic_afterlife.events run s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3 (live)
+2026-09-16 23:50:43,418 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-16 23:50:44,286 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-16 23:50:48,854 INFO     semantic_afterlife.providers.local loading local model allenai/Olmo-3-1025-7B device=cuda dtype=bfloat16 attn=sdpa loader=Olmo3ForCausalLM
+2026-09-16 23:50:55,787 INFO     semantic_afterlife.events loaded allenai/Olmo-3-1025-7B Olmo3ForCausalLM via Olmo3ForCausalLM rev=a81bae42db3975be1671e27b9c9a56da1a9f980f peak_vram_mib=4822.9 in 6.86s
+2026-09-17 00:14:59,078 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__physics__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 00:14:59,086 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 00:15:19,418 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s2: 1 steps, 612 tokens, 0 chunks, $0.0000
+2026-09-17 00:15:19,421 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 00:15:41,136 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s3: 1 steps, 660 tokens, 0 chunks, $0.0000
+2026-09-17 00:15:41,139 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 00:19:10,993 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s4: 7 steps, 6163 tokens, 6 chunks, $0.0000
+2026-09-17 00:19:10,997 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 00:19:37,862 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__finance__s1: 2 steps, 656 tokens, 0 chunks, $0.0000
+2026-09-17 00:19:37,869 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 00:48:16,476 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 00:48:16,483 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 01:16:22,021 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 01:16:22,025 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 01:44:40,612 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 01:44:40,621 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 01:45:01,759 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s1: 1 steps, 654 tokens, 0 chunks, $0.0000
+2026-09-17 01:45:01,762 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 02:13:17,387 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__biology__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 02:13:17,391 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 02:13:41,526 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s3: 1 steps, 651 tokens, 0 chunks, $0.0000
+2026-09-17 02:13:41,529 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 02:14:03,354 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s4: 2 steps, 653 tokens, 0 chunks, $0.0000
+2026-09-17 02:14:03,358 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 02:42:26,595 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 02:42:26,602 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 03:10:51,487 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 03:10:51,490 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 03:39:16,286 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 03:39:16,289 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:39,872 INFO     semantic_afterlife.events resume s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3 (live)
+2026-09-17 08:10:39,875 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-17 08:10:40,719 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__physics__s1 at step 48 (49152 tokens)
+2026-09-17 08:10:40,720 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:40,739 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__physics__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:40,751 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__physics__s2 at step 1 (612 tokens)
+2026-09-17 08:10:40,752 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:40,846 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s2: 1 steps, 612 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:40,858 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__physics__s3 at step 1 (660 tokens)
+2026-09-17 08:10:40,859 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:40,935 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s3: 1 steps, 660 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:40,998 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__physics__s4 at step 7 (6163 tokens)
+2026-09-17 08:10:40,999 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:41,087 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__physics__s4: 7 steps, 6163 tokens, 6 chunks, $0.0000
+2026-09-17 08:10:41,101 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__finance__s1 at step 2 (656 tokens)
+2026-09-17 08:10:41,102 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:41,201 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__finance__s1: 2 steps, 656 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:41,665 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__finance__s2 at step 48 (49152 tokens)
+2026-09-17 08:10:41,667 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:41,686 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:42,178 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__finance__s3 at step 48 (49152 tokens)
+2026-09-17 08:10:42,179 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:42,198 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:42,706 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__finance__s4 at step 48 (49152 tokens)
+2026-09-17 08:10:42,707 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:42,724 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__finance__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:42,735 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__biology__s1 at step 1 (654 tokens)
+2026-09-17 08:10:42,736 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:42,807 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s1: 1 steps, 654 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:43,309 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__biology__s2 at step 48 (49152 tokens)
+2026-09-17 08:10:43,311 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:43,330 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__biology__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:43,345 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__biology__s3 at step 1 (651 tokens)
+2026-09-17 08:10:43,347 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:43,425 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s3: 1 steps, 651 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:43,436 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__biology__s4 at step 2 (653 tokens)
+2026-09-17 08:10:43,437 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:43,508 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__biology__s4: 2 steps, 653 tokens, 0 chunks, $0.0000
+2026-09-17 08:10:43,966 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__war__s1 at step 48 (49152 tokens)
+2026-09-17 08:10:43,967 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:43,983 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:44,512 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__war__s2 at step 48 (49152 tokens)
+2026-09-17 08:10:44,513 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:44,533 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:45,084 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__war__s3 at step 48 (49152 tokens)
+2026-09-17 08:10:45,085 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:45,115 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:10:45,133 INFO     semantic_afterlife.events resuming pb-olmo3-7b-base__W4096__T0p3__war__s4 at step 2 (2048 tokens)
+2026-09-17 08:10:45,134 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 08:10:49,694 INFO     semantic_afterlife.providers.local loading local model allenai/Olmo-3-1025-7B device=cuda dtype=bfloat16 attn=sdpa loader=Olmo3ForCausalLM
+2026-09-17 08:10:56,279 INFO     semantic_afterlife.events loaded allenai/Olmo-3-1025-7B Olmo3ForCausalLM via Olmo3ForCausalLM rev=a81bae42db3975be1671e27b9c9a56da1a9f980f peak_vram_mib=4822.9 in 6.502s
+2026-09-17 08:38:38,897 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__war__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 08:38:38,900 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 09:07:42,907 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__love__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 09:07:42,916 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 09:36:44,842 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__love__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 09:36:44,845 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__love__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 10:05:45,298 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__love__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 10:05:45,301 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__love__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 10:34:50,523 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__love__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 10:34:50,526 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__recipe__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 10:34:51,976 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__recipe__s1: 1 steps, 27 tokens, 0 chunks, $0.0000
+2026-09-17 10:34:51,982 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__recipe__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 10:34:53,395 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__recipe__s2: 1 steps, 26 tokens, 0 chunks, $0.0000
+2026-09-17 10:34:53,398 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__recipe__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 11:03:44,566 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__recipe__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 11:03:44,569 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__recipe__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 11:03:45,846 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__recipe__s4: 1 steps, 22 tokens, 0 chunks, $0.0000
+2026-09-17 11:03:45,854 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__programming__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 11:32:44,428 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__programming__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 11:32:44,431 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__programming__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 11:33:03,043 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__programming__s2: 1 steps, 593 tokens, 0 chunks, $0.0000
+2026-09-17 11:33:03,046 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__programming__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 11:33:36,237 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__programming__s3: 1 steps, 803 tokens, 0 chunks, $0.0000
+2026-09-17 11:33:36,240 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__programming__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 12:02:41,342 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__programming__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 12:02:41,345 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__philosophy__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 12:31:46,029 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__philosophy__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 12:31:46,032 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__philosophy__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 13:00:49,208 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__philosophy__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 13:00:49,212 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__philosophy__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 13:01:10,900 INFO     semantic_afterlife.events failed pb-olmo3-7b-base__W4096__T0p3__philosophy__s3: 1 steps, 659 tokens, 0 chunks, $0.0000
+2026-09-17 13:01:10,903 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__philosophy__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 13:30:10,113 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__philosophy__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 13:30:10,119 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__surreal__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 13:59:08,678 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__surreal__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 13:59:08,688 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__surreal__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 14:28:06,621 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__surreal__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 14:28:06,639 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__surreal__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 14:57:02,025 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__surreal__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 14:57:02,028 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__surreal__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 15:26:10,272 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__surreal__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 15:26:10,278 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__noise__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 15:55:01,592 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__noise__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 15:55:01,596 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__noise__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 16:24:02,601 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__noise__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 16:24:02,611 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__noise__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 16:53:04,623 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__noise__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 16:53:04,626 INFO     semantic_afterlife.events start pb-olmo3-7b-base__W4096__T0p3__noise__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-17 17:21:58,888 INFO     semantic_afterlife.events completed pb-olmo3-7b-base__W4096__T0p3__noise__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-17 17:21:58,889 INFO     semantic_afterlife.events unloaded allenai/Olmo-3-1025-7B peak_vram_mib=7206.3
+2026-09-17 17:21:59,926 INFO     semantic_afterlife.events completed s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3 — spent $0.0000 (project $10.54 of $200.00)

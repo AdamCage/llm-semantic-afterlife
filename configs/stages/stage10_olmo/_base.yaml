@@ -1,0 +1,52 @@
+# ===========================================================================
+# S10 — shared knobs (ADR-0023, ADR-0024, ADR-0025, ADR-0028)
+# ---------------------------------------------------------------------------
+# Not a runnable generate config: no `generators:` list. Children add
+# exactly one local slug. plan_trajectories rejects two CUDA models.
+#
+# W=4096, B=1024, T=49152 (12 turnovers). protocol: P1_reprompt only.
+# Twins are not in semantic_seeds. If PLAN.md disagrees, this tree wins.
+# Not S11. Not pooled with Qwen.
+# ===========================================================================
+
+include:
+  - configs/models/generators_local_paperb.yaml
+  - configs/embeddings/embeddings_local.yaml
+
+stage: s10
+name: paperb-olmo-12w
+description: >-
+  Paper B S10 shared window/sampling/seeds. Children select one OLMo
+  3 7B ladder checkpoint. Not S11. Not pooled with Qwen.
+
+# Second space is hosted qwen3-embed-8b via embed_qwen.yaml (ADR-0028),
+# not local-qwen3-embed-8b. Generate configs do not load an 8B embedder.
+embeddings: [local-bge-m3]
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+semantic_seeds:
+  - physics
+  - finance
+  - biology
+  - war
+  - love
+  - recipe
+  - programming
+  - philosophy
+  - surreal
+  - noise
+
+stochastic_seeds: [1, 2, 3, 4]
+
+max_concurrent: 1
+budget_usd: 0.0

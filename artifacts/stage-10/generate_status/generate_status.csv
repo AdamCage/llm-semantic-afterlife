@@ -1,0 +1,7 @@
+cell,generate_run_id,n_planned,n_unique_trajectories,n_finished_events,n_completed,n_failed,n_steps,block_fill_mean,block_fill_min,stop_rate,reasoning_tokens_sum,roundtrip_failures,served_providers
+base-nf4,s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3,40,40,55,27,13,1319,0.991681,0.019,0.0128886,0,0,local
+sft-nf4,s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e,40,40,40,19,21,990,0.978879,0.015,0.0333333,0,0,local
+dpo-nf4,s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f,40,40,40,3,37,248,0.922605,0.009,0.165323,0,0,local
+rlvr-nf4,s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc,40,40,40,4,36,271,0.934096,0.005,0.132841,0,0,local
+base-int8,s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8,10,10,10,5,5,261,0.991452,0.086,0.0268199,0,0,local
+rlvr-int8,s10-paperb-olmo-rlvr-int8-20260918T142301Z-7125ccca,10,10,10,0,10,26,0.784423,0.018,0.461538,0,0,local

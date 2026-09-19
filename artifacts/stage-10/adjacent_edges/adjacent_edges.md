@@ -1,0 +1,10 @@
+**adjacent_edges** — Adjacent-edge table on the OLMo NF4 ladder (Base–SFT, SFT–DPO, DPO–RLVR): last-band G_t sign and completer lock saturation. Not a monotone-ladder test.
+
+| embedding      | edge             | left_cell   | right_cell   |    left_G |   right_G | left_sign    | right_sign   | sign_flip   |   left_lock_rate |   right_lock_rate |   left_n_lock |   right_n_lock |   left_n_traj |   right_n_traj |
+|:---------------|:-----------------|:------------|:-------------|----------:|----------:|:-------------|:-------------|:------------|-----------------:|------------------:|--------------:|---------------:|--------------:|---------------:|
+| local-bge-m3   | base-nf4→sft-nf4 | base-nf4    | sft-nf4      |   0.09439 |    0.1018 | +            | +            | False       |                1 |                 1 |            27 |             20 |            27 |             20 |
+| local-bge-m3   | sft-nf4→dpo-nf4  | sft-nf4     | dpo-nf4      |   0.1018  |  nan      | +            | unidentified | False       |                1 |                 1 |            20 |              5 |            20 |              5 |
+| local-bge-m3   | dpo-nf4→rlvr-nf4 | dpo-nf4     | rlvr-nf4     | nan       |    0.2015 | unidentified | +            | False       |                1 |                 1 |             5 |              5 |             5 |              5 |
+| qwen3-embed-8b | base-nf4→sft-nf4 | base-nf4    | sft-nf4      |   0.1891  |    0.1757 | +            | +            | False       |                1 |                 1 |            27 |             20 |            27 |             20 |
+| qwen3-embed-8b | sft-nf4→dpo-nf4  | sft-nf4     | dpo-nf4      |   0.1757  |  nan      | +            | unidentified | False       |                1 |                 1 |            20 |              5 |            20 |              5 |
+| qwen3-embed-8b | dpo-nf4→rlvr-nf4 | dpo-nf4     | rlvr-nf4     | nan       |    0.3346 | unidentified | +            | False       |                1 |                 1 |             5 |              5 |             5 |              5 |

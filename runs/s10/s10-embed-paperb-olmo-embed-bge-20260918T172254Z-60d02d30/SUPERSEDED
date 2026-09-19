@@ -1,0 +1,3 @@
+Hung after SentenceTransformer weight load (~44 min, 14 chunks, GPU idle,
+process wait_woken, only run.started). Not an E5 cell (RLVR INT8, 0
+completers). Retry with timeout; keep this dir as the hang record.

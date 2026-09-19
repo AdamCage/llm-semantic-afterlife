@@ -195,6 +195,47 @@ generator_library:
       OLMo 3 7B Instruct (RLVR head of the public Instruct line).
       Not Olmo-3-7B-Think-*.
 
+  pb-olmo3-7b-base-int8:
+    model_id: allenai/Olmo-3-1025-7B
+    api: local
+    tokenizer_repo: allenai/Olmo-3-1025-7B
+    tokenizer_revision: a81bae42db3975be1671e27b9c9a56da1a9f980f
+    continuation: raw_completion
+    is_base_model: true
+    provider_slug: local
+    allow_fallbacks: false
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    extra_body: &int8_olmo
+      load_in_8bit: true
+      dtype: bfloat16
+      device_map: cuda
+      attn_implementation: sdpa
+      serialization: raw_bytes
+      text_only: true
+      revision: a81bae42db3975be1671e27b9c9a56da1a9f980f
+    notes: >-
+      INT8 control twin of pb-olmo3-7b-base. F2 seeds only.
+      Concordance is limitations, not a third L0 headline.
+
+  pb-olmo3-7b-rlvr-int8:
+    model_id: allenai/Olmo-3-7B-Instruct
+    api: local
+    tokenizer_repo: allenai/Olmo-3-7B-Instruct
+    tokenizer_revision: 6e5971d9eba42665f5bd5a0fcf047f299ce1dccc
+    continuation: raw_completion
+    is_base_model: false
+    provider_slug: local
+    allow_fallbacks: false
+    price_usd_per_m_input: 0.0
+    price_usd_per_m_output: 0.0
+    extra_body:
+      <<: *int8_olmo
+      revision: 6e5971d9eba42665f5bd5a0fcf047f299ce1dccc
+    notes: >-
+      INT8 control twin of pb-olmo3-7b-rlvr (Instruct head). Same F2
+      list. Not SFT/DPO INT8 — F2 is the two ends of the ladder.
+
   # -- Ministral 3 8B: matched replication (S11) --------------------------
   pb-ministral-8b-base:
     model_id: mistralai/Ministral-3-8B-Base-2512

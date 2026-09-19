@@ -1,0 +1,15 @@
+{
+  "name": "persistence_gt_bands",
+  "caption": "G_t = d_between − d_within per integer turnover band in qwen3-embed-8b, cell rlvr-nf4. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "alt_text": "G_t = d_between − d_within per integer turnover band in qwen3-embed-8b, cell rlvr-nf4. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "limitations": "Positive G_t is seed-conditioned persistence in this space, not a semantic state and not an absorbing lock. OLMo only; do not pool with S9 Qwen.",
+  "run_ids": [
+    "s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc",
+    "s10-embed-paperb-olmo-embed-qwen-hosted-20260918T183129Z-b55ba55e",
+    "s10-persistence-qwen3-embed-8b-20260918T185534Z-397f0bda"
+  ],
+  "git_sha": "f82e450d483c1a7fa6d8a10dd6b0cb6593185e98",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-18T20:43:37+00:00"
+}

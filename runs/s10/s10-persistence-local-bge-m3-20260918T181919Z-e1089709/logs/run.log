@@ -1,0 +1,3 @@
+2026-09-18 21:19:41,802 INFO     semantic_afterlife.events run s10-persistence-local-bge-m3-20260918T181919Z-e1089709 (live)
+2026-09-18 21:19:41,805 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-18 21:19:41,870 INFO     semantic_afterlife.events failed s10-persistence-local-bge-m3-20260918T181919Z-e1089709 — spent $0.0000 (project $10.54 of $200.00)

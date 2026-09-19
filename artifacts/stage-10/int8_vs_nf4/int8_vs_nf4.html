@@ -1,0 +1,74 @@
+<style type="text/css">
+#T_95c20 caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0.4em 0;
+  font-size: 1.05em;
+}
+#T_95c20 th {
+  background-color: #F2F4F7;
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 2px solid #4D4D4D;
+}
+#T_95c20 td {
+  padding: 0.3em 0.6em;
+}
+#T_95c20 tr:nth-child(even) {
+  background-color: #FAFBFC;
+}
+#T_95c20 table {
+  border-collapse: collapse;
+  font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
+  font-size: 0.92em;
+}
+#T_95c20_row0_col2, #T_95c20_row0_col3 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+#T_95c20_row1_col2, #T_95c20_row1_col3 {
+  background-color: #08306b;
+  color: #f1f1f1;
+}
+</style>
+<table id="T_95c20">
+  <caption>INT8 vs NF4 last-band G_t sign on Base and RLVR (F2 seeds). Limitations, not a third headline.</caption>
+  <thead>
+    <tr>
+      <th id="T_95c20_level0_col0" class="col_heading level0 col0" >rung</th>
+      <th id="T_95c20_level0_col1" class="col_heading level0 col1" >embedding</th>
+      <th id="T_95c20_level0_col2" class="col_heading level0 col2" >nf4_G</th>
+      <th id="T_95c20_level0_col3" class="col_heading level0 col3" >int8_G</th>
+      <th id="T_95c20_level0_col4" class="col_heading level0 col4" >nf4_sign</th>
+      <th id="T_95c20_level0_col5" class="col_heading level0 col5" >int8_sign</th>
+      <th id="T_95c20_level0_col6" class="col_heading level0 col6" >same_sign</th>
+      <th id="T_95c20_level0_col7" class="col_heading level0 col7" >nf4_run</th>
+      <th id="T_95c20_level0_col8" class="col_heading level0 col8" >int8_run</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_95c20_row0_col0" class="data row0 col0" >base</td>
+      <td id="T_95c20_row0_col1" class="data row0 col1" >local-bge-m3</td>
+      <td id="T_95c20_row0_col2" class="data row0 col2" >0.0944</td>
+      <td id="T_95c20_row0_col3" class="data row0 col3" >0.0982</td>
+      <td id="T_95c20_row0_col4" class="data row0 col4" >+</td>
+      <td id="T_95c20_row0_col5" class="data row0 col5" >+</td>
+      <td id="T_95c20_row0_col6" class="data row0 col6" >True</td>
+      <td id="T_95c20_row0_col7" class="data row0 col7" >s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3</td>
+      <td id="T_95c20_row0_col8" class="data row0 col8" >s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8</td>
+    </tr>
+    <tr>
+      <td id="T_95c20_row1_col0" class="data row1 col0" >base</td>
+      <td id="T_95c20_row1_col1" class="data row1 col1" >qwen3-embed-8b</td>
+      <td id="T_95c20_row1_col2" class="data row1 col2" >0.1891</td>
+      <td id="T_95c20_row1_col3" class="data row1 col3" >0.1445</td>
+      <td id="T_95c20_row1_col4" class="data row1 col4" >+</td>
+      <td id="T_95c20_row1_col5" class="data row1 col5" >+</td>
+      <td id="T_95c20_row1_col6" class="data row1 col6" >True</td>
+      <td id="T_95c20_row1_col7" class="data row1 col7" >s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3</td>
+      <td id="T_95c20_row1_col8" class="data row1 col8" >s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8</td>
+    </tr>
+  </tbody>
+</table>
