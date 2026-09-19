@@ -1,0 +1,11 @@
+# S11.1 — Ministral-3-8B-Base-2512 NF4, raw_bytes, 10 × 4, 12W.
+# One generator. Do not add a second slug. Not the FP8 Instruct.
+include:
+  - configs/stages/stage11_ministral_gemma/_base.yaml
+
+name: paperb-ministral-base-nf4
+description: >-
+  S11 Ministral Base. Local mistralai/Ministral-3-8B-Base-2512 NF4.
+  Text-only path. Not Reasoning-2512.
+generators:
+  - pb-ministral-8b-base

@@ -17,8 +17,9 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
-**S10 OLMo 12W закрыт** (2026-09-19). Порядок заморожен:
-**S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
+**S10 OLMo 12W закрыт** (2026-09-19). **S11 Ministral+Gemma 12W
+открыт** (2026-09-19). Порядок заморожен:
+**S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
 законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
 (ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
@@ -352,12 +353,20 @@ Human дал `--no-ff`. Completion падает от Base до DPO и выход
 на пол DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40). Lock-table
 траектории лочатся; escape 0. RLVR last-band \(G_t>0\) не
 установлен. Last-band \(G_t\) у DPO не идентифицирован, это не
-смена знака. S11 не стартовать, пока этап не открыт. С Qwen не
-пулить.
+смена знака. С Qwen не пулить.
 
-### S11–S13 `planned`
+### S11 — репликация Ministral + обобщение Gemma на 12W `открыт 2026-09-19`
 
-Порядок заморожен: S11 Ministral+Gemma → S12 горизонт → S13 синтез.
+Открыт после `--no-ff` S10. План:
+[`docs/stages/stage-11/PLAN.md`](stages/stage-11/PLAN.md).
+Ministral Base/Instruct `raw_bytes` (native-chat отложен); затем
+Gemma 4 12B Base/IT. Gemma — architectural generalization, не
+causal ablation внимания. OOM → стоп, без тихой замены. S12 не
+стартовать, пока этап не закрыт. С Qwen и OLMo не пулить.
+
+### S12–S13 `planned`
+
+Порядок заморожен: S12 горизонт → S13 синтез.
 Подтверждающие оценки и freeze F1–F4 — в английском плане и
 ADR-0023 / ADR-0025.
 
