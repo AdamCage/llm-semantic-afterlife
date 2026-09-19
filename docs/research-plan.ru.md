@@ -17,8 +17,8 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
-**S10 OLMo 12W: вычисления закрыты** (2026-09-18); ждёт научного
-ревью. Порядок заморожен:
+**S10 OLMo 12W: вычисления закрыты** (2026-09-18); ревью APPROVED
+WITH CHANGES, блокеры фраз внесены. Порядок заморожен:
 **S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
 законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
@@ -351,10 +351,14 @@ Review: [`docs/stages/stage-9/REVIEW.md`](stages/stage-9/REVIEW.md).
 Четыре чекпоинта (Base → SFT → DPO → RLVR), та же матрица 12W.
 INT8 — два конца (Base, RLVR; 20 траекторий). Native-chat отложен.
 Второе пространство — hosted `qwen3-embed-8b` (ADR-0028), ledger
-$0.00. Completion падает по лестнице (13/40 → 21/40 → 37/40 →
-36/40 empty-completion). Completers лочатся; escape 0. Last-band
-\(G_t\) у DPO не идентифицирован, это не смена знака. Ждёт
-научного ревью. S11 не стартовать. С Qwen не пулить.
+$0.00. Completion падает от Base до DPO и выходит на пол
+DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40 empty-completion).
+Lock-table траектории лочатся; escape 0. У Base NF4 last-band CI
+исключает 0 в обоих пространствах; RLVR last-band \(G_t>0\)
+**не установлен** (точка `+`, CI включает 0). Last-band \(G_t\)
+у DPO не идентифицирован, это не смена знака. Ревью APPROVED
+WITH CHANGES; блокеры фраз внесены. S11 не стартовать. С Qwen
+не пулить.
 
 ### S11–S13 `planned`
 

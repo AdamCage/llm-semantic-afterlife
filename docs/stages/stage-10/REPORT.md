@@ -1,30 +1,32 @@
 # Stage 10 report — OLMo 3 7B post-training ladder kills completion, not the lock
 
 **Status.** Computations complete 2026-09-18. Mechanical gate
-**passed** (`afterlife review --stage s10`, one WARN: RLVR INT8
-generate `STATUS=FAILED`, named below). Ready for scientific review.
+**passed**. Scientific review **APPROVED WITH CHANGES**
+([`REVIEW.md`](REVIEW.md)); two phrase blockers applied below.
 Overall: **PARTIAL** on matrix completeness (E1/E2 empty-completion
 attrition, named and kept) and on E5 identification (DPO last-band
 unidentified; RLVR LOO skipped); **PASS** on the runnable confirmatory
 contrast that exists. S11 not started. Native-chat still deferred.
-Do not merge without scientific sign-off.
+Do not merge until the human authorises `--no-ff`.
 
 Headline, **two estimands**. On this local OLMo 3 7B Instruct line
 (Base → SFT → DPO → RLVR), P1 `raw_bytes`, `W=4096`, T=0.3, 12
-turnovers, **completion collapses down the ladder**: NF4 empty-
-completion deaths 13/40 → 21/40 → 37/40 → 36/40. That is the
-opposite of S9 Qwen (Base worse). Selecting on completers is part of
-the result. Among trajectories that enter the lock table
-(`min_chunks=8`), every trajectory is a confirmed early-onset
-long-lived repetition lock (`N_confirm=3`); confirmed escape is
-**0** in both embedding spaces. Last-band \(G_t\) is positive where
-it is identified (Base, SFT, RLVR) in **both** BGE-M3 and hosted
-`qwen3-embed-8b`. DPO last-band \(G_t\) is **undefined** in both
-spaces: the last integer band has within-seed pairs and zero
-between-seed pairs (one completing seed family). That is missing
-identification, not a sign flip. Last-band \(G_t>0\) is
-seed-conditioned separation of late registers / loop families, not
-recovered prompt memory. Do not pool with S9 Qwen.
+turnovers, **completion collapses from Base through DPO and floors
+at DPO ≈ RLVR**: NF4 empty-completion deaths 13/40 → 21/40 → 37/40
+→ 36/40. That is the opposite of S9 Qwen (Base worse). Selecting
+on completers is part of the result. Among trajectories that enter
+the lock table (`min_chunks=8`; not identical to 12W completers),
+every trajectory is a confirmed early-onset long-lived repetition
+lock (`N_confirm=3`); confirmed escape is **0** in both embedding
+spaces. Last-band \(G_t\): Base NF4 CIs exclude 0 in both spaces
+(BGE 0.0944 [0.029, 0.108]; Qwen 0.189 [0.086, 0.221]); SFT BGE
+includes 0, SFT Qwen excludes 0; RLVR point `+` in both spaces
+(0.202 / 0.335), both CIs include 0, LOO skipped (`<3` seeds;
+lock-table \(n=5\) is not last-band \(n\)); DPO last-band
+**unidentified** (3 within, 0 between — the `noise` family), not
+a sign flip. Last-band \(G_t>0\), where the interval excludes 0,
+is seed-conditioned separation of late registers / loop families,
+not recovered prompt memory. Do not pool with S9 Qwen.
 
 Plan: [`PLAN.md`](PLAN.md). Branch: `stage-10`.
 
@@ -187,13 +189,15 @@ SFT NF4, `love` s2 — assistant-register loop
 > sure you're ready to move on, and I want to make sure you're
 > ready to move on, and I want to make sure you're ready to move on
 
-DPO NF4, `finance` s1 — assistant-register offer, not a lexical cycle
-(`s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f`):
+DPO NF4, `noise` s2 — last-band 12W completer, ordinal loop (one of
+the three `noise` descendants that make last-band \(G_t\)
+unidentified; `s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f`).
+Not `finance` s1, which is a FAILED lock-table extra (16 297 tokens).
 
-> If you want a Q&A or a specific section explained, or want this
-> transformed into a shorter summary, essay, or lesson plan, please
-> specify. If you have a specific question about the text, trading
-> strategy, risk management, or quantitative finance, let me know
+> seventh of the seventh of the seventh of the seventh of the
+> seventh of the seventh of the seventh of the seventh of the
+> seventh of the seventh of the seventh of the seventh of the
+> seventh of the seventh of the seventh of the seventh of the
 
 RLVR NF4, `noise` s1 — ordinal loop
 (`s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc`):
@@ -211,9 +215,11 @@ Base INT8, `surreal` s1 — exact lexical cycle
 > allowed to look at the register, except to say that they were not
 > allowed to look at the register.
 
-A positive \(G_t\) here is seed-conditioned persistence of these
-late registers, including loops. It is not recovered prompt memory
-and not a metastable semantic state.
+Where the last-band interval excludes 0, a positive \(G_t\) is
+seed-conditioned persistence of these late registers, including
+loops. It is not recovered prompt memory and not a metastable
+semantic state. DPO last-band \(G_t\) stays unidentified because
+the three 12W completers are one seed family.
 
 ---
 
@@ -223,12 +229,12 @@ and not a metastable semantic state.
 | --- | --- | ---: | --- |
 | P1 | RLVR NF4: ≥8/10 domain seeds have ≥1 confirmed lock by 12W | 0.50 | **false** — 2/10 (`noise`, `recipe`) |
 | P2 | Base NF4 empty-completion rate is **higher** than RLVR | 0.55 | **false** — 13/40 vs 36/40. Opposite of S9 Qwen |
-| P3 | RLVR last-band \(G_t > 0\) in **both** spaces | 0.50 | **true on the point** — BGE 0.2015, Qwen 0.3346. Both 95% CIs include 0 (5 traj, small-n) |
+| P3 | RLVR last-band \(G_t > 0\) in **both** spaces | 0.50 | **not established** — BGE 0.2015 [−0.134, 0.202]; Qwen 0.3346 [−0.147, 0.335]. Both CIs include 0; upper bounds equal the point; LOO skipped. Lock-table \(n=5\) is not last-band \(n\) (3 within / 3 between = 4 traj, 2 seeds) |
 | P4 | Sign of RLVR last-band \(G_t\) agrees across spaces | 0.55 | **true** — `+` / `+` |
 | P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | **true** |
 | P6 | Mean block fill on completed NF4 12W steps ≥ 0.95 (final-quarter) | 0.65 | **true** on completed 12W steps (fill 1.000). Cell-level Q4 means include dying trajs |
 | P7 | INT8 vs NF4, Base and RLVR, F2: same sign of last-band \(G_t\) | 0.45 | **partial** — Base same sign `+` in both spaces. RLVR INT8 has 0 completers |
-| P8 | If all four rungs share last-band sign and completer locks saturate, that is a finding | — | **locks saturate where they exist; last-band sign is not identified on DPO.** Completer lock is not a failed contrast. Completion collapse **is** the ladder |
+| P8 | If all four rungs share last-band sign and completer locks saturate, that is a finding | — | **locks saturate where a lock table exists; last-band sign is not identified on DPO.** Completer lock is not a failed contrast. Completion collapse from Base through DPO, then a **floor** at DPO ≈ RLVR (37 vs 36 empty), is the second estimand |
 | P9 | No adjacent-edge last-band \(G_t\) **sign flip** | 0.45 | **not falsified** — Base–SFT `+`/`+` in both spaces. DPO last-band undefined, not a flip |
 | P10 | Base `recipe`: ≥2/4 descendants empty-completion FAILED | 0.50 | **true** — 3/4 (`s1`,`s2`,`s4`) |
 
@@ -240,9 +246,10 @@ Qwen excludes 0. The sign is `+` in both. That is not a P4 failure
 
 ## 4. Surprises
 
-1. **The ladder is a completion ladder, not a lock ladder.** Post-
-   training on this line makes free-running under P1 rarer. Completers
-   still lock.
+1. **The ladder is a completion collapse-then-floor, not a lock
+   ladder.** Post-training on this line makes free-running under P1
+   rarer (13 → 21 → 37 → 36 / 40). DPO → RLVR is a floor, not a
+   further collapse. Completers still lock.
 2. **P2 is backwards relative to S9 Qwen.** OLMo Base completes more
    than RLVR. One family is not a law (E11).
 3. **DPO last-band \(G_t\) is unidentified in both spaces.** Three

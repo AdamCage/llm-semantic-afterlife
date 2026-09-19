@@ -18,7 +18,8 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
 (2026-09-16). **S10 OLMo 12W computations are complete**
-(2026-09-18); awaiting scientific review. Frozen
+(2026-09-18); review APPROVED WITH CHANGES, phrase blockers
+applied. Frozen
 order: **S10 OLMo → S11 Ministral+Gemma → S12 horizon → S13**.
 S9–S11 is a complete story; S12 is strengthening or *no confirmed
 escape through T*. Local generate is $0 ledger; project ceiling
@@ -431,10 +432,14 @@ Four checkpoints (Base → SFT → DPO → RLVR), same 12W matrix
 (`W=4096`, `B=1024`, `T=49152`). INT8 is the two ends (Base,
 RLVR; 20 traj). Native-chat deferred. Second space is hosted
 `qwen3-embed-8b` ([ADR-0028](decisions/ADR-0028-s10-hosted-qwen-embed.md)),
-ledger $0.00. Completion collapses down the ladder (13/40 → 21/40
-→ 37/40 → 36/40 empty-completion). Completers lock; escape 0.
-DPO last-band \(G_t\) unidentified, not a sign flip. Awaiting
-scientific review. Do not start S11. Do not pool with Qwen.
+ledger $0.00. Completion collapses from Base through DPO and
+floors at DPO ≈ RLVR (13/40 → 21/40 → 37/40 → 36/40 empty-
+completion). Lock-table trajectories lock; escape 0. Base NF4
+last-band CIs exclude 0 in both spaces; RLVR last-band \(G_t>0\)
+is **not established** (point `+`, CIs include 0). DPO last-band
+\(G_t\) unidentified, not a sign flip. Review APPROVED WITH
+CHANGES; phrase blockers applied. Do not start S11. Do not pool
+with Qwen.
 
 ### S11 — Ministral replication + Gemma generalization at 12W `planned`
 

@@ -10,8 +10,9 @@ If PLAN prose and YAML disagree, **YAML wins**.
 DPO → RLVR), at 12W P1 `raw_bytes`, do completer persistence and
 completion differ across adjacent ladder edges?
 
-**Status.** Computations complete 2026-09-18. REPORT written.
-Mechanical gate passed. Awaiting scientific review. Do not start S11.
+**Status.** Computations complete 2026-09-18. REVIEW **APPROVED
+WITH CHANGES**; two phrase blockers applied. Awaiting human
+`--no-ff`. Do not start S11.
 
 | pass | status |
 | --- | --- |
@@ -34,7 +35,8 @@ Mechanical gate passed. Awaiting scientific review. Do not start S11.
 | --- | --- |
 | [`PLAN.md`](PLAN.md) | question, matrix, exit criteria, predictions |
 | [`REPORT.md`](REPORT.md) | verdicts, scored predictions, threats |
-| [`HANDOFF.md`](HANDOFF.md) | scientific reviewer |
+| [`REVIEW.md`](REVIEW.md) | APPROVED WITH CHANGES; blockers closed |
+| [`HANDOFF.md`](HANDOFF.md) | waiting on human `--no-ff` |
 | [`configs/stages/stage10_olmo/`](../../../configs/stages/stage10_olmo/) | generate + embed YAML |
 | [`artifacts/stage-10/`](../../../artifacts/stage-10/) | publication-grade outputs |
 
