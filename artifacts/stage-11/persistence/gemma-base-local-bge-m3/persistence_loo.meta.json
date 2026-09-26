@@ -1,0 +1,15 @@
+{
+  "name": "persistence_loo",
+  "caption": "Last-band G_t after dropping one semantic seed (gemma-base, local-bge-m3).",
+  "alt_text": "Last-band G_t after dropping one semantic seed (gemma-base, local-bge-m3).",
+  "limitations": "A single held-out seed can flip a marginal last-band sign.",
+  "run_ids": [
+    "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+    "s11-embed-paperb-s11-embed-bge-20260923T051909Z-880ed636",
+    "s11-persistence-local-bge-m3-20260923T062042Z-c2f43426"
+  ],
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-25T19:12:37+00:00"
+}

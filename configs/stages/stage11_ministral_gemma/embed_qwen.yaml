@@ -1,0 +1,13 @@
+# S11 hosted Qwen3-Embedding-8B (ADR-0029). RouterAI first.
+# Not a generate config. Do not mix OpenRouter in this run.
+include:
+  - configs/stages/stage11_ministral_gemma/_base.yaml
+  - configs/embeddings/embeddings.yaml
+
+name: paperb-s11-embed-qwen-hosted
+description: >-
+  S11 hosted qwen/qwen3-embedding-8b via RouterAI over a generate run.
+embeddings: [qwen3-embed-8b]
+generators:
+  - pb-ministral-8b-base
+budget_usd: 5.0

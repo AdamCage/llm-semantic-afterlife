@@ -1,0 +1,15 @@
+{
+  "name": "persistence_locks",
+  "caption": "Prefix long-lived repetition lock (F1 + N_confirm=3) for ministral-base in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "alt_text": "Prefix long-lived repetition lock (F1 + N_confirm=3) for ministral-base in qwen3-embed-8b. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.",
+  "limitations": "Hash is diagnostic only and is not in this table.",
+  "run_ids": [
+    "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+    "s11-embed-paperb-s11-embed-qwen-hosted-20260923T054623Z-42a5d9a7",
+    "s11-persistence-qwen3-embed-8b-20260923T070130Z-86af1f82"
+  ],
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-25T19:12:39+00:00"
+}

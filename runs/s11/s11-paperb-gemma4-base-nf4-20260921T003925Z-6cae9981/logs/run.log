@@ -1,0 +1,144 @@
+2026-09-21 03:40:26,103 INFO     semantic_afterlife.events run s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981 (live)
+2026-09-21 03:40:27,678 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 03:40:31,014 INFO     semantic_afterlife.providers.local loading local model google/gemma-4-12B device=cuda dtype=bfloat16 attn=sdpa loader=Gemma4UnifiedForConditionalGeneration
+2026-09-21 03:41:18,126 INFO     semantic_afterlife.events loaded google/gemma-4-12B Gemma4UnifiedForConditionalGeneration via Gemma4UnifiedForConditionalGeneration rev=023679ed352de9bb66cc873c9009ce3482585c08 peak_vram_mib=7381.7 in 47.051s
+2026-09-21 04:41:00,049 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 04:41:00,056 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 05:40:28,175 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 05:40:28,178 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 06:40:03,886 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 06:40:03,898 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 07:39:41,208 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 07:39:41,211 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 08:39:19,502 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s1: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 08:39:19,512 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 09:38:54,061 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 09:38:54,065 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 10:38:25,178 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 10:38:25,182 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 11:35:42,677 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 11:35:42,681 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 12:34:55,663 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 12:34:55,666 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 13:34:08,605 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 13:34:08,608 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 14:33:24,975 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s3: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 14:33:24,978 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 15:33:20,065 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 15:33:20,069 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 16:32:49,993 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 16:32:50,006 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 17:32:09,670 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s2: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 17:32:09,674 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 18:31:38,212 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 18:31:38,215 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 19:31:09,575 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 19:31:09,578 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 20:30:28,230 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 20:30:28,239 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 21:23:44,601 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 21:23:44,629 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:23,738 INFO     semantic_afterlife.events resume s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981 (live)
+2026-09-21 23:38:25,295 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__physics__s1 at step 49 (49152 tokens)
+2026-09-21 23:38:25,297 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:25,321 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:25,624 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__physics__s2 at step 49 (49152 tokens)
+2026-09-21 23:38:25,625 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:25,662 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:26,346 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__physics__s3 at step 49 (49152 tokens)
+2026-09-21 23:38:26,347 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:26,358 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:26,580 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__physics__s4 at step 49 (49152 tokens)
+2026-09-21 23:38:26,581 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:26,588 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__physics__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:27,202 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__finance__s1 at step 50 (49152 tokens)
+2026-09-21 23:38:27,204 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:27,214 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s1: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:27,731 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__finance__s2 at step 49 (49152 tokens)
+2026-09-21 23:38:27,733 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:27,743 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:27,998 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__finance__s3 at step 49 (49152 tokens)
+2026-09-21 23:38:27,999 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:28,007 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:28,277 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__finance__s4 at step 48 (49152 tokens)
+2026-09-21 23:38:28,278 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:28,286 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__finance__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:28,778 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__biology__s1 at step 49 (49152 tokens)
+2026-09-21 23:38:28,779 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:28,788 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:28,968 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__biology__s2 at step 49 (49152 tokens)
+2026-09-21 23:38:28,970 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:28,976 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:29,503 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__biology__s3 at step 50 (49152 tokens)
+2026-09-21 23:38:29,504 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:29,514 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s3: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:29,697 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__biology__s4 at step 49 (49152 tokens)
+2026-09-21 23:38:29,699 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:29,706 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__biology__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:30,257 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__war__s1 at step 49 (49152 tokens)
+2026-09-21 23:38:30,258 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:30,271 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:30,720 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__war__s2 at step 50 (49152 tokens)
+2026-09-21 23:38:30,722 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:30,730 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s2: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:31,244 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__war__s3 at step 49 (49152 tokens)
+2026-09-21 23:38:31,245 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:31,255 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:31,553 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__war__s4 at step 49 (49152 tokens)
+2026-09-21 23:38:31,554 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:31,562 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__war__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:31,852 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__love__s1 at step 49 (49152 tokens)
+2026-09-21 23:38:31,853 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:31,860 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:32,218 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__love__s2 at step 49 (49152 tokens)
+2026-09-21 23:38:32,220 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:32,231 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 23:38:32,320 INFO     semantic_afterlife.events resuming pb-gemma4-12b-base__W4096__T0p3__love__s3 at step 14 (14326 tokens)
+2026-09-21 23:38:32,321 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 23:38:36,623 INFO     semantic_afterlife.providers.local loading local model google/gemma-4-12B device=cuda dtype=bfloat16 attn=sdpa loader=Gemma4UnifiedForConditionalGeneration
+2026-09-21 23:38:46,919 INFO     semantic_afterlife.events loaded google/gemma-4-12B Gemma4UnifiedForConditionalGeneration via Gemma4UnifiedForConditionalGeneration rev=023679ed352de9bb66cc873c9009ce3482585c08 peak_vram_mib=7381.7 in 10.238s
+2026-09-22 00:20:53,088 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 00:20:53,091 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__love__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 01:19:13,225 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__love__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 01:19:13,228 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__recipe__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 02:18:52,097 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__recipe__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 02:18:52,103 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__recipe__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 02:18:53,356 INFO     semantic_afterlife.events failed pb-gemma4-12b-base__W4096__T0p3__recipe__s2: 1 steps, 4 tokens, 0 chunks, $0.0000
+2026-09-22 02:18:53,358 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__recipe__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 03:18:26,950 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__recipe__s3: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 03:18:26,966 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__recipe__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 04:18:07,333 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__recipe__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 04:18:07,336 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__programming__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 05:17:40,726 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__programming__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 05:17:40,729 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__programming__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 05:17:42,203 INFO     semantic_afterlife.events failed pb-gemma4-12b-base__W4096__T0p3__programming__s2: 1 steps, 10 tokens, 0 chunks, $0.0000
+2026-09-22 05:17:42,207 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__programming__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 06:17:21,449 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__programming__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 06:17:21,453 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__programming__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 07:16:35,487 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__programming__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 07:16:35,490 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__philosophy__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 08:16:08,916 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__philosophy__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 08:16:08,919 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__philosophy__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 09:15:50,638 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__philosophy__s2: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 09:15:50,644 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__philosophy__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 10:15:34,737 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__philosophy__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 10:15:34,740 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__philosophy__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 11:10:14,387 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__philosophy__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 11:10:14,392 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__surreal__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 12:10:00,432 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__surreal__s1: 50 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 12:10:00,436 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__surreal__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 13:07:25,975 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__surreal__s2: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 13:07:25,979 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__surreal__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 14:06:04,385 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__surreal__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 14:06:04,388 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__surreal__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 15:06:05,605 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__surreal__s4: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 15:06:05,611 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__noise__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 16:06:12,832 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__noise__s1: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 16:06:12,835 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__noise__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 17:04:52,914 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__noise__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 17:04:52,917 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__noise__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 18:04:41,857 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__noise__s3: 49 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 18:04:41,860 INFO     semantic_afterlife.events start pb-gemma4-12b-base__W4096__T0p3__noise__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-22 19:04:23,232 INFO     semantic_afterlife.events completed pb-gemma4-12b-base__W4096__T0p3__noise__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-22 19:04:23,234 INFO     semantic_afterlife.events unloaded google/gemma-4-12B peak_vram_mib=9200.8
+2026-09-22 19:04:24,410 INFO     semantic_afterlife.events completed s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981 — spent $0.0000 (project $10.54 of $200.00)

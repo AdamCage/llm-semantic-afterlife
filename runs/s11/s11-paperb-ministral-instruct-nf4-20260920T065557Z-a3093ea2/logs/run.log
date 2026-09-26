@@ -1,0 +1,85 @@
+2026-09-20 09:56:58,061 INFO     semantic_afterlife.events run s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2 (live)
+2026-09-20 09:56:58,599 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__physics__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 09:57:01,960 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Instruct-2512-BF16 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-09-20 09:57:22,759 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Instruct-2512-BF16 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=f6fae9795746f63c9be8344932f01275f3c63734 peak_vram_mib=5923.7 in 20.744s
+2026-09-20 10:19:58,740 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__physics__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 10:19:58,743 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__physics__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 10:46:59,112 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__physics__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 10:46:59,115 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__physics__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 11:14:08,602 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__physics__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 11:14:08,605 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__physics__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 11:41:05,917 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__physics__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 11:41:05,920 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__finance__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 12:07:51,750 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__finance__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 12:07:51,755 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__finance__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 12:34:27,172 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__finance__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 12:34:27,188 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__finance__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 13:00:54,355 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__finance__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 13:00:54,361 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__finance__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 13:27:17,628 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__finance__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 13:27:17,643 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__biology__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 13:53:47,723 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__biology__s1: 60 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 13:53:47,726 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__biology__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 14:20:19,402 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__biology__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 14:20:19,433 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__biology__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 14:47:00,583 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__biology__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 14:47:00,587 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__biology__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 15:13:56,695 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__biology__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 15:13:56,701 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__war__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 15:40:34,835 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__war__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 15:40:34,838 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__war__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 16:07:24,135 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__war__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 16:07:24,144 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__war__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 16:34:09,737 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__war__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 16:34:09,741 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__war__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 17:00:58,081 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__war__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 17:00:58,086 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__love__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 17:27:42,929 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__love__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 17:27:42,936 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__love__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 17:54:17,311 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__love__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 17:54:17,314 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__love__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 18:21:06,848 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__love__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 18:21:06,851 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__love__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 18:47:46,339 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__love__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 18:47:46,344 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__recipe__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 19:14:39,179 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__recipe__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 19:14:39,185 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__recipe__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 19:41:15,928 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__recipe__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 19:41:15,934 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__recipe__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 20:07:26,287 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__recipe__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 20:07:26,291 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__recipe__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 20:34:01,751 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__recipe__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 20:34:01,763 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__programming__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 21:00:48,917 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__programming__s1: 66 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 21:00:48,920 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__programming__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 21:27:33,806 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__programming__s2: 58 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 21:27:33,810 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__programming__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 21:54:01,584 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__programming__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 21:54:01,591 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__programming__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 22:20:50,038 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__programming__s4: 55 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 22:20:50,043 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__philosophy__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 22:47:18,681 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__philosophy__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 22:47:18,688 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__philosophy__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 23:13:26,300 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__philosophy__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 23:13:26,303 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__philosophy__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-20 23:39:56,955 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__philosophy__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-20 23:39:56,969 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__philosophy__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 00:06:22,974 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__philosophy__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 00:06:22,978 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__surreal__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 00:33:10,758 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__surreal__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 00:33:10,762 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__surreal__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 00:59:42,379 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__surreal__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 00:59:42,386 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__surreal__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 01:26:28,633 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__surreal__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 01:26:28,637 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__surreal__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 01:52:57,278 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__surreal__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 01:52:57,288 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__noise__s1: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 02:19:36,940 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__noise__s1: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 02:19:36,943 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__noise__s2: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 02:46:11,759 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__noise__s2: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 02:46:11,763 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__noise__s3: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 03:12:40,191 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__noise__s3: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 03:12:40,195 INFO     semantic_afterlife.events start pb-ministral-8b-instruct__W4096__T0p3__noise__s4: W=4096 T=49152 (12.0 turnovers)
+2026-09-21 03:39:21,623 INFO     semantic_afterlife.events completed pb-ministral-8b-instruct__W4096__T0p3__noise__s4: 48 steps, 49152 tokens, 48 chunks, $0.0000
+2026-09-21 03:39:21,629 INFO     semantic_afterlife.events unloaded mistralai/Ministral-3-8B-Instruct-2512-BF16 peak_vram_mib=6940.8
+2026-09-21 03:39:22,985 INFO     semantic_afterlife.events completed s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2 — spent $0.0000 (project $10.54 of $200.00)

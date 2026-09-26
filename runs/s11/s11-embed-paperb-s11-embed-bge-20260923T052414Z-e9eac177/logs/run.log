@@ -1,0 +1,4 @@
+2026-09-23 08:25:39,144 INFO     semantic_afterlife.events run s11-embed-paperb-s11-embed-bge-20260923T052414Z-e9eac177 (live)
+2026-09-23 08:25:39,146 WARNING  semantic_afterlife.runctx git tree is dirty; the diff is recorded in the manifest, but prefer committing before a run that produces reportable numbers
+2026-09-23 08:25:43,376 INFO     semantic_afterlife.providers.local_embed loading local embedder BAAI/bge-m3 device=cuda
+2026-09-23 08:27:28,680 INFO     semantic_afterlife.events completed s11-embed-paperb-s11-embed-bge-20260923T052414Z-e9eac177 — spent $0.0000 (project $10.54 of $200.00)

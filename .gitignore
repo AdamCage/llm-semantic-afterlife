@@ -13,9 +13,9 @@ secrets/
 # `runs/` holds raw trajectories and full logs: large, regenerable from configs.
 # Small, publication-grade artifacts live in `artifacts/` and ARE committed.
 # Occupancy replication (ADR-0022) and Paper B local generate (S8 smoke /
-# S9 Qwen 12W / S10 OLMo 12W) are tracked so a VM wipe cannot erase the
-# computational record. Secrets stay in `.env`, never here. Weights stay
-# ignored.
+# S9 Qwen 12W / S10 OLMo 12W / S11 Ministral+Gemma 12W) are tracked so a
+# VM wipe cannot erase the computational record. Secrets stay in `.env`,
+# never here. Weights stay ignored.
 runs/*
 !runs/.gitkeep
 !runs/_ledger/
@@ -54,6 +54,16 @@ runs/s10/*
 !runs/s10/s10-degeneracy-*/**
 !runs/s10/s10-persistence-*/
 !runs/s10/s10-persistence-*/**
+!runs/s11/
+runs/s11/*
+!runs/s11/s11-paperb-*/
+!runs/s11/s11-paperb-*/**
+!runs/s11/s11-embed-*/
+!runs/s11/s11-embed-*/**
+!runs/s11/s11-degeneracy-*/
+!runs/s11/s11-degeneracy-*/**
+!runs/s11/s11-persistence-*/
+!runs/s11/s11-persistence-*/**
 .cache/
 scratch/
 

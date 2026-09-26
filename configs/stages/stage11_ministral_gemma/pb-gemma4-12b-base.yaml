@@ -1,0 +1,11 @@
+# S11.3 — Gemma 4 12B Base NF4, raw_bytes, 10 × 4, 12W.
+# One generator. OOM → stop; no E4B / B cut (ADR-0024).
+include:
+  - configs/stages/stage11_ministral_gemma/_base.yaml
+
+name: paperb-gemma4-base-nf4
+description: >-
+  S11 Gemma 4 12B pretrained. Architectural generalization, not a
+  causal sliding-window ablation.
+generators:
+  - pb-gemma4-12b-base

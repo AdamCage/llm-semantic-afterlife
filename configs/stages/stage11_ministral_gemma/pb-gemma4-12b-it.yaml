@@ -1,0 +1,12 @@
+# S11.4 — Gemma 4 12B IT NF4, raw_bytes, 10 × 4, 12W.
+# Last GPU checkpoint. OOM → stop; no E4B / B cut. Do not retune
+# sampling if empty completions repeat the S8 microbench.
+include:
+  - configs/stages/stage11_ministral_gemma/_base.yaml
+
+name: paperb-gemma4-it-nf4
+description: >-
+  S11 Gemma 4 12B instruction-tuned. Same NF4 recipe. Empty-completion
+  at W=4096 is a measurement (S8 microbench), not a licence to retune.
+generators:
+  - pb-gemma4-12b-it

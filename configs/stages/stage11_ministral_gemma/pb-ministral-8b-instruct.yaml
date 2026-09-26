@@ -1,0 +1,11 @@
+# S11.2 — Ministral-3-8B-Instruct-2512-BF16 NF4, raw_bytes, 10 × 4, 12W.
+# One generator. BF16 Hub weights → NF4. Not the FP8 Instruct.
+include:
+  - configs/stages/stage11_ministral_gemma/_base.yaml
+
+name: paperb-ministral-instruct-nf4
+description: >-
+  S11 Ministral Instruct. Local
+  mistralai/Ministral-3-8B-Instruct-2512-BF16 NF4. Not Reasoning-2512.
+generators:
+  - pb-ministral-8b-instruct

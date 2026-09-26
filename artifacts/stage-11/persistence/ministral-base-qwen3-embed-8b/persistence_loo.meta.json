@@ -1,0 +1,15 @@
+{
+  "name": "persistence_loo",
+  "caption": "Last-band G_t after dropping one semantic seed (ministral-base, qwen3-embed-8b).",
+  "alt_text": "Last-band G_t after dropping one semantic seed (ministral-base, qwen3-embed-8b).",
+  "limitations": "A single held-out seed can flip a marginal last-band sign.",
+  "run_ids": [
+    "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+    "s11-embed-paperb-s11-embed-qwen-hosted-20260923T054623Z-42a5d9a7",
+    "s11-persistence-qwen3-embed-8b-20260923T070130Z-86af1f82"
+  ],
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-25T19:12:39+00:00"
+}

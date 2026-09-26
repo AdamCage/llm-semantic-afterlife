@@ -1,0 +1,17 @@
+{
+  "name": "persistence_gt",
+  "caption": "Paper B confirmatory G_t in qwen3-embed-8b / ministral-base, W=4,096. G_t = d_between(t) − d_within(t) on L2-normalised embeddings. The band is a seed-cluster bootstrap (resample seeds; descendants travel with their seed). Last-band G=0.2399 [0.1266, 0.2719]. This is not a UMAP cluster count.",
+  "alt_text": "G_t versus turnover in qwen3-embed-8b / ministral-base.",
+  "limitations": "A positive G_t is seed-conditioned ensemble persistence in this representation, not semantic-domain memory and not a metastable state. The lock construct is labelled separately and is not absorbing. INT8 is concordance, not a third headline.",
+  "run_ids": [
+    "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+    "s11-embed-paperb-s11-embed-qwen-hosted-20260923T054623Z-42a5d9a7",
+    "s11-persistence-qwen3-embed-8b-20260923T070130Z-86af1f82"
+  ],
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-25T19:12:39+00:00",
+  "W": 4096,
+  "embedding": "qwen3-embed-8b / ministral-base"
+}

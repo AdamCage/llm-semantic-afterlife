@@ -1,0 +1,17 @@
+cell,generate_run_id,quarter,n_trajectories,n_steps,block_fill_mean,block_fill_min,stop_rate_mean
+gemma-base,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,1,40,492,0.929111,0.004,0.0732372
+gemma-base,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,2,38,456,0.997822,0.91725,0.00219298
+gemma-base,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,3,38,462,1,1,0
+gemma-base,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,4,38,456,0.996397,0.923667,0.00438596
+gemma-it,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,1,40,102,0.754025,0.002,0.415923
+gemma-it,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,2,20,72,0.868034,0.026,0.185989
+gemma-it,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,3,31,89,0.597661,0.002,0.506336
+gemma-it,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,4,19,68,0.597854,0.002,0.549952
+ministral-base,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,1,40,481,1,1,0
+ministral-base,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,2,40,480,1,1,0
+ministral-base,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,3,40,480,1,1,0
+ministral-base,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,4,40,480,1,1,0
+ministral-instruct,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,1,40,493,0.934494,0.241706,0.0666176
+ministral-instruct,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,2,40,491,0.990628,0.691187,0.00947917
+ministral-instruct,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,3,40,493,1,1,0
+ministral-instruct,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,4,40,490,1,1,0

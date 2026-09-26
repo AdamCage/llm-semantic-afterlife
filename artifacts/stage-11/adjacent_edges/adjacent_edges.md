@@ -1,0 +1,8 @@
+**adjacent_edges** — Within-family edges only: Ministral Base→Instruct and Gemma Base→IT. Last-band G_t sign. Not a cross-family average and not a causal attention contrast.
+
+| embedding      | edge                              | left_cell      | right_cell         |   left_G |   right_G | left_sign   | right_sign   | sign_flip   |   left_lock_rate |   right_lock_rate |   left_n_lock |   right_n_lock |   left_n_traj |   right_n_traj |
+|:---------------|:----------------------------------|:---------------|:-------------------|---------:|----------:|:------------|:-------------|:------------|-----------------:|------------------:|--------------:|---------------:|--------------:|---------------:|
+| local-bge-m3   | ministral-base→ministral-instruct | ministral-base | ministral-instruct |  0.1383  |    0.1502 | +           | +            | False       |                1 |                 1 |            40 |             40 |            40 |             40 |
+| local-bge-m3   | gemma-base→gemma-it               | gemma-base     | gemma-it           | -0.01063 |  nan      | -           | unidentified | False       |                1 |                 1 |            38 |              8 |            38 |              8 |
+| qwen3-embed-8b | ministral-base→ministral-instruct | ministral-base | ministral-instruct |  0.2399  |    0.2241 | +           | +            | False       |                1 |                 1 |            40 |             40 |            40 |             40 |
+| qwen3-embed-8b | gemma-base→gemma-it               | gemma-base     | gemma-it           |  0.01417 |  nan      | +           | unidentified | False       |                1 |                 1 |            38 |              8 |            38 |              8 |

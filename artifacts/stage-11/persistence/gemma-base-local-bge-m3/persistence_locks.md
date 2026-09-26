@@ -1,0 +1,42 @@
+**persistence_locks** — Prefix long-lived repetition lock (F1 + N_confirm=3) for gemma-base in local-bge-m3. Language: confirmed lock / no confirmed escape through T. Not an absorbing state.
+
+| trajectory_id                                    | seed_id     | confirmed_lock   | confirmed_escape   |   tau_lock |   tau_escape |
+|:-------------------------------------------------|:------------|:-----------------|:-------------------|-----------:|-------------:|
+| pb-gemma4-12b-base__W4096__T0p3__biology__s1     | biology     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__biology__s2     | biology     | True             | False              |       3.25 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__biology__s3     | biology     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__biology__s4     | biology     | True             | True               |       0.75 |         2    |
+| pb-gemma4-12b-base__W4096__T0p3__finance__s1     | finance     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__finance__s2     | finance     | True             | True               |       0.75 |        10.5  |
+| pb-gemma4-12b-base__W4096__T0p3__finance__s3     | finance     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__finance__s4     | finance     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__love__s1        | love        | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__love__s2        | love        | True             | True               |       0.75 |         6.25 |
+| pb-gemma4-12b-base__W4096__T0p3__love__s3        | love        | True             | True               |       0.75 |         2    |
+| pb-gemma4-12b-base__W4096__T0p3__love__s4        | love        | True             | True               |       0.75 |         8    |
+| pb-gemma4-12b-base__W4096__T0p3__noise__s1       | noise       | True             | True               |       7.25 |         8    |
+| pb-gemma4-12b-base__W4096__T0p3__noise__s2       | noise       | True             | True               |       0.75 |         1.5  |
+| pb-gemma4-12b-base__W4096__T0p3__noise__s3       | noise       | True             | False              |       1.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__noise__s4       | noise       | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__philosophy__s1  | philosophy  | True             | True               |       0.75 |         3.75 |
+| pb-gemma4-12b-base__W4096__T0p3__philosophy__s2  | philosophy  | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__philosophy__s3  | philosophy  | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__philosophy__s4  | philosophy  | True             | True               |       0.75 |         3.25 |
+| pb-gemma4-12b-base__W4096__T0p3__physics__s1     | physics     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__physics__s2     | physics     | True             | True               |       0.75 |         8.25 |
+| pb-gemma4-12b-base__W4096__T0p3__physics__s3     | physics     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__physics__s4     | physics     | True             | True               |       0.75 |         2.5  |
+| pb-gemma4-12b-base__W4096__T0p3__programming__s1 | programming | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__programming__s3 | programming | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__programming__s4 | programming | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__recipe__s1      | recipe      | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__recipe__s3      | recipe      | True             | True               |       0.75 |         2.5  |
+| pb-gemma4-12b-base__W4096__T0p3__recipe__s4      | recipe      | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__surreal__s1     | surreal     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__surreal__s2     | surreal     | True             | True               |       0.75 |         7.75 |
+| pb-gemma4-12b-base__W4096__T0p3__surreal__s3     | surreal     | True             | True               |       0.75 |         5.5  |
+| pb-gemma4-12b-base__W4096__T0p3__surreal__s4     | surreal     | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__war__s1         | war         | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__war__s2         | war         | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__war__s3         | war         | True             | False              |       0.75 |       nan    |
+| pb-gemma4-12b-base__W4096__T0p3__war__s4         | war         | True             | True               |       0.75 |         5.75 |
