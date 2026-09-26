@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Round-robin the eight S12 continuations, 48 new steps per slice.
-# One GPU process. Resume the same run_id. Do not start a fresh id
-# for a cell that already has a run.
+# Round-robin eight S12 continuations. Each slice adds 48 steps to the
+# trajectory that currently has the fewest, so a cell that ran ahead
+# waits. One GPU process. Resume the mapped run_id only.
 set -u
 ROOT=/mnt/c/projects/llm-semantic-afterlife
 cd "$ROOT"
@@ -27,88 +27,98 @@ CELLS=(
 )
 
 lookup() {
-  local tag="$1"
-  awk -v t="$tag" '$1==t {print $2}' "$MAP" | tail -n 1
+  awk -v t="$1" '$1==t {print $2}' "$MAP" | tail -n 1
 }
 
 remember() {
-  local tag="$1" run="$2"
-  grep -q "^${tag} ${run}$" "$MAP" 2>/dev/null || echo "$tag $run" >> "$MAP"
+  grep -q "^${1} ${2}$" "$MAP" 2>/dev/null || echo "$1 $2" >> "$MAP"
 }
 
 status_of() {
-  local run="$1"
-  local f="runs/s12/${run}/STATUS"
+  local f="runs/s12/${1}/STATUS"
   if [ -f "$f" ]; then tr -d '\r\n' < "$f"; else echo NONE; fi
 }
 
 steps_of() {
-  local run="$1"
-  local f="runs/s12/${run}/events.jsonl"
+  local f="runs/s12/${1}/events.jsonl"
   if [ ! -f "$f" ]; then echo 0; return; fi
-  grep -c '"event": "generation.step.completed"' "$f" || true
+  grep -o 'generation.step.completed' "$f" | wc -l
 }
 
-say "ROTATE START slice=$SLICE"
+stop_group() {
+  local pid="$1"
+  kill -TERM -- "-${pid}" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
+  sleep 3
+  kill -KILL -- "-${pid}" 2>/dev/null || kill -KILL "$pid" 2>/dev/null || true
+  wait "$pid" 2>/dev/null || true
+  if pgrep -f 'afterlife generate --config configs/stages/stage12_horizon' >/dev/null 2>&1; then
+    pkill -TERM -f 'afterlife generate --config configs/stages/stage12_horizon' 2>/dev/null || true
+    sleep 2
+    pkill -KILL -f 'afterlife generate --config configs/stages/stage12_horizon' 2>/dev/null || true
+  fi
+}
+
+say "ROTATE RESTART slice=$SLICE fewest-first"
 while true; do
-  progress=0
+  best_cfg=""
+  best_tag=""
+  best_run=""
+  best_steps=999999999
+  pending=0
   for cfg in "${CELLS[@]}"; do
     tag="$(basename "$cfg" .yaml)"
     run="$(lookup "$tag")"
-    if [ -n "$run" ]; then
-      st="$(status_of "$run")"
-      if [ "$st" = "COMPLETED" ]; then
-        continue
-      fi
+    if [ -n "$run" ] && [ "$(status_of "$run")" = "COMPLETED" ]; then
+      continue
     fi
-    progress=1
-    before=0
-    if [ -n "$run" ]; then before="$(steps_of "$run")"; fi
-    say "SLICE $tag run=${run:-new} steps_before=$before"
-    if [ -n "$run" ]; then
-      bash "$ROOT/scripts/s12_run_one.sh" "$cfg" --resume-run "$run" &
-    else
-      bash "$ROOT/scripts/s12_run_one.sh" "$cfg" &
+    pending=1
+    steps=0
+    if [ -n "$run" ]; then steps="$(steps_of "$run")"; fi
+    if [ "$steps" -lt "$best_steps" ]; then
+      best_steps="$steps"
+      best_cfg="$cfg"
+      best_tag="$tag"
+      best_run="$run"
     fi
-    pid=$!
-    echo "$pid" > "$LOGDIR/current.pid"
-    # Wait until SLICE new steps, or the process exits.
-    for _ in $(seq 1 240); do
-      if ! kill -0 "$pid" 2>/dev/null; then
-        wait "$pid" || true
-        break
-      fi
-      if [ -z "$run" ]; then
-        found="$(ls -1dt runs/s12/s12-paperb-l2-${tag}-* 2>/dev/null | head -n 1 || true)"
-        if [ -n "$found" ]; then
-          run="$(basename "$found")"
-          remember "$tag" "$run"
-        fi
-      fi
-      if [ -n "$run" ]; then
-        now="$(steps_of "$run")"
-        if [ "$((now - before))" -ge "$SLICE" ]; then
-          say "SLICE CAP $tag steps=$now"
-          kill -TERM "$pid" 2>/dev/null || true
-          sleep 2
-          kill -KILL "$pid" 2>/dev/null || true
-          wait "$pid" 2>/dev/null || true
-          break
-        fi
-      fi
-      sleep 15
-    done
-    if kill -0 "$pid" 2>/dev/null; then
-      say "SLICE TIMEOUT $tag"
-      kill -TERM "$pid" 2>/dev/null || true
-      sleep 2
-      kill -KILL "$pid" 2>/dev/null || true
-      wait "$pid" 2>/dev/null || true
-    fi
-    nvidia-smi --query-gpu=memory.used,memory.free --format=csv,noheader | tee -a "$MASTER" || true
   done
-  if [ "$progress" -eq 0 ]; then
+  if [ "$pending" -eq 0 ]; then
     say "S12 COHORT DONE"
     exit 0
   fi
+  say "SLICE $best_tag run=${best_run:-new} steps_before=$best_steps"
+  if [ -n "$best_run" ]; then
+    setsid bash "$ROOT/scripts/s12_run_one.sh" "$best_cfg" --resume-run "$best_run" &
+  else
+    setsid bash "$ROOT/scripts/s12_run_one.sh" "$best_cfg" &
+  fi
+  pid=$!
+  echo "$pid" > "$LOGDIR/current.pid"
+  before="$best_steps"
+  for _ in $(seq 1 240); do
+    if ! kill -0 "$pid" 2>/dev/null; then
+      wait "$pid" || true
+      break
+    fi
+    if [ -z "$best_run" ]; then
+      found="$(ls -1dt runs/s12/s12-paperb-l2-${best_tag}-* 2>/dev/null | head -n 1 || true)"
+      if [ -n "$found" ]; then
+        best_run="$(basename "$found")"
+        remember "$best_tag" "$best_run"
+      fi
+    fi
+    if [ -n "$best_run" ]; then
+      now="$(steps_of "$best_run")"
+      if [ "$((now - before))" -ge "$SLICE" ]; then
+        say "SLICE CAP $best_tag steps=$now"
+        stop_group "$pid"
+        break
+      fi
+    fi
+    sleep 15
+  done
+  if kill -0 "$pid" 2>/dev/null; then
+    say "SLICE TIMEOUT $best_tag"
+    stop_group "$pid"
+  fi
+  nvidia-smi --query-gpu=memory.used,memory.free --format=csv,noheader | tee -a "$MASTER" || true
 done
