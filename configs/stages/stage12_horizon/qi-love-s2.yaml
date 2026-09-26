@@ -1,0 +1,10 @@
+# Qwen Instruct continuation of love s2. One trajectory. Do not add a second slug.
+include:
+  - configs/stages/stage12_horizon/_base.yaml
+name: paperb-l2-qi-love-s2
+description: >-
+  S12 L2-escape. Qwen Instruct continuation of love s2. Tail prompt, additional 4950016 tokens.
+generators:
+  - pb-qwen3-8b-instruct
+semantic_seeds:
+  - qi-love-s2

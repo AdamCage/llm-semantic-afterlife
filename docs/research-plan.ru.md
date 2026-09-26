@@ -366,9 +366,19 @@ BGE last-band — установленный минус, знак Qwen-embed н�
 формулировки снят. Human открыл следующий этап. С Qwen и OLMo не
 пулить.
 
-### S12–S13 `planned`
+### S12 — лестница горизонта `открыт 2026-09-26`
 
-Порядок заморожен: S12 горизонт → S13 синтез.
+Открыт после закрытия S11. План:
+[`docs/stages/stage-12/PLAN.md`](stages/stage-12/PLAN.md).
+Только L2-escape: восемь продолжений всё ещё залоченных L0
+траекторий (Ministral Base и Qwen Instruct; F3 seeds `physics` и
+`love`, потомки `s1` и `s2`). Оцениваемая величина
+\(\tau_{\mathrm{escape}}\). L1 и L2-persistence-to-lock не в этом
+открытии.
+
+### S13 `planned`
+
+Синтез после S12.
 Подтверждающие оценки и freeze F1–F4 — в английском плане и
 ADR-0023 / ADR-0025.
 

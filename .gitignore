@@ -64,6 +64,16 @@ runs/s11/*
 !runs/s11/s11-degeneracy-*/**
 !runs/s11/s11-persistence-*/
 !runs/s11/s11-persistence-*/**
+!runs/s12/
+runs/s12/*
+!runs/s12/s12-paperb-*/
+!runs/s12/s12-paperb-*/**
+!runs/s12/s12-embed-*/
+!runs/s12/s12-embed-*/**
+!runs/s12/s12-degeneracy-*/
+!runs/s12/s12-degeneracy-*/**
+!runs/s12/s12-persistence-*/
+!runs/s12/s12-persistence-*/**
 .cache/
 scratch/
 

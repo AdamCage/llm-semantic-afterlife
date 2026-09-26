@@ -1,0 +1,32 @@
+# S12 shared knobs. Not a runnable config: children name one continuation seed.
+# Additional tokens after the L0 12W tail. 4834 * 1024 = 4950016.
+# Original generated tokens 49152 + 4950016 = 4999168 <= 5e6.
+# Protocol stays P1 raw_bytes. Do not pool families. L1 is not this stage.
+
+include:
+  - configs/models/generators_local_paperb.yaml
+  - configs/embeddings/embeddings_local.yaml
+
+stage: s12
+name: paperb-horizon-l2
+description: >-
+  Paper B S12 L2-escape continuation. One trajectory per child config.
+  Not L1. Not L2-persistence-to-lock.
+
+embeddings: [local-bge-m3]
+seed_bank: configs/seeds/seed_bank_s12_continuation.yaml
+
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 4950016
+    chunk_size: 1024
+    protocol: P1_reprompt
+
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+
+stochastic_seeds: [1]
+max_concurrent: 1
+budget_usd: 0.0

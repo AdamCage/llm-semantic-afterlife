@@ -17,8 +17,9 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
-(2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). Frozen order:
-**S11 Ministral+Gemma → S12 horizon → S13**.
+(2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). **S12 horizon
+ladder is open** (2026-09-26). Frozen order:
+**S12 horizon → S13**.
 S9–S11 is a complete story; S12 is strengthening or *no confirmed
 escape through T*. Local generate is $0 ledger; project ceiling
 **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
@@ -446,12 +447,15 @@ sign is not established, IT is 0/40 completers. Confirmed escape
 is not zero. Phrase blocker applied. Human authorised the
 next stage. Do not pool with Qwen or OLMo.
 
-### S12 — Horizon ladder `planned`
+### S12 — Horizon ladder `opened 2026-09-26`
 
-Only after S9–S11. L2 confirmatory estimand is \(\tau_{\mathrm{escape}}\)
-(F3 locked-seed rule). Optional L2-persistence-to-lock is a separate
-arm if L0 has almost no locks. Language: *no confirmed escape through
-\(T_{\min}\)*, not absorbing.
+Opened after S11 closed. Plan:
+[`docs/stages/stage-12/PLAN.md`](stages/stage-12/PLAN.md).
+L2-escape only: eight continuations of still-locked L0 trajectories
+(Ministral Base and Qwen Instruct; F3 seeds `physics` and `love`,
+descendants `s1` and `s2`). Confirmatory estimand
+\(\tau_{\mathrm{escape}}\). L1 and L2-persistence-to-lock are not
+this opening. Language: *no confirmed escape through \(T_{\min}\)*.
 
 ### S13 — Cross-family synthesis `planned`
 
