@@ -174,18 +174,18 @@ Empty `observed` is filled by the report.
 
 | # | Prediction | Confidence | Observed |
 | --- | --- | ---: | --- |
-| P1 | Ministral Instruct NF4: ≥8/10 domain seeds have ≥1 confirmed lock (`N_confirm=3`) by 12W | 0.45 | |
-| P2 | Ministral Base NF4 empty-completion rate is **higher** than Instruct (second estimand; S9 prior, S10 inverted) | 0.40 | |
-| P3 | Ministral Instruct last-band \(G_t\) **CI excludes 0** in **both** spaces | 0.40 | |
-| P4 | Sign of Ministral Instruct last-band \(G_t\) **agrees** across BGE-M3 and Qwen-embed (identified cells only) | 0.50 | |
-| P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | |
-| P6 | Mean block fill on completed NF4 12W steps ≥ 0.95 (final-quarter, not Q1 deaths) | 0.65 | |
-| P7 | Gemma 4 12B NF4 does **not** OOM at `W+B=5120` on this 16 GB card | 0.75 | |
-| P8 | Gemma IT empty-completion rate ≥ 20/40 of the planned cell (S8 microbench at the same `W`) | 0.55 | |
-| P9 | If Ministral Instruct last-band is identified, its sign matches S9 Qwen Instruct (`+`). Magnitudes are not compared | 0.45 | |
-| P10 | If Gemma last-band is identified and the CI excludes 0 in both spaces: *full attention on every layer is not necessary* for persistence in P1. If Gemma last-band is unidentified or has no completers: *did not replicate in the Gemma condition* — not a sliding-window causal claim | — | |
-| P11 | Confirmed escape through 12W is 0 among lock-table trajectories that lock | 0.50 | |
-| P12 | Point \(G_t>0\) with a CI that includes 0 is **not established**, not “true on the point” (S10 REVIEW) | — | |
+| P1 | Ministral Instruct NF4: ≥8/10 domain seeds have ≥1 confirmed lock (`N_confirm=3`) by 12W | 0.45 | **true** (10/10). [`REPORT.md`](REPORT.md) |
+| P2 | Ministral Base NF4 empty-completion rate is **higher** than Instruct (second estimand; S9 prior, S10 inverted) | 0.40 | **false** (0/40 vs 0/40) |
+| P3 | Ministral Instruct last-band \(G_t\) **CI excludes 0** in **both** spaces | 0.40 | **true** |
+| P4 | Sign of Ministral Instruct last-band \(G_t\) **agrees** across BGE-M3 and Qwen-embed (identified cells only) | 0.50 | **true** (both +) |
+| P5 | Thinking tokens remain 0 on all completed NF4 steps | 0.80 | **true** |
+| P6 | Mean block fill on completed NF4 12W steps ≥ 0.95 (final-quarter, not Q1 deaths) | 0.65 | **true** on cells with 12W completers |
+| P7 | Gemma 4 12B NF4 does **not** OOM at `W+B=5120` on this 16 GB card | 0.75 | **true** |
+| P8 | Gemma IT empty-completion rate ≥ 20/40 of the planned cell (S8 microbench at the same `W`) | 0.55 | **true** (40/40) |
+| P9 | If Ministral Instruct last-band is identified, its sign matches S9 Qwen Instruct (`+`). Magnitudes are not compared | 0.45 | **true** (both +) |
+| P10 | If Gemma last-band is identified and the CI excludes 0 in both spaces: *full attention on every layer is not necessary* for persistence in P1. If Gemma last-band is unidentified or has no completers: *did not replicate in the Gemma condition* — not a sliding-window causal claim | — | **did not replicate in the Gemma condition** |
+| P11 | Confirmed escape through 12W is 0 among lock-table trajectories that lock | 0.50 | **false** (Instruct 4/40; Gemma Base 15/38) |
+| P12 | Point \(G_t>0\) with a CI that includes 0 is **not established**, not “true on the point” (S10 REVIEW) | — | Gemma Base Qwen-embed 0.014 [−0.021, 0.019] is **not established** |
 
 P2 can be false (OLMo-style inversion) and the stage still succeeds.
 P3 false with a point `+` and CI including 0 is scored via P12, not

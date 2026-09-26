@@ -1,0 +1,5 @@
+cell,generate_run_id,n_planned,n_unique_trajectories,n_finished_events,n_completed,n_failed,n_steps,block_fill_mean,block_fill_min,stop_rate,reasoning_tokens_sum,roundtrip_failures,served_providers
+ministral-base,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,40,40,40,40,0,1921,1,1,0,0,0,local
+ministral-instruct,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,40,40,40,40,0,1967,0.976477,0.001,0.0238943,0,0,local
+gemma-base,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,40,40,58,38,2,1866,0.991629,0.003,0.0091104,0,0,local
+gemma-it,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,40,40,63,0,40,331,0.789906,0.001,0.280967,0,0,local

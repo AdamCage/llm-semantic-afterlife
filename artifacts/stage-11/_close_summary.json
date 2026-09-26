@@ -1,0 +1,1209 @@
+{
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "last_band": [
+    {
+      "cell": "gemma-base",
+      "rung": "gemma",
+      "quant": "base",
+      "embedding": "local-bge-m3",
+      "last_band_G": -0.010627955179834725,
+      "G_lo": -0.037739497039259946,
+      "G_hi": -0.006085050032712491,
+      "sign": "-",
+      "identified": true,
+      "ci_excludes_0": true,
+      "n_within_pairs": 54,
+      "n_between_pairs": 649,
+      "n_traj_lock_table": 38,
+      "n_confirmed_lock": 38,
+      "n_confirmed_escape": 15,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "embed_run_id": "s11-embed-paperb-s11-embed-bge-20260923T051909Z-880ed636",
+      "persistence_run_id": "s11-persistence-local-bge-m3-20260923T062042Z-c2f43426"
+    },
+    {
+      "cell": "gemma-it",
+      "rung": "gemma",
+      "quant": "it",
+      "embedding": "local-bge-m3",
+      "last_band_G": NaN,
+      "G_lo": NaN,
+      "G_hi": NaN,
+      "sign": "unidentified",
+      "identified": false,
+      "ci_excludes_0": false,
+      "n_within_pairs": 0,
+      "n_between_pairs": 0,
+      "n_traj_lock_table": 8,
+      "n_confirmed_lock": 8,
+      "n_confirmed_escape": 4,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "embed_run_id": "s11-embed-paperb-s11-embed-bge-20260923T052215Z-f025b9a6",
+      "persistence_run_id": "s11-persistence-local-bge-m3-20260923T062748Z-2df1fa2a"
+    },
+    {
+      "cell": "ministral-base",
+      "rung": "ministral",
+      "quant": "base",
+      "embedding": "local-bge-m3",
+      "last_band_G": 0.13829735200055626,
+      "G_lo": 0.06338188880351292,
+      "G_hi": 0.15837563051382106,
+      "sign": "+",
+      "identified": true,
+      "ci_excludes_0": true,
+      "n_within_pairs": 60,
+      "n_between_pairs": 720,
+      "n_traj_lock_table": 40,
+      "n_confirmed_lock": 40,
+      "n_confirmed_escape": 0,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "embed_run_id": "s11-embed-paperb-s11-embed-bge-20260923T052414Z-e9eac177",
+      "persistence_run_id": "s11-persistence-local-bge-m3-20260923T062918Z-dae0ce66"
+    },
+    {
+      "cell": "ministral-instruct",
+      "rung": "ministral",
+      "quant": "instruct",
+      "embedding": "local-bge-m3",
+      "last_band_G": 0.15018683813203376,
+      "G_lo": 0.08406487431631263,
+      "G_hi": 0.1581429474801197,
+      "sign": "+",
+      "identified": true,
+      "ci_excludes_0": true,
+      "n_within_pairs": 60,
+      "n_between_pairs": 720,
+      "n_traj_lock_table": 40,
+      "n_confirmed_lock": 40,
+      "n_confirmed_escape": 4,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "embed_run_id": "s11-embed-paperb-s11-embed-bge-20260923T052730Z-27cbf330",
+      "persistence_run_id": "s11-persistence-local-bge-m3-20260923T063656Z-6886eaac"
+    },
+    {
+      "cell": "gemma-base",
+      "rung": "gemma",
+      "quant": "base",
+      "embedding": "qwen3-embed-8b",
+      "last_band_G": 0.014165909750641636,
+      "G_lo": -0.020893531127294494,
+      "G_hi": 0.018651199853161254,
+      "sign": "+",
+      "identified": true,
+      "ci_excludes_0": false,
+      "n_within_pairs": 54,
+      "n_between_pairs": 649,
+      "n_traj_lock_table": 38,
+      "n_confirmed_lock": 38,
+      "n_confirmed_escape": 15,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "embed_run_id": "s11-embed-paperb-s11-embed-qwen-hosted-20260923T053025Z-2b885bb8",
+      "persistence_run_id": "s11-persistence-qwen3-embed-8b-20260923T064446Z-a78f5a51"
+    },
+    {
+      "cell": "gemma-it",
+      "rung": "gemma",
+      "quant": "it",
+      "embedding": "qwen3-embed-8b",
+      "last_band_G": NaN,
+      "G_lo": NaN,
+      "G_hi": NaN,
+      "sign": "unidentified",
+      "identified": false,
+      "ci_excludes_0": false,
+      "n_within_pairs": 0,
+      "n_between_pairs": 0,
+      "n_traj_lock_table": 8,
+      "n_confirmed_lock": 8,
+      "n_confirmed_escape": 4,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "embed_run_id": "s11-embed-paperb-s11-embed-qwen-hosted-20260923T054323Z-0910249e",
+      "persistence_run_id": "s11-persistence-qwen3-embed-8b-20260923T065956Z-0b29cb7f"
+    },
+    {
+      "cell": "ministral-base",
+      "rung": "ministral",
+      "quant": "base",
+      "embedding": "qwen3-embed-8b",
+      "last_band_G": 0.23991888066539663,
+      "G_lo": 0.12658721832214315,
+      "G_hi": 0.27194364175911245,
+      "sign": "+",
+      "identified": true,
+      "ci_excludes_0": true,
+      "n_within_pairs": 60,
+      "n_between_pairs": 720,
+      "n_traj_lock_table": 40,
+      "n_confirmed_lock": 40,
+      "n_confirmed_escape": 0,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "embed_run_id": "s11-embed-paperb-s11-embed-qwen-hosted-20260923T054623Z-42a5d9a7",
+      "persistence_run_id": "s11-persistence-qwen3-embed-8b-20260923T070130Z-86af1f82"
+    },
+    {
+      "cell": "ministral-instruct",
+      "rung": "ministral",
+      "quant": "instruct",
+      "embedding": "qwen3-embed-8b",
+      "last_band_G": 0.2240791705079841,
+      "G_lo": 0.13902670435935074,
+      "G_hi": 0.22808155793109883,
+      "sign": "+",
+      "identified": true,
+      "ci_excludes_0": true,
+      "n_within_pairs": 60,
+      "n_between_pairs": 720,
+      "n_traj_lock_table": 40,
+      "n_confirmed_lock": 40,
+      "n_confirmed_escape": 4,
+      "lock_rate": 1.0,
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "embed_run_id": "s11-embed-paperb-s11-embed-qwen-hosted-20260923T061001Z-f6bab304",
+      "persistence_run_id": "s11-persistence-qwen3-embed-8b-20260923T071813Z-b961f325"
+    }
+  ],
+  "generate_status": [
+    {
+      "cell": "ministral-base",
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "n_planned": 40,
+      "n_unique_trajectories": 40,
+      "n_finished_events": 40,
+      "n_completed": 40,
+      "n_failed": 0,
+      "n_steps": 1921,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate": 0.0,
+      "reasoning_tokens_sum": 0,
+      "roundtrip_failures": 0,
+      "served_providers": "local"
+    },
+    {
+      "cell": "ministral-instruct",
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "n_planned": 40,
+      "n_unique_trajectories": 40,
+      "n_finished_events": 40,
+      "n_completed": 40,
+      "n_failed": 0,
+      "n_steps": 1967,
+      "block_fill_mean": 0.9764773767158109,
+      "block_fill_min": 0.001,
+      "stop_rate": 0.02389425521098119,
+      "reasoning_tokens_sum": 0,
+      "roundtrip_failures": 0,
+      "served_providers": "local"
+    },
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "n_planned": 40,
+      "n_unique_trajectories": 40,
+      "n_finished_events": 58,
+      "n_completed": 38,
+      "n_failed": 2,
+      "n_steps": 1866,
+      "block_fill_mean": 0.991628617363344,
+      "block_fill_min": 0.003,
+      "stop_rate": 0.009110396570203644,
+      "reasoning_tokens_sum": 0,
+      "roundtrip_failures": 0,
+      "served_providers": "local"
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "n_planned": 40,
+      "n_unique_trajectories": 40,
+      "n_finished_events": 63,
+      "n_completed": 0,
+      "n_failed": 40,
+      "n_steps": 331,
+      "block_fill_mean": 0.7899063444108761,
+      "block_fill_min": 0.001,
+      "stop_rate": 0.2809667673716012,
+      "reasoning_tokens_sum": 0,
+      "roundtrip_failures": 0,
+      "served_providers": "local"
+    }
+  ],
+  "failed": [
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "trajectory_id": "pb-gemma4-12b-base__W4096__T0p3__recipe__s2",
+      "seed_id": "recipe",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-base__W4096__T0p3__recipe__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 4
+    },
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "trajectory_id": "pb-gemma4-12b-base__W4096__T0p3__programming__s2",
+      "seed_id": "programming",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-base__W4096__T0p3__programming__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 10
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__physics__s1",
+      "seed_id": "physics",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__physics__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 222
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__physics__s2",
+      "seed_id": "physics",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__physics__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 441
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__physics__s3",
+      "seed_id": "physics",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__physics__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 13439
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__physics__s4",
+      "seed_id": "physics",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__physics__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 921
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__finance__s1",
+      "seed_id": "finance",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__finance__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 4826
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__finance__s2",
+      "seed_id": "finance",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__finance__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 221
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__finance__s3",
+      "seed_id": "finance",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__finance__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 7069
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__finance__s4",
+      "seed_id": "finance",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__finance__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 5364
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__biology__s1",
+      "seed_id": "biology",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "WindowProtocolError: appending 1 characters produced 0 new tokens; re-tokenisation collapsed the block",
+      "generated_tokens": 9416
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__biology__s2",
+      "seed_id": "biology",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__biology__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 13521
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__biology__s3",
+      "seed_id": "biology",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__biology__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 34332
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__biology__s4",
+      "seed_id": "biology",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__biology__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 5937
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__war__s1",
+      "seed_id": "war",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__war__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 622
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__war__s2",
+      "seed_id": "war",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__war__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1186
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__war__s3",
+      "seed_id": "war",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__war__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 19141
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__war__s4",
+      "seed_id": "war",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__war__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 5303
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__love__s1",
+      "seed_id": "love",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__love__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 293
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__love__s2",
+      "seed_id": "love",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__love__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1035
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__love__s3",
+      "seed_id": "love",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__love__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 930
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__love__s4",
+      "seed_id": "love",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__love__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 17
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__recipe__s1",
+      "seed_id": "recipe",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__recipe__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 550
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__recipe__s2",
+      "seed_id": "recipe",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__recipe__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 979
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__recipe__s3",
+      "seed_id": "recipe",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__recipe__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1550
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__recipe__s4",
+      "seed_id": "recipe",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__recipe__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 10402
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__programming__s1",
+      "seed_id": "programming",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__programming__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1163
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__programming__s2",
+      "seed_id": "programming",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__programming__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 890
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__programming__s3",
+      "seed_id": "programming",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__programming__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1006
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__programming__s4",
+      "seed_id": "programming",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__programming__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 4
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__philosophy__s1",
+      "seed_id": "philosophy",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__philosophy__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 567
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__philosophy__s2",
+      "seed_id": "philosophy",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__philosophy__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 2800
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__philosophy__s3",
+      "seed_id": "philosophy",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__philosophy__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 33
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__philosophy__s4",
+      "seed_id": "philosophy",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__philosophy__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 5645
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__surreal__s1",
+      "seed_id": "surreal",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__surreal__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 1229
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__surreal__s2",
+      "seed_id": "surreal",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__surreal__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 509
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__surreal__s3",
+      "seed_id": "surreal",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__surreal__s3: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 4750
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__surreal__s4",
+      "seed_id": "surreal",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__surreal__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 3247
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__noise__s1",
+      "seed_id": "noise",
+      "stochastic": "s1",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__noise__s1: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 254
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__noise__s2",
+      "seed_id": "noise",
+      "stochastic": "s2",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__noise__s2: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 17951
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__noise__s3",
+      "seed_id": "noise",
+      "stochastic": "s3",
+      "status": "FAILED",
+      "error": "WindowProtocolError: appending 2 characters produced 0 new tokens; re-tokenisation collapsed the block",
+      "generated_tokens": 15771
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "trajectory_id": "pb-gemma4-12b-it__W4096__T0p3__noise__s4",
+      "seed_id": "noise",
+      "stochastic": "s4",
+      "status": "FAILED",
+      "error": "trajectory pb-gemma4-12b-it__W4096__T0p3__noise__s4: 5 consecutive empty completions; the model is not free-running under this continuation mechanism",
+      "generated_tokens": 4702
+    }
+  ],
+  "protocol_quarter": [
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "quarter": 1,
+      "n_trajectories": 40,
+      "n_steps": 492,
+      "block_fill_mean": 0.9291113782051281,
+      "block_fill_min": 0.004,
+      "stop_rate_mean": 0.07323717948717948
+    },
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "quarter": 2,
+      "n_trajectories": 38,
+      "n_steps": 456,
+      "block_fill_mean": 0.9978223684210527,
+      "block_fill_min": 0.91725,
+      "stop_rate_mean": 0.0021929824561403508
+    },
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "quarter": 3,
+      "n_trajectories": 38,
+      "n_steps": 462,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "gemma-base",
+      "generate_run_id": "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+      "quarter": 4,
+      "n_trajectories": 38,
+      "n_steps": 456,
+      "block_fill_mean": 0.9963969298245615,
+      "block_fill_min": 0.9236666666666666,
+      "stop_rate_mean": 0.0043859649122807015
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "quarter": 1,
+      "n_trajectories": 40,
+      "n_steps": 102,
+      "block_fill_mean": 0.7540252976190477,
+      "block_fill_min": 0.002,
+      "stop_rate_mean": 0.41592261904761907
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "quarter": 2,
+      "n_trajectories": 20,
+      "n_steps": 72,
+      "block_fill_mean": 0.868034478021978,
+      "block_fill_min": 0.026,
+      "stop_rate_mean": 0.185989010989011
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "quarter": 3,
+      "n_trajectories": 31,
+      "n_steps": 89,
+      "block_fill_mean": 0.5976606758832566,
+      "block_fill_min": 0.002,
+      "stop_rate_mean": 0.506336405529954
+    },
+    {
+      "cell": "gemma-it",
+      "generate_run_id": "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+      "quarter": 4,
+      "n_trajectories": 19,
+      "n_steps": 68,
+      "block_fill_mean": 0.5978543666859456,
+      "block_fill_min": 0.002,
+      "stop_rate_mean": 0.5499518025833815
+    },
+    {
+      "cell": "ministral-base",
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "quarter": 1,
+      "n_trajectories": 40,
+      "n_steps": 481,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "ministral-base",
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "quarter": 2,
+      "n_trajectories": 40,
+      "n_steps": 480,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "ministral-base",
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "quarter": 3,
+      "n_trajectories": 40,
+      "n_steps": 480,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "ministral-base",
+      "generate_run_id": "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+      "quarter": 4,
+      "n_trajectories": 40,
+      "n_steps": 480,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "ministral-instruct",
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "quarter": 1,
+      "n_trajectories": 40,
+      "n_steps": 493,
+      "block_fill_mean": 0.9344943137254902,
+      "block_fill_min": 0.2417058823529412,
+      "stop_rate_mean": 0.06661764705882353
+    },
+    {
+      "cell": "ministral-instruct",
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "quarter": 2,
+      "n_trajectories": 40,
+      "n_steps": 491,
+      "block_fill_mean": 0.9906280208333333,
+      "block_fill_min": 0.6911875,
+      "stop_rate_mean": 0.009479166666666667
+    },
+    {
+      "cell": "ministral-instruct",
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "quarter": 3,
+      "n_trajectories": 40,
+      "n_steps": 493,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    },
+    {
+      "cell": "ministral-instruct",
+      "generate_run_id": "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2",
+      "quarter": 4,
+      "n_trajectories": 40,
+      "n_steps": 490,
+      "block_fill_mean": 1.0,
+      "block_fill_min": 1.0,
+      "stop_rate_mean": 0.0
+    }
+  ],
+  "seed_locks": [
+    {
+      "cell": "gemma-base",
+      "seed_id": "biology",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 1,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "finance",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 1,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "love",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 3,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "noise",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "philosophy",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "physics",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "programming",
+      "n_traj": 3,
+      "n_lock": 3,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "recipe",
+      "n_traj": 3,
+      "n_lock": 3,
+      "n_escape": 1,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "surreal",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "war",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 1,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "biology",
+      "n_traj": 3,
+      "n_lock": 3,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "noise",
+      "n_traj": 2,
+      "n_lock": 2,
+      "n_escape": 2,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "physics",
+      "n_traj": 1,
+      "n_lock": 1,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "recipe",
+      "n_traj": 1,
+      "n_lock": 1,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "war",
+      "n_traj": 1,
+      "n_lock": 1,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "biology",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "finance",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "love",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "noise",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "philosophy",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "physics",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "programming",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "recipe",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "surreal",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-base",
+      "seed_id": "war",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "biology",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 1,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "finance",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "love",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "noise",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "philosophy",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "physics",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "programming",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 3,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "recipe",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "surreal",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "war",
+      "n_traj": 4,
+      "n_lock": 4,
+      "n_escape": 0,
+      "has_lock": true
+    }
+  ],
+  "edges": [
+    {
+      "embedding": "local-bge-m3",
+      "edge": "ministral-base\u2192ministral-instruct",
+      "left_cell": "ministral-base",
+      "right_cell": "ministral-instruct",
+      "left_G": 0.13829735200055626,
+      "right_G": 0.15018683813203376,
+      "left_sign": "+",
+      "right_sign": "+",
+      "sign_flip": false,
+      "left_lock_rate": 1.0,
+      "right_lock_rate": 1.0,
+      "left_n_lock": 40,
+      "right_n_lock": 40,
+      "left_n_traj": 40,
+      "right_n_traj": 40
+    },
+    {
+      "embedding": "local-bge-m3",
+      "edge": "gemma-base\u2192gemma-it",
+      "left_cell": "gemma-base",
+      "right_cell": "gemma-it",
+      "left_G": -0.010627955179834725,
+      "right_G": NaN,
+      "left_sign": "-",
+      "right_sign": "unidentified",
+      "sign_flip": false,
+      "left_lock_rate": 1.0,
+      "right_lock_rate": 1.0,
+      "left_n_lock": 38,
+      "right_n_lock": 8,
+      "left_n_traj": 38,
+      "right_n_traj": 8
+    },
+    {
+      "embedding": "qwen3-embed-8b",
+      "edge": "ministral-base\u2192ministral-instruct",
+      "left_cell": "ministral-base",
+      "right_cell": "ministral-instruct",
+      "left_G": 0.23991888066539663,
+      "right_G": 0.2240791705079841,
+      "left_sign": "+",
+      "right_sign": "+",
+      "sign_flip": false,
+      "left_lock_rate": 1.0,
+      "right_lock_rate": 1.0,
+      "left_n_lock": 40,
+      "right_n_lock": 40,
+      "left_n_traj": 40,
+      "right_n_traj": 40
+    },
+    {
+      "embedding": "qwen3-embed-8b",
+      "edge": "gemma-base\u2192gemma-it",
+      "left_cell": "gemma-base",
+      "right_cell": "gemma-it",
+      "left_G": 0.014165909750641636,
+      "right_G": NaN,
+      "left_sign": "+",
+      "right_sign": "unidentified",
+      "sign_flip": false,
+      "left_lock_rate": 1.0,
+      "right_lock_rate": 1.0,
+      "left_n_lock": 38,
+      "right_n_lock": 8,
+      "left_n_traj": 38,
+      "right_n_traj": 8
+    }
+  ],
+  "int8_vs_nf4": [],
+  "samples": [
+    {
+      "cell": "ministral-base",
+      "seed_id": "physics",
+      "stochastic": "s1",
+      "path": "runs/s11/s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b/data/trajectories/pb-ministral-8b-base__W4096__T0p3__physics__s1.text",
+      "excerpt": "d with a Metropolis algorithm that samples the gauge field configurations with a probability proportional to the square of the Polyakov loop. The Polyakov loop is zero, and the configurations are generated with a Metropolis algorithm that samples the gauge field configurations with a probability proportional to the square of the Polyakov loop. The Polyakov loop is zero, and the configurations are generated with a Met"
+    },
+    {
+      "cell": "ministral-instruct",
+      "seed_id": "biology",
+      "stochastic": "s1",
+      "path": "runs/s11/s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2/data/trajectories/pb-ministral-8b-instruct__W4096__T0p3__biology__s1.text",
+      "excerpt": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "cell": "gemma-base",
+      "seed_id": "finance",
+      "stochastic": "s1",
+      "path": "runs/s11/s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981/data/trajectories/pb-gemma4-12b-base__W4096__T0p3__finance__s1.text",
+      "excerpt": "the spread would converge eventually, but the cost of funding would increase.\n\nThe risk manager's note that morning made the point plainly: the spread would converge eventually, but the cost of funding would increase.\n\nThe risk manager's note that morning made the point plainly: the spread would converge eventually,, but the cost of funding would increase.\n\nThe risk manager's note that morning made the point plainly:"
+    },
+    {
+      "cell": "gemma-it",
+      "seed_id": "biology",
+      "stochastic": "s3",
+      "path": "runs/s11/s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427/data/trajectories/pb-gemma4-12b-it__W4096__T0p3__biology__s3.text",
+      "excerpt": ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\\,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\u3539\u3539\u3539\\"
+    }
+  ],
+  "incomplete_runs": [
+    "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427"
+  ]
+}

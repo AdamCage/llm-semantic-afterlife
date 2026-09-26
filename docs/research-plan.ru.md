@@ -17,8 +17,7 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 
 **Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
-**S10 OLMo 12W закрыт** (2026-09-19). **S11 Ministral+Gemma 12W
-открыт** (2026-09-19). Порядок заморожен:
+**S10 OLMo 12W закрыт** (2026-09-19). **S11 Ministral+Gemma 12W закрыт** (2026-09-26). Порядок заморожен:
 **S11 Ministral+Gemma → S12 horizon → S13**. S9–S11 —
 законченная история.
 Локальный generate — $0 в ledger; потолок проекта **$200**
@@ -355,14 +354,17 @@ Human дал `--no-ff`. Completion падает от Base до DPO и выход
 установлен. Last-band \(G_t\) у DPO не идентифицирован, это не
 смена знака. С Qwen не пулить.
 
-### S11 — репликация Ministral + обобщение Gemma на 12W `открыт 2026-09-19`
+### S11 — репликация Ministral + обобщение Gemma на 12W `закрыт 2026-09-26`
 
-Открыт после `--no-ff` S10. План:
-[`docs/stages/stage-11/PLAN.md`](stages/stage-11/PLAN.md).
-Ministral Base/Instruct `raw_bytes` (native-chat отложен); затем
-Gemma 4 12B Base/IT. Gemma — architectural generalization, не
-causal ablation внимания. OOM → стоп, без тихой замены. S12 не
-стартовать, пока этап не закрыт. С Qwen и OLMo не пулить.
+Открыт после `--no-ff` S10. Вычисления закончены 2026-09-23.
+План: [`docs/stages/stage-11/PLAN.md`](stages/stage-11/PLAN.md).
+Отчёт: [`docs/stages/stage-11/REPORT.md`](stages/stage-11/REPORT.md).
+Ministral Base и Instruct оба 40/40; last-band \(G_t>0\) в обоих
+пространствах. На Gemma положительный зазор не реплицировался:
+BGE last-band — установленный минус, знак Qwen-embed не
+установлен, IT 0/40. Подтверждённый escape не ноль. Блокер
+формулировки снят. Human открыл следующий этап. С Qwen и OLMo не
+пулить.
 
 ### S12–S13 `planned`
 

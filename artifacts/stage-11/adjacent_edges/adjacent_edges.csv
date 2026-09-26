@@ -1,0 +1,5 @@
+embedding,edge,left_cell,right_cell,left_G,right_G,left_sign,right_sign,sign_flip,left_lock_rate,right_lock_rate,left_n_lock,right_n_lock,left_n_traj,right_n_traj
+local-bge-m3,ministral-base→ministral-instruct,ministral-base,ministral-instruct,0.138297,0.150187,+,+,False,1,1,40,40,40,40
+local-bge-m3,gemma-base→gemma-it,gemma-base,gemma-it,-0.010628,,-,unidentified,False,1,1,38,8,38,8
+qwen3-embed-8b,ministral-base→ministral-instruct,ministral-base,ministral-instruct,0.239919,0.224079,+,+,False,1,1,40,40,40,40
+qwen3-embed-8b,gemma-base→gemma-it,gemma-base,gemma-it,0.0141659,,+,unidentified,False,1,1,38,8,38,8

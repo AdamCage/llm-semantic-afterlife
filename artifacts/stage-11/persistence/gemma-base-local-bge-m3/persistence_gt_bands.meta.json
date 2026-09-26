@@ -1,0 +1,15 @@
+{
+  "name": "persistence_gt_bands",
+  "caption": "G_t = d_between − d_within per integer turnover band in local-bge-m3, cell gemma-base. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "alt_text": "G_t = d_between − d_within per integer turnover band in local-bge-m3, cell gemma-base. CI is seed-cluster bootstrap (ADR-0025), not Greenwood on 40 iid traj.",
+  "limitations": "Positive G_t is seed-conditioned persistence in this space, not a semantic state and not an absorbing lock. Do not pool with S9 Qwen or S10 OLMo.",
+  "run_ids": [
+    "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+    "s11-embed-paperb-s11-embed-bge-20260923T051909Z-880ed636",
+    "s11-persistence-local-bge-m3-20260923T062042Z-c2f43426"
+  ],
+  "git_sha": "711a8e1336bfc163048da3f924f18a277c962c3c",
+  "config_sha256": null,
+  "units": {},
+  "generated_at": "2026-09-25T19:12:37+00:00"
+}

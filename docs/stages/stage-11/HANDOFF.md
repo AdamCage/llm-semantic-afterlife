@@ -1,42 +1,31 @@
-# Stage 11 HANDOFF — opened
+# Stage 11 HANDOFF — closed
 
-Opened 2026-09-19 on branch `stage-11` from `main` `bec8e0b`.
-Scientific contract: [`PLAN.md`](PLAN.md). Freeze: ADR-0023…0026,
-ADR-0029.
+Closed 2026-09-26 after APPROVED WITH CHANGES and the phrase
+blocker. Do not pool with S9 Qwen or S10 OLMo.
 
-## Do
+Headline: Ministral Base and Instruct both complete 40/40 and both
+have last-band \(G_t>0\) with intervals that exclude 0 in BGE-M3
+and hosted Qwen-embed. Gemma did not replicate that positive gap.
+IT is 0/40 empty-completion. Confirmed escape is 0 on Ministral
+Base, 4/40 on Instruct, 15/38 on Gemma Base.
 
-- One `afterlife generate` at a time. `scripts/s11_run_matrix.sh`.
-- Resume with `--resume-run` only, same `run_id`.
-- Keep empty-completion FAILED cells. Do not retune sampling.
-- Gemma last. OOM → stop that family; no E4B / `B` cut.
-- Degeneracy before any published \(G_t\).
-- Hosted Qwen-embed after local BGE; cap $5 (ADR-0029).
+Report: [`REPORT.md`](REPORT.md).
+
+## Uncertainty to judge
+
+- Gemma Base BGE last-band is an identified negative. The
+  Qwen-embed sign is not established (0.014 [−0.021, 0.019]
+  includes 0). Cross-space sign agreement is not identified. It
+  is not “true on the point.”
+- Gemma IT lock-table \(n=8\) is not a 12W completer set and not a
+  last-band.
+- P2 is false (both Ministral cells 0 empty deaths). P11 is false
+  (escapes exist). Those are findings.
 
 ## Do not
 
 - Start S12.
-- Pool Ministral or Gemma with S9 Qwen or S10 OLMo.
-- Execute native-chat (`build_request` still raw).
-- Load `mistralai/Ministral-3-8B-Instruct-2512` (FP8) or Reasoning-2512.
-- Swap Gemma for E4B.
-- Launch a second `afterlife generate` on this GPU.
+- Call the lock absorbing.
+- Say full attention is unnecessary.
+- Average Ministral with Gemma, Qwen, or OLMo.
 - Write `paper/main.tex`.
-- Edit `.cursor/plans/paper_b_local_matrix_5105e6af.plan.md`.
-- Change F1 / `N_confirm=3`.
-- Call a lock absorbing, or last-band \(G_t>0\) recovered memory.
-- Soften “CI includes 0” to “true on the point.”
-
-## Env
-
-WSL Ubuntu. `UV_PROJECT_ENVIRONMENT=/home/adam/.venvs/llm-semantic-afterlife`,
-`HF_HOME=/home/adam/hf-paperb`, `AFTERLIFE_BUDGET_USD_TOTAL=200`.
-
-## Return contract
-
-- `status: opened` (PLAN + YAML + estimate; generate next)
-- `run_ids: none` yet
-- `blockers: none` for Ministral generate; Gemma IT empty-completion
-  at `W=4096` is a recorded risk, not a blocker
-- `next_agent: S11 generate`
-- `do_not: S12; dual GPU jobs; native-chat; E4B; pooling`

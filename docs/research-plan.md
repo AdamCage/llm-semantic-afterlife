@@ -17,8 +17,7 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
-(2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11
-Ministral+Gemma 12W is open** (2026-09-19). Frozen order:
+(2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). Frozen order:
 **S11 Ministral+Gemma → S12 horizon → S13**.
 S9–S11 is a complete story; S12 is strengthening or *no confirmed
 escape through T*. Local generate is $0 ledger; project ceiling
@@ -435,15 +434,17 @@ NF4 last-band CIs exclude 0 in both spaces; RLVR last-band
 \(G_t>0\) is **not established**. DPO last-band unidentified, not
 a sign flip. Do not pool with Qwen.
 
-### S11 — Ministral replication + Gemma generalization at 12W `opened 2026-09-19`
+### S11 — Ministral replication + Gemma generalization at 12W `closed 2026-09-26`
 
-Opened after S10 `--no-ff`. Plan:
-[`docs/stages/stage-11/PLAN.md`](stages/stage-11/PLAN.md).
-Ministral Base/Instruct `raw_bytes` (native-chat deferred); then
-Gemma 4 12B Base/IT. Gemma is architectural generalization, not a
-causal attention ablation. Gemma OOM → stop; no silent substitute.
-Do not start S12 until this stage closes. Do not pool with Qwen
-or OLMo.
+Opened after S10 `--no-ff`. Computations finished 2026-09-23.
+Plan: [`docs/stages/stage-11/PLAN.md`](stages/stage-11/PLAN.md).
+Report: [`docs/stages/stage-11/REPORT.md`](stages/stage-11/REPORT.md).
+Ministral Base and Instruct are both 40/40 completers; last-band
+\(G_t>0\) excludes 0 in both spaces. Gemma did not replicate that
+positive gap: Base BGE is an identified negative, the Qwen-embed
+sign is not established, IT is 0/40 completers. Confirmed escape
+is not zero. Phrase blocker applied. Human authorised the
+next stage. Do not pool with Qwen or OLMo.
 
 ### S12 — Horizon ladder `planned`
 

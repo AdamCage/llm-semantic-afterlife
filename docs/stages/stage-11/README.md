@@ -1,38 +1,29 @@
 # Stage 11 — Ministral replication + Gemma generalization at 12W
 
-Opened 2026-09-19 after Stage 10 `--no-ff` close. Authoritative
-question, two estimands, E1–E13, and empty observed table:
-[`PLAN.md`](PLAN.md). Decisions: ADR-0023–0026, ADR-0029.
+Opened 2026-09-19 after Stage 10 `--no-ff` close. Plan:
+[`PLAN.md`](PLAN.md). Report: [`REPORT.md`](REPORT.md).
 
-If PLAN prose and YAML disagree, **YAML wins**.
-
-**Question.** Does local Ministral 3 8B replicate the *sign* of the
+**Question.** Does local Ministral 3 8B replicate the sign of the
 S9 Qwen completer pair at 12W, and does Gemma 4 12B show an
-identified last-band gap at all?
+identified positive last-band gap at all?
 
-**Status.** Opened. Generate not started.
+**Status.** Closed 2026-09-26. Review **APPROVED WITH CHANGES**;
+phrase blocker applied. Human authorised the next stage.
 
 | pass | status |
 | --- | --- |
-| S10 closed `--no-ff` | **yes** |
-| S11.1 Ministral Base NF4 40 × 12W | pending |
-| S11.2 Ministral Instruct NF4 40 × 12W | pending |
-| S11.3 Gemma 4 12B Base NF4 40 × 12W | pending |
-| S11.4 Gemma 4 12B IT NF4 40 × 12W | pending |
+| S11.1 Ministral Base NF4 | **40/40** `…5896956b` |
+| S11.2 Ministral Instruct NF4 | **40/40** `…a3093ea2` |
+| S11.3 Gemma Base NF4 | **38/40** `…6cae9981` |
+| S11.4 Gemma IT NF4 | **0/40** `…3b5b9427` FAILED empty-completion, kept |
 | S11.5 native-chat | **deferred** |
-| Degeneracy before \(G_t\) | pending |
-| BGE-M3 local embed | pending |
-| Hosted `qwen3-embed-8b` | pending (ADR-0029, cap $5) |
-| \(G_t\) / lock both spaces | pending |
-| REPORT | not written |
+| Degeneracy, BGE, hosted Qwen-embed, persistence | **done** 2026-09-23T07:35:12Z |
+| REPORT | written; E2/E5 PARTIAL |
 
-| File | Role |
-| --- | --- |
-| [`PLAN.md`](PLAN.md) | question, matrix, exit criteria, predictions |
-| [`HANDOFF.md`](HANDOFF.md) | operational status |
-| [`configs/stages/stage11_ministral_gemma/`](../../../configs/stages/stage11_ministral_gemma/) | generate + embed YAML |
-| [`artifacts/stage-11/`](../../../artifacts/stage-11/) | publication-grade outputs (after assemble) |
+Headline: Ministral last-band \(G_t>0\) in both spaces, completion
+40/40 both rungs, Instruct escape 4/40. Gemma positive gap did not
+replicate: Base BGE is an identified negative, the Qwen-embed sign
+is not established, IT is 0/40.
 
-Do not pool with S9 Qwen or S10 OLMo. Do not start S12 from this
-folder. Generate + local BGE **$0**. Hosted Qwen-embed cap **$5**.
-Project **$10.54 / $200**.
+Do not pool with S9 Qwen or S10 OLMo. Generate + local BGE **$0**.
+Hosted Qwen-embed **$0.00** / cap $5. Project **$10.54 / $200**.
