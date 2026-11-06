@@ -71,6 +71,15 @@ while true; do
     if [ -n "$run" ] && [ "$(status_of "$run")" = "COMPLETED" ]; then
       continue
     fi
+    # An empty-completion death is the outcome for that cell. Retrying it
+    # forever would starve the other seven, because it stays the fewest.
+    if [ -n "$run" ] && [ "$(status_of "$run")" = "FAILED" ]; then
+      ev="runs/s12/${run}/events.jsonl"
+      if [ -f "$ev" ] && tail -c 500000 "$ev" | grep -q 'consecutive empty completions'; then
+        say "SKIP TERMINAL EMPTY $tag"
+        continue
+      fi
+    fi
     pending=1
     steps=0
     if [ -n "$run" ]; then steps="$(steps_of "$run")"; fi

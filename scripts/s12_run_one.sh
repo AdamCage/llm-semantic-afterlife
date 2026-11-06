@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # One S12 continuation generate. Usage: s12_run_one.sh <yaml> [--resume-run ID]
 set -euo pipefail
+# Do not keep the watchdog lock open for the whole generate.
+{ exec 7>&- 8>&- 9>&-; } 2>/dev/null || true
 export PATH="/home/adam/.local/bin:/usr/local/bin:$PATH"
 export UV_PROJECT_ENVIRONMENT=/home/adam/.venvs/llm-semantic-afterlife
 export UV_LINK_MODE=copy

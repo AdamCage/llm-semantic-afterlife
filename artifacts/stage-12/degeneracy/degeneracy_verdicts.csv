@@ -1,0 +1,2 @@
+trajectory_id,degenerate,n_chunks,n_chunks_post_horizon,looping_fraction,unproductive_fraction,mean_novel_shingle_fraction,min_novel_shingle_fraction,late_pairwise_similarity_median,late_pairwise_similarity_max,mean_ngram_repetition,max_ngram_repetition,mean_type_token_ratio,mean_entropy_bits,mean_compression_ratio,entropy_trend_per_turnover,at_fixed_point,degeneracy_mode
+pb-qwen3-8b-instruct__W4096__T0p3__qi-love-s2__s1,True,4834,4830,1,1,0,0,1,1,0.990202,0.990228,0.00976566,2.58495,0.020715,0,1,3

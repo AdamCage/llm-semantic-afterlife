@@ -1,0 +1,28 @@
+{
+  "name": "tau_escape",
+  "caption": "Confirmatory S12 estimand: tau_escape on the L0 clock (lock at 0.75 turnover, horizon 12.0), censored at the cohort T_min of 4999168 tokens. A false confirmed_escape_through_tmin means no confirmed escape through T_min.",
+  "limitations": "This is not a last-band G_t and it is not a claim that the lock is permanent. The continuation flags are concatenated after the L0 F1 looping series from the published degeneracy runs. T_min is the shortest cell in this cohort, so a later escape on a longer cell is censored. One local GPU, eight continuations, N_confirm=3 unchanged.",
+  "run_ids": [
+    "s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59",
+    "s12-paperb-l2-mb-physics-s2-20260926T113312Z-7922c7f0",
+    "s12-paperb-l2-mb-love-s1-20260926T120115Z-87d89c22",
+    "s12-paperb-l2-mb-love-s2-20260926T122833Z-ce475f0c",
+    "s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5",
+    "s12-paperb-l2-qi-physics-s2-20260926T132741Z-75a4c96c",
+    "s12-paperb-l2-qi-love-s1-20260926T135816Z-c9de2297",
+    "s12-paperb-l2-qi-love-s2-20260926T140850Z-dd90cb82",
+    "s12-degeneracy-20261106T093507Z-3ee9909a",
+    "s12-degeneracy-20261106T093622Z-6f2e55e3",
+    "s12-degeneracy-20261106T093735Z-a52a8128",
+    "s12-degeneracy-20261106T093852Z-6366ad60",
+    "s12-degeneracy-20261106T094001Z-a33ca8ae",
+    "s12-degeneracy-20261106T094120Z-ec6c6745",
+    "s12-degeneracy-20261106T094242Z-24e30157",
+    "s12-degeneracy-20261106T094351Z-2794a0bf"
+  ],
+  "git_sha": "cc73c088646f6ecd0d4d0cbc7236451542c5c2e5",
+  "units": {
+    "tau_escape": "turnovers W=4096",
+    "t_min_tokens": "generator tokens"
+  }
+}
