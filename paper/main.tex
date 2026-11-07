@@ -566,7 +566,7 @@ on the negative side: an identified negative. % artifacts/stage-11/gt_last_band/
 Base Qwen3-Embedding-8B is $0.0141659$ $[-0.0208935, 0.0186512]$. The interval
 includes 0, so that sign is not established. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
 Cross-space sign agreement is not identified.
-Lock-table confirmed escape on Base is 15 of 38; completion is 38/40. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+Lock-table confirmed escape on Base is 15 of 38; completion is 38/40. % artifacts/stage-11/gt_last_band/gt_last_band.csv; artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
 IT completed 0/40. Its last band is unidentified in both spaces, which is not
 a sign flip and not an out-of-memory stop. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
 
@@ -594,13 +594,15 @@ No confirmed escape was observed through that common stop.}
 \paragraph{Limitations.}
 The continuation is a re-prompt of the last $W$ tokens, not native sliding
 attention. A positive or negative $G_t$ is a gap in one embedding space.
-BGE-M3 was local. Qwen3-Embedding-8B for S9--S11 was the hosted endpoint
-at realised cost $\$0$, so the two spaces are also two pipelines. % docs/decisions/ADR-0029-s11-hosted-qwen-embed.md @ ADR-0029
+BGE-M3 was local. Qwen3-Embedding-8B for S9--S11 was the hosted endpoint,
+so the two spaces are also two pipelines. % docs/decisions/ADR-0029-s11-hosted-qwen-embed.md @ ADR-0029
 Provider non-determinism was not re-measured on these horizons.
-L0 stops at 12 turnovers ($49{,}152$ tokens). S12 stops at the common
+L0 stops at 12 turnovers ($49{,}152$ tokens). % artifacts/stage-13/gt_published/gt_published.meta.json @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+S12 stops at the common
 finite horizon above. INT8 rows in the same parquet are concordance, not a
 third headline. A repetition lock is a surface 3-gram flag, not a semantic
-state. The necessary-condition sentence about attention on every layer is
+state. % artifacts/stage-11/degeneracy/degeneracy_verdicts.meta.json @ s11-degeneracy-20260923T051500Z-0948c824
+The necessary-condition sentence about attention on every layer is
 not licensed by the Gemma result.
 
 \section{Reproducibility}

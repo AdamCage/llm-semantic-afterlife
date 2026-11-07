@@ -118,9 +118,9 @@ The assembly did not change a published flag. The negative Gemma Base BGE gap an
 
 ## 5. Threats to validity
 
-P1 reprompt of a tail, raw_bytes, local NF4. Native sliding attention was not measured. Last-band G_t is seed-conditioned ensemble persistence in one embedding space. The two spaces are not on a common scale and are not pooled. Families are not pooled. A CI that includes 0 is not an established sign. An unidentified last-band is not a sign flip and is not drawn as zero. INT8 rows are concordance, not a third headline. Provider non-determinism was not re-measured on these horizons. L0 is finite: 12 turnovers, 49152 tokens. S12 is a separate censored count through 4999168 original tokens, not a pooled rate and not a permanence claim. Gemma Base BGE is an identified negative. The Gemma Base Qwen-embed sign is not established. Cross-space sign agreement for Gemma is not identified. Lock-table n is not the 12W completer count.
+P1 reprompt of a tail, raw_bytes, local NF4. Native sliding attention was not measured. Last-band G_t is seed-conditioned ensemble persistence in one embedding space. The two spaces are not on a common scale and are not pooled. Families are not pooled. A CI that includes 0 is not an established sign. An unidentified last-band is not a sign flip and is not drawn as zero. INT8 rows are concordance, not a third headline. Provider non-determinism was not re-measured on these horizons. L0 is finite: 12 turnovers, 49152 tokens. S12 is a separate censored count through 4999168 original tokens, not a pooled rate and not a permanence claim. Gemma Base BGE is an identified negative. The Gemma Base Qwen-embed sign is not established. Cross-space sign agreement for Gemma is not identified. Lock-table n is not the 12W completer count. Sources: `artifacts/stage-13/gt_published/gt_published.meta.json`, `artifacts/stage-12/tau_escape/tau_escape.data.parquet`.
 
-Qwen-embed for S9–S11 was the hosted endpoint at realised cost $0 (ADR-0027, ADR-0028, ADR-0029). BGE-M3 was local. The two pipelines are not one embedding measurement.
+Qwen-embed for S9–S11 was the hosted endpoint (ADR-0027, ADR-0028, ADR-0029). BGE-M3 was local. The two pipelines are not one embedding measurement.
 
 ## 6. Cost
 

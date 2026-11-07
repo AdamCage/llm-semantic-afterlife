@@ -512,11 +512,11 @@ Base BGE-M3 $0.147591$ $[0.0691844, 0.158049]$, % artifacts/stage-9/gt_last_band
 Instruct BGE-M3 $0.151367$ $[0.0871001, 0.159001]$, % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
 Base Qwen3-Embedding-8B $0.233299$ $[0.117225, 0.244196]$, % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
 Instruct Qwen3-Embedding-8B $0.304616$ $[0.191654, 0.315201]$. % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
-Завершено 38/40 и 31/40. Пустые завершения остаются в выборке. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Завершено 38/40 Instruct и 31/40 Base. Пустые завершения остаются в выборке. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
 
 OLMo Base NF4: BGE-M3 $0.0943909$ $[0.0287692, 0.107647]$, % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
 Qwen3-Embedding-8B $0.189111$ $[0.0861319, 0.221421]$. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
-SFT BGE-M3 $0.10178$ $[-0.0069993, 0.121757]$ включает 0, знак не установлен.
+SFT BGE-M3 $0.10178$ $[-0.0069993, 0.121757]$ включает 0, знак не установлен. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
 SFT Qwen3-Embedding-8B $0.1757$ $[0.0342047, 0.205525]$ исключает 0. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
 DPO без последней полосы в обоих пространствах: это не смена знака. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f
 RLVR $0.201503$ $[-0.134183, 0.201503]$ и $0.334629$ $[-0.147232, 0.334629]$:
@@ -544,9 +544,9 @@ S12 отдельно: 0 из 8 подтверждённых выходов че�
 
 Ограничения. Протокол --- re-prompt хвоста, не нативное скользящее внимание.
 $G_t$ зависит от пространства представлений; BGE-M3 локальный, Qwen-embed
-для S9--S11 был hosted при \$0. Недетерминизм провайдера на этих горизонтах
-не переизмерялся. Траектории конечны: L0 --- 12 оборотов, S12 --- общий
-конечный горизонт выше.
+для S9--S11 был hosted. Недетерминизм провайдера на этих горизонтах
+не переизмерялся. Траектории конечны: L0 --- 12 оборотов. % artifacts/stage-13/gt_published/gt_published.meta.json @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+S12 --- общий конечный горизонт выше.
 
 \section{Воспроизводимость}
 \label{sec:repro}
