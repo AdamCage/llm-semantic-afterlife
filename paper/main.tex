@@ -1,4 +1,5 @@
-% Semantic Afterlife manuscript (TMLR correctness pass, ADR-0019).
+% Semantic Afterlife manuscript.
+% Assembled narrative: repetition, seed dependence, family heterogeneity.
 % Every quantitative claim carries a same-line LaTeX comment: artifact path + run_id.
 % Cite only VERIFIED entries in docs/literature/related-work.md (see paper/refs.bib).
 \documentclass[11pt,a4paper]{article}
@@ -6,6 +7,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+% Run identifiers contain underscores. The package keeps them literal in
+% text and still allows math subscripts.
+\usepackage{underscore}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -32,614 +36,822 @@
 \maketitle
 
 \begin{abstract}
-A language model whose input is truncated to the last $W$ generated tokens
-continues after the original prompt has left that window. We study the
-\emph{blockwise re-prompt kernel}
-$Y_k^{(B)}\sim P_\theta(\cdot\mid X_k; B,\tau)$,
-$X_{k+1}=\mathrm{Tail}_W(X_k\oplus Y_k^{(B)})$,
-with $B{=}1024$ and $W{=}4096$ ($B/W{=}0.25$) on one instruct generator. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
-After full seed eviction, a textual repetition lock is the typical
-$T{=}0.3$ outcome ($19/20$ domain trajectories). % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
-Last-band occupancy retains between-seed distinguishability on ten fixed
-seed texts (F4); that gap is not recovered prompt memory (H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-Hypothesis H1 (validated Markov state models) is unsupported. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
-We did not measure a sliding native KV cache. Degeneracy is the sample, not a
-filter that was applied and then forgotten. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+We measure a block re-prompt of a language model's own tail.
+After each attempt to finish, a fresh call is conditioned on the last
+$W$ generator tokens and asked for a block of at most $B$ tokens.
+This is not true sliding attention with a continuous key--value cache,
+and the conclusions do not transfer automatically to ordinary chat or
+to autonomous agents.
+After the original prompt has been physically removed, this
+self-continuation can long preserve textual repetitions, and
+trajectories that share an initial text remain closer to each other,
+on average, than trajectories from different initial texts.
+Whether a run reaches the prescribed horizon, and whether that
+closeness is stable, differs across the families and checkpoints we
+studied.
+
+On one instruct occupancy panel the text-lock rule holds for $19/20$
+domain trajectories. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+That rate is one model and one protocol.
+On the Qwen3-8B lock table a confirmed lock usually sits at $0.75$
+turnover, before full eviction at turnover $1$. % artifacts/stage-9/locks/persistence_locks_all.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+The reproducible evidence for dependence on the initial text is a new
+replication of the occupancy panel: in BGE-M3 the last-band gap is
+$0.208$ with interval $[0.091, 0.314]$, and the sign is positive in
+every representation space used on that replication. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Completion at a common horizon is not one instruction-tuning effect:
+Qwen3-8B Base $31/40$ and Instruct $38/40$; % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+OLMo-3-7B Base, SFT, DPO, and RLVR are $27$, $19$, $3$, and $4$ of
+$40$; % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+Ministral-3-8B Base and Instruct are $40/40$; % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Gemma-4-12B Base is $38/40$ and the instruction-tuned checkpoint is
+$0/40$. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
+Eight selected locks have no confirmed escape through $4{,}999{,}168$
+tokens; the observation is censored at $1220.5$ turnover. % artifacts/stage-12/tau_escape/tau_escape.meta.json @ s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59
+A semantic-memory half-life, a validated state model, and currents
+between semantic states were not obtained.
+The study diagnoses this process.
+It does not show how to improve agent memory, task performance, or
+long-text quality.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:intro}
 
-Let $X_k\in V^W$ be the last $W$ generator tokens. The object of this paper is
-not token-by-token sliding attention. It is the blockwise kernel
+Let $W$ be an imposed sliding window in generator tokens and $B$ the
+block requested at each call.
+The object of this paper is not token-by-token sliding attention.
+It is a block re-prompt of the model's own tail.
+At step $k$ the input $X_k$ is the last $\min(|\cdot|, W)$ tokens of
+the seed followed by everything generated so far.
+The model emits a block and the window keeps only the tail:
 \begin{equation}
-  Y_k^{(B)}\sim P_\theta(\cdot\mid X_k; B,\tau),\qquad
+  Y_k^{(B)}\sim P_\theta(\cdot\mid X_k; B,\text{temperature}),\qquad
+  |Y_k^{(B)}|\le B,\qquad
   X_{k+1}=\mathrm{Tail}_W\bigl(X_k\oplus Y_k^{(B)}\bigr).
+  \label{eq:kernel}
 \end{equation}
-After generated count $g=W$ the seed is physically absent from the model's
-input (full eviction). The subsequent trajectory is the \emph{afterlife}.
-The scientific question is whether that trajectory retains seed identity,
-occupies a domain-tagged lock, or diffuses.
+Each call is fresh.
+Position indices restart, and no key--value cache is carried from the
+previous call.
+When the model emits a stop token, the stop is logged and the tail is
+sent again.
+The measured object is externally sustained self-continuation after
+repeated attempts to finish.
+It is not an unrestricted chain whose absorbing state is end-of-sequence,
+and it is not ordinary chat or an autonomous agent.
 
-That question is easy to answer wrongly. A looping trajectory occupies one
-point in representation space and reports a confined mean-squared displacement
-for reasons that have nothing to do with semantics. Degeneracy is labelled
-before geometry is read.
+The horizon is the generated-token count at which the seed has fully
+left the window.
+For a non-empty seed that count is $W$, which is turnover $T/W = 1$,
+where $T$ is the number of generated tokens.
+Eviction can start earlier, at $W-L_0$, when the window first fills and
+the next token can drop a seed token.
+Those two times are not the same.
+Full eviction is turnover $1$.
 
-The experiments are Stages~0--6 of a prospectively specified,
-version-controlled sequential study with documented adaptive replanning
-between stages (\texttt{docs/research-plan.md}). They do not establish H1,
-H5, or a result for language models as a class.
-
-Section~\ref{sec:related} places the afterlife against verified related work.
-Section~\ref{sec:protocol} defines the kernel, the two eviction times, and
-forced continuation. Section~\ref{sec:lock} reports the low-$T$ lock.
-Section~\ref{sec:occupancy} reports last-band domain occupancy.
-Section~\ref{sec:notshown} states what the design cannot establish.
-Section~\ref{sec:limitations} lists remaining threats to validity.
+The question that the measurements support is narrower than a theory of
+semantic memory.
+After the original prompt has been physically removed, can
+self-continuation preserve textual repetitions, and can trajectories
+remain dependent on which initial text they started from?
+Do completion and the stability of those regimes differ across families
+and checkpoints?
+The answer, on the processes actually run, is that repetitions can
+persist for a long time, that a gap between same-seed and different-seed
+trajectories can remain positive after eviction, and that both
+completion and that gap depend on the family and the checkpoint.
+Section~\ref{sec:results} is that plot.
+Section~\ref{sec:not} records the questions the same programme did not
+establish, including a semantic-memory half-life, validated metastable
+states, and transition currents.
+Those absences are why the paper has this shape.
+They are not soft positives.
 
 \section{Related work}
 \label{sec:related}
 
-We cite only sources marked VERIFIED in the project literature log.
+Textual repetition under neural decoding is a known regime.
+\citet{holtzman2020} show that likelihood-maximising decoding falls into
+repetitive loops, and propose nucleus sampling as a remedy inside a
+single prompt-conditioned generation.
+\citet{xu2022} measure a self-reinforcing loop: a sentence that has
+already appeared in the context becomes more likely to be continued.
+Both papers analyse degeneration inside one generation.
+They are the right alternative explanation of a lock.
+They are not a measurement of a tail that has been fed back as the next
+prompt after the original text has left a finite window.
 
-\citet{zekri2024} study autoregressive generation as a Markov chain on the
-context and, under contraction of the next-token kernel in total variation,
-prove existence of a unique stationary distribution. That theorem is the
-right null for a unique long-run law. It is not a measurement of last-band
-occupancy after eviction.
+\citet{zekri2024} represent an autoregressive model with a finite window
+as a Markov chain on token strings and, under a contraction of the
+next-token kernel, prove a unique stationary distribution.
+That theorem rules out a claim of several stationary laws on the token
+chain.
+It does not measure occupancy after the seed has been evicted, and it
+does not license reading a positive embedding gap as a second stationary
+distribution.
 
-Telephone-game and paraphrase protocols pass the \emph{whole} previous
-text under an instruction
-\citep{perez2025,mohamed2025,wang2025,geng2026}.
-Our state is a finite tail with explicit prompt eviction and many turnovers
-of an imposed $W$. \citet{ko2026} describe interlocutor-conditioned
-attractors; this protocol has no interlocutor. \citet{chen2026horizon}
-separate horizon, context, and memory; we impose $W$ by truncation and
-begin after the seed has left that window.
-\citet{wang2026random} pin the prompt and randomly evict generated
-reasoning tokens for KV-cache compression; we evict the seed completely
-and continue uninstructed.
+Cycles also appear when a model is asked to transform a whole text.
+\citet{wang2025} iterate paraphrasing and find low-order cycles,
+typically of period two, that survive increases in temperature.
+\citet{geng2026} define a Markovian generation chain in which each step
+sees a prompt template plus the previous output and no earlier history.
+On iterative rephrasing and round-trip translation they already measure
+lexical and semantic drift between successive iterations, including with
+overlap scores and embedding similarity, and they distinguish early exact
+recurrence from longer transients.
+A contrast that they track only strings, while this paper tracks
+semantics, is too strong.
+The reliable distinction is the process.
+Their step replaces the whole text under an instruction.
+Equation~\eqref{eq:kernel} appends a block to a growing stream and then
+discards every token outside the last $W$, including the original prompt
+once turnover reaches $1$.
+Telephone-game protocols likewise pass the whole previous text under an
+instruction \citep{perez2025,mohamed2025}.
+\citet{ko2026} track representation-space trajectories of multi-turn
+conversations with an interlocutor.
+This protocol has one model and no second policy.
+\citet{wang2026random} keep the prompt in cache and evict generated
+reasoning tokens.
+We evict the seed and continue the tail.
+None of these comparisons is a claim of priority.
 
-Surface-form degeneration under maximization decoding is documented
-\citep{holtzman2020}. Self-reinforcement of sentence repetition is the
-closest alternative explanation of the lock \citep{xu2022}.
+\citet{chen2026horizon} separate the horizon of a task, the number of
+tokens a model can attend, and memory as a system that persists across
+steps.
+We use that separation as terminology.
+$W$ is the imposed window.
+Turnover $T/W$ is how long the process was observed.
+We install no retrieval, scratchpad, or summary.
+The paper does not show that long-horizon agents thereby gain a memory,
+and it does not offer a remedy for drift, task failure, or long-text
+quality.
 Training-time collapse on recursively generated data
-\citep{shumailov2024} is a different object: we never retrain.
-Markov-state methodology from molecular dynamics
-\citep{wu2020vampnets,paul2019core} is the toolkit Stage~3 applied; the
-toolkit is not the result.
+\citep{shumailov2024} is a different object: these runs never retrain.
 
-\section{Protocol}
-\label{sec:protocol}
+The contribution is the combination of five choices.
+The original prompt is accounted for until it has fully left $W$.
+Completion, textual lock, and seed discriminability are measured
+separately, so a lock among survivors is not mistaken for a high
+probability of reaching the horizon.
+Family and post-training comparisons keep the cells that fail.
+Selected locks are observed far past the horizon with the censoring time
+written down.
+The discussion then says which attractive readings --- recovered facts,
+a semantic half-life, a validated state, an eternal regime --- the
+tables do not license.
+A half-life, a current between semantic states, and a validated
+Markov state model are not part of that contribution.
+The molecular-dynamics toolkit used in an early stage
+\citep{wu2020vampnets,paul2019core} is recorded in
+Section~\ref{sec:not} because the required validation failed.
 
-\subsection{Generator, window, and P1}
-\label{sec:p1}
+\section{Methods}
+\label{sec:methods}
 
-Occupancy uses \texttt{or-qwen3-8b} (Qwen3-8B-Instruct via OpenRouter;
-served provider \texttt{Alibaba} on every completed occupancy step),
-$W{=}4096$, $T{=}0.3$, block $B{=}1024$ so $B/W{=}0.25$, analysis chunks of % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
-$1024$ generator tokens, non-overlapping, and twelve turnovers of $W$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
-The continuation mechanism is \texttt{raw\_completion}, not
-\texttt{assistant\_prefill} and not \texttt{chat\_instructed}. Protocol P1
-is the re-prompt: the last $W$ tokens are re-encoded and sent as a new
-prompt. P1 and the continuation mechanism are distinct axes (glossary).
-The input construction is not a sliding native KV cache (protocol P2).
+\subsection{Block re-prompt after attempts to finish}
+\label{sec:process}
 
-Eviction has two times. \emph{Eviction start} is $W-L_0$: the window first
-fills and the next generated token can drop a seed token. \emph{Full
-eviction} is $g=W$: no seed token remains. Last-band occupancy uses
-turnover $\ge 1$, which is full eviction, not the fill instant.
-Historical generate JSONL stored \texttt{horizon\_tokens}${}=W-L_0$;
-analysis does not read that field for F4. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
+Protocol P1 sends $\mathrm{Tail}_W$ as a new prompt at every step.
+It is the only protocol in the results below.
+A native sliding mask with a continuous key--value cache, protocol P2,
+was not measured.
+During one call the model can attend to tokens it has just produced
+inside that same block, up to $B$ tokens, so P1 is also not a
+token-by-token slide.
+Conclusions apply to this self-continuation.
+They do not automatically describe ordinary chat, tool-using agents, or
+a cache that is only trimmed at the left edge.
 
-The process is \emph{externally sustained self-conditioning after repeated
-termination attempts}: stop tokens are recorded and generation is
-continued. Survival analysis of EOS as absorbing is parked (Paper B).
-
-\subsection{Cost law}
-\label{sec:cost}
-
-Hosted spend follows the recorded ledger. Stage~0 audit cost $\$0.0128$. % docs/stages/stage-0/REPORT.md @ s0 audit
-Stage~1 generation billed $\$6.32$ on % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
-\texttt{s1-pilot-core-20260830T134147Z-f1cce9ec}. % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
-Stage~4 hosted generation billed $\$3.4383$. % docs/stages/stage-4/REPORT.md @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-Stage~5 generation billed $\$1.3385$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
-Stage~6 used cached Gemini embeddings at hosted $\$0$. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
-Project hosted spend at Stage~6 close was $\$16.34$ of a $\$200$ ceiling. % docs/stages/stage-6/REPORT.md @ ledger
-This correctness pass spent $\$0$. % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
-
-\subsection{Degeneracy is the sample}
-\label{sec:degeneracy}
-
-A trajectory is labelled a textual repetition lock when calibrated
-repetition statistics cross a threshold derived from a human-prose
-reference corpus (Carroll and Darwin): mean $3$-gram Jaccard $0.083$ and % artifacts/stage-1/degeneracy/degeneracy_verdicts.meta.json @ s1-degeneracy-20260831T070038Z-b2f6f0c9
-late-window Jaccard $0.0122$. % artifacts/stage-1/degeneracy/degeneracy_verdicts.meta.json @ s1-degeneracy-20260831T070038Z-b2f6f0c9
-The detector reports a near-recurrent textual regime (fixed point or short
-cycle), not an exact period-1 test. Those two numbers are not retuned.
-
-On the occupancy panel, $19/20$ domain trajectories and $1/2$ love % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-trajectories meet the lock rule; $10/10$ domain seeds have at least one lock. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-Clopper--Pearson $19/20$ is $[0.751, 0.999]$. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Occupancy is a statement about locked trajectories. Geometry on a looping
-row is not interpreted as a confined semantic basin.
-
-\section{Low-temperature repetition lock}
-\label{sec:lock}
-
-Stage~1 generated $48$ trajectories on \texttt{or-qwen3-8b} at $W{=}4096$, % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
-target $T{=}131072$ tokens ($32$ turnovers). % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
-The lock rule fired on $45/48$ trajectories ($94\%$), including $24/24$ at % docs/stages/stage-1/REPORT.md @ s1-degeneracy-20260831T070038Z-b2f6f0c9
-$T{=}0.3$ and $21/24$ at $T{=}1.0$. % docs/stages/stage-1/REPORT.md @ s1-degeneracy-20260831T070038Z-b2f6f0c9
-Figure~\ref{fig:s1-sep} shows a domain-gap curve on that
-degenerate-majority panel; it is not a non-looping subsample.
-
-The lock is not universal across hosted generators.
-Table~\ref{tab:s2-rates} splits Stage~2 rates by temperature, $W{=}4096$,
-$n{=}4$ per cell, Clopper--Pearson. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-The previously published $n{=}8$ rows pool $T\in\{0.3,1.0\}$: % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gemma-4-31b} $0/8$ ($[0, 0.369]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-gpt-oss-120b} $8/8$ ($[0.631, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-\texttt{or-qwen3-8b} $7/8$ ($[0.473, 0.997]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-At $T{=}0.3$: gemma $0/4$ ($[0, 0.602]$), $120$B $4/4$ ($[0.398, 1]$), % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-Qwen $3/4$ ($[0.194, 0.994]$). % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-At $T{=}1.0$: gemma $0/4$, $120$B $4/4$, Qwen $4/4$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-Direction (F2) is gemma versus $120$B at both temperatures. Qwen's $T{=}0.3$ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-interval includes $0.5$. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-
-A prefill-versus-raw arm on \texttt{or-qwen3-8b} is $7/8$ versus $8/8$; % docs/stages/stage-2/REPORT.md @ s2-mechanism-20260901T071519Z-dfbb173a
-Newcombe difference CI includes $0$ (Fisher $p{=}1$). % artifacts/stage-2/mechanism/rates/fixed_point_rates.csv @ s2-mechanism-20260901T071519Z-dfbb173a
-
-Stage~4 crossed temperature and window with $n{=}4$ per cell.
-At $T\le 1.0$, both $W{=}4096$ and $W{=}8192$ are $4/4$ ($[0.398, 1]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-At $T{=}1.5$, $W{=}4096$ is $0/4$ ($[0, 0.602]$); $W{=}8192$ is $2/4$ ($[0.068, 0.932]$). % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
-That $4/4$ versus $0/4$ cell contrast at $W{=}4096$ is not a temperature law. % artifacts/stage-4/grid/looping_rate_contrasts.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-Hypothesis H5 (a temperature window of
-non-looping confined motion) is absent: clean MSD $\alpha$ is defined only
-at $T{=}1.5$ and is subdiffusive. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-
-\begin{table}[t]
-  \centering
-  \caption{Textual repetition-lock rates, Stage~2 model axis, split by
-    temperature, $W{=}4096$, $n{=}4$ per cell, 95\% Clopper--Pearson CI. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    Source: % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{artifacts/stage-2/model-axis/rates/fixed\_point\_rates\_by\_temperature.csv}.
-    Pooled $n{=}8$ over $T\in\{0.3,1.0\}$ remains in
-    \texttt{fixed\_point\_rates.csv} and is not a $T{=}0.3$ table. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
-    Gemma $0/4$ at both temperatures is the existence proof that the Stage~1 % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    freeze is not a property of instruct models as a class.} % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-  \label{tab:s2-rates}
-  \begin{tabular}{@{}lcccc@{}}
-    \toprule
-    Generator & $T{=}0.3$ & 95\% CI & $T{=}1.0$ & 95\% CI \\
-    \midrule
-    \texttt{or-qwen3-8b} & $3/4$ & $[0.194, 0.994]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gemma-4-31b} & $0/4$ & $[0, 0.602]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-120b} & $4/4$ & $[0.398, 1]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-muse-glimmer-30b} & $2/4$ & $[0.068, 0.932]$ & $0/4$ & $[0, 0.602]$ \\ % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
-    \texttt{or-gpt-oss-20b} & \multicolumn{4}{c}{did not complete design $T$} \\ % docs/stages/stage-2/REPORT.md @ s2-model-axis-20260901T015457Z-ab59afc8
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\begin{table}[t]
-  \centering
-  \caption{Looping rate by temperature and window, Stage~4,
-    \texttt{or-qwen3-8b}, $n{=}4$ per cell, Clopper--Pearson CI. Source:
-    \texttt{artifacts/stage-4/grid/looping\_rate\_by\_cell.csv}.} % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-  \label{tab:s4-loop}
-  \begin{tabular}{@{}lcccc@{}}
-    \toprule
-    $T$ & $W{=}4096$ & CI & $W{=}8192$ & CI \\
-    \midrule
-    $\le 1.0$ & $4/4$ & $[0.398, 1]$ & $4/4$ & $[0.398, 1]$ \\ % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-    $1.5$ & $0/4$ & $[0, 0.602]$ & $2/4$ & $[0.068, 0.932]$ \\ % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.92\linewidth]{stage-1/separation-bge-m3/seed_separation.png}
-  \caption{Stage~1 domain-gap versus turnover in \texttt{bge-m3} on the
-    $48$-trajectory \texttt{or-qwen3-8b} pilot. Degenerate-majority panel. % artifacts/stage-1/separation-bge-m3/seed_separation.png @ s1-separation-bge-m3-20260831T074042Z-9bf54fbf
-    Data: \texttt{artifacts/stage-1/separation-bge-m3/seed\_separation.data.parquet}.} % artifacts/stage-1/separation-bge-m3/seed_separation.png @ s1-separation-bge-m3-20260831T074042Z-9bf54fbf
-  \label{fig:s1-sep}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.85\linewidth]{stage-4/grid/looping_rate_vs_T.pdf}
-  \caption{Looping rate versus temperature at two windows, 95\% Clopper--Pearson CI, % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-    $n{=}4$. The $T{=}1.5$, $W{=}4096$ cell is the % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-    existence of a non-looping regime on this model, not a mixing time.} % artifacts/stage-4/grid/looping_rate_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-  \label{fig:s4-loop}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.85\linewidth]{stage-4/grid/clean_alpha_vs_T.pdf}
-  \caption{Clean MSD $\alpha$ where defined (non-looping cells only).
-    Missing low-$T$ points are the H5 absence.} % artifacts/stage-4/grid/clean_alpha_vs_T.pdf @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
-  \label{fig:s4-alpha}
-\end{figure}
-
-\section{Last-band occupancy}
-\label{sec:occupancy}
-
-Given the lock, Stage~5--6 ask whether last-band centroids of ten fixed
-seed texts remain distinguishable (between-seed vs within-seed). Twenty-eight
-trajectories at $W{=}4096$, $T{=}0.3$, % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
-$B{=}1024$, twelve turnovers. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
-Generate \texttt{s5-lock-occupancy-20260905T164327Z-6780902f};
-embed \texttt{s5-embed-lock-occupancy-20260906T030125Z-eab6e484};
-degeneracy \texttt{s5-degeneracy-20260906T030145Z-deb4c3bd};
-gemini \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}.
-
-Let $D_{\mathrm{within}}$ be the mean cosine distance among last-band
-centroids that share a seed text, and $D_{\mathrm{between}}$ the mean
-among different seed texts. The gap is
-$\Delta_{\mathrm{dom}}=D_{\mathrm{between}}-D_{\mathrm{within}}$.
-Domain here means one labelled seed instance, not a sampled population.
-Seeds are labelled separated when the trajectory-bootstrap 95\% CI % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-excludes $0$ from above. That estimator already resamples with multiplicity % docs/decisions/ADR-0019-tmlr-correctness-pass.md @ ADR-0019
-(ADR-0019). An independent seed-pair matrix recompute agrees on the point to
-$<0.002$ in all three spaces. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
-Those published CIs are not re-derived from the original embeddings:
-named Stage~5--6 occupancy run directories are not recoverable
-(ADR-0021). A later 28-trajectory generate is a new panel (ADR-0022),
-not a restore of those intervals. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
-
-Table~\ref{tab:s6-f4} reports last-band F4. All three spaces are separated
-under that CI rule:
-\texttt{bge-m3} $0.201$ $[0.065, 0.332]$; % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-\texttt{qwen3-embed-8b} $0.390$ $[0.151, 0.593]$; % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-\texttt{gemini-embed-001} $0.150$ $[0.029, 0.266]$. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-Sign agreement is the claim. Levels are not interchangeable. Gemini's lower
-bound $0.029$ is an NHST pass, not architecture-independence. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-Physics seed~1 has $47$ versus $48$ chunks, so its last-band % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
-$D_{\mathrm{within}}$ diagonal is undefined; F4 uses
-$n_{\mathrm{within}}{=}9$ pairs. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
-Leave-one-seed-out on the matrix keeps the gap positive in every space
-(minimum $0.128$). % artifacts/tmlr-correctness/occupancy_leave_one_seed_out.csv @ ADR-0020
-Within-pair randomisation of the $54$ unique finite pairs yields % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
-$p{=}0.0001$ in each space ($0/9999$ permutations as large as the observed % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
-gap, seed $0$). % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
-That is a test on ten fixed seed texts, not a domain population.
-The last-band gap is between-seed distinguishability, not recovered prompt
-memory (H2) and not domain memory.
-
-A protocol diagnostic, not a headline: domain trajectories spend a mean fill
-fraction $0.853$, 95\% CI $[0.756, 0.936]$, in the last quarter, with mean % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+The harness does not treat end-of-sequence as the end of a trajectory.
+On the occupancy panel, domain trajectories in the last quarter of the
+run have mean block fill $0.853$ with interval $[0.756, 0.936]$ and mean
 stop-token fraction $0.359$. % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+Generation continues because the stop is overridden.
+No provider-side minimum-token floor is applied.
+
+The analysis unit is a chunk of $1024$ generator tokens, non-overlapping,
+cut from the generated stream only.
+The seed is not part of a chunk.
+Turnover is $T/W$.
+A last-band contrast at turnover band $12$ is a measurement after the
+horizon, which is turnover $1$.
+It is not evidence that the lock began after the horizon.
+
+\subsection{Two designs, one kernel}
+\label{sec:designs}
+
+Both designs use Equation~\eqref{eq:kernel} with $W{=}4096$ and
+$B{=}1024$, so $B/W{=}0.25$, at temperature $0.3$.
+They are not pooled.
+
+The occupancy panel uses the hosted instruct generator
+\texttt{or-qwen3-8b}, continuation mechanism \texttt{raw\_completion},
+served provider Alibaba on completed steps, and a target of twelve
+turnovers. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
+Ten domain texts are each run twice.
+Twin texts are a separate, underpowered contrast and are not a headline.
+The panel was generated twice.
+The second generate is the replication used as evidence in
+Section~\ref{sec:dependence}. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
+The first generate's embedding directories are not recoverable
+(Section~\ref{sec:archival}).
+
+The family matrix is local.
+Base and post-trained checkpoints receive the same seed bytes
+(\texttt{raw\_bytes}).
+The primary quantisation is NF4.
+INT8 rows are a ten-trajectory control, not a second headline.
+The prescribed horizon is twelve turnovers, $T{=}49152$ tokens.
+Families are Qwen3-8B Base and Instruct, OLMo-3-7B along Base, SFT,
+DPO, and RLVR, Ministral-3-8B Base and Instruct, and Gemma-4-12B Base
+and the instruction-tuned checkpoint.
+Forty trajectories are planned in each NF4 cell.
+A trajectory that dies on empty completions stays in the completion
+count.
+It is a failure to reach the horizon, not an unlocked success.
+A later cohort continues eight already-locked cells far beyond twelve
+turnovers (Section~\ref{sec:long}).
+
+The seed bank has one continuation-shaped text per domain label.
+Topic, lexicon, and register travel together.
+A gap between seeds is dependence on that initial text.
+It does not separate meaning from style. % docs/decisions/ADR-0026-seed-bank-v1-rationale-not-identification.md @ ADR-0026
+
+\subsection{Completion, lock, gap, and escape}
+\label{sec:measures}
+
+Four quantities are reported separately.
+
+Completion is the number of planned trajectories whose status is
+completed at the prescribed token horizon.
+It is not the lock rate among those that finished.
+
+A textual repetition lock is a surface verdict.
+A chunk is looping when its $3$-gram repetition rate exceeds $0.083$,
+the $99$th percentile of a Carroll-and-Darwin reference at the same
+chunk size. % artifacts/stage-1/degeneracy/degeneracy_verdicts.meta.json @ s1-degeneracy-20260831T070038Z-b2f6f0c9
+A trajectory is degenerate when at least half of its post-horizon chunks
+are looping, or when the median late-window shingle Jaccard reaches
+$0.0122$. % docs/stages/stage-5/REPORT.md @ s5-degeneracy-20260906T030145Z-deb4c3bd
+The two cuts are an or, not a single Jaccard.
+On the family matrix a lock is confirmed only after three consecutive
+chunk rows meet the degeneracy flag.
+Three chunks of $1024$ tokens are $0.75$ turnover, which is the earliest
+time the rule can fire. % artifacts/stage-12/tau_escape/tau_escape.meta.json @ s12-degeneracy-20261106T093507Z-3ee9909a
+The rule reports a near-recurrent textual regime.
+It is not an exact period-$1$ test, and it is not a semantic state.
+Only a validated Markov macrostate would earn that name.
+None did (Section~\ref{sec:not}).
+
+The seed-conditioned gap at a turnover band is
+$G = D_{\mathrm{between}} - D_{\mathrm{within}}$,
+with cosine distance on L2-normalised chunk embeddings.
+$D_{\mathrm{within}}$ averages pairs that share an initial text.
+$D_{\mathrm{between}}$ averages pairs that do not.
+A sign is established when the published $95\%$ interval excludes $0$.
+An interval that includes $0$ means the sign is not established.
+An unidentified band, with no between-seed pair, is not a sign flip and
+is not drawn as zero.
+The occupancy replication uses a multiplicity-preserving trajectory
+bootstrap. % artifacts/occupancy-replication/domain_separation_last_band.meta.json @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+The family matrix uses a seed-cluster bootstrap.
+The two intervals are not the same estimator and are not pooled.
+Representation spaces are BGE-M3 and Qwen3-Embedding-8B on the family
+matrix, and those two plus Gemini-Embedding-001 on the occupancy panel.
+Spaces are not placed on one scale.
+
+Escape is a confirmed run of non-degenerate chunks after a confirmed
+lock.
+On the long cohort the clock starts at the first token of the
+twelve-turnover series.
+$\tau_{\mathrm{escape}}$ is blank when no escape is confirmed.
+The censoring time is the common stop, not an estimated mean.
+
+\subsection{What can be recomputed}
+\label{sec:archival}
+
+Named run directories for the first occupancy generate and its
+embeddings are gone. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+The committed last-band intervals from that panel are archival analysis
+outputs.
+They cannot be recomputed from the original vectors, and a new draw
+does not restore them.
+The replication is a new $28$-trajectory generate. % artifacts/occupancy-replication/README.md @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+It is the primary evidence for the occupancy gap.
+The archival intervals remain in Section~\ref{sec:dependence} as a
+historical record of that one panel.
+Loss of those directories does not license a claim that every earlier
+number in the project is unreproducible.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Repetition, often confirmed before the horizon}
+\label{sec:repetition}
+
+On the occupancy panel, $19/20$ domain trajectories meet the lock rule,
+and $10/10$ domain seeds have at least one lock. % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+The trajectory that does not lock is one of the two \texttt{love} runs
+($1/2$). % artifacts/stage-5/occupancy/lock_rate_by_seed.csv @ s5-degeneracy-20260906T030145Z-deb4c3bd
+A Clopper--Pearson interval for $19/20$ is $[0.751, 0.999]$. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0019
+This is one instruct generator, one protocol, and temperature $0.3$.
+It is not a frequency for language models as a class.
+On a separate hosted axis at the same $W$, with $n{=}4$ per cell,
+\texttt{or-gemma-4-31b} is $0/4$ at both temperature $0.3$ and
+temperature $1.0$, while \texttt{or-gpt-oss-120b} is $4/4$ at both. % artifacts/stage-2/model-axis/rates/fixed_point_rates_by_temperature.csv @ s2-rates-20260901T125506Z-41d2e88e
+
+The family-matrix lock table for Qwen3-8B shows when the flag fires.
+After collapsing the two embedding copies of each trajectory, all $86$
+completed trajectories are confirmed locks and none has a confirmed
+escape through twelve turnovers. % artifacts/stage-9/locks/persistence_locks_all.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Of the $69$ NF4 trajectories, $67$ are confirmed at $0.75$ turnover
+(Base $31/31$, Instruct $36/38$) and the other two Instruct
+trajectories at $1.00$. % artifacts/stage-9/locks/persistence_locks_all.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+Full eviction is turnover $1$.
+The value $0.75$ is also the floor of the confirmation rule.
+The table therefore records repetition that the rule can mark before
+the seed has fully left the window, or, for two trajectories, as that
+exit occurs.
+It does not record a regime that is first detected only after the
+horizon.
+The same file's smaller INT8 rows are $16/17$ at $0.75$ and $1/17$ at
+$1.00$, which is the same pair of times and not a separate onset
+result. % artifacts/stage-9/locks/persistence_locks_all.csv @ s9-paperb-qwen-base-int8-20260914T091655Z-11069a87
+
+\subsection{Dependence on the initial text}
+\label{sec:dependence}
+
+The primary evidence is the occupancy replication.
+Last-band gaps on ten domain texts, twenty trajectories, are positive
+in all three representation spaces
+(Table~\ref{tab:repl}).
+In BGE-M3 the gap is $0.208$ with interval $[0.091, 0.314]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Qwen3-Embedding-8B is $0.400$ $[0.221, 0.590]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831
+Gemini-Embedding-001 is $0.152$ $[0.073, 0.239]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s6-embed-third-space-20260907T181515Z-bcde0a11
+Each interval excludes $0$ from above.
+Levels are not interchangeable across spaces.
+Four domain trajectories stop at $47$ chunks rather than $48$, so the
+last band has $n_{\mathrm{within}}{=}6$ rather than a full within-seed
+pair set. % artifacts/occupancy-replication/domain_separation_last_band.meta.json @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Band $10$ still excludes $0$ on the full pair set.
+It is not the pre-registered last-band number. % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
 
 \begin{table}[t]
   \centering
-  \caption{F4 last-band between-seed vs within-seed gap, ten fixed seed
-    texts, $n{=}20$, $n_{\mathrm{within}}{=}9$. Source: % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-    \texttt{artifacts/stage-6/occupancy/domain\_separation\_last\_band.csv}.
-    Separated means the published 95\% CI excludes $0$ from above. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-    Published 95\% CIs are original analysis outputs in that CSV; % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
-    source occupancy vectors are not recoverable (ADR-0021).} % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
-  \label{tab:s6-f4}
+  \caption{Primary occupancy evidence: last-band seed-conditioned gap on
+    the replication generate, ten domain texts, trajectory-bootstrap
+    $95\%$ interval. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Separated means the interval excludes $0$ from above.
+    Last-band $n_{\mathrm{within}}{=}6$. % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Generate \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb}.}
+  \label{tab:repl}
   \begin{tabular}{@{}lccc@{}}
     \toprule
-    Space & gap & 95\% CI & separated \\
+    Space & gap & $95\%$ interval & separated \\
     \midrule
-    \texttt{bge-m3} & $0.201$ & $[0.065, 0.332]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-    \texttt{qwen3-embed-8b} & $0.390$ & $[0.151, 0.593]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-    \texttt{gemini-embed-001} & $0.150$ & $[0.029, 0.266]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+    BGE-M3 & $0.208$ & $[0.091, 0.314]$ & yes \\ % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+    Qwen3-Embedding-8B & $0.400$ & $[0.221, 0.590]$ & yes \\ % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831
+    Gemini-Embedding-001 & $0.152$ & $[0.073, 0.239]$ & yes \\ % artifacts/occupancy-replication/domain_separation_last_band.csv @ s6-embed-third-space-20260907T181515Z-bcde0a11
     \bottomrule
   \end{tabular}
 \end{table}
 
-A new occupancy generate (ADR-0022) repeats the 28-trajectory grid. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
-It is not a restore of \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
-Generate \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb};
-embed \texttt{s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831};
-gemini \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}.
-Last-band gaps are
-\texttt{bge-m3} $0.208$ $[0.091, 0.314]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-\texttt{qwen3-embed-8b} $0.400$ $[0.221, 0.590]$; % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-\texttt{gemini-embed-001} $0.152$ $[0.073, 0.239]$. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s6-embed-third-space-20260907T181515Z-bcde0a11
-Sign agrees with Table~\ref{tab:s6-f4} in all three spaces: each replication
-CI excludes $0$ from above. These intervals do not replace % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-$0.201$ $[0.065, 0.332]$. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-Four domain trajectories have $47$ chunks, so last-band % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-$n_{\mathrm{within}}{=}6$ % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-(band~$12$ pair counts $6/114$). % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-Band~$10$ still has the full $80/1440$ pair set and also excludes $0$; it is % artifacts/occupancy-replication/domain_separation_per_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-not the pre-registered last-band number.
+This is dependence on the initial condition after that text has left
+the window.
+Same-seed trajectories stay closer than different-seed trajectories.
+The gap does not show that the model remembers original facts, can
+recover the prompt, or preserves meaning apart from style.
+Related trajectories may simply continue similar families of
+repetitions.
+On this replication the degeneracy flag is true for $20/20$ domain
+trajectories, so the gap is a gap among locked runs. % artifacts/occupancy-replication/degeneracy_verdicts.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+
+The first occupancy panel is historical
+(Table~\ref{tab:archival}).
+Its published intervals also exclude $0$ in the same three spaces, and
+a recomputation from the committed seed-pair matrix matches the
+published points to within $0.002$. % artifacts/tmlr-correctness/headline_audit.json @ ADR-0020
+Leave-one-seed-out gaps on that matrix stay positive; the smallest is
+$0.128$. % artifacts/tmlr-correctness/occupancy_leave_one_seed_out.csv @ ADR-0020
+A within-pair randomisation gives $p{=}0.0001$ in each space
+($0/9999$ permutations at least as large as the observed gap, seed
+$0$). % artifacts/tmlr-correctness/occupancy_within_pair_randomization.csv @ ADR-0020
+Those checks use the committed matrix.
+They do not restore the trajectory-bootstrap intervals, because the
+embeddings are gone.
+Table~\ref{tab:archival} is not the primary evidence, and its intervals
+are not the replication's intervals.
 
 \begin{table}[t]
   \centering
-  \caption{ADR-0022 replication of Table~\ref{tab:s6-f4} on a new 28-trajectory
-    generate, not a restore. Sign agreement: both CIs exclude $0$ from above. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-    Last-band $n_{\mathrm{within}}{=}6$ because four domain trajectories have $47$ chunks. % artifacts/occupancy-replication/missing_data.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-    Do not replace $0.201$ $[0.065, 0.332]$.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-  \label{tab:f4-repl}
-  \begin{tabular}{@{}lcccc@{}}
+  \caption{Historical occupancy panel.
+    Published last-band intervals from the first generate.
+    Source vectors are not recoverable (ADR-0021). % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+    Not the primary evidence; do not substitute these intervals for
+    Table~\ref{tab:repl}.
+    $n_{\mathrm{within}}{=}9$.} % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
+  \label{tab:archival}
+  \begin{tabular}{@{}lccc@{}}
     \toprule
-    Space & archival & replication & sign agrees \\
+    Space & gap & $95\%$ interval & separated \\
     \midrule
-    \texttt{bge-m3} & $0.201$ $[0.065, 0.332]$ & $0.208$ $[0.091, 0.314]$ & yes \\
-    \texttt{qwen3-embed-8b} & $0.390$ $[0.151, 0.593]$ & $0.400$ $[0.221, 0.590]$ & yes \\
-    \texttt{gemini-embed-001} & $0.150$ $[0.029, 0.266]$ & $0.152$ $[0.073, 0.239]$ & yes \\
+    BGE-M3 & $0.201$ & $[0.065, 0.332]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+    Qwen3-Embedding-8B & $0.390$ & $[0.151, 0.593]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
+    Gemini-Embedding-001 & $0.150$ & $[0.029, 0.266]$ & yes \\ % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
     \bottomrule
   \end{tabular}
 \end{table}
 
+\subsection{Families and checkpoints}
+\label{sec:families}
+
+Completion at $49152$ tokens is a different fact from the lock among
+runs that get there
+(Table~\ref{tab:completion}).
+The rows are not a pooled frequency and not one effect of instruction
+tuning.
+Identical or neighbouring completion counts are not a demonstrated
+equivalence.
+
+\begin{table}[t]
+  \centering
+  \caption{Completed trajectories at the twelve-turnover horizon,
+    NF4, temperature $0.3$, $W{=}4096$, forty planned per cell.
+    Empty completions remain in the denominator.} % artifacts/stage-9/generate_status/generate_status.md @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+  \label{tab:completion}
+  \begin{tabular}{@{}llc@{}}
+    \toprule
+    Family & Checkpoint & Completed \\
+    \midrule
+    Qwen3-8B & Base & $31/40$ \\ % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+    Qwen3-8B & Instruct & $38/40$ \\ % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+    OLMo-3-7B & Base & $27/40$ \\ % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+    OLMo-3-7B & SFT & $19/40$ \\ % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
+    OLMo-3-7B & DPO & $3/40$ \\ % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f
+    OLMo-3-7B & RLVR & $4/40$ \\ % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
+    Ministral-3-8B & Base & $40/40$ \\ % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+    Ministral-3-8B & Instruct & $40/40$ \\ % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
+    Gemma-4-12B & Base & $38/40$ \\ % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+    Gemma-4-12B & instruction-tuned & $0/40$ \\ % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Qwen3-8B Instruct reaches the horizon more often than Base ($38/40$
+against $31/40$).
+The nine Base failures and two Instruct failures are empty completions,
+kept in the sample. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Which seeds survive also changes.
+Base \texttt{recipe} contributes four empty-completion failures and no
+lock-table row; Instruct \texttt{recipe} is $4/4$ locked. % artifacts/stage-9/empty_completions/empty_completions.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+On the completers, the last-band interval excludes $0$ in both spaces,
+and the published lock table records no confirmed escape.
+Base BGE-M3 is $0.147591$ $[0.0691844, 0.158049]$; % artifacts/stage-13/gt_published/gt_published.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Instruct BGE-M3 is $0.151367$ $[0.0871001, 0.159001]$. % artifacts/stage-13/gt_published/gt_published.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+Base Qwen3-Embedding-8B is $0.233299$ $[0.117225, 0.244196]$; % artifacts/stage-13/gt_published/gt_published.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Instruct Qwen3-Embedding-8B is $0.304616$ $[0.191654, 0.315201]$. % artifacts/stage-13/gt_published/gt_published.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+Agreement of those signs is a statement about completers.
+It is not an equivalence of the two checkpoints, and it sits next to
+different completion counts.
+
+Along OLMo-3-7B the number of completed trajectories falls along the
+post-training line: $27$, $19$, $3$, and $4$ of $40$.
+At DPO and RLVR almost all planned runs fail before the horizon.
+Base intervals exclude $0$ in both spaces:
+BGE-M3 $0.0943909$ $[0.0287692, 0.107647]$, % artifacts/stage-13/gt_published/gt_published.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+Qwen3-Embedding-8B $0.189111$ $[0.0861319, 0.221421]$. % artifacts/stage-13/gt_published/gt_published.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+SFT is $0.10178$ $[-0.0069993, 0.121757]$ in BGE-M3, so that sign is
+not established, and $0.1757$ $[0.0342047, 0.205525]$ in
+Qwen3-Embedding-8B, where the interval excludes $0$. % artifacts/stage-13/gt_published/gt_published.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
+DPO has three within-seed pairs and no between-seed pair, so there is
+no last-band gap in either space. % artifacts/stage-13/gt_published/gt_published.csv @ s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f
+That unidentified band is not a negative gap.
+RLVR is $0.201503$ $[-0.134183, 0.201503]$ and
+$0.334629$ $[-0.147232, 0.334629]$. % artifacts/stage-13/gt_published/gt_published.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
+Both intervals include $0$, so a positive gap is not established.
+The published table records no confirmed escape on these OLMo rows.
+With three or four completers, that escape count is not a rate to set
+beside Qwen.
+
+Ministral-3-8B Base and Instruct both complete $40/40$.
+This sample shows no completion difference.
+That equality is not a general null effect of instruction tuning, and
+it is not pooled with Qwen or OLMo.
+Last-band intervals exclude $0$ in both spaces.
+Base BGE-M3 is $0.138297$ $[0.0633819, 0.158376]$ with no confirmed
+escape in the published table; % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Instruct BGE-M3 is $0.150187$ $[0.0840649, 0.158143]$ with four
+confirmed escapes. % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
+Base Qwen3-Embedding-8B is $0.239919$ $[0.126587, 0.271944]$; % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Instruct Qwen3-Embedding-8B is $0.224079$ $[0.139027, 0.228082]$. % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
+A positive gap on this family coexists with a non-zero escape count on
+Instruct.
+
+Gemma-4-12B is the boundary of the positive gap.
+Base completes $38/40$.
+Base BGE-M3 is $-0.010628$ $[-0.0377395, -0.00608505]$. % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+The interval lies entirely below $0$: an established negative gap.
+Base Qwen3-Embedding-8B is $0.0141659$ $[-0.0208935, 0.0186512]$. % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+That interval includes $0$, so the sign is not established.
+The two spaces do not agree.
+The published Base row records $15$ confirmed escapes among the
+lock-table count that accompanies those $38$ completers. % artifacts/stage-13/gt_published/gt_published.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+The instruction-tuned checkpoint completes $0/40$. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
+It has no last-band gap in either space.
+Absence of a point is not a sign flip.
+Nothing in the Gemma contrast identifies a causal role for attention
+layout.
+Figure~\ref{fig:families} collects the NF4 intervals.
+Cells with no last-band point are omitted there, not drawn at zero.
+
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.92\linewidth]{stage-5/occupancy/domain_separation_vs_turnover.pdf}
-  \caption{Between-seed last-band gap versus turnover in \texttt{bge-m3} and
-    \texttt{qwen3-embed-8b} on the Stage~5 locked panel. Last-band CIs
-    exclude $0$ from above in both spaces.} % artifacts/stage-5/occupancy/domain_separation_vs_turnover.pdf @ s5-lock-occupancy-20260905T164327Z-6780902f
-  \label{fig:s5-dom}
+  \includegraphics[width=\textwidth]{stage-13/gt_nf4/gt_nf4.png}
+  \caption{NF4 last-band seed-conditioned gap in the original embedding
+    space.
+    Rows are BGE-M3 and Qwen3-Embedding-8B and are not on one scale.
+    Columns are families and are not averaged.
+    Filled markers: the published interval excludes $0$.
+    Open markers: the interval includes $0$, so the sign is not
+    established.
+    OLMo DPO and Gemma instruction-tuned have no last-band point and are
+    omitted.
+    Assembly \texttt{s13-paperb-synthesis-20261107T085555Z-c0f6b853}.} % artifacts/stage-13/gt_nf4/gt_nf4.meta.json @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+  \label{fig:families}
 \end{figure}
+
+\subsection{Selected locks observed for a long time}
+\label{sec:long}
+
+Eight continuations were taken from conditions that had already locked:
+Ministral-3-8B Base NF4 and Qwen3-8B Instruct NF4, seeds
+\texttt{physics} and \texttt{love}, descendants \texttt{s1} and
+\texttt{s2}. % artifacts/stage-12/tau_escape/tau_escape.meta.json @ s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59
+The selection rule fixed that cohort before the long run.
+It is not a sample of language models, and the two families are counted
+rather than pooled into a rate.
+Each trajectory reaches $4{,}999{,}168$ original tokens, counted from
+the first token of the twelve-turnover series.
+The lock mark on every row is $0.75$ turnover.
+No row has a confirmed escape.
+$\tau_{\mathrm{escape}}$ is blank, and the censor flag is true.
+The common stop is $1220.5$ turnover, which is $1219.75$ turnovers
+after the lock mark. % artifacts/stage-12/tau_escape/tau_escape.data.parquet @ s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5
+Figure~\ref{fig:s12} shows that censoring time.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.92\linewidth]{stage-6/occupancy/domain_gap_three_spaces.pdf}
-  \caption{F4 between-seed last-band gap versus turnover in three embedding spaces on the
-    same $28$ trajectories. Last-band CIs exclude $0$; gemini lower bound % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
-    is $0.029$. Levels $0.201$ / $0.390$ / $0.150$ are not interchangeable.} % artifacts/stage-6/occupancy/domain_gap_three_spaces.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
-  \label{fig:s6-f4}
+  \includegraphics[width=0.86\textwidth]{stage-13/tau_escape_s12/tau_escape_s12.png}
+  \caption{Censoring time for eight selected locks, on the clock that
+    starts at the first token of the twelve-turnover series.
+    All eight cells sit at turnover $1220.5$.
+    Dashed lines mark the lock mark at $0.75$ and the end of that
+    series at $12.0$.
+    No confirmed escape was observed through the common stop.
+    This is not an estimated mean escape time.} % artifacts/stage-13/tau_escape_s12/tau_escape_s12.meta.json @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+  \label{fig:s12}
 \end{figure}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.72\linewidth]{stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.pdf}
-  \caption{Last-band cosine distances in \texttt{gemini-embed-001}
-    (illustration of the pairwise matrix, not a cluster count, not a 2-D
-    projection).} % artifacts/stage-6/occupancy/last_band_distance_matrix_gemini_embed_001.pdf @ s6-embed-third-space-20260906T082301Z-588eff8f
-  \label{fig:s6-heat}
-\end{figure}
+The observation is strong for these eight locks: the surface regime
+that was already in place at $0.75$ turnover is still in place at the
+censoring time.
+It does not estimate how often such a lock arises, it does not identify
+a mean time to escape, and it does not show that the regime is
+permanent.
+A blank escape time under right-censoring is the absence of an observed
+exit, not a proof of an absorbing state.
 
-\section{What this does not show}
-\label{sec:notshown}
+\subsection{What was not established}
+\label{sec:not}
 
-\paragraph{H1 is unsupported.}
-Stage~3 applied VAMP/PCCA+ on embeddings of the Stage~1 panel.
-\texttt{validated=0} in every cell of
-\texttt{artifacts/stage-3/dynamics/k\_stability.md}. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
-Implied $n_{\mathrm{macro}}$ is unstable across $K$ and across embedding
-spaces. Hypothesis H1 (metastable semantic states as an MSM object) is
-unsupported. A short-cycle lock is not a validated macrostate.
+The programme also asked for a validated state model, a semantic
+half-life, a temperature boundary, and a dependence on $W$ that would
+deserve to be called a scaling law.
+Those results were not obtained.
+Failure to obtain them is not evidence that the phenomena are absent in
+every regime.
+It is a failure of these measurements, and the paper does not promote
+them to findings.
 
-\paragraph{H5 is absent.}
-There is no low-$T$ clean $\alpha$ on the Stage~4 grid. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+The state model failed its validation.
+On every row of the Stage~3 stability table, \texttt{validated} is $0$. % artifacts/stage-3/dynamics/k_stability.md @ s3-dynamics-20260901T204521Z-f21d5908
+Implied macrostate counts are unstable across the number of microstates
+and across embedding spaces.
+A k-means cell in that analysis is a microstate.
+It is not a semantic state.
+Hypothesis H1, metastable semantic states as a Markov state model, is
+unsupported on that sample.
+A textual lock is not a substitute for the missing validation.
 
-\paragraph{F6 is not a headline.}
-Matched replica pairs are counterfactual narratives, not one-token factual
-flips. $n{=}2$ per family. Published twin CI columns used a bootstrap that
-dropped resample multiplicities (ADR-0019) and are not reported here as
-intervals. Last-band \emph{point} $\Delta$ in \texttt{gemini-embed-001} is
-$-0.012$ (all pairs) and $0.049$ in \texttt{bge-m3} waterloo. % artifacts/stage-6/occupancy/twin_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-That is no detected divergence / underpowered, not occupancy of one lock
-and not semantic collapse. An equivalence design is not claimed.
+A semantic-memory half-life, in the sense of a time after which half of
+a defined seed-information measure is gone, was not measured.
+The between-seed gap is a different quantity.
+It can stay positive because two trajectories keep repeating similar
+text.
+That is not a half-life.
 
-\paragraph{No universal attractors.}
-One instruct generator, P1, \texttt{raw\_completion}, Alibaba, $T{=}0.3$.
-Gemma's $0/8$ already falsifies universality. % artifacts/stage-2/model-axis/rates/fixed_point_rates.csv @ s2-rates-20260901T125506Z-41d2e88e
+Subdiffusion was not shown to be semantic retention.
+On the Stage~4 temperature--window grid for \texttt{or-qwen3-8b}, a
+clean mean-squared-displacement exponent is defined only at temperature
+$1.5$, where the non-looping cells live, and every defined exponent is
+below $1$. % artifacts/stage-4/grid/clean_alpha_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+At temperatures $0.3$, $0.7$, and $1.0$, both $W{=}4096$ and
+$W{=}8192$ are $4/4$ looping ($n{=}4$ per cell), so there is no clean
+exponent to interpret. % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+At temperature $1.5$, $W{=}4096$ is $0/4$ looping and $W{=}8192$ is
+$2/4$. % artifacts/stage-4/grid/looping_rate_by_cell.csv @ s4-w8192-20260904T120057Z-ce82ce55
+Repetition itself pins a trajectory to a small region of representation
+space.
+A confined exponent on a looping panel, or a subdiffusive exponent on
+the one non-looping temperature, is not a proof that meaning was
+retained.
+The $4/4$ against $0/4$ contrast at $W{=}4096$ is not a temperature law
+for semantic regimes.
+Two windows on one generator are not a scaling law in $W$.
+
+Currents between semantic states were not obtained.
+There is no validated macrostate on which to put a current.
+Matched replica texts ($n{=}2$ per family) are underpowered.
+Their last-band rows are not published here as a divergence result, and
+an equivalence of replicas is not claimed. % artifacts/stage-6/occupancy/twin_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
 
 \section{Limitations}
 \label{sec:limitations}
 
-\paragraph{P1 versus sliding attention.}
-Every afterlife token is produced by re-prompting the last $W$ tokens.
-A native sliding KV cache (P2) was not measured. No sentence here is
-evidence about sliding attention.
+\paragraph{The process is a re-prompt.}
+Every token in these results was produced by sending the current tail as
+a new prompt after an attempt to stop.
+A continuous key--value cache under a sliding mask was not measured.
+A reader who wants that process does not yet have it.
+The same restriction keeps the results from being a description of
+ordinary chat or of an agent loop.
 
-\paragraph{One generator, one protocol, one temperature for occupancy.}
-F4 is \texttt{or-qwen3-8b}, P1, \texttt{raw\_completion}, served provider
-\texttt{Alibaba}, $T{=}0.3$, $W{=}4096$, $B{=}1024$. % configs/stages/stage5_lock_occupancy.yaml @ s5-lock-occupancy-20260905T164327Z-6780902f
-P1 is the re-prompt axis; \texttt{raw\_completion} is the continuation
-mechanism. They are not synonyms.
+\paragraph{Topic and style are not separated.}
+Each domain label is one text.
+Content, lexicon, and register are entangled. % docs/decisions/ADR-0026-seed-bank-v1-rationale-not-identification.md @ ADR-0026
+The seed-conditioned gap is therefore a weak instrument for any claim
+about semantic memory.
+Related locks can share a style of repetition and produce a positive gap
+with no preserved proposition.
 
-\paragraph{Instruction-tuning and register.}
-The occupancy generator is instruct-tuned. Stage~2 already measured a
-reviewer register on this model. A persona/register alternative --- last-band
-centroids cluster by residual instruction style rather than seed domain ---
-is not excluded by F4. No hosted base model was available (Stage~0). A
-local \texttt{gemma-3-1b-pt} probe at $W{=}256$ is a different window. % docs/stages/stage-3/REPORT.md @ s3-local-base-20260901T184812Z-cc80633b
+\paragraph{The family matrix is a narrow regime.}
+Temperature is $0.3$, the window is one value of $W$, the serialization
+is raw bytes, and the headline quantisation is NF4.
+INT8 controls plan ten trajectories per cell, not forty. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-int8-20260914T091655Z-11069a87
+Their intervals often include $0$ because the within-seed pair count is
+three or four.
+They do not rule quantisation out.
+BGE-M3 was computed locally.
+Qwen3-Embedding-8B for the family matrix was a hosted endpoint, so the
+two spaces are also two pipelines. % docs/decisions/ADR-0029-s11-hosted-qwen-embed.md @ ADR-0029
+Provider non-determinism was not re-measured on these horizons.
+On an earlier hosted audit, exact-match rates were $100\%$ for
+glimmer, $60\%$ for Qwen, $20\%$ for Gemma, and $20\%$ for both
+GPT-oss checkpoints. % docs/stages/stage-2/REPORT.md @ s2-audit-determinism-20260901T015221Z-ab59afc8
 
-\paragraph{Forced continuation.}
-The object is externally sustained self-conditioning after repeated
-termination attempts. Last-quarter stop fraction $0.359$ is a confound to % artifacts/stage-5/occupancy/protocol_by_quarter.csv @ s5-lock-occupancy-20260905T164327Z-6780902f
-name, not an EOS-absorbing measurement.
+\paragraph{Conditioning on completion changes the sample.}
+OLMo DPO contributes three completers and no between-seed pair.
+Gemma instruction-tuned contributes none.
+On Qwen3-8B the Base lock table is missing \texttt{recipe}, which
+Instruct retains at $4/4$. % artifacts/stage-9/locks_by_seed/locks_by_seed.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+A gap estimated on survivors answers a different question from a gap
+estimated on the planned design.
+The paper reports both the completion count and the conditional gap,
+and does not treat the second as if the first had been balanced.
 
-\paragraph{Twins, $n{=}2$.}
-F6 is underpowered. Twins are not one-fact pairs. CIs from the broken
-bootstrap are not used as evidence.
+\paragraph{The first occupancy embeddings are gone.}
+This limitation is local to that panel. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
+The replication strengthens the sign of the occupancy gap, and
+Table~\ref{tab:repl} can be recomputed from its own run directories.
+The archival intervals in Table~\ref{tab:archival} cannot.
+The paper does not promise that every earlier number, outside this
+panel, can be regenerated bit for bit.
+Hosted sampling was already not deterministic.
 
-\paragraph{Degeneracy null.}
-The lock bar is Carroll+Darwin prose. Wikipedia-scale calibration is
-parked.
+\paragraph{The long cohort was selected, and every horizon here is finite.}
+The eight long trajectories were chosen from locks that had already
+persisted, by a rule fixed before the extension.
+Twelve turnovers is the family-matrix horizon.
+$1220.5$ turnovers is a censoring time.
+Neither is an infinite afterlife.
+The occupancy replication's last band is twelve turnovers as well.
 
-\paragraph{Representation.}
-Absolute gaps $0.201$, $0.390$, $0.150$ disagree. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-Gemini lower CI $0.029$ is not architecture-independence. % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-
-\paragraph{Provider non-determinism.}
-Stage~2 exact-match rates were $100/60/20/20$ percent across four hosted % docs/stages/stage-2/REPORT.md @ s2-audit-determinism-20260901T015221Z-ab59afc8
-generators. Replica pairs are not guaranteed independent draws.
-
-\paragraph{Occupancy vectors.}
-Named Stage~5--6 occupancy generate and embed run directories are not recoverable
-(ADR-0021). Published trajectory-bootstrap CIs in
-Table~\ref{tab:s6-f4} are the original analysis outputs in the committed CSV,
-not re-derived from those embeddings.
-Independently reproducible F4 inference on that archival panel is the seed-pair
-matrix, leave-one-seed-out, and within-pair randomisation.
-A new 28-trajectory generate (ADR-0022) is a replication, not a restore of
-$0.201$ $[0.065, 0.332]$; last-band $n_{\mathrm{within}}{=}6$ on that panel. % artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-
-\paragraph{Finite horizon.}
-Occupancy uses twelve turnovers, not an infinite afterlife. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+\paragraph{No remedy is tested.}
+The measurements do not show how to improve agent memory, task
+completion, or the quality of long text.
+Nucleus sampling, repetition penalties, and retrieval were not the
+interventions.
+A diagnostic description of a failure mode is not a fix.
 
 \section{Discussion}
 \label{sec:discussion}
 
-What is established, on this generator and protocol: after the seed leaves
-$W$, the typical $T{=}0.3$ trajectory is a textual repetition lock; last-band
-centroids still show a between-seed last-band gap across ten fixed seed
-texts in
-three embedding spaces (not recovered prompt memory, H2). % artifacts/stage-6/occupancy/domain_separation_last_band.csv @ s6-embed-third-space-20260906T082301Z-588eff8f
-A new 28-trajectory generate agrees in sign in all three spaces and does not
-replace the archival intervals. % artifacts/occupancy-replication/domain_separation_last_band_vs_archival.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+After the original prompt has been physically removed, self-continuation
+under this block re-prompt can preserve textual repetitions for a long
+time, and it can preserve a statistical dependence on the initial text.
+Completion, and the stability of both the lock and the dependence,
+differ across the families and checkpoints that were run.
+That is the result.
 
-What is not established: H1; H5; we cannot claim architecture-independence of
-occupancy; a result for language models as a class; P1 versus P2; mixing
-times; replica collapse; one-fact twin sensitivity.
+The dependence is established on the replication, on Qwen3-8B and
+Ministral-3-8B NF4 in both spaces, and on OLMo-3-7B Base in both spaces.
+It is mixed on OLMo SFT, unidentified on OLMo DPO, and not established
+on OLMo RLVR.
+On Gemma-4-12B Base it is an established negative gap in BGE-M3 and an
+unestablished sign in Qwen3-Embedding-8B.
+Positive discriminability has a boundary inside this study.
+The boundary is a limit on generalisation.
+It is not an architectural explanation.
 
-\citet{zekri2024} remain the right uniqueness null. Seed-tagged last-band
-gaps on a locked panel are compatible with more than one long-run occupancy
-region in embedding space. That compatibility is not a proof that the
-token-level chain has several stationary measures.
+On the Qwen3-8B lock table, the repetitions that carry the late gap are
+usually confirmed before the seed has left the window.
+The long cohort then shows that eight such locks, chosen because they
+were stable, still have no confirmed escape at $4{,}999{,}168$ tokens.
+Longevity of a selected lock is a different claim from a late-onset
+regime, and a different claim from a universal half-life.
+Readers who want a semantic memory, a validated set of metastable
+states, or a circulation among those states will not find them in these
+tables.
+The state model failed validation.
+The half-life was not measured.
+Currents between semantic states were not obtained.
+The temperature grid did not establish a boundary between semantic
+regimes, and the two windows did not establish a scaling law.
 
-\section{Paper B}
-\label{sec:paperb}
+The literature already contains repetition \citep{holtzman2020,xu2022},
+a Markov description of finite-window generation \citep{zekri2024},
+paraphrase cycles \citep{wang2025}, and semantic drift under whole-text
+iteration \citep{geng2026}.
+What this record adds is the process distinction and the bookkeeping:
+eviction of the original prompt is explicit, completion is not hidden
+inside a conditional lock rate, negative cells stay in the tables, the
+long observation is censored, and the interpretations that the geometry
+tempts are checked against those facts.
+\citet{zekri2024} remain the right uniqueness result for the token
+chain.
+A positive gap in an embedding of locked text is compatible with more
+than one long-run region of that embedding.
+It is not a second stationary distribution of the token chain.
 
-Paper~A, above, stays the closed S0--S7 record. This section does not
-revise it. Paper~B is the local four-family programme at the same blockwise
-re-prompt kernel, $W{=}4096$, $B{=}1024$, temperature $0.3$, read family by
-family from the published last-band tables. % artifacts/stage-13/gt_published/gt_published.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
-S9--S11 are that story. S12 is a separate censored count. There is no pooled
-family rate.
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{stage-13/gt_nf4/gt_nf4.png}
-\caption{Published NF4 last-band $G_t$ in the original embedding space.
-Rows are BGE-M3 and Qwen3-Embedding-8B and are not on one scale.
-Columns are families and are not averaged.
-Filled markers: the published interval excludes 0.
-Open markers: the interval includes 0, so the sign is not established.
-OLMo DPO and Gemma IT have no last-band point and are omitted, not drawn at 0.
-Assembly \texttt{s13-paperb-synthesis-20261107T085555Z-c0f6b853}.}
-\label{fig:paperb-gt}
-\end{figure}
-
-\paragraph{Qwen3-8B.}
-On NF4 completers the last-band interval excludes 0 in both spaces.
-Base BGE-M3 is $0.147591$ $[0.0691844, 0.158049]$; % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
-Instruct BGE-M3 is $0.151367$ $[0.0871001, 0.159001]$. % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
-Base Qwen3-Embedding-8B is $0.233299$ $[0.117225, 0.244196]$; % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
-Instruct Qwen3-Embedding-8B is $0.304616$ $[0.191654, 0.315201]$. % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
-Lock-table confirmed escape is 0 on those four NF4 rows. % artifacts/stage-13/gt_published/gt_published.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
-Completion is 38/40 Instruct and 31/40 Base. The 11 empty-completion
-failures stay in the sample. They are missing last-band pairs, not unlocks. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
-
-\paragraph{OLMo 3 7B.}
-Base NF4 intervals exclude 0 in both spaces:
-BGE-M3 $0.0943909$ $[0.0287692, 0.107647]$, % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
-Qwen3-Embedding-8B $0.189111$ $[0.0861319, 0.221421]$. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
-SFT NF4 is $0.10178$ $[-0.0069993, 0.121757]$ in BGE-M3, whose interval
-includes 0, and $0.1757$ $[0.0342047, 0.205525]$ in Qwen3-Embedding-8B,
-whose interval excludes 0. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
-The SFT BGE gap is therefore not established.
-DPO NF4 has no last-band point in either space (3 within pairs, 0 between).
-That unidentified band is not a sign flip. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f
-RLVR NF4 is $0.201503$ $[-0.134183, 0.201503]$ and
-$0.334629$ $[-0.147232, 0.334629]$. Both intervals include 0, so
-$G_t>0$ is not established on RLVR. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
-Empty completions on the NF4 ladder are 13/40, 21/40, 37/40, and 36/40
-from Base through SFT, DPO, and RLVR. The collapse floors at DPO $\approx$ RLVR.
-Completers that enter the lock table are locked. This is not pooled with Qwen. % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
-
-\paragraph{Ministral 3 8B.}
-Both checkpoints complete 40/40. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
-Last-band intervals exclude 0 in both spaces.
-Base BGE-M3 is $0.138297$ $[0.0633819, 0.158376]$ with 0 confirmed escapes; % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
-Instruct BGE-M3 is $0.150187$ $[0.0840649, 0.158143]$ with 4 confirmed escapes. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
-Base Qwen3-Embedding-8B is $0.239919$ $[0.126587, 0.271944]$; % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
-Instruct Qwen3-Embedding-8B is $0.224079$ $[0.139027, 0.228082]$. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
-The positive gap replicates here. Confirmed escape on Instruct is not zero.
-These counts are not pooled with Qwen or OLMo.
-
-\paragraph{Gemma 4 12B.}
-The positive gap did not replicate.
-Base BGE-M3 is $-0.010628$ $[-0.0377395, -0.00608505]$. The interval excludes 0
-on the negative side: an identified negative. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
-Base Qwen3-Embedding-8B is $0.0141659$ $[-0.0208935, 0.0186512]$. The interval
-includes 0, so that sign is not established. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
-Cross-space sign agreement is not identified.
-Lock-table confirmed escape on Base is 15 of 38; completion is 38/40. % artifacts/stage-11/gt_last_band/gt_last_band.csv; artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
-IT completed 0/40. Its last band is unidentified in both spaces, which is not
-a sign flip and not an out-of-memory stop. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
-
-\paragraph{S12, separate.}
-Eight continuations, Ministral 3 8B Base NF4 and Qwen3 8B Instruct NF4,
-seeds \texttt{physics} and \texttt{love}, descendants \texttt{s1} and \texttt{s2},
-have no confirmed escape through $4{,}999{,}168$ original tokens. % artifacts/stage-12/tau_escape/tau_escape.data.parquet @ s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59
-The clock is absolute turnovers from L0 token 0.
-The lock event is at 0.75. The L0 series ends at 12.0.
-Censoring time is 1220.5, which is 1219.75 turnovers after the lock.
-$\tau_{\mathrm{escape}}$ is blank and the censor flag is true on every row.
-The two families are counted, not pooled. This is not a permanence claim
-and not a rate to be combined with the 12-turnover escapes above. % artifacts/stage-13/tau_escape_s12/tau_escape_s12.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
-
-\begin{figure}
-\centering
-\includegraphics[width=0.86\textwidth]{stage-13/tau_escape_s12/tau_escape_s12.png}
-\caption{S12 censoring time on the absolute L0 axis.
-Eight cells sit at turnover 1220.5. Dashed lines mark the lock event at 0.75
-and the end of the L0 series at 12.0.
-No confirmed escape was observed through that common stop.}
-\label{fig:paperb-s12}
-\end{figure}
-
-\paragraph{Limitations.}
-The continuation is a re-prompt of the last $W$ tokens, not native sliding
-attention. A positive or negative $G_t$ is a gap in one embedding space.
-BGE-M3 was local. Qwen3-Embedding-8B for S9--S11 was the hosted endpoint,
-so the two spaces are also two pipelines. % docs/decisions/ADR-0029-s11-hosted-qwen-embed.md @ ADR-0029
-Provider non-determinism was not re-measured on these horizons.
-L0 stops at 12 turnovers ($49{,}152$ tokens). % artifacts/stage-13/gt_published/gt_published.meta.json @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
-S12 stops at the common
-finite horizon above. INT8 rows in the same parquet are concordance, not a
-third headline. A repetition lock is a surface 3-gram flag, not a semantic
-state. % artifacts/stage-11/degeneracy/degeneracy_verdicts.meta.json @ s11-degeneracy-20260923T051500Z-0948c824
-The necessary-condition sentence about attention on every layer is
-not licensed by the Gemma result.
+The practical reach of the result is diagnostic.
+Someone running a long self-continuation can use completion, lock, and
+seed gap as separate symptoms, and can expect those symptoms to depend
+on the checkpoint.
+The paper does not say which change of decoding, quantisation, or
+memory harness would help.
+That would be a different experiment.
 
 \section{Reproducibility}
 \label{sec:repro}
 
-Experiments through Stage~6 closed on git commit \texttt{ad1f244}.
-Stage~7 wrote the first manuscript. This correctness pass is ADR-0019,
-ADR-0020, and ADR-0021
-\ifdefined\TMLRANON
-(anonymous).
-\else
-on branch \texttt{cursor/tmlr-correctness-a7f7};
-\fi
-it does not mint
-\texttt{runs/s7}. Hosted spend for the pass is $\$0$. % docs/decisions/ADR-0021-occupancy-record-not-recoverable.md @ ADR-0021
-A later occupancy replication (ADR-0022) billed $\$1.518$ generate and $\$0$ % artifacts/occupancy-replication/README.md @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
-embed; it is a new panel, not part of the $\$0$ pass. % docs/decisions/ADR-0022-occupancy-replication-panel.md @ ADR-0022
-The GitHub tag \texttt{state-latest} is a mutable restore pointer, not a
-citable archival object.
+This assembly spent $\$0$ and minted no run.
+Hosted project spend at the Stage~6 close was $\$16.34$ of a $\$200$
+ceiling. % docs/stages/stage-6/REPORT.md @ ledger
+Stage~0 audit cost $\$0.0128$. % docs/stages/stage-0/REPORT.md @ s0 audit
+Stage~1 core generation billed $\$6.32$. % docs/stages/stage-1/REPORT.md @ s1-pilot-core-20260830T134147Z-f1cce9ec
+Stage~4 hosted generation billed $\$3.4383$. % docs/stages/stage-4/REPORT.md @ s4-w4096-new-temps-20260904T103121Z-589c8eb1
+Stage~5 generation billed $\$1.3385$. % docs/stages/stage-5/REPORT.md @ s5-lock-occupancy-20260905T164327Z-6780902f
+The occupancy replication billed $\$1.518$ for generation. % artifacts/occupancy-replication/README.md @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb
+Stage~6 embeddings of the first occupancy panel were cached at hosted
+$\$0$. % docs/stages/stage-6/REPORT.md @ s6-embed-third-space-20260906T082301Z-588eff8f
 
-Primary \texttt{run\_id}s:
+Identifiers for the claims above:
 
 \begin{itemize}
-  \item Stage~1 generate: \texttt{s1-pilot-core-20260830T134147Z-f1cce9ec}
-  \item Stage~1 degeneracy: \texttt{s1-degeneracy-20260831T070038Z-b2f6f0c9}
-  \item Stage~1 embed: \texttt{s1-embed-pilot-core-20260831T064430Z-f05e6a68}
-  \item Stage~1 separation: \texttt{s1-separation-bge-m3-20260831T074042Z-9bf54fbf}
-  \item Stage~2 model axis: \texttt{s2-model-axis-20260901T015457Z-ab59afc8}
-  \item Stage~2 mechanism: \texttt{s2-mechanism-20260901T071519Z-dfbb173a}
-  \item Stage~2 rates: \texttt{s2-rates-20260901T125506Z-41d2e88e}
-  \item Stage~3 dynamics: \texttt{s3-dynamics-20260901T204521Z-f21d5908}
-  \item Stage~4: \texttt{s4-w4096-new-temps-20260904T103121Z-589c8eb1},
-        \texttt{s4-w8192-20260904T120057Z-ce82ce55}
-  \item Stage~5 generate: \texttt{s5-lock-occupancy-20260905T164327Z-6780902f}
-  \item Stage~5 replication generate: \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb}
-  \item Stage~6 gemini: \texttt{s6-embed-third-space-20260906T082301Z-588eff8f}
-  \item Occupancy-repl gemini: \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}
+  \item Occupancy lock table:
+        \texttt{s5-degeneracy-20260906T030145Z-deb4c3bd}
+        (generate \texttt{s5-lock-occupancy-20260905T164327Z-6780902f},
+        directories not recoverable).
+  \item Occupancy replication generate:
+        \texttt{s5-lock-occupancy-repl-20260907T091450Z-e8452acb};
+        embeddings
+        \texttt{s5-embed-lock-occupancy-repl-20260907T175131Z-4e48f831},
+        \texttt{s6-embed-third-space-20260907T181515Z-bcde0a11}.
+  \item Qwen3-8B NF4:
+        \texttt{s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc},
+        \texttt{s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6}.
+  \item OLMo-3-7B NF4:
+        \texttt{s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3},
+        \texttt{s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e},
+        \texttt{s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f},
+        \texttt{s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc}.
+  \item Ministral-3-8B and Gemma-4-12B:
+        \texttt{s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b},
+        \texttt{s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2},
+        \texttt{s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981},
+        \texttt{s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427}.
+  \item Published family-matrix gaps:
+        \texttt{s13-paperb-synthesis-20261107T085555Z-c0f6b853}.
+  \item Eight long trajectories: the \texttt{run\_id} list in
+        \texttt{artifacts/stage-12/tau\_escape/tau\_escape.meta.json}.
+  \item State-model validation:
+        \texttt{s3-dynamics-20260901T204521Z-f21d5908},
+        \texttt{s3-dynamics-20260901T204549Z-b7c4d0c9}.
+  \item Temperature grid:
+        \texttt{s4-w4096-new-temps-20260904T103121Z-589c8eb1},
+        \texttt{s4-w8192-20260904T120057Z-ce82ce55}.
 \end{itemize}
 
 \bibliographystyle{plainnat}

@@ -1,5 +1,13 @@
 # Figure shortlist (S7 notes; ADR-0019)
 
+The assembled `paper/main.tex` (ADR-0030) does not print this S7
+shortlist. Its occupancy seed-gap table is the replication
+(`artifacts/occupancy-replication/domain_separation_last_band.csv`);
+the archival S5/S6 figures below stay historical and are not swapped
+back in as the headline. The print figures in the assembled source are
+`artifacts/stage-13/gt_nf4/gt_nf4.png` and
+`artifacts/stage-13/tau_escape_s12/tau_escape_s12.png`.
+
 Include from `artifacts/`. Do not redraw. PCA/UMAP remain
 illustrations only. F6 is not a headline figure.
 
@@ -20,7 +28,7 @@ illustrations only. F6 is not a headline figure.
 | S5/S6 lock rate by seed | `*/occupancy/lock_rate_by_seed.*` | k/n; love 1/2 |
 | Twin last-band points | `*/occupancy/twin_last_band.*` | n=2; CIs not bootstrap (ADR-0019) |
 | Protocol by quarter | `*/occupancy/protocol_by_quarter.*` | fill/stop; forced continuation |
-| Occupancy-repl F4 vs archival | `artifacts/occupancy-replication/domain_separation_last_band_vs_archival.*` | sign agreement; not a restore; n_within=6; do not swap in as the headline figure |
+| Occupancy-repl F4 vs archival | `artifacts/occupancy-replication/domain_separation_last_band_vs_archival.*` | sign agreement; not a restore of the archival vectors; n_within=6. ADR-0030 makes the replication table the primary occupancy evidence; this comparison figure is still not a substitute for that table |
 | S1 separation | `artifacts/stage-1/separation-bge-m3/` | 94% lock panel |
 | S2 model-axis rates | `artifacts/stage-2/model-axis/rates/` | gemma 0/8; Clopper–Pearson |
 | S3 k_stability | `artifacts/stage-3/dynamics/` | `validated=0` |

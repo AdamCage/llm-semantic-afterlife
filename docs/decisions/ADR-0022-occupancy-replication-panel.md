@@ -101,3 +101,9 @@ Archival `artifacts/stage-6/occupancy/domain_separation_last_band.csv`
 is unchanged. The manuscript reports replication *beside* Table
 `tab:s6-f4`; sign agreement is the claim; do not replace
 `0.201 [0.065, 0.332]`.
+
+Manuscript priority of the two tables is amended by
+[ADR-0030](ADR-0030-replication-is-primary-occupancy-evidence.md):
+the replication is the primary occupancy evidence, and the archival
+interval stays as a labeled historical table. The replacement ban is
+unchanged.
