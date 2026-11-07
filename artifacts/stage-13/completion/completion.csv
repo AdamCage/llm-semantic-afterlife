@@ -1,0 +1,15 @@
+stage,family,checkpoint,quantization,n_planned,n_completed,n_failed,generate_run_id,source_artifact
+s9,Qwen3-8B,Instruct NF4,nf4,40,38,2,s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6,artifacts/stage-9/generate_status/generate_status.csv
+s9,Qwen3-8B,Base NF4,nf4,40,31,9,s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc,artifacts/stage-9/generate_status/generate_status.csv
+s9,Qwen3-8B,Instruct INT8,int8,10,9,1,s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498,artifacts/stage-9/generate_status/generate_status.csv
+s9,Qwen3-8B,Base INT8,int8,10,8,2,s9-paperb-qwen-base-int8-20260914T091655Z-11069a87,artifacts/stage-9/generate_status/generate_status.csv
+s10,OLMo-3-7B,Base NF4,nf4,40,27,13,s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3,artifacts/stage-10/generate_status/generate_status.csv
+s10,OLMo-3-7B,SFT NF4,nf4,40,19,21,s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e,artifacts/stage-10/generate_status/generate_status.csv
+s10,OLMo-3-7B,DPO NF4,nf4,40,3,37,s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f,artifacts/stage-10/generate_status/generate_status.csv
+s10,OLMo-3-7B,RLVR NF4,nf4,40,4,36,s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc,artifacts/stage-10/generate_status/generate_status.csv
+s10,OLMo-3-7B,Base INT8,int8,10,5,5,s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8,artifacts/stage-10/generate_status/generate_status.csv
+s10,OLMo-3-7B,RLVR INT8,int8,10,0,10,s10-paperb-olmo-rlvr-int8-20260918T142301Z-7125ccca,artifacts/stage-10/generate_status/generate_status.csv
+s11,Ministral-3-8B,Base,nf4,40,40,0,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,artifacts/stage-11/generate_status/generate_status.csv
+s11,Ministral-3-8B,Instruct,nf4,40,40,0,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,artifacts/stage-11/generate_status/generate_status.csv
+s11,Gemma-4-12B,Base,nf4,40,38,2,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,artifacts/stage-11/generate_status/generate_status.csv
+s11,Gemma-4-12B,IT,nf4,40,0,40,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,artifacts/stage-11/generate_status/generate_status.csv

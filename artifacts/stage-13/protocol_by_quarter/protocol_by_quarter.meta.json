@@ -1,0 +1,27 @@
+{
+  "name": "protocol_by_quarter",
+  "caption": "Published block fill and stop rate by quarter. Not a run-level mean.",
+  "alt_text": "Published block fill and stop rate by quarter. Not a run-level mean.",
+  "limitations": "P1 reprompt of a tail, raw_bytes, local NF4. Native sliding attention was not measured. Last-band G_t is seed-conditioned ensemble persistence in one embedding space. The two spaces are not on a common scale and are not pooled. Families are not pooled. A CI that includes 0 is not an established sign. An unidentified last-band is not a sign flip and is not drawn as zero. INT8 rows are concordance, not a third headline. Provider non-determinism was not re-measured on these horizons. L0 is finite: 12 turnovers, 49152 tokens. S12 is a separate censored count through 4999168 original tokens, not a pooled rate and not a permanence claim. Gemma Base BGE is an identified negative. The Gemma Base Qwen-embed sign is not established. Cross-space sign agreement for Gemma is not identified. Lock-table n is not the 12W completer count.",
+  "run_ids": [
+    "s13-paperb-synthesis-20261107T085555Z-c0f6b853",
+    "s9-paperb-qwen-base-int8-20260914T091655Z-11069a87",
+    "s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc",
+    "s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498",
+    "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6",
+    "s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8",
+    "s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3",
+    "s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f",
+    "s10-paperb-olmo-rlvr-int8-20260918T142301Z-7125ccca",
+    "s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc",
+    "s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e",
+    "s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981",
+    "s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427",
+    "s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b",
+    "s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2"
+  ],
+  "git_sha": "d152a175eb7bbc2db9b4d7007bf16bc85a2ab3c2",
+  "units": {
+    "last_band_G": "L2-normalised distance gap in that embedding space"
+  }
+}

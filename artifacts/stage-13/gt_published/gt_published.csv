@@ -1,0 +1,27 @@
+stage,family,checkpoint,quantization,space,last_band_G,G_lo,G_hi,ci_excludes_0,n_within_pairs,n_between_pairs,n_confirmed_escape,generate_run_id,source_artifact
+s9,Qwen3-8B,Base INT8,int8,BGE-M3,0.131202,-0.0790679,0.131202,False,3,25,0,s9-paperb-qwen-base-int8-20260914T091655Z-11069a87,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Base NF4,nf4,BGE-M3,0.147591,0.0691844,0.158049,True,40,425,0,s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Instruct INT8,int8,BGE-M3,0.164976,-0.0642823,0.164976,False,4,32,0,s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Instruct NF4,nf4,BGE-M3,0.151367,0.0871001,0.159001,True,54,649,0,s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Base INT8,int8,Qwen3-Embedding-8B,0.254681,-0.0924319,0.316634,False,3,25,0,s9-paperb-qwen-base-int8-20260914T091655Z-11069a87,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Base NF4,nf4,Qwen3-Embedding-8B,0.233299,0.117225,0.244196,True,40,425,0,s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Instruct INT8,int8,Qwen3-Embedding-8B,0.327228,0.00491363,0.33886,True,4,32,0,s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s9,Qwen3-8B,Instruct NF4,nf4,Qwen3-Embedding-8B,0.304616,0.191654,0.315201,True,54,649,0,s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6,artifacts/stage-9/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,Base INT8,int8,BGE-M3,0.098232,-0.227147,0.219776,False,2,8,0,s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,Base NF4,nf4,BGE-M3,0.0943909,0.0287692,0.107647,True,31,320,0,s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,DPO NF4,nf4,BGE-M3,,-0.0742006,-0.0742006,False,3,0,0,s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,RLVR NF4,nf4,BGE-M3,0.201503,-0.134183,0.201503,False,3,3,0,s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,SFT NF4,nf4,BGE-M3,0.10178,-0.0069993,0.121757,False,20,151,0,s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,Base INT8,int8,Qwen3-Embedding-8B,0.144475,-0.294281,0.327727,False,2,8,0,s10-paperb-olmo-base-int8-20260918T050048Z-2b2cdfd8,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,Base NF4,nf4,Qwen3-Embedding-8B,0.189111,0.0861319,0.221421,True,31,320,0,s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,DPO NF4,nf4,Qwen3-Embedding-8B,,-0.130936,-0.130936,False,3,0,0,s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,RLVR NF4,nf4,Qwen3-Embedding-8B,0.334629,-0.147232,0.334629,False,3,3,0,s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s10,OLMo-3-7B,SFT NF4,nf4,Qwen3-Embedding-8B,0.1757,0.0342047,0.205525,True,20,151,0,s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e,artifacts/stage-10/gt_last_band/gt_last_band.csv
+s11,Gemma-4-12B,Base,nf4,BGE-M3,-0.010628,-0.0377395,-0.00608505,True,54,649,15,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Gemma-4-12B,IT,nf4,BGE-M3,,,,False,0,0,4,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Ministral-3-8B,Base,nf4,BGE-M3,0.138297,0.0633819,0.158376,True,60,720,0,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Ministral-3-8B,Instruct,nf4,BGE-M3,0.150187,0.0840649,0.158143,True,60,720,4,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Gemma-4-12B,Base,nf4,Qwen3-Embedding-8B,0.0141659,-0.0208935,0.0186512,False,54,649,15,s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Gemma-4-12B,IT,nf4,Qwen3-Embedding-8B,,,,False,0,0,4,s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Ministral-3-8B,Base,nf4,Qwen3-Embedding-8B,0.239919,0.126587,0.271944,True,60,720,0,s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b,artifacts/stage-11/gt_last_band/gt_last_band.csv
+s11,Ministral-3-8B,Instruct,nf4,Qwen3-Embedding-8B,0.224079,0.139027,0.228082,True,60,720,4,s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2,artifacts/stage-11/gt_last_band/gt_last_band.csv

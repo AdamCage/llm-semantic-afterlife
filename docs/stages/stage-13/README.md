@@ -6,8 +6,8 @@ by side, without a pooled rate, and where does the closed S12 count sit.
 Matrix: zero new trajectories. Sources are the published artifact files
 named in `PLAN.md`.
 
-- [ ] Plan committed before assembly
-- [ ] `scripts/s13_assemble.py` writes `artifacts/stage-13/` from those files
-- [ ] `afterlife review --stage s13` exits 0
-- [ ] Paper B section added to `paper/main.tex` only after that gate
-- [ ] No GPU generate, no hosted generate, no retune
+- [x] Plan committed before assembly
+- [x] `scripts/s13_assemble.py` writes `artifacts/stage-13/` from those files
+- [x] `afterlife review --stage s13` exits 0
+- [x] Paper B section added to `paper/main.tex` only after that gate
+- [x] No GPU generate, no hosted generate, no retune

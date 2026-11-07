@@ -1,0 +1,31 @@
+{
+  "name": "tau_escape_s12",
+  "caption": "S12 censoring time. Eight cells at absolute turnover 1220.5 from L0 token 0. The lock event is at 0.75. The L0 series ends at 12.0. tau_escape is blank and censored is true on every row. 0 of 8 have a confirmed escape through 4999168 original tokens. The two families are coloured and counted, not pooled.",
+  "alt_text": "S12 censoring time. Eight cells at absolute turnover 1220.5 from L0 token 0. The lock event is at 0.75. The L0 series ends at 12.0. tau_escape is blank and censored is true on every row. 0 of 8 have a confirmed escape through 4999168 original tokens. The two families are coloured and counted, not pooled.",
+  "limitations": "P1 reprompt of a tail, raw_bytes, local NF4. Native sliding attention was not measured. Last-band G_t is seed-conditioned ensemble persistence in one embedding space. The two spaces are not on a common scale and are not pooled. Families are not pooled. A CI that includes 0 is not an established sign. An unidentified last-band is not a sign flip and is not drawn as zero. INT8 rows are concordance, not a third headline. Provider non-determinism was not re-measured on these horizons. L0 is finite: 12 turnovers, 49152 tokens. S12 is a separate censored count through 4999168 original tokens, not a pooled rate and not a permanence claim. Gemma Base BGE is an identified negative. The Gemma Base Qwen-embed sign is not established. Cross-space sign agreement for Gemma is not identified. Lock-table n is not the 12W completer count.",
+  "run_ids": [
+    "s13-paperb-synthesis-20261107T085555Z-c0f6b853",
+    "s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59",
+    "s12-paperb-l2-mb-physics-s2-20260926T113312Z-7922c7f0",
+    "s12-paperb-l2-mb-love-s1-20260926T120115Z-87d89c22",
+    "s12-paperb-l2-mb-love-s2-20260926T122833Z-ce475f0c",
+    "s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5",
+    "s12-paperb-l2-qi-physics-s2-20260926T132741Z-75a4c96c",
+    "s12-paperb-l2-qi-love-s1-20260926T135816Z-c9de2297",
+    "s12-paperb-l2-qi-love-s2-20260926T140850Z-dd90cb82",
+    "s12-degeneracy-20261106T093507Z-3ee9909a",
+    "s12-degeneracy-20261106T093622Z-6f2e55e3",
+    "s12-degeneracy-20261106T093735Z-a52a8128",
+    "s12-degeneracy-20261106T093852Z-6366ad60",
+    "s12-degeneracy-20261106T094001Z-a33ca8ae",
+    "s12-degeneracy-20261106T094120Z-ec6c6745",
+    "s12-degeneracy-20261106T094242Z-24e30157",
+    "s12-degeneracy-20261106T094351Z-2794a0bf"
+  ],
+  "git_sha": "d152a175eb7bbc2db9b4d7007bf16bc85a2ab3c2",
+  "config_sha256": null,
+  "units": {
+    "absolute_turnovers": "turnovers of W=4096 from L0 token 0"
+  },
+  "generated_at": "2026-11-07T08:56:58+00:00"
+}

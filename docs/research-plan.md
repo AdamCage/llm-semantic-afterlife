@@ -20,7 +20,9 @@ stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
 (2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). **S12 horizon
 ladder is closed** (2026-11-07): 0/8 confirmed escape through
 4,999,168 original tokens, a separate censored count, not a pooled
-rate. Frozen order ends at **S13**, opened 2026-11-07.
+rate. **S13 synthesis is closed** (2026-11-07): S9–S11 stay
+family-wise; the Gemma positive gap did not replicate; S12 remains
+a separate censored count. There is no S14.
 S9–S11 is the complete Paper B story. Local generate is $0 ledger; project ceiling
 **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
 still binds any hosted Gemini subset. Last revised 2026-11-07.
@@ -458,14 +460,18 @@ pooled rate. Not a permanence claim. L1 and L2-persistence-to-lock
 were not run. Report:
 [`docs/stages/stage-12/REPORT.md`](stages/stage-12/REPORT.md).
 
-### S13 — Cross-family synthesis `opened 2026-11-07`
+### S13 — Cross-family synthesis `closed 2026-11-07`
 
-Opened after the S12 merge. Figures and `paper/notes/` from the
-closed S9–S11 artifacts are the Paper B story. S12 stays the
-separate censored count above. No new generation.
-`paper/main.tex` may gain a Paper B section only after
-`afterlife review --stage s13` exits 0, without rewriting Paper A.
-There is no S14.
+Closed after `afterlife review --stage s13` exited 0. Assembly run
+`s13-paperb-synthesis-20261107T085555Z-c0f6b853` copies the published
+S9–S11 last-band tables and the S12 censoring table. No new
+generation. Families are not pooled. Gemma Base BGE is an identified
+negative; the Qwen-embed sign is not established. S12 remains 0/8
+through 4,999,168 original tokens, not a permanence claim.
+Paper B is a new section of `paper/main.tex`; Paper A text is not
+rewritten. There is no S14. Report:
+[`docs/stages/stage-13/REPORT.md`](stages/stage-13/REPORT.md).
+Decision: [ADR-0030](decisions/ADR-0030-s13-paper-b-section.md).
 
 ## 5. Models — as measured in S0, not as hoped
 

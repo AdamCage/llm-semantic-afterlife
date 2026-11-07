@@ -499,6 +499,110 @@ gaps on a locked panel are compatible with more than one long-run occupancy
 region in embedding space. That compatibility is not a proof that the
 token-level chain has several stationary measures.
 
+\section{Paper B}
+\label{sec:paperb}
+
+Paper~A, above, stays the closed S0--S7 record. This section does not
+revise it. Paper~B is the local four-family programme at the same blockwise
+re-prompt kernel, $W{=}4096$, $B{=}1024$, temperature $0.3$, read family by
+family from the published last-band tables. % artifacts/stage-13/gt_published/gt_published.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+S9--S11 are that story. S12 is a separate censored count. There is no pooled
+family rate.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{stage-13/gt_nf4/gt_nf4.png}
+\caption{Published NF4 last-band $G_t$ in the original embedding space.
+Rows are BGE-M3 and Qwen3-Embedding-8B and are not on one scale.
+Columns are families and are not averaged.
+Filled markers: the published interval excludes 0.
+Open markers: the interval includes 0, so the sign is not established.
+OLMo DPO and Gemma IT have no last-band point and are omitted, not drawn at 0.
+Assembly \texttt{s13-paperb-synthesis-20261107T085555Z-c0f6b853}.}
+\label{fig:paperb-gt}
+\end{figure}
+
+\paragraph{Qwen3-8B.}
+On NF4 completers the last-band interval excludes 0 in both spaces.
+Base BGE-M3 is $0.147591$ $[0.0691844, 0.158049]$; % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Instruct BGE-M3 is $0.151367$ $[0.0871001, 0.159001]$. % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+Base Qwen3-Embedding-8B is $0.233299$ $[0.117225, 0.244196]$; % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+Instruct Qwen3-Embedding-8B is $0.304616$ $[0.191654, 0.315201]$. % artifacts/stage-9/gt_last_band/gt_last_band.csv @ s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6
+Lock-table confirmed escape is 0 on those four NF4 rows. % artifacts/stage-13/gt_published/gt_published.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+Completion is 38/40 Instruct and 31/40 Base. The 11 empty-completion
+failures stay in the sample. They are missing last-band pairs, not unlocks. % artifacts/stage-9/generate_status/generate_status.csv @ s9-paperb-qwen-base-nf4-20260912T014645Z-f55767bc
+
+\paragraph{OLMo 3 7B.}
+Base NF4 intervals exclude 0 in both spaces:
+BGE-M3 $0.0943909$ $[0.0287692, 0.107647]$, % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+Qwen3-Embedding-8B $0.189111$ $[0.0861319, 0.221421]$. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-base-nf4-20260916T204957Z-6d7b4be3
+SFT NF4 is $0.10178$ $[-0.0069993, 0.121757]$ in BGE-M3, whose interval
+includes 0, and $0.1757$ $[0.0342047, 0.205525]$ in Qwen3-Embedding-8B,
+whose interval excludes 0. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-sft-nf4-20260917T142201Z-2b7b5b6e
+The SFT BGE gap is therefore not established.
+DPO NF4 has no last-band point in either space (3 within pairs, 0 between).
+That unidentified band is not a sign flip. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-dpo-nf4-20260918T000412Z-64ad9f9f
+RLVR NF4 is $0.201503$ $[-0.134183, 0.201503]$ and
+$0.334629$ $[-0.147232, 0.334629]$. Both intervals include 0, so
+$G_t>0$ is not established on RLVR. % artifacts/stage-10/gt_last_band/gt_last_band.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
+Empty completions on the NF4 ladder are 13/40, 21/40, 37/40, and 36/40
+from Base through SFT, DPO, and RLVR. The collapse floors at DPO $\approx$ RLVR.
+Completers that enter the lock table are locked. This is not pooled with Qwen. % artifacts/stage-10/generate_status/generate_status.csv @ s10-paperb-olmo-rlvr-nf4-20260918T022536Z-30b5b3fc
+
+\paragraph{Ministral 3 8B.}
+Both checkpoints complete 40/40. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Last-band intervals exclude 0 in both spaces.
+Base BGE-M3 is $0.138297$ $[0.0633819, 0.158376]$ with 0 confirmed escapes; % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Instruct BGE-M3 is $0.150187$ $[0.0840649, 0.158143]$ with 4 confirmed escapes. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
+Base Qwen3-Embedding-8B is $0.239919$ $[0.126587, 0.271944]$; % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-base-nf4-20260919T130616Z-5896956b
+Instruct Qwen3-Embedding-8B is $0.224079$ $[0.139027, 0.228082]$. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-ministral-instruct-nf4-20260920T065557Z-a3093ea2
+The positive gap replicates here. Confirmed escape on Instruct is not zero.
+These counts are not pooled with Qwen or OLMo.
+
+\paragraph{Gemma 4 12B.}
+The positive gap did not replicate.
+Base BGE-M3 is $-0.010628$ $[-0.0377395, -0.00608505]$. The interval excludes 0
+on the negative side: an identified negative. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+Base Qwen3-Embedding-8B is $0.0141659$ $[-0.0208935, 0.0186512]$. The interval
+includes 0, so that sign is not established. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+Cross-space sign agreement is not identified.
+Lock-table confirmed escape on Base is 15 of 38; completion is 38/40. % artifacts/stage-11/gt_last_band/gt_last_band.csv @ s11-paperb-gemma4-base-nf4-20260921T003925Z-6cae9981
+IT completed 0/40. Its last band is unidentified in both spaces, which is not
+a sign flip and not an out-of-memory stop. % artifacts/stage-11/generate_status/generate_status.csv @ s11-paperb-gemma4-it-nf4-20260922T160427Z-3b5b9427
+
+\paragraph{S12, separate.}
+Eight continuations, Ministral 3 8B Base NF4 and Qwen3 8B Instruct NF4,
+seeds \texttt{physics} and \texttt{love}, descendants \texttt{s1} and \texttt{s2},
+have no confirmed escape through $4{,}999{,}168$ original tokens. % artifacts/stage-12/tau_escape/tau_escape.data.parquet @ s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59
+The clock is absolute turnovers from L0 token 0.
+The lock event is at 0.75. The L0 series ends at 12.0.
+Censoring time is 1220.5, which is 1219.75 turnovers after the lock.
+$\tau_{\mathrm{escape}}$ is blank and the censor flag is true on every row.
+The two families are counted, not pooled. This is not a permanence claim
+and not a rate to be combined with the 12-turnover escapes above. % artifacts/stage-13/tau_escape_s12/tau_escape_s12.data.parquet @ s13-paperb-synthesis-20261107T085555Z-c0f6b853
+
+\begin{figure}
+\centering
+\includegraphics[width=0.86\textwidth]{stage-13/tau_escape_s12/tau_escape_s12.png}
+\caption{S12 censoring time on the absolute L0 axis.
+Eight cells sit at turnover 1220.5. Dashed lines mark the lock event at 0.75
+and the end of the L0 series at 12.0.
+No confirmed escape was observed through that common stop.}
+\label{fig:paperb-s12}
+\end{figure}
+
+\paragraph{Limitations.}
+The continuation is a re-prompt of the last $W$ tokens, not native sliding
+attention. A positive or negative $G_t$ is a gap in one embedding space.
+BGE-M3 was local. Qwen3-Embedding-8B for S9--S11 was the hosted endpoint
+at realised cost $\$0$, so the two spaces are also two pipelines. % docs/decisions/ADR-0029-s11-hosted-qwen-embed.md @ ADR-0029
+Provider non-determinism was not re-measured on these horizons.
+L0 stops at 12 turnovers ($49{,}152$ tokens). S12 stops at the common
+finite horizon above. INT8 rows in the same parquet are concordance, not a
+third headline. A repetition lock is a surface 3-gram flag, not a semantic
+state. The necessary-condition sentence about attention on every layer is
+not licensed by the Gemma result.
+
 \section{Reproducibility}
 \label{sec:repro}
 
