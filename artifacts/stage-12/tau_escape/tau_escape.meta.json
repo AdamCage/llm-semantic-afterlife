@@ -1,0 +1,28 @@
+{
+  "name": "tau_escape",
+  "caption": "Confirmatory S12 estimand. The clock is absolute turnovers from L0 token 0. The lock event is at 0.75. The L0 series ends at 12.0. The continuation series is joined at 12.25 through 1220.5. Censoring time is 1220.5 absolute, which is 1219.75 turnovers after the lock (4,996,096 tokens). T_min = 4,999,168 original tokens. All eight cells reached the same target (4834 steps, 4,950,016 additional tokens, absolute 4,999,168). T_min equals each cell's length. censored=True is right-censoring at that common stop. A false confirmed_escape_through_tmin means no confirmed escape through T_min.",
+  "limitations": "Not a last-band G_t. Continuation flags are concatenated after the L0 F1 looping series from the published degeneracy runs. All eight cells reached the same target (4834 steps, 4,950,016 additional tokens, absolute 4,999,168). T_min equals each cell's length. censored=True is right-censoring at that common stop. P1 reprompt, raw_bytes, local NF4. Native sliding attention was not measured. The label is the F1 chunk looping flag. Embedding geometry was not run. Eight cells only: Ministral 3 8B Base NF4 and Qwen3 8B Instruct NF4, temperature 0.3, W=4096. Families are counted, not pooled. physics and love are the F3 tie-break after every qualifying seed tied at tau_lock=0.75, not a domain sample. s1 and s2 are two L0 descendants, one new stochastic draw each. Every continuation chunk is looping (4834/4834, max non-looping run 0). Minimum 3-gram repetition is 0.9378 on qi-physics-s1 and at least 0.9528 on the other seven. The frozen 3-gram cut is unchanged. Printed quotes are Ministral physics only (mb-physics-s1 and mb-physics-s2). The counter is the unchanged L0 chunk-row rule (three chunk rows, not three integer windows of W). The non-looping run length is 0 on every joined series, so a blank tau_escape is not a hidden shorter break. N_confirm=3 is unchanged.",
+  "run_ids": [
+    "s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59",
+    "s12-paperb-l2-mb-physics-s2-20260926T113312Z-7922c7f0",
+    "s12-paperb-l2-mb-love-s1-20260926T120115Z-87d89c22",
+    "s12-paperb-l2-mb-love-s2-20260926T122833Z-ce475f0c",
+    "s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5",
+    "s12-paperb-l2-qi-physics-s2-20260926T132741Z-75a4c96c",
+    "s12-paperb-l2-qi-love-s1-20260926T135816Z-c9de2297",
+    "s12-paperb-l2-qi-love-s2-20260926T140850Z-dd90cb82",
+    "s12-degeneracy-20261106T093507Z-3ee9909a",
+    "s12-degeneracy-20261106T093622Z-6f2e55e3",
+    "s12-degeneracy-20261106T093735Z-a52a8128",
+    "s12-degeneracy-20261106T093852Z-6366ad60",
+    "s12-degeneracy-20261106T094001Z-a33ca8ae",
+    "s12-degeneracy-20261106T094120Z-ec6c6745",
+    "s12-degeneracy-20261106T094242Z-24e30157",
+    "s12-degeneracy-20261106T094351Z-2794a0bf"
+  ],
+  "git_sha": "cc73c088646f6ecd0d4d0cbc7236451542c5c2e5",
+  "units": {
+    "tau_escape": "turnovers W=4096",
+    "t_min_tokens": "generator tokens"
+  }
+}

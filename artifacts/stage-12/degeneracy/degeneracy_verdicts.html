@@ -1,0 +1,77 @@
+<style type="text/css">
+#T_9ddff caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  padding: 0.4em 0;
+  font-size: 1.05em;
+}
+#T_9ddff th {
+  background-color: #F2F4F7;
+  text-align: left;
+  padding: 0.35em 0.6em;
+  border-bottom: 2px solid #4D4D4D;
+}
+#T_9ddff td {
+  padding: 0.3em 0.6em;
+}
+#T_9ddff tr:nth-child(even) {
+  background-color: #FAFBFC;
+}
+#T_9ddff table {
+  border-collapse: collapse;
+  font-family: DejaVu Sans, Segoe UI, Helvetica, sans-serif;
+  font-size: 0.92em;
+}
+#T_9ddff_row0_col2, #T_9ddff_row0_col3, #T_9ddff_row0_col4, #T_9ddff_row0_col5, #T_9ddff_row0_col6, #T_9ddff_row0_col7, #T_9ddff_row0_col8, #T_9ddff_row0_col9, #T_9ddff_row0_col10, #T_9ddff_row0_col11, #T_9ddff_row0_col12, #T_9ddff_row0_col13, #T_9ddff_row0_col14, #T_9ddff_row0_col15, #T_9ddff_row0_col16, #T_9ddff_row0_col17 {
+  background-color: #f7fbff;
+  color: #000000;
+}
+</style>
+<table id="T_9ddff">
+  <caption>Per-trajectory degeneracy diagnostics. A chunk counts as looping when its 3-gram repetition rate exceeds 0.083, the 99th percentile of natural English prose chunked by the same tokenizer at the same size. A trajectory counts as degenerate when at least 50% of its post-horizon chunks are looping.</caption>
+  <thead>
+    <tr>
+      <th id="T_9ddff_level0_col0" class="col_heading level0 col0" >trajectory_id</th>
+      <th id="T_9ddff_level0_col1" class="col_heading level0 col1" >degenerate</th>
+      <th id="T_9ddff_level0_col2" class="col_heading level0 col2" >n_chunks</th>
+      <th id="T_9ddff_level0_col3" class="col_heading level0 col3" >n_chunks_post_horizon</th>
+      <th id="T_9ddff_level0_col4" class="col_heading level0 col4" >looping_fraction</th>
+      <th id="T_9ddff_level0_col5" class="col_heading level0 col5" >unproductive_fraction</th>
+      <th id="T_9ddff_level0_col6" class="col_heading level0 col6" >mean_novel_shingle_fraction</th>
+      <th id="T_9ddff_level0_col7" class="col_heading level0 col7" >min_novel_shingle_fraction</th>
+      <th id="T_9ddff_level0_col8" class="col_heading level0 col8" >late_pairwise_similarity_median</th>
+      <th id="T_9ddff_level0_col9" class="col_heading level0 col9" >late_pairwise_similarity_max</th>
+      <th id="T_9ddff_level0_col10" class="col_heading level0 col10" >mean_ngram_repetition</th>
+      <th id="T_9ddff_level0_col11" class="col_heading level0 col11" >max_ngram_repetition</th>
+      <th id="T_9ddff_level0_col12" class="col_heading level0 col12" >mean_type_token_ratio</th>
+      <th id="T_9ddff_level0_col13" class="col_heading level0 col13" >mean_entropy_bits</th>
+      <th id="T_9ddff_level0_col14" class="col_heading level0 col14" >mean_compression_ratio</th>
+      <th id="T_9ddff_level0_col15" class="col_heading level0 col15" >entropy_trend_per_turnover</th>
+      <th id="T_9ddff_level0_col16" class="col_heading level0 col16" >at_fixed_point</th>
+      <th id="T_9ddff_level0_col17" class="col_heading level0 col17" >degeneracy_mode</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_9ddff_row0_col0" class="data row0 col0" >pb-qwen3-8b-instruct__W4096__T0p3__qi-love-s2__s1</td>
+      <td id="T_9ddff_row0_col1" class="data row0 col1" >True</td>
+      <td id="T_9ddff_row0_col2" class="data row0 col2" >4834.0000</td>
+      <td id="T_9ddff_row0_col3" class="data row0 col3" >4830.0000</td>
+      <td id="T_9ddff_row0_col4" class="data row0 col4" >1.0000</td>
+      <td id="T_9ddff_row0_col5" class="data row0 col5" >1.0000</td>
+      <td id="T_9ddff_row0_col6" class="data row0 col6" >0.0000</td>
+      <td id="T_9ddff_row0_col7" class="data row0 col7" >0.0000</td>
+      <td id="T_9ddff_row0_col8" class="data row0 col8" >1.0000</td>
+      <td id="T_9ddff_row0_col9" class="data row0 col9" >1.0000</td>
+      <td id="T_9ddff_row0_col10" class="data row0 col10" >0.9902</td>
+      <td id="T_9ddff_row0_col11" class="data row0 col11" >0.9902</td>
+      <td id="T_9ddff_row0_col12" class="data row0 col12" >0.0098</td>
+      <td id="T_9ddff_row0_col13" class="data row0 col13" >2.5849</td>
+      <td id="T_9ddff_row0_col14" class="data row0 col14" >0.0207</td>
+      <td id="T_9ddff_row0_col15" class="data row0 col15" >0.0000</td>
+      <td id="T_9ddff_row0_col16" class="data row0 col16" >1.0000</td>
+      <td id="T_9ddff_row0_col17" class="data row0 col17" >3.0000</td>
+    </tr>
+  </tbody>
+</table>

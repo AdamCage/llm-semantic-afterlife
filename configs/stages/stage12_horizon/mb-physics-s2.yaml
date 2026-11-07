@@ -1,0 +1,10 @@
+# Ministral Base continuation of physics s2. One trajectory. Do not add a second slug.
+include:
+  - configs/stages/stage12_horizon/_base.yaml
+name: paperb-l2-mb-physics-s2
+description: >-
+  S12 L2-escape. Ministral Base continuation of physics s2. Tail prompt, additional 4950016 tokens.
+generators:
+  - pb-ministral-8b-base
+semantic_seeds:
+  - mb-physics-s2
