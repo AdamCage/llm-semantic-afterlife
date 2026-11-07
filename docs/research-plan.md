@@ -18,12 +18,12 @@ Alibaba, `B=1024`. H1 unsupported; H5 absent.
 **Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
 (2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). **S12 horizon
-ladder is open** (2026-09-26). Frozen order:
-**S12 horizon → S13**.
-S9–S11 is a complete story; S12 is strengthening or *no confirmed
-escape through T*. Local generate is $0 ledger; project ceiling
+ladder is closed** (2026-11-07): 0/8 confirmed escape through
+4,999,168 original tokens, a separate censored count, not a pooled
+rate. Frozen order ends at **S13**, opened 2026-11-07.
+S9–S11 is the complete Paper B story. Local generate is $0 ledger; project ceiling
 **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
-still binds any hosted Gemini subset. Last revised 2026-09-19.
+still binds any hosted Gemini subset. Last revised 2026-11-07.
 
 ---
 
@@ -447,21 +447,25 @@ sign is not established, IT is 0/40 completers. Confirmed escape
 is not zero. Phrase blocker applied. Human authorised the
 next stage. Do not pool with Qwen or OLMo.
 
-### S12 — Horizon ladder `opened 2026-09-26`
+### S12 — Horizon ladder `closed 2026-11-07`
 
-Opened after S11 closed. Plan:
-[`docs/stages/stage-12/PLAN.md`](stages/stage-12/PLAN.md).
-L2-escape only: eight continuations of still-locked L0 trajectories
-(Ministral Base and Qwen Instruct; F3 seeds `physics` and `love`,
-descendants `s1` and `s2`). Confirmatory estimand
-\(\tau_{\mathrm{escape}}\). L1 and L2-persistence-to-lock are not
-this opening. Language: *no confirmed escape through \(T_{\min}\)*.
+Closed on `main` at `162b7782`. Eight continuations, Ministral 3 8B
+Base NF4 and Qwen3 8B Instruct NF4, seeds `physics` and `love`,
+descendants `s1` and `s2`. 0/8 confirmed escape through 4,999,168
+original tokens (1220.5 turnovers from L0 token 0; lock at 0.75;
+1219.75 turnovers after the lock). Separate from S9–S11. Not a
+pooled rate. Not a permanence claim. L1 and L2-persistence-to-lock
+were not run. Report:
+[`docs/stages/stage-12/REPORT.md`](stages/stage-12/REPORT.md).
 
-### S13 — Cross-family synthesis `planned`
+### S13 — Cross-family synthesis `opened 2026-11-07`
 
-Figures and `paper/notes/` from S9–S11 as the complete Paper B story;
-S12 as strengthening or a separate no-escape-through-T result.
-`paper/main.tex` only with human yes.
+Opened after the S12 merge. Figures and `paper/notes/` from the
+closed S9–S11 artifacts are the Paper B story. S12 stays the
+separate censored count above. No new generation.
+`paper/main.tex` may gain a Paper B section only after
+`afterlife review --stage s13` exits 0, without rewriting Paper A.
+There is no S14.
 
 ## 5. Models — as measured in S0, not as hoped
 

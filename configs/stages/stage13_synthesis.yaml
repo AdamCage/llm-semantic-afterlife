@@ -1,0 +1,25 @@
+# S13 assembly. Zero trajectories. This file must not be passed to generate.
+# The window below names the published L0 regime. It is not a request to run it.
+
+stage: s13
+name: paperb-synthesis
+description: >-
+  Cross-family synthesis of published S9-S11 artifacts, plus the separate
+  S12 censored count. No new generation, no hosted call, no GPU.
+
+generators: []
+embeddings: []
+windows:
+  - W: 4096
+    block_size: 1024
+    target_tokens: 49152
+    chunk_size: 1024
+    protocol: P1_reprompt
+sampling:
+  - temperature: 0.3
+    top_p: 1.0
+semantic_seeds: []
+stochastic_seeds: []
+seed_bank: configs/seeds/seed_bank_v1.yaml
+max_concurrent: 1
+budget_usd: 0.0
