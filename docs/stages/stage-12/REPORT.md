@@ -17,7 +17,7 @@
 
 ## 2. Results
 
-Common horizon T_min = 4999168 original tokens (1220.5000 turnovers of W=4096), the shortest cell in the cohort. Clock origin is the L0 lock at 0.75 turnover, not the first continuation token. 0 of 8 cells have a confirmed escape through T_min. 8 of 8 have no confirmed escape through T_min.
+The clock is absolute turnovers from L0 token 0. The lock event is at 0.75. The L0 series ends at 12.0. The continuation series is joined at 12.25 through 1220.5. Censoring time is 1220.5 absolute, which is 1219.75 turnovers after the lock (4,996,096 tokens). T_min = 4,999,168 original tokens. All eight cells reached the same target (4834 steps, 4,950,016 additional tokens, absolute 4,999,168). T_min equals each cell's length. censored=True is right-censoring at that common stop. 0 of 8 cells have a confirmed escape through T_min. 8 of 8 have no confirmed escape through T_min. P1 reprompt, raw_bytes, local NF4. Native sliding attention was not measured. The label is the F1 chunk looping flag. Embedding geometry was not run. Eight cells only: Ministral 3 8B Base NF4 and Qwen3 8B Instruct NF4, temperature 0.3, W=4096. Families are counted, not pooled. physics and love are the F3 tie-break after every qualifying seed tied at tau_lock=0.75, not a domain sample. s1 and s2 are two L0 descendants, one new stochastic draw each. Every continuation chunk is looping (4834/4834, max non-looping run 0). Minimum 3-gram repetition is 0.9378 on qi-physics-s1 and at least 0.9528 on the other seven. The frozen 3-gram cut is unchanged. Printed quotes are Ministral physics only (mb-physics-s1 and mb-physics-s2). The counter is the unchanged L0 chunk-row rule (three chunk rows, not three integer windows of W). The non-looping run length is 0 on every joined series, so a blank tau_escape is not a hidden shorter break. N_confirm=3 is unchanged.
 
 | cell | run_id | status | additional tokens | tau_escape | censored | escape through T_min |
 | --- | --- | --- | ---: | ---: | --- | --- |
@@ -41,11 +41,12 @@ Common horizon T_min = 4999168 original tokens (1220.5000 turnovers of W=4096), 
 
 ## 4. Surprises
 
-The measured escape count is the surprise column. A majority result that misses P1 is a finding, and so is a clean no-escape result.
+The continuations are flat loops, not near-misses at N_confirm.
+E3's final step spread is 0 because every cell reached the target; earlier, mb-physics-s1 ran 1237 steps ahead before the rotator fix. That history does not change 0/8.
 
 ## 5. Threats to validity
 
-The continuation is a reprompt of a tail, not native sliding attention. F1 is a surface-form looping flag, so a lexically varied but semantically static stretch counts as an escape. Degeneracy of the continuation is a separate run from the L0 degeneracy runs, joined only by the turnover clock. T_min censors anything after the shortest cell. Provider non-determinism was not re-measured on this horizon. Families are not pooled.
+The continuation is a reprompt of a tail, not native sliding attention. F1 is a surface-form looping flag, so a lexically varied but semantically static stretch counts as an escape. Degeneracy of the continuation is a separate run from the L0 degeneracy runs, joined only by the turnover clock. All eight cells reached the same target, so T_min equals each cell's length and censored=True is right-censoring at that common stop. Provider non-determinism was not re-measured on this horizon. Families are not pooled.
 
 ## 6. Cost
 
@@ -132,6 +133,8 @@ Block fill and stop rate by quarter of completed steps, not as a run-level mean.
 | 4 | 1209 | 1.0 | 0.0 |
 
 ## Samples of generated text
+
+Printed quotes are Ministral physics only (mb-physics-s1 and mb-physics-s2).
 
 > mb-physics-s1 early: loop is zero, and the configurations are generated with a Metropolis algorithm that samples the gauge field configurations with a probability proportional to the square of the Polyakov loop. The Polyakov loop is zero, and the configurations are generated with a Metropolis algorithm that samples the gauge field configurations with a probability proportional to the square of the Polyakov loop. The P
 

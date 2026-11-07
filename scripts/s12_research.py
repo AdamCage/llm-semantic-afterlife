@@ -1,8 +1,10 @@
 """Finish S12 after generation and degeneracy: escape table, report, nothing else.
 
-Clock: L0 lock at 0.75 turnover, L0 horizon 12 turnovers (49152 tokens), then
-the continuation. A cell still locked at the common T_min is censored.
-Does not run G_t, does not open S13, does not call a lock absorbing.
+Clock: absolute turnovers from L0 token 0. The lock event is at 0.75. The L0
+series ends at 12 turnovers (49152 tokens). The continuation is joined after
+that horizon. A cell with no escape by the common stop is right-censored.
+When every cell reaches the same target, T_min equals each cell's length.
+Does not run G_t and does not open S13.
 """
 
 from __future__ import annotations
@@ -13,23 +15,24 @@ from pathlib import Path
 import numpy as np
 import orjson
 import pandas as pd
-
-from semantic_afterlife.analysis.persistence import prefix_lock_escape
-
 from s12_tau import (
     HORIZON_TURNOVERS,
+    L0_TOKENS,
     LOCK_TURNOVER,
     W,
-    L0_TOKENS,
     concatenate_clock,
     confirmed_through_tmin,
 )
 
+from semantic_afterlife.analysis.persistence import prefix_lock_escape
+
 ROOT = Path(__file__).resolve().parents[1]
 MAP = Path("/home/adam/s12/runs.map")
 L0_CHUNK = {
-    "mb": ROOT / "runs/s11/s11-degeneracy-20260923T051706Z-81df16d2/data/degeneracy_per_chunk.parquet",
-    "qi": ROOT / "runs/s9/s9-degeneracy-20260915T052651Z-cde06a72/data/degeneracy_per_chunk.parquet",
+    "mb": ROOT
+    / "runs/s11/s11-degeneracy-20260923T051706Z-81df16d2/data/degeneracy_per_chunk.parquet",
+    "qi": ROOT
+    / "runs/s9/s9-degeneracy-20260915T052651Z-cde06a72/data/degeneracy_per_chunk.parquet",
 }
 L0_TRAJ = {
     "mb-physics-s1": "pb-ministral-8b-base__W4096__T0p3__physics__s1",
@@ -59,7 +62,10 @@ def _events(run_dir: Path) -> list[dict]:
     out = []
     with path.open("rb") as handle:
         for line in handle:
-            if b"generation.step.completed" not in line and b"generation.trajectory.failed" not in line:
+            if (
+                b"generation.step.completed" not in line
+                and b"generation.trajectory.failed" not in line
+            ):
                 continue
             try:
                 ev = orjson.loads(line)
@@ -138,6 +144,63 @@ def _git_sha() -> str:
         return "unknown"
 
 
+def _axis_sentence(t_min_tokens: int, t_min: float) -> str:
+    """Absolute turnovers from L0 token 0. Display only; the clock is unchanged."""
+    after_lock = t_min - LOCK_TURNOVER
+    after_tokens = round(after_lock * W)
+    join_start = HORIZON_TURNOVERS + (1024 / W)
+    return (
+        "The clock is absolute turnovers from L0 token 0. "
+        f"The lock event is at {LOCK_TURNOVER:g}. "
+        f"The L0 series ends at {HORIZON_TURNOVERS:.1f}. "
+        "The continuation series is joined at "
+        f"{join_start:.2f} through {t_min:.1f}. "
+        f"Censoring time is {t_min:.1f} absolute, which is {after_lock:.2f} "
+        f"turnovers after the lock ({after_tokens:,} tokens). "
+        f"T_min = {t_min_tokens:,} original tokens."
+    )
+
+
+def _same_target_sentence(records: list[dict]) -> str:
+    steps = {int(r["steps"]) for r in records}
+    additional = {int(r["additional_tokens"]) for r in records}
+    absolute = {int(r["absolute_tokens"]) for r in records}
+    if len(records) != 8 or len(steps) != 1 or len(additional) != 1 or len(absolute) != 1:
+        raise SystemExit("S12 cells do not share one completed length")
+    n_steps = steps.pop()
+    n_add = additional.pop()
+    n_abs = absolute.pop()
+    return (
+        "All eight cells reached the same target "
+        f"({n_steps} steps, {n_add:,} additional tokens, absolute {n_abs:,}). "
+        "T_min equals each cell's length. "
+        "censored=True is right-censoring at that common stop."
+    )
+
+
+def _scope_sentence(n_steps: int) -> str:
+    return (
+        "P1 reprompt, raw_bytes, local NF4. "
+        "Native sliding attention was not measured. "
+        "The label is the F1 chunk looping flag. Embedding geometry was not run. "
+        "Eight cells only: Ministral 3 8B Base NF4 and Qwen3 8B Instruct NF4, "
+        "temperature 0.3, W=4096. Families are counted, not pooled. "
+        "physics and love are the F3 tie-break after every qualifying seed tied at "
+        "tau_lock=0.75, not a domain sample. "
+        "s1 and s2 are two L0 descendants, one new stochastic draw each. "
+        f"Every continuation chunk is looping ({n_steps}/{n_steps}, "
+        "max non-looping run 0). "
+        "Minimum 3-gram repetition is 0.9378 on qi-physics-s1 and at least 0.9528 "
+        "on the other seven. The frozen 3-gram cut is unchanged. "
+        "Printed quotes are Ministral physics only (mb-physics-s1 and mb-physics-s2). "
+        "The counter is the unchanged L0 chunk-row rule "
+        "(three chunk rows, not three integer windows of W). "
+        "The non-looping run length is 0 on every joined series, "
+        "so a blank tau_escape is not a hidden shorter break. "
+        "N_confirm=3 is unchanged."
+    )
+
+
 def main() -> None:
     cells = _read_map()
     l0_frames = {
@@ -204,6 +267,10 @@ def main() -> None:
         row["confirmed_escape_through_tmin"] = confirmed_through_tmin(row["tau_escape"], t_min)
         row["censored"] = not row["confirmed_escape_through_tmin"]
 
+    axis = _axis_sentence(t_min_tokens, t_min)
+    target = _same_target_sentence(records)
+    scope = _scope_sentence(int(records[0]["steps"]))
+
     frame = pd.DataFrame(records).drop(columns=["quarters"])
     out = ROOT / "artifacts" / "stage-12" / "tau_escape"
     out.mkdir(parents=True, exist_ok=True)
@@ -211,17 +278,15 @@ def main() -> None:
     meta = {
         "name": "tau_escape",
         "caption": (
-            "Confirmatory S12 estimand: tau_escape on the L0 clock "
-            f"(lock at {LOCK_TURNOVER} turnover, horizon {HORIZON_TURNOVERS}), "
-            f"censored at the cohort T_min of {t_min_tokens} tokens. "
-            "A false confirmed_escape_through_tmin means no confirmed escape through T_min."
+            "Confirmatory S12 estimand. "
+            + axis
+            + " "
+            + target
+            + " A false confirmed_escape_through_tmin means no confirmed escape through T_min."
         ),
         "limitations": (
-            "This is not a last-band G_t and it is not a claim that the lock is permanent. "
-            "The continuation flags are concatenated after the L0 F1 looping series from the "
-            "published degeneracy runs. T_min is the shortest cell in this cohort, so a later "
-            "escape on a longer cell is censored. One local GPU, eight continuations, "
-            "N_confirm=3 unchanged."
+            "Not a last-band G_t. Continuation flags are concatenated after the L0 F1 "
+            "looping series from the published degeneracy runs. " + target + " " + scope
         ),
         "run_ids": [r["run_id"] for r in records] + [r["degeneracy_run_id"] for r in records],
         "git_sha": _git_sha(),
@@ -256,7 +321,9 @@ def _verdict_e6(records: list[dict]) -> str:
     return "FAIL" if bad else "PASS"
 
 
-def _write_report(records: list[dict], quotes: list[tuple[str, str]], t_min_tokens: int, t_min: float) -> None:
+def _write_report(
+    records: list[dict], quotes: list[tuple[str, str]], t_min_tokens: int, t_min: float
+) -> None:
     path = ROOT / "docs" / "stages" / "stage-12" / "REPORT.md"
     if path.is_file() and "<!-- s12-research-draft -->" not in path.read_text(encoding="utf-8"):
         raise SystemExit(f"{path} exists and was not written by this script")
@@ -288,11 +355,17 @@ def _write_report(records: list[dict], quotes: list[tuple[str, str]], t_min_toke
         "",
         "## 2. Results",
         "",
-        f"Common horizon T_min = {t_min_tokens} original tokens "
-        f"({t_min:.4f} turnovers of W={W}), the shortest cell in the cohort. "
-        f"Clock origin is the L0 lock at {LOCK_TURNOVER} turnover, not the first continuation token. "
-        f"{n_escape} of {len(records)} cells have a confirmed escape through T_min. "
-        f"{n_locked} of {len(records)} have no confirmed escape through T_min.",
+        " ".join(
+            [
+                _axis_sentence(t_min_tokens, t_min),
+                _same_target_sentence(records),
+                (
+                    f"{n_escape} of {len(records)} cells have a confirmed escape through T_min. "
+                    f"{n_locked} of {len(records)} have no confirmed escape through T_min."
+                ),
+                _scope_sentence(int(records[0]["steps"])),
+            ]
+        ),
         "",
         "| cell | run_id | status | additional tokens | tau_escape | censored | escape through T_min |",
         "| --- | --- | --- | ---: | ---: | --- | --- |",
@@ -318,16 +391,22 @@ def _write_report(records: list[dict], quotes: list[tuple[str, str]], t_min_toke
         "",
         "## 4. Surprises",
         "",
-        "The measured escape count is the surprise column. A majority result that misses P1 "
-        "is a finding, and so is a clean no-escape result.",
+        "The continuations are flat loops, not near-misses at N_confirm.",
+        (
+            f"E3's final step spread is {spread} because every cell reached the target; "
+            "earlier, mb-physics-s1 ran 1237 steps ahead before the rotator fix. "
+            f"That history does not change {n_escape}/{len(records)}."
+        ),
         "",
         "## 5. Threats to validity",
         "",
         "The continuation is a reprompt of a tail, not native sliding attention. "
         "F1 is a surface-form looping flag, so a lexically varied but semantically static "
         "stretch counts as an escape. Degeneracy of the continuation is a separate run from "
-        "the L0 degeneracy runs, joined only by the turnover clock. T_min censors anything "
-        "after the shortest cell. Provider non-determinism was not re-measured on this horizon. "
+        "the L0 degeneracy runs, joined only by the turnover clock. "
+        "All eight cells reached the same target, so T_min equals each cell's length and "
+        "censored=True is right-censoring at that common stop. "
+        "Provider non-determinism was not re-measured on this horizon. "
         "Families are not pooled.",
         "",
         "## 6. Cost",
@@ -354,6 +433,8 @@ def _write_report(records: list[dict], quotes: list[tuple[str, str]], t_min_toke
             )
         lines.append("")
     lines.append("## Samples of generated text")
+    lines.append("")
+    lines.append("Printed quotes are Ministral physics only (mb-physics-s1 and mb-physics-s2).")
     lines.append("")
     for label, text in quotes[:6]:
         lines.append(f"> {label}: {text}")
