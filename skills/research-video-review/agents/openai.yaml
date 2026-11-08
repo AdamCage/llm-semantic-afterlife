@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Video Review"
+  short_description: "Review scientific claims, visuals, sound, and delivery"
+  default_prompt: "Use $research-video-review to review this research video against its evidence and inspect the finished media."

@@ -1,0 +1,4 @@
+{
+  "sources": [{"id": "demo", "path": "evidence/demo.txt", "locator": "Entire file: demonstration marker", "status": "verified", "run_ids": []}],
+  "claims": [{"id": "demo-only", "kind": "explanation", "statement": "The starter is a production demonstration, not empirical research.", "sources": ["demo"], "limitations": "No empirical finding or practical intervention is demonstrated."}]
+}

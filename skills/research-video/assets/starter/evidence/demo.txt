@@ -1,0 +1,3 @@
+This starter demonstrates video production mechanics only.
+It contains no empirical results. Replace the demonstration narration and
+evidence map with the intended study's verified sources before publication.

@@ -1,0 +1,10 @@
+renderer/node_modules/
+renderer/out/
+renderer/dist/
+renderer/public/voice/
+renderer/public/score.mp3
+output/
+media/voice/
+record/pending/
+record/errors/
+.env

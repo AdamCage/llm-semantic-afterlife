@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Video"
+  short_description: "Evidence-based science videos with narration and music"
+  default_prompt: "Use $research-video to turn this completed research into a sourced science video with narration, music, plots, and a reproducible build."

@@ -6,6 +6,8 @@
 
 **Научно-популярное видео (13 минут):** [смотреть / скачать выпуск](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [сценарий и источники](video/SCRIPT.ru.md).
 
+**Для других исследований:** [переносимые скиллы и установка](skills/README.md).
+
 ---
 
 ## Вопрос

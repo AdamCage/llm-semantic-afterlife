@@ -6,6 +6,8 @@
 
 **Public science video (Russian, 13 min):** [watch/download the episode](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [script and sources](video/SCRIPT.ru.md).
 
+**Reuse this workflow:** [portable research video skills and installation](skills/README.md).
+
 ---
 
 ## The question

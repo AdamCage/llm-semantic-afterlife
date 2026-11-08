@@ -1,0 +1,8 @@
+{
+  "name": "research-video-renderer",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {"dev": "remotion studio src/index.ts", "render": "remotion render src/index.ts ResearchVideo ../output/raw.mp4 --concurrency=4 --crf=20", "check": "tsc --noEmit"},
+  "dependencies": {"@remotion/cli": "4.0.541", "remotion": "4.0.541", "react": "19.3.1", "react-dom": "19.3.1"},
+  "devDependencies": {"typescript": "5.9.3", "@types/react": "19.3.0"}
+}

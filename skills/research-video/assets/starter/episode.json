@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "smoke_test": false,
+  "production_id": "research-video-v1",
+  "title": "Название исследования — научно-популярное видео",
+  "research_root": ".",
+  "require_run_ids": false,
+  "fps": 25,
+  "width": 1920,
+  "height": 1080,
+  "language": "ru",
+  "subtitle_language": "rus",
+  "scene_lead_seconds": 0.7,
+  "scene_tail_seconds": 1.3,
+  "storyboard_words_per_second": 2.2,
+  "palette": {"background": "#081321", "text": "#f5f5f0", "muted": "#a2b6c9", "accent": "#56b4e9", "highlight": "#e69f00"},
+  "speech": {
+    "provider": "routerai",
+    "base_url": "https://routerai.ru/api/v1",
+    "model": "x-ai/grok-voice-tts-1.0",
+    "voice": "eve",
+    "api_key_env": "ROUTERAI_API_KEY",
+    "pricing_unit": "rub_per_character",
+    "max_rub_per_character": 0,
+    "usd_per_rub": 0,
+    "timeout_seconds": 300
+  },
+  "budget": {"ledger_path": "record/spend.jsonl", "production_usd": 0, "per_run_usd": 0, "project_usd": 0},
+  "music": {
+    "seed": 20261109,
+    "sample_rate": 48000,
+    "bpm": 72,
+    "chords_midi": [[50,57,60,64,69],[46,53,57,60,65],[48,53,57,60,67],[48,55,58,62,67]],
+    "gap_gain": 0.15,
+    "speech_gain": 0.055,
+    "transition_gain": 0.045,
+    "fade_seconds": 5
+  },
+  "mastering": {"lufs": -16, "true_peak": -1.5, "lra": 11},
+  "scenes": [
+    {"id": "01", "chapter": "Вопрос", "title": "Как рассказать об исследовании?", "visual": "title", "lines": ["Вопрос → эксперимент → результат", "Сначала свидетельства, затем история"], "narration": "Это демонстрационный проект. Он показывает структуру производства видео, а не результаты научного исследования. Замените этот текст сценарием по проверенным источникам.", "claim_ids": ["demo-only"]},
+    {"id": "02", "chapter": "Метод", "title": "Каждому утверждению — источник", "visual": "process", "lines": ["Источник", "Проверяемое утверждение", "Понятное объяснение"], "narration": "У каждого вывода должен быть проверяемый источник. Объясняющую схему следует отличать от измеренных данных. Практические предложения следует отличать от вмешательств, проверенных экспериментом.", "claim_ids": ["demo-only"]}
+  ]
+}
