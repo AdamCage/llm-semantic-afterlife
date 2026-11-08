@@ -21,7 +21,10 @@ def main() -> None:
     finished = [e for e in rows if e.get("event") == "generation.trajectory.finished"]
     crashed = [e for e in rows if e.get("event") == "generation.trajectory.crashed"]
     print("run_id", run.name)
-    print("status_file", (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?")
+    print(
+        "status_file",
+        (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?",
+    )
     if loaded:
         e = loaded[0]
         print("architecture", e.get("architecture"))

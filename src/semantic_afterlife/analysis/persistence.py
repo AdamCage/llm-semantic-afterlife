@@ -86,7 +86,6 @@ def prefix_lock_escape(
     run = 0
     tau_lock: float | None = None
     tau_escape: float | None = None
-    prev = bool(degenerate_by_turnover[0])
     run = 1
     # recompute run-length carefully
     run = 0
@@ -102,10 +101,9 @@ def prefix_lock_escape(
             if deg and run >= n_confirm:
                 phase = "locked"
                 tau_lock = float(t)
-        elif phase == "locked":
-            if (not deg) and run >= n_confirm:
-                phase = "escaped"
-                tau_escape = float(t)
+        elif phase == "locked" and (not deg) and run >= n_confirm:
+            phase = "escaped"
+            tau_escape = float(t)
         states.append(phase)
 
     return LockEscapeResult(

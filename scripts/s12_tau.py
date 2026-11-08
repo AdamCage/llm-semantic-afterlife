@@ -32,7 +32,10 @@ def concatenate_clock(
     if l0_turnovers.size == 0:
         raise ValueError("L0 series is empty")
     turnovers = np.concatenate(
-        [np.asarray(l0_turnovers, dtype=np.float64), np.asarray(cont_turnovers, dtype=np.float64) + horizon]
+        [
+            np.asarray(l0_turnovers, dtype=np.float64),
+            np.asarray(cont_turnovers, dtype=np.float64) + horizon,
+        ]
     )
     flags = np.concatenate(
         [np.asarray(l0_looping, dtype=bool), np.asarray(cont_looping, dtype=bool)]

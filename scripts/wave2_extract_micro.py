@@ -17,7 +17,10 @@ def main() -> None:
             if raw.strip():
                 events.append(json.loads(raw))
     print("run_id", run.name)
-    print("status", (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?")
+    print(
+        "status",
+        (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?",
+    )
     loaded = [e for e in events if e.get("event") == "local.model.loaded"]
     gens = [e for e in events if e.get("event") == "local.generate.completed"]
     steps = [e for e in events if e.get("event") == "generation.step.completed"]

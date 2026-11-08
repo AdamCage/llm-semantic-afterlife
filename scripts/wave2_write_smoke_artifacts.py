@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -31,7 +31,9 @@ def smoke_row(run_id: str, slug: str, notes: str) -> dict:
     gen = next((e for e in ev if e.get("event") == "local.generate.completed"), {})
     step = next((e for e in ev if e.get("event") == "generation.step.completed"), {})
     fin = next((e for e in ev if e.get("event") == "generation.trajectory.finished"), {})
-    status = (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    status = (
+        (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    )
     return {
         "slug": slug,
         "run_id": run_id,
@@ -64,7 +66,9 @@ def micro_row(run_id: str, slug: str, notes: str, *, valid: bool) -> dict:
     tok = [float(e["tok_s"]) for e in gens if e.get("tok_s") is not None]
     lats = [float(e["latency_s"]) for e in steps if e.get("latency_s") is not None]
     fills = [float(e["block_fill_ratio"]) for e in steps if e.get("block_fill_ratio") is not None]
-    status = (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    status = (
+        (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    )
     think = sum(int(e.get("reasoning_tokens") or 0) for e in steps)
     rt_fail = sum(1 for e in steps if e.get("tokenizer_roundtrip_ok") is False)
     median_lat = sorted(lats)[len(lats) // 2] if lats else None
@@ -77,7 +81,9 @@ def micro_row(run_id: str, slug: str, notes: str, *, valid: bool) -> dict:
         "loader_class": loaded.get("loader_class"),
         "hf_revision": loaded.get("hf_revision"),
         "quant_config": loaded.get("quant_config"),
-        "peak_vram_mib": max((e.get("peak_vram_mib") or 0) for e in gens) if gens else loaded.get("peak_vram_mib"),
+        "peak_vram_mib": max((e.get("peak_vram_mib") or 0) for e in gens)
+        if gens
+        else loaded.get("peak_vram_mib"),
         "tok_s_mean": round(sum(tok) / len(tok), 3) if tok else None,
         "tok_s_median": sorted(tok)[len(tok) // 2] if tok else None,
         "block_fill_mean": round(sum(fills) / len(fills), 4) if fills else None,
@@ -109,7 +115,7 @@ def write_meta(name: str, caption: str, run_ids: list[str], path: Path) -> None:
             "tok_s": "new tokens / generate() wall seconds",
             "block_fill": "completion_tokens / requested max_tokens",
         },
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
     }
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 

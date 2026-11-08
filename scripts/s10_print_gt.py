@@ -11,7 +11,11 @@ ROOT = Path("runs/s10")
 for persist in sorted(ROOT.glob("s10-persistence-*")):
     if (persist / "SUPERSEDED").is_file():
         continue
-    status = (persist / "STATUS").read_text(encoding="utf-8").strip() if (persist / "STATUS").is_file() else "?"
+    status = (
+        (persist / "STATUS").read_text(encoding="utf-8").strip()
+        if (persist / "STATUS").is_file()
+        else "?"
+    )
     gt_path = persist / "data" / "persistence_gt.parquet"
     if not gt_path.is_file():
         print(f"{status}\t{persist.name}\tNO_GT")

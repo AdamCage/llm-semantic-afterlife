@@ -13,7 +13,11 @@ def main() -> None:
     rows = []
     lats = []
     for run in sorted(p for p in ROOT.iterdir() if p.is_dir()):
-        status = (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "NOSTATUS"
+        status = (
+            (run / "STATUS").read_text(encoding="utf-8").strip()
+            if (run / "STATUS").is_file()
+            else "NOSTATUS"
+        )
         steps = 0
         last = None
         events = run / "events.jsonl"

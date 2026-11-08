@@ -186,15 +186,16 @@ def plan(config: ConfigOpt) -> None:
         )
     )
     frame = pd.DataFrame(experiment.cells)
-    frame["turnovers"] = (frame["target_tokens"] / frame["W"]).round(1)
-    _print_frame(
-        frame.groupby(
-            ["generator", "W", "block_size", "target_tokens", "turnovers"], as_index=False
+    if not frame.empty:
+        frame["turnovers"] = (frame["target_tokens"] / frame["W"]).round(1)
+        frame = (
+            frame.groupby(
+                ["generator", "W", "block_size", "target_tokens", "turnovers"], as_index=False
+            )
+            .size()
+            .rename(columns={"size": "n_trajectories"})
         )
-        .size()
-        .rename(columns={"size": "n_trajectories"}),
-        "matrix",
-    )
+    _print_frame(frame, "matrix")
     console().print(
         f"[bold]{experiment.n_trajectories}[/bold] trajectories, "
         f"{len(experiment.generators)} generator(s), "
@@ -1393,7 +1394,16 @@ def analyze_persistence(
         _print_frame(
             per_band,
             f"G_t ({slug})",
-            columns=["band_left", "band_right", "band_mid", "d_within", "d_between", "G", "G_lo", "G_hi"],
+            columns=[
+                "band_left",
+                "band_right",
+                "band_mid",
+                "d_within",
+                "d_between",
+                "G",
+                "G_lo",
+                "G_hi",
+            ],
         )
         console().print(
             f"[bold]last-band G_t = {last_g:.4f}[/bold]  "

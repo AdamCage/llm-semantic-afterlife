@@ -80,16 +80,13 @@ def main() -> None:
             f"failed={len(uniq_failed)}"
         )
         if last:
-            print(
-                f"  last step={last_step} lat={last_lat}s "
-                f"traj={last_traj} ts={last_ts}"
-            )
+            print(f"  last step={last_step} lat={last_lat}s traj={last_traj} ts={last_ts}")
     if latencies:
         mean = sum(latencies) / len(latencies)
         print(f"mean_step_s {mean:.3f} n={len(latencies)}")
         h_per_full = mean * STEPS_PER_FULL / 3600.0
         print(f"h_per_full_traj {h_per_full:.3f}")
-        remaining_full = 160  # worst case if we have only started counting later
+        _remaining_full = 160  # worst case if we have only started counting later
         # Better: remaining = planned cells not done * 40, minus progress on current
         print("sketch_if_all_complete_fill1_hours", round(160 * h_per_full, 1))
 

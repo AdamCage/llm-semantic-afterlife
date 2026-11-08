@@ -10,7 +10,7 @@ import numpy as np
 from semantic_afterlife.analysis.persistence import prefix_lock_escape
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from s12_tau import concatenate_clock, confirmed_through_tmin  # noqa: E402
+from s12_tau import concatenate_clock, confirmed_through_tmin
 
 
 def test_escape_on_the_continuation_uses_the_l0_clock() -> None:

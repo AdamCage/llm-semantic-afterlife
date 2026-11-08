@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import torch
 import bitsandbytes
+import torch
 import transformers
 from huggingface_hub import whoami
 

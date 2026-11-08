@@ -68,8 +68,10 @@ def main() -> None:
         seed_rows = []
         for seed, sblock in locked.groupby("seed_id"):
             med = float(sblock["tau_lock"].median())
-            seed_rows.append((seed, med, int(len(sblock)), int(sblock["still_locked"].sum())))
-        seed_rows.sort(key=lambda item: (item[1], SEED_ORDER.index(item[0]) if item[0] in SEED_ORDER else 99))
+            seed_rows.append((seed, med, len(sblock), int(sblock["still_locked"].sum())))
+        seed_rows.sort(
+            key=lambda item: (item[1], SEED_ORDER.index(item[0]) if item[0] in SEED_ORDER else 99)
+        )
         for seed, med, n, n_still in seed_rows:
             print(f"  seed {seed} median_tau_lock={med} n_locked={n} n_still={n_still}")
         if not seed_rows:

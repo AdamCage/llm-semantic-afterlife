@@ -32,7 +32,9 @@ def main() -> None:
             print(f"MISSING {run_id}")
             continue
         status_path = matches[0] / "STATUS"
-        status = status_path.read_text(encoding="utf-8").strip() if status_path.exists() else "NO_STATUS"
+        status = (
+            status_path.read_text(encoding="utf-8").strip() if status_path.exists() else "NO_STATUS"
+        )
         print(f"{status:10} {matches[0]}")
 
 

@@ -20,9 +20,13 @@ import yaml
 from semantic_afterlife.analysis.rates import quarter_diagnostics
 from semantic_afterlife.config import get_settings
 from semantic_afterlife.reporting.tables import save_table
-from semantic_afterlife.viz.export import FigureMeta, save_matplotlib_figure, write_index
+from semantic_afterlife.viz.export import (
+    FigureMeta,
+    save_matplotlib_figure,
+    save_plotly_figure,
+    write_index,
+)
 from semantic_afterlife.viz.figures import persistence_gt_figure
-from semantic_afterlife.viz.export import save_plotly_figure
 from semantic_afterlife.viz.theme import PALETTE, ROLE_COLORS, apply_seaborn_theme
 
 GENERATE = {
@@ -184,7 +188,7 @@ def main() -> None:
         loo = pd.read_parquet(loo_path) if loo_path.is_file() else pd.DataFrame()
         n_lock = int(locks["confirmed_lock"].sum()) if not locks.empty else 0
         n_esc = int(locks["confirmed_escape"].sum()) if not locks.empty else 0
-        n_traj = int(len(locks)) if not locks.empty else 0
+        n_traj = len(locks) if not locks.empty else 0
         last_g = float(last["G"])
         n_within = int(last["n_within_pairs"])
         n_between = int(last["n_between_pairs"])
@@ -357,7 +361,9 @@ def main() -> None:
                     "seed_id": parsed["seed_id"],
                     "stochastic": parsed["stochastic"],
                     "status": ev.get("status"),
-                    "error": str(ev.get("error") or ev.get("reason") or ev.get("detail") or "")[:400],
+                    "error": str(ev.get("error") or ev.get("reason") or ev.get("detail") or "")[
+                        :400
+                    ],
                     "generated_tokens": ev.get("generated_tokens"),
                 }
             )
@@ -422,7 +428,7 @@ def main() -> None:
                     {
                         "cell": cell,
                         "seed_id": seed,
-                        "n_traj": int(len(sblock)),
+                        "n_traj": len(sblock),
                         "n_lock": int(sblock["confirmed_lock"].sum()),
                         "n_escape": int(sblock["confirmed_escape"].sum()),
                         "has_lock": bool(sblock["confirmed_lock"].any()),
@@ -670,7 +676,9 @@ def main() -> None:
         plot["label"] = (
             plot["cell"]
             + " / "
-            + plot["embedding"].str.replace("local-", "").str.replace("qwen3-embed-8b", "qwen-embed")
+            + plot["embedding"]
+            .str.replace("local-", "")
+            .str.replace("qwen3-embed-8b", "qwen-embed")
         )
         fig, ax = plt.subplots(figsize=(10.5, 5.2))
         xs = range(len(plot))
@@ -786,9 +794,9 @@ def main() -> None:
         json.dumps(
             {
                 "wrote": str(artifacts),
-                "n_last_band": int(len(last_band)),
-                "n_failed": int(len(failed)),
-                "n_edges": int(len(edges)),
+                "n_last_band": len(last_band),
+                "n_failed": len(failed),
+                "n_edges": len(edges),
                 "n_samples": len(samples),
             },
             indent=2,

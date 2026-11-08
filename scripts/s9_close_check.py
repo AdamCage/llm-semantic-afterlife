@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Unique generate outcomes + degeneracy rates + incomplete runs."""
+
 from __future__ import annotations
 
 import json
@@ -7,7 +8,6 @@ from collections import Counter
 from pathlib import Path
 
 import pandas as pd
-import yaml
 
 from semantic_afterlife.config import get_settings
 
@@ -44,7 +44,9 @@ def main() -> None:
         c = Counter(by_id.values())
         print(f"{cell} unique={len(by_id)} {dict(c)} finished_events={len(finished)}")
 
-    degen = pd.read_csv(settings.paths.stage_artifacts("9") / "degeneracy" / "degeneracy_verdicts.csv")
+    degen = pd.read_csv(
+        settings.paths.stage_artifacts("9") / "degeneracy" / "degeneracy_verdicts.csv"
+    )
     print("\nDEGEN")
     print(
         degen.groupby("cell")
@@ -59,13 +61,17 @@ def main() -> None:
 
     loo = pd.read_csv(settings.paths.stage_artifacts("9") / "loo" / "persistence_loo_all.csv")
     print("\nLOO sign flips (G<=0)")
-    print(loo.loc[loo["G"] <= 0, ["cell", "embedding", "held_out_seed", "G"]].to_string(index=False))
+    print(
+        loo.loc[loo["G"] <= 0, ["cell", "embedding", "held_out_seed", "G"]].to_string(index=False)
+    )
 
     ledger = settings.paths.ledger
     if ledger.is_file():
         frame = pd.read_json(ledger, lines=True)
         s9 = frame[frame["run_id"].astype(str).str.startswith("s9")]
-        print(f"\nLEDGER project={frame['cost_usd'].sum():.6f} s9={s9['cost_usd'].sum():.6f} n={len(frame)}")
+        print(
+            f"\nLEDGER project={frame['cost_usd'].sum():.6f} s9={s9['cost_usd'].sum():.6f} n={len(frame)}"
+        )
         hosted = s9[s9["run_id"].astype(str).str.contains("qwen-hosted|embed-qwen|qwen3-embed")]
         print(f"s9 embed-ish {hosted['cost_usd'].sum():.6f}")
 

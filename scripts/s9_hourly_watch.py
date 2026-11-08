@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(r"c:\projects\llm-semantic-afterlife\runs\s9")
@@ -16,7 +16,7 @@ def parse_ts(raw: str) -> datetime:
 
 
 def main() -> int:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     worst = 0
     for run in sorted(ROOT.iterdir()):
         status_path = run / "STATUS"
@@ -47,10 +47,7 @@ def main() -> int:
         if status == "RUNNING" and stall is not None and stall > STALL_S:
             flag = " STALE_OR_HUNG"
             worst = 2
-        print(
-            f"{status:10} stall={None if stall is None else round(stall, 1)} "
-            f"{run.name}{flag}"
-        )
+        print(f"{status:10} stall={None if stall is None else round(stall, 1)} {run.name}{flag}")
         if last_step:
             print(
                 f"           last {last_step.get('trajectory_id')} "

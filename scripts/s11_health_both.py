@@ -25,12 +25,12 @@ def main() -> None:
                 if raw.strip():
                     events.append(json.loads(raw))
         steps = [e for e in events if e.get("event") == "generation.step.completed"]
-        failed = {e.get("trajectory_id") for e in events if e.get("event") == "generation.trajectory.failed"}
-        errors = [
-            e
+        failed = {
+            e.get("trajectory_id")
             for e in events
-            if str(e.get("level", "")).upper() in {"ERROR", "CRITICAL"}
-        ]
+            if e.get("event") == "generation.trajectory.failed"
+        }
+        errors = [e for e in events if str(e.get("level", "")).upper() in {"ERROR", "CRITICAL"}]
         providers = Counter(e.get("served_provider") for e in steps)
         reasons = Counter(e.get("finish_reason") for e in steps)
         reasoning = Counter(e.get("reasoning_tokens") for e in steps)
@@ -43,7 +43,7 @@ def main() -> None:
             f"think={dict(reasoning)} roundtrip={dict(roundtrip)}"
         )
         if fills:
-            print(f"  fill {min(fills):.3f}/{sum(fills)/len(fills):.3f}/{max(fills):.3f}")
+            print(f"  fill {min(fills):.3f}/{sum(fills) / len(fills):.3f}/{max(fills):.3f}")
 
 
 if __name__ == "__main__":

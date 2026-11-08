@@ -20,7 +20,9 @@ def extract(run: Path) -> dict:
     steps = [e for e in rows if e.get("event") == "generation.step.completed"]
     finished = next((e for e in rows if e.get("event") == "generation.trajectory.finished"), {})
     crashed = next((e for e in rows if e.get("event") == "generation.trajectory.crashed"), {})
-    status = (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    status = (
+        (run / "STATUS").read_text(encoding="utf-8").strip() if (run / "STATUS").is_file() else "?"
+    )
     first80 = ""
     chunks = run / "data" / "chunks.parquet"
     if chunks.is_file():
@@ -42,13 +44,16 @@ def extract(run: Path) -> dict:
         "hf_revision": loaded.get("hf_revision"),
         "quant": loaded.get("quant_config"),
         "load_s": loaded.get("load_s"),
-        "peak_vram_mib": loaded.get("peak_vram_mib") or (gens[0].get("peak_vram_mib") if gens else None),
+        "peak_vram_mib": loaded.get("peak_vram_mib")
+        or (gens[0].get("peak_vram_mib") if gens else None),
         "tok_s_first": tok_s[0] if tok_s else None,
         "tok_s_median": sorted(tok_s)[len(tok_s) // 2] if tok_s else None,
         "n_gen_events": len(gens),
         "n_steps": len(steps),
         "fill_mean": round(sum(fills) / len(fills), 3) if fills else None,
-        "stop_rate": round(sum(1 for s in stops if s and s != "length") / len(stops), 3) if stops else None,
+        "stop_rate": round(sum(1 for s in stops if s and s != "length") / len(stops), 3)
+        if stops
+        else None,
         "reasoning_tokens": reasoning,
         "generated_tokens": finished.get("generated_tokens"),
         "first_80": first80,

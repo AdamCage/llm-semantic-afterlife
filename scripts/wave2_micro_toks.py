@@ -27,7 +27,17 @@ def main() -> None:
                     vals.append(float(tok_s))
         print(run.name)
         if vals:
-            print("  n", len(vals), "median", round(statistics.median(vals), 3), "min", round(min(vals), 3), "max", round(max(vals), 3), vals)
+            print(
+                "  n",
+                len(vals),
+                "median",
+                round(statistics.median(vals), 3),
+                "min",
+                round(min(vals), 3),
+                "max",
+                round(max(vals), 3),
+                vals,
+            )
         else:
             print("  no nonzero decode events")
 

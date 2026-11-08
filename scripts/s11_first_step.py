@@ -10,7 +10,11 @@ if not runs.is_dir():
     print("no runs/s11")
     raise SystemExit(0)
 for run_dir in sorted(runs.glob("s11-paperb-*")):
-    status = (run_dir / "STATUS").read_text(encoding="utf-8").strip() if (run_dir / "STATUS").is_file() else "NOSTATUS"
+    status = (
+        (run_dir / "STATUS").read_text(encoding="utf-8").strip()
+        if (run_dir / "STATUS").is_file()
+        else "NOSTATUS"
+    )
     events_path = run_dir / "events.jsonl"
     print(f"{status} {run_dir.name}")
     if not events_path.is_file():

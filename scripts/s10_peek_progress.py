@@ -35,7 +35,7 @@ def main() -> None:
             "completion_tokens",
             "prompt_tokens",
         )
-        print("last", {k: last.get(k) for k in keys if k in last or True})
+        print("last", {k: last.get(k) for k in keys})
         print("last_event", last.get("event"), last.get("level"))
     req = list((RUN / "requests").glob("*.jsonl"))
     print("request_files", len(req))

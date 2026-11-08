@@ -37,7 +37,9 @@ def main() -> None:
     print(f"finished {len(finished)} failed {len(failed)} with_steps {len(steps_by)}")
     for tid, reason in failed.items():
         print(f"FAIL {tid} steps={steps_by.get(tid)} {reason}")
-    current = max(steps_by, key=lambda tid: (tid not in finished and tid not in failed, steps_by[tid]))
+    _current = max(
+        steps_by, key=lambda tid: (tid not in finished and tid not in failed, steps_by[tid])
+    )
     # current = not finished and not failed, highest step
     open_ids = [tid for tid in steps_by if tid not in finished and tid not in failed]
     print(f"open {len(open_ids)}")

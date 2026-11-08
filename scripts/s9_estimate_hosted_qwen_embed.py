@@ -21,7 +21,7 @@ def main() -> None:
     rows = []
     for run_id in RUNS:
         chunks = pd.read_parquet(ROOT / run_id / "data" / "chunks.parquet")
-        n = int(len(chunks))
+        n = len(chunks)
         tokens = int(chunks["n_tokens"].sum())
         rows.append({"run_id": run_id, "n_chunks": n, "n_tokens": tokens})
         print(f"{run_id}  chunks={n}  tokens={tokens}")
@@ -30,7 +30,7 @@ def main() -> None:
     total_tokens = int(frame["n_tokens"].sum())
     ceiling = USD_PER_M / 1e6 * total_tokens
     print(f"TOTAL chunks={total_chunks} tokens={total_tokens}")
-    print(f"historical RouterAI embed unit cost: $0.00 (S0/S5)")
+    print("historical RouterAI embed unit cost: $0.00 (S0/S5)")
     print(f"conservative ceiling @{USD_PER_M}/M tokens: ${ceiling:.4f}")
 
 

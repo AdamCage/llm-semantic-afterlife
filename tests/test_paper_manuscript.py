@@ -1,4 +1,4 @@
-"""Lexical and path checks for the TMLR manuscript (ADR-0019).
+"""Scientific and provenance checks for the unified TMLR manuscript.
 
 The paper is assembled from closed-stage artifacts. These tests catch
 claim overruns and broken includes that a TeX compile would not.
@@ -8,6 +8,8 @@ must carry the same quantitative claims, cite keys, and figure paths.
 
 from __future__ import annotations
 
+import csv
+import json
 import re
 from pathlib import Path
 
@@ -20,6 +22,7 @@ NOTES = ROOT / "paper" / "notes"
 ARTIFACTS = ROOT / "artifacts"
 
 REQUIRED_CITE_KEYS = (
+    "streamingllm2024",
     "zekri2024",
     "wang2025",
     "geng2026",
@@ -78,81 +81,6 @@ def test_related_work_has_no_lead_backticks() -> None:
     assert "`LEAD`" not in text
 
 
-def test_occupancy_block_is_1024() -> None:
-    for name, text in _papers():
-        assert re.search(r"B\{=\}1024", text), name
-        assert not re.search(r"B\{=\}512", text), name
-        protocol = text.split(r"\label{sec:p1}")[1].split(r"\label{sec:cost}")[0]
-        assert "1024" in protocol, name
-        assert "0.25" in protocol or r"B/W" in protocol, name
-
-
-def test_gemini_lower_bound_named_not_architecture_independence() -> None:
-    for name, text in _papers():
-        assert "0.029" in text, name
-        for match in re.finditer(r".{0,80}architecture-independen[ct]e.{0,80}", text, re.I):
-            window = match.group(0).lower()
-            assert any(tok in window for tok in ("not", "cannot", "no ", "не ")), (
-                f"{name}: {window}"
-            )
-
-
-def test_h1_not_claimed_established() -> None:
-    for name, text in _papers():
-        assert re.search(r"H1.*unsupported|unsupported.*H1|H1.*не поддержан", text, re.I | re.S), (
-            name
-        )
-        assert not re.search(r"H1 is established", text), name
-        abstract = text.split(r"\begin{abstract}")[1].split(r"\end{abstract}")[0]
-        title = text.split(r"\begin{document}")[0]
-        head = title + abstract
-        assert "metastable semantic states" not in head.lower(), name
-
-
-def test_h5_absent() -> None:
-    for name, text in _papers():
-        assert re.search(r"H5.{0,200}(absent|отсутств)", text, re.I | re.S), name
-        assert not re.search(r"H5 is present", text), name
-
-
-def test_architecture_independence_only_negated() -> None:
-    for name, text in _papers():
-        for match in re.finditer(r".{0,80}architecture-independen[ct]e.{0,80}", text, re.I):
-            window = match.group(0).lower()
-            assert any(tok in window for tok in ("not", "cannot", "no ", "не ")), (
-                f"{name}: {window}"
-            )
-
-
-def test_no_detected_divergence_is_not_one_lock() -> None:
-    for name, text in _papers():
-        lowered = text.lower()
-        assert "not occupancy of one" in lowered or "не occupancy одного" in lowered, name
-        assert "no detected divergence" in lowered or "underpowered" in lowered, name
-        assert not re.search(r"collapsed(?: twins)? occupy one lock", text, re.I), name
-
-
-def test_no_point_mass_bernoulli_ci() -> None:
-    for name, text in _papers():
-        assert not re.search(r"\[0,\s*0\]", text), name
-        assert not re.search(r"\[1,\s*1\]", text), name
-        assert "0.602" in text, name
-        assert "0.398" in text, name
-        assert "0.369" in text, name
-        assert "0.631" in text or "0.630" in text, name
-
-
-def test_stage2_table_is_per_temperature_n4() -> None:
-    for name, text in _papers():
-        lock = text.split(r"\label{sec:lock}")[1].split(r"\label{sec:occupancy}")[0]
-        assert "3/4" in lock, name
-        assert r"n{=}4" in lock, name
-        assert "fixed_point_rates_by_temperature" in lock, name
-        assert not re.search(r"T\{=\}0\.3.{0,120}0/8", lock), name
-        assert "Fisher exact" not in lock, name
-        assert "Точный Fisher" not in lock, name
-
-
 def test_cite_keys_resolve() -> None:
     bib = BIB.read_text(encoding="utf-8")
     defined = set(re.findall(r"@\w+\{([^,]+),", bib))
@@ -202,22 +130,6 @@ def test_verified_citations_are_logged() -> None:
         assert "VERIFIED" in related[max(0, idx - 400) : idx]
 
 
-def test_includegraphics_paths_exist_under_artifacts() -> None:
-    for name, tex in _papers():
-        paths = re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", tex)
-        assert paths, f"{name}: no figures included"
-        for rel in paths:
-            assert not rel.startswith("/"), rel
-            assert "artifacts" not in rel.split("/")[0], rel
-            target = ARTIFACTS / rel
-            assert target.is_file(), f"{name}: {rel}"
-            stem = target.with_suffix("")
-            data = list(stem.parent.glob(stem.name + ".data.parquet"))
-            meta = Path(str(stem) + ".meta.json")
-            assert data, f"{name}: missing tidy data for {rel}"
-            assert meta.is_file(), f"{name}: missing meta for {rel}"
-
-
 def _split_tex_comment(line: str) -> tuple[str, str]:
     """Split on a real TeX comment, ignoring escaped \\%."""
     i = 0
@@ -226,39 +138,6 @@ def _split_tex_comment(line: str) -> tuple[str, str]:
             return line[:i], line[i + 1 :]
         i += 1
     return line, ""
-
-
-def test_quantitative_lines_have_same_line_comments() -> None:
-    """PLAN F1: every quantitative sentence carries artifact path + run_id."""
-    quant = re.compile(r"(\$\d|\d+/\d+|0\.\d{2,}|\d+\\%|\$T\{=\}1\.5|n_\{?\\mathrm\{within\}\}?)")
-    skip = re.compile(
-        r"^(\\documentclass|\\usepackage|\\graphicspath|\\setstretch|"
-        r"\\author|\\title|\\date|\\label|\\begin|\\end|\\toprule|"
-        r"\\midrule|\\bottomrule|\\centering|\\includegraphics|"
-        r"\\bibliographystyle|\\bibliography|\\item Stage|\\item Этап)"
-    )
-    missing: list[str] = []
-    for name, tex in _papers():
-        for i, raw in enumerate(tex.splitlines(), 1):
-            line = raw.strip()
-            if not line or line.startswith("%") or skip.search(line):
-                continue
-            body, comment = _split_tex_comment(line)
-            if "&" in body and body.rstrip().endswith(r"\\"):
-                continue
-            if not quant.search(body):
-                continue
-            if not comment:
-                missing.append(f"{name} L{i}: no comment: {line[:120]}")
-                continue
-            if not (
-                "artifacts/" in comment
-                or "docs/stages" in comment
-                or "docs/decisions" in comment
-                or re.search(r"s[0-9]-", comment)
-            ):
-                missing.append(f"{name} L{i}: comment lacks path/run_id: {line[:140]}")
-    assert not missing, "\n".join(missing[:20])
 
 
 def test_no_dummy_s7_run_directory() -> None:
@@ -274,48 +153,6 @@ def test_release_pdfs_exist() -> None:
         assert path.is_file(), name
         assert path.stat().st_size > 50_000, name
         assert path.read_bytes()[:5] == b"%PDF-"
-
-
-def test_abstract_f4_is_domain_gap_not_recovered_memory() -> None:
-    """F4 is ensemble gap, not recovered identity."""
-    for name, text in _papers():
-        abstract = text.split(r"\begin{abstract}")[1].split(r"\end{abstract}")[0]
-        lowered = abstract.lower()
-        assert "seed-domain identity" not in lowered, name
-        assert "carries seed-domain" not in lowered, name
-        assert re.search(r"domain gap|distinguishability|between-seed", abstract, re.I), name
-        assert re.search(r"not recovered prompt memory", abstract, re.I), name
-        assert "H2" in abstract, name
-        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
-        assert "ten fixed seed" in occupancy.lower() or "десяти фиксированных" in occupancy, name
-        assert "ADR-0020" in occupancy, name
-        assert "ADR-0021" in occupancy, name
-        assert "0.0001" in occupancy, name
-        assert "pending" not in occupancy.lower(), name
-        assert "ADR-0022" in occupancy, name
-        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
-        assert "ADR-0021" in limitations, name
-        assert "ADR-0022" in limitations, name
-        assert "not recoverable" in limitations.lower() or "невосстановимы" in limitations, name
-
-
-def test_occupancy_protocol_names_raw_completion_and_alibaba() -> None:
-    """P1 is not the continuation mechanism."""
-    for name, text in _papers():
-        protocol = text.split(r"\label{sec:p1}")[1].split(r"\label{sec:cost}")[0]
-        assert re.search(r"raw\\_completion", protocol), name
-        assert "Alibaba" in protocol, name
-        assert "P1" in protocol, name
-        assert (
-            "glossary" in protocol.lower()
-            or "глоссарий" in protocol.lower()
-            or "distinct" in protocol.lower()
-            or "разные оси" in protocol.lower()
-        ), name
-        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
-        assert re.search(r"raw\\_completion", limitations), name
-        assert "Alibaba" in limitations, name
-        assert "not synonyms" in limitations.lower() or "не синонимы" in limitations.lower(), name
 
 
 def test_compile_script_supports_anonymous() -> None:
@@ -341,33 +178,350 @@ def _table_block(tex: str, label: str) -> str:
     return tex[start:end]
 
 
-def test_f4_replication_beside_archival() -> None:
-    """ADR-0022: report replication next to archival CIs; do not replace them."""
-    for name, text in _papers():
-        occupancy = text.split(r"\label{sec:occupancy}")[1].split(r"\label{sec:notshown}")[0]
-        assert "ADR-0022" in occupancy, name
-        assert "0.208" in occupancy, name
-        assert "0.400" in occupancy, name
-        assert "0.152" in occupancy, name
-        lowered = occupancy.lower()
-        assert "not a restore" in lowered or "не restore" in occupancy, name
-        archival = _table_block(text, "tab:s6-f4")
-        assert "0.201" in archival, name
-        assert "[0.065, 0.332]" in archival, name
-        assert "0.208" not in archival, name
-        assert "0.400" not in archival, name
-        assert "0.152" not in archival, name
-        repl = _table_block(text, "tab:f4-repl")
-        assert "0.201" in repl, name
-        assert "0.208" in repl, name
-        assert "0.400" in repl, name
-        assert "0.152" in repl, name
-        assert r"n_{\mathrm{within}}{=}6" in occupancy, name
-        limitations = text.split(r"\label{sec:limitations}")[1].split(r"\label{sec:discussion}")[0]
-        assert "ADR-0022" in limitations, name
-        assert "0.201" in limitations, name
-        repro = text.split(r"\label{sec:repro}")[1]
-        assert "1.518" in repro, name
-        notes = (NOTES / "claims.md").read_text(encoding="utf-8")
-        assert "0.208" in notes
-        assert "not a restore" in notes.lower()
+def _body(tex: str) -> str:
+    return "\n".join(_split_tex_comment(line)[0] for line in tex.splitlines())
+
+
+def _flat(tex: str) -> str:
+    return " ".join(_body(tex).split()).lower()
+
+
+def _between(tex: str, start: str, end: str | None = None) -> str:
+    marker = rf"\label{{{start}}}"
+    assert marker in tex, f"missing scientific section {start}"
+    result = tex.split(marker, 1)[1]
+    return result.split(rf"\label{{{end}}}", 1)[0] if end else result
+
+
+def _abstract(tex: str) -> str:
+    return tex.split(r"\begin{abstract}", 1)[1].split(r"\end{abstract}", 1)[0]
+
+
+def _has_provenance(tex: str) -> bool:
+    comments = " ".join(_split_tex_comment(line)[1] for line in tex.splitlines())
+    paths = [
+        ROOT / rel.rstrip(".)`")
+        for rel in re.findall(r"(?:artifacts|configs|docs)/[^\s;,]+", comments)
+    ]
+    return (
+        bool(paths)
+        and all(path.is_file() for path in paths)
+        and bool(re.search(r"s\d+-[a-z0-9-]+|ADR-\d{4}", comments))
+    )
+
+
+def _referenced_provenance(block: str, tex: str) -> bool:
+    for label in re.findall(r"\\ref\{([^}]+)\}", _body(block)):
+        if label.startswith("tab:"):
+            target = _table_block(tex, label)
+        elif label.startswith("sec:"):
+            target = re.split(r"\\(?:sub)?section\{", _between(tex, label), maxsplit=1)[0]
+        else:
+            continue
+        if _has_provenance(target):
+            return True
+    return False
+
+
+def _quantitative_provenance_errors(tex: str) -> list[str]:
+    """Associate wrapped result sentences with paragraph/table-row sources.
+
+    The independent scientific reading judges meaning. This guard catches
+    numerical observations without local evidence, while allowing formal
+    horizon definitions, interval decision rules and typesetting dimensions.
+    An explicit table/section reference may carry the cited measurement.
+    """
+    if r"\begin{document}" in tex:
+        tex = tex.split(r"\begin{document}", 1)[1]
+    quant = re.compile(r"\d+/\d+|(?<![\w])[-+]?\d+\.\d+|\$[-+]?\d+(?:\.\d+)?|\d+\\%")
+    missing = []
+    for block in re.split(r"\n\s*\n", tex):
+        body = _body(block).strip()
+        quantities = quant.findall(body)
+        boundary_definition = (
+            bool(quantities)
+            and set(quantities) <= {"$0", "$1"}
+            and not re.search(r"\d+/\d+|\d+\.\d+", body)
+            and re.search(r"\$W\$|T/W|[Ff]ull eviction|[Пп]олное вытеснение", body)
+            and re.search(r"turnover|оборот", body, re.I)
+            and not re.search(r"validated|observed gap|измеренный зазор", body, re.I)
+        )
+        if (
+            quantities
+            and not boundary_definition
+            and not (_has_provenance(block) or _referenced_provenance(block, tex))
+        ):
+            missing.append(" ".join(body.split())[:180])
+    for line in tex.splitlines():
+        body, _ = _split_tex_comment(line)
+        if (
+            "&" in body
+            and re.search(r"\d+/\d+|[-+]?\d+\.\d+", body)
+            and body.rstrip().endswith(r"\\")
+            and not _has_provenance(line)
+        ):
+            missing.append("unsourced table row: " + body.strip())
+    return missing
+
+
+def test_quantitative_claims_have_local_provenance() -> None:
+    for name, tex in _papers():
+        assert not (missing := _quantitative_provenance_errors(tex)), (name, missing)
+
+
+def test_provenance_guard_accepts_wraps_not_unsourced_new_results() -> None:
+    source = "% artifacts/occupancy-replication/domain_separation_last_band.csv @ s5-lock-occupancy-repl-20260907T091450Z-e8452acb"
+    claim = "The measured gap is $0.208$ with interval $[0.091, 0.314]$. "
+    assert not _quantitative_provenance_errors(claim + source)
+    assert not _quantitative_provenance_errors(claim.replace(" with ", "\nwith ") + source)
+    assert _quantitative_provenance_errors(claim)
+    assert _quantitative_provenance_errors("The reported value is $0.999$.")
+    assert _quantitative_provenance_errors(claim + source + "\n\nThe measured gap is $0.999$.")
+    assert not _quantitative_provenance_errors("Full eviction is turnover $1$.")
+
+
+def test_protocol_and_block_size_are_explicit() -> None:
+    for name, tex in _papers():
+        methods = _between(tex, "sec:methods", "sec:results")
+        assert r"B{=}1024" in methods and r"B{=}512" not in methods, name
+        assert "0.25" in methods, name
+        assert r"raw\_completion" in methods and "Alibaba" in methods, name
+        assert "P1" in methods and "P2" in methods, name
+        assert re.search(r"not measured|не измерялась", _flat(methods)), name
+        assert re.search(r"same block|том же блоке", _flat(methods)), name
+
+
+def test_unestablished_results_are_explicit_not_banned_words() -> None:
+    for name, tex in _papers():
+        negative = _flat(_between(tex, "sec:not", "sec:limitations"))
+        assert re.search(r"h1.{0,140}unsupported|h1.{0,180}не поддержана", negative), name
+        assert re.search(
+            r"half-life.{0,200}not measured|полураспада.{0,200}не измерялось", negative
+        ), name
+        assert re.search(r"currents.{0,100}not obtained|токи.{0,100}не получены", negative), name
+        assert re.search(r"not a temperature law|не является температурным законом", negative), name
+        assert re.search(r"not a scaling law|не образуют закона масштабирования", negative), name
+        head = _flat(_abstract(tex))
+        assert re.search(
+            r"establish neither.{0,130}metastable|не устанавливают ни.{0,160}метастабиль", head
+        ), name
+        assert not re.search(r"h1 is established|h5 is present", _flat(tex)), name
+
+
+def test_abstract_gap_is_not_recovered_memory() -> None:
+    for name, tex in _papers():
+        head = _flat(_abstract(tex))
+        assert re.search(r"last-band gap|зазор в последней полосе", head), name
+        assert "replication" in head or "репликаци" in head, name
+        assert re.search(
+            r"neither recovered semantic memory|ни восстановление семантической памяти", head
+        ), name
+        assert "seed-domain identity" not in head and "carries seed-domain" not in head, name
+
+
+def test_twins_are_underpowered_not_equivalent_or_one_lock() -> None:
+    for name, tex in _papers():
+        negative = _flat(_between(tex, "sec:not", "sec:limitations"))
+        assert re.search(r"underpowered|низкую статистическую мощность", negative), name
+        assert re.search(
+            r"equivalence.{0,100}not claimed|эквивалентность.{0,100}не утверждается", negative
+        ), name
+        assert not re.search(r"collapsed(?: twins)? occupy one lock", _flat(tex)), name
+
+
+def test_bernoulli_intervals_are_not_point_masses() -> None:
+    for name, tex in _papers():
+        assert not re.search(r"\[0,\s*0\]|\[1,\s*1\]", _body(tex)), name
+        repetition = _between(tex, "sec:repetition", "sec:dependence")
+        assert re.search(r"Clopper|Клоппера", repetition), name
+        assert "19/20" in repetition and "[0.751, 0.999]" in repetition, name
+
+
+def test_hosted_axis_remains_temperature_specific() -> None:
+    for name, tex in _papers():
+        repetition = _between(tex, "sec:repetition", "sec:dependence")
+        assert r"n{=}4" in repetition, name
+        assert "fixed_point_rates_by_temperature.csv" in repetition, name
+        assert "0/4" in repetition and "4/4" in repetition, name
+        assert not re.search(r"temperature.{0,30}0\.3.{0,80}0/8", _flat(repetition)), name
+
+
+def test_primary_replication_and_archival_outputs_are_distinct() -> None:
+    for name, tex in _papers():
+        dependence = _flat(_between(tex, "sec:dependence", "sec:families"))
+        assert re.search(
+            r"primary evidence is the occupancy replication|основное доказательство --- репликация",
+            dependence,
+        ), name
+        assert re.search(
+            r"not the primary evidence|не служит основным доказательством", dependence
+        ), name
+        archival = _table_block(tex, "tab:archival")
+        replication = _table_block(tex, "tab:repl")
+        for value in ("0.201", "0.390", "0.150", "[0.065, 0.332]", "0.029"):
+            assert value in archival, name
+        for value in ("0.208", "0.400", "0.152", "[0.091, 0.314]"):
+            assert value in replication and value not in archival, name
+        assert r"n_{\mathrm{within}}{=}6" in replication, name
+        loss = _flat(_between(tex, "sec:archival", "sec:results"))
+        assert "ADR-0021" in _between(tex, "sec:archival", "sec:results"), name
+        assert re.search(r"cannot be recomputed|нельзя пересчитать", loss), name
+        assert re.search(
+            r"new draw does not restore|новая стохастическая реализация их не восстанавливает", loss
+        ), name
+
+
+def test_family_completion_rows_match_artifacts_without_pooling() -> None:
+    cases = [
+        (9, "Qwen3-8B", "Base", "base-nf4"),
+        (9, "Qwen3-8B", "Instruct", "instruct-nf4"),
+        (10, "OLMo-3-7B", "Base", "base-nf4"),
+        (10, "OLMo-3-7B", "SFT", "sft-nf4"),
+        (10, "OLMo-3-7B", "DPO", "dpo-nf4"),
+        (10, "OLMo-3-7B", "RLVR", "rlvr-nf4"),
+        (11, "Ministral-3-8B", "Base", "ministral-base"),
+        (11, "Ministral-3-8B", "Instruct", "ministral-instruct"),
+        (11, "Gemma-4-12B", "Base", "gemma-base"),
+        (11, "Gemma-4-12B", None, "gemma-it"),
+    ]
+    for name, tex in _papers():
+        table = _body(_table_block(tex, "tab:completion"))
+        rows = [line for line in table.splitlines() if "&" in line and "/" in line]
+        assert len(rows) == len(cases), name
+        for stage, family, checkpoint, cell in cases:
+            path = ARTIFACTS / f"stage-{stage}/generate_status/generate_status.csv"
+            with path.open(encoding="utf-8", newline="") as handle:
+                record = next(row for row in csv.DictReader(handle) if row["cell"] == cell)
+            row = next(
+                line
+                for line in rows
+                if line.split("&")[0].strip() == family
+                and (
+                    (line.split("&")[1].strip() == checkpoint)
+                    if checkpoint
+                    else (line.split("&")[1].strip() != "Base")
+                )
+            )
+            assert f"{record['n_completed']}/{record['n_planned']}" in row, (name, cell)
+        families = _flat(_between(tex, "sec:families", "sec:long"))
+        assert re.search(r"not a pooled frequency|не образуют объединённую частоту", families), name
+        assert re.search(
+            r"not a demonstrated equivalence|не доказывают эквивалентность", families
+        ), name
+
+
+def test_gemma_signs_do_not_become_cross_space_disagreement() -> None:
+    for name, tex in _papers():
+        families = _flat(_between(tex, "sec:families", "sec:long"))
+        for value in (
+            "-0.010628",
+            "-0.0377395",
+            "-0.00608505",
+            "0.0141659",
+            "-0.0208935",
+            "0.0186512",
+        ):
+            assert value in families, name
+        assert re.search(r"established negative gap|установленный отрицательный зазор", families), (
+            name
+        )
+        assert re.search(r"sign is not established|знак не установлен", families), name
+        assert re.search(
+            r"common cross-space sign is not established|общий знак для двух пространств не установлен",
+            families,
+        ), name
+        assert not re.search(
+            r"cross-space disagreement|spaces do not agree|не согласуется между пространствами",
+            _flat(tex),
+        ), name
+        assert re.search(
+            r"nothing.{0,100}causal role for attention|не позволяет установить причинную роль устройства внимания",
+            families,
+        ), name
+
+
+def test_s12_absolute_clock_selected_cohort_and_right_censoring() -> None:
+    meta = json.loads((ARTIFACTS / "stage-12/tau_escape/tau_escape.meta.json").read_text())
+    assert "4,999,168" in meta["caption"]
+    for name, tex in _papers():
+        long = _flat(_between(tex, "sec:long", "sec:not")).replace("{,}", ",")
+        for value in ("0/8", "4,999,168", "0.75", "1220.5", "1219.75", "l0"):
+            assert value in long, name
+        assert re.search(r"first token|первого токена", long), name
+        assert re.search(r"selected|отобран", long), name
+        assert re.search(
+            r"not.*mean time to escape|не устанавливает среднее время до выхода", long
+        ), name
+        assert re.search(
+            r"does not show.{0,40}permanent|не показывает, что режим постоянен", long
+        ), name
+        assert re.search(
+            r"not a proof of an absorbing state|не доказательство поглощающего состояния", long
+        ), name
+        assert re.search(r"rather than pooled into a rate|не объединяются в одну частоту", long), (
+            name
+        )
+
+
+def test_required_limits_no_attention_necessity_claim() -> None:
+    for name, tex in _papers():
+        limits = _flat(_between(tex, "sec:limitations", "sec:discussion"))
+        for pattern in (
+            r"re-prompt",
+            r"continuous.*cache|непрерывн.*кэш",
+            r"nf4",
+            r"provider non-determinism|недетерминизм провайдера",
+            r"finite|конечен",
+            r"two pipelines|два вычислительных конвейера",
+            r"survivors|выжившим",
+            r"style|стиль",
+        ):
+            assert re.search(pattern, limits), (name, pattern)
+        assert not re.search(
+            r"we (?:show|prove|establish).{0,80}full attention.{0,40}(?:unnecessary|dispensable)",
+            _flat(tex),
+        ), name
+
+
+def test_figures_have_existing_artifact_sources_and_reproducers() -> None:
+    script = (ROOT / "paper/compile.sh").read_text(encoding="utf-8")
+    for name, tex in _papers():
+        includes = re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", _body(tex))
+        assert includes, name
+        for rel in includes:
+            assert not Path(rel).is_absolute() and ".." not in Path(rel).parts, rel
+            if rel.startswith("build/figures/"):
+                match = re.search(r'FIGURE_SOURCE="\$\{ROOT\}/\.\./(artifacts/[^"\n]+)"', script)
+                assert match, "derived include has no declared artifact source"
+                source = ROOT / match.group(1)
+                assert source.stem == Path(rel).stem and source.suffix == ".svg", rel
+                assert f"${{FIGURE_BUILD}}/{Path(rel).name}" in script, rel
+                assert "rsvg-convert --format=pdf" in script, rel
+                assert 'sed -f "${ROOT}/figure-layout.sed" "${FIGURE_SOURCE}"' in script, rel
+                assert (ROOT / "paper/figure-layout.sed").is_file()
+            else:
+                source = ARTIFACTS / rel
+            assert source.is_file() and source.resolve().is_relative_to(ARTIFACTS.resolve()), rel
+            stem = source.with_suffix("")
+            assert Path(str(stem) + ".data.parquet").is_file(), rel
+            assert Path(str(stem) + ".meta.json").is_file(), rel
+
+
+def test_mirror_math_and_structural_reference_parity() -> None:
+    en, ru = _tex(), _tex_ru()
+    math = r"(?<!\\)\$(.*?)(?<!\\)\$"
+    assert re.findall(math, _body(en), re.S) == re.findall(math, _body(ru), re.S)
+    for command in ("label", "ref"):
+        pattern = rf"\\{command}\{{([^}}]+)\}}"
+        assert re.findall(pattern, _body(en)) == re.findall(pattern, _body(ru))
+    assert _cite_keys(en) == _cite_keys(ru)
+    assert re.findall(r"\\includegraphics[^\n]+", _body(en)) == re.findall(
+        r"\\includegraphics[^\n]+", _body(ru)
+    )
+
+
+def test_all_structural_references_and_labels_resolve() -> None:
+    for name, tex in _papers():
+        labels = re.findall(r"\\label\{([^}]+)\}", _body(tex))
+        assert len(labels) == len(set(labels)), name
+        assert set(re.findall(r"\\ref\{([^}]+)\}", _body(tex))) <= set(labels), name

@@ -1192,7 +1192,9 @@ def persistence_gt_figure(
     last_g = float(last["G"])
     ci_note = ""
     if "G_lo" in per_band.columns:
-        ci_note = f" Last-band G={last_g:.4f} [{float(last['G_lo']):.4f}, {float(last['G_hi']):.4f}]."
+        ci_note = (
+            f" Last-band G={last_g:.4f} [{float(last['G_lo']):.4f}, {float(last['G_hi']):.4f}]."
+        )
     meta = FigureMeta(
         name=name,
         caption=(

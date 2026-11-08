@@ -1,4 +1,5 @@
 from huggingface_hub import HfApi
+
 from semantic_afterlife.config import get_settings
 
 settings = get_settings()

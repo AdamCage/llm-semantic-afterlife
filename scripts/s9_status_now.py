@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(r"c:\projects\llm-semantic-afterlife\runs\s9")
@@ -49,8 +49,10 @@ def summarize(run: Path) -> None:
             f"tok={last.get('generated_tokens')} fill={last.get('block_fill_ratio')} "
             f"think={last.get('reasoning_tokens')} lat={last.get('latency_s')} ts={last.get('ts')}"
         )
-        stall = (datetime.now(timezone.utc) - parse_ts(last["ts"])).total_seconds()
-        print(f"   stall_s={round(stall, 1)} median_live_lat_s={None if median is None else round(median, 3)}")
+        stall = (datetime.now(UTC) - parse_ts(last["ts"])).total_seconds()
+        print(
+            f"   stall_s={round(stall, 1)} median_live_lat_s={None if median is None else round(median, 3)}"
+        )
     reasons = Counter()
     for event in failed:
         reasons[str(event.get("error") or event.get("message") or event.get("status"))[:120]] += 1
@@ -66,7 +68,9 @@ def summarize(run: Path) -> None:
         if event.get("n_steps") and event.get("generated_tokens", 0) >= 40000:
             ok_ids.append(tid)
         else:
-            fail_ids.append((tid, event.get("generated_tokens"), event.get("n_steps"), event.get("error")))
+            fail_ids.append(
+                (tid, event.get("generated_tokens"), event.get("n_steps"), event.get("error"))
+            )
     if fail_ids:
         print("   short_finished:")
         for row in fail_ids:

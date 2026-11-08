@@ -28,7 +28,7 @@ def main() -> None:
             print(f"{run_id}  MISSING chunks.parquet")
             continue
         chunks = pd.read_parquet(path)
-        n = int(len(chunks))
+        n = len(chunks)
         tokens = int(chunks["n_tokens"].sum())
         rows.append({"run_id": run_id, "n_chunks": n, "n_tokens": tokens})
         print(f"{run_id}  chunks={n}  tokens={tokens}")

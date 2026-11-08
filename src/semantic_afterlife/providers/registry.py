@@ -69,9 +69,9 @@ async def close_clients() -> None:
         await client.aclose()
     _CLIENTS.clear()
 
+
 def forget_client(api: str) -> None:
     """Drop cached clients for ``api`` so the next build reloads weights (ADR-0024)."""
     doomed = [key for key in _CLIENTS if key == api or key.startswith(f"{api}:")]
     for key in doomed:
         _CLIENTS.pop(key, None)
-

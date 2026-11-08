@@ -340,9 +340,7 @@ def test_capped_jaccard_runs() -> None:
 @pytest.mark.asyncio
 async def test_local_embed_scripted() -> None:
     client = LocalEmbedClient(backend=ScriptedEmbedBackend(dim=16))
-    response = await client.embed(
-        EmbeddingRequest(model_id="mock-bge", inputs=("alpha", "beta"))
-    )
+    response = await client.embed(EmbeddingRequest(model_id="mock-bge", inputs=("alpha", "beta")))
     assert len(response.vectors) == 2
     assert len(response.vectors[0]) == 16
 

@@ -455,9 +455,7 @@ def _architecture_module_guesses(architecture: str, model_type: str = "") -> tup
     return tuple(seen)
 
 
-def _bind_architecture_class(
-    transformers: Any, architecture: str, model_type: str = ""
-) -> None:
+def _bind_architecture_class(transformers: Any, architecture: str, model_type: str = "") -> None:
     """Export ``architecture`` onto the transformers module if it only lives in models.*."""
     if not architecture or getattr(transformers, architecture, None) is not None:
         return
@@ -663,9 +661,7 @@ class TransformersBackend:
             placed = placed.to(device)
         placed.eval()
         self._eos_ids = _eos_token_ids(placed.config)
-        hf_revision = getattr(config, "_commit_hash", None) or (
-            str(revision) if revision else None
-        )
+        hf_revision = getattr(config, "_commit_hash", None) or (str(revision) if revision else None)
         mem = _cuda_mem()
         self.load_stats = {
             "architecture": architecture or model_type or "unknown",
@@ -860,8 +856,7 @@ def _bitsandbytes_config(extra: dict[str, Any]) -> Any | None:
         from transformers import BitsAndBytesConfig
     except ImportError as exc:
         raise ProviderError(
-            "NF4/INT8 local load requires transformers + bitsandbytes "
-            "(uv sync --extra local)"
+            "NF4/INT8 local load requires transformers + bitsandbytes (uv sync --extra local)"
         ) from exc
     if load_4 and load_8:
         raise ProviderError("load_in_4bit and load_in_8bit are mutually exclusive")

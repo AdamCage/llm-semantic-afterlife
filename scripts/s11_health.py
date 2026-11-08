@@ -49,9 +49,9 @@ def main() -> None:
     print(f"reasoning_tokens {dict(reasoning)}")
     print(f"roundtrip_ok {dict(roundtrip)}")
     if fills:
-        print(f"fill min/mean/max {min(fills):.3f} {sum(fills)/len(fills):.3f} {max(fills):.3f}")
+        print(f"fill min/mean/max {min(fills):.3f} {sum(fills) / len(fills):.3f} {max(fills):.3f}")
     if lats:
-        print(f"latency_s min/mean/max {min(lats):.2f} {sum(lats)/len(lats):.2f} {max(lats):.2f}")
+        print(f"latency_s min/mean/max {min(lats):.2f} {sum(lats) / len(lats):.2f} {max(lats):.2f}")
 
     last = steps[-1] if steps else {}
     print(

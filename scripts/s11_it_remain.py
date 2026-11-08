@@ -38,7 +38,7 @@ def main() -> None:
             finished.add(tid)
         elif name == "generation.trajectory.failed" and tid:
             failed[tid] = str(event.get("error") or event.get("reason") or "")[:160]
-    print(f"steps_events {sum(1 for e in events if e.get('event')=='generation.step.completed')}")
+    print(f"steps_events {sum(1 for e in events if e.get('event') == 'generation.step.completed')}")
     print(f"finished {len(finished)} failed {len(failed)} touched {len(steps_by)}")
     for tid in sorted(finished | set(failed) | set(steps_by)):
         short = tid.split("__")[-2] + " " + tid.split("__")[-1]
@@ -54,7 +54,9 @@ def main() -> None:
     print(f"remain_full_if_all_complete {remain_full}")
     print(f"remain_h_if_all_complete {remain_steps * mean / 3600:.1f}")
     # deaths so far are short; if the rest die in ~6 steps:
-    print(f"remain_h_if_rest_die_in_6_steps {(6 * max(0, remain_full) + sum(max(0, 6 - steps_by[t]) for t in open_ids)) * mean / 3600:.2f}")
+    print(
+        f"remain_h_if_rest_die_in_6_steps {(6 * max(0, remain_full) + sum(max(0, 6 - steps_by[t]) for t in open_ids)) * mean / 3600:.2f}"
+    )
 
 
 if __name__ == "__main__":

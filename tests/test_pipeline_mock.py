@@ -197,37 +197,77 @@ class TestResultsFrame:
 
 
 class TestRequestConstruction:
-    def test_raw_completion_sends_a_prompt(self) -> None:
-        request = build_request(GENERATOR, SAMPLING, prompt="abc", max_tokens=16, seed=1)
+    @pytest.mark.parametrize("serialization", ["raw_bytes", "native_chat"])
+    def test_raw_completion_sends_a_prompt(self, serialization: str) -> None:
+        generator = GENERATOR.model_copy(update={"serialization": serialization})
+        request = build_request(generator, SAMPLING, prompt="abc", max_tokens=16, seed=1)
         assert request.prompt == "abc"
         assert request.messages is None
         assert request.allow_fallbacks is False
 
+    @pytest.mark.parametrize("continuation", ["assistant_prefill", "chat_instructed"])
+    def test_raw_bytes_preserves_the_window_for_chat_continuations(self, continuation: str) -> None:
+        generator = GENERATOR.model_copy(
+            update={
+                "continuation": continuation,
+                "serialization": "raw_bytes",
+                "is_base_model": False,
+                "continuation_instruction": "Continue the text.",
+                "system_prompt": "You are helpful.",
+                "prefill_user_stub": "Continue.",
+            }
+        )
+        prompt = "  seed\nwith a trailing tab\t"
+        request = build_request(generator, SAMPLING, prompt=prompt, max_tokens=16, seed=1)
+        assert request.prompt == prompt
+        assert request.messages is None
+
     def test_assistant_prefill_puts_the_window_in_an_assistant_turn(self) -> None:
-        generator = GENERATOR.model_copy(update={"continuation": "assistant_prefill"})
+        generator = GENERATOR.model_copy(
+            update={
+                "continuation": "assistant_prefill",
+                "serialization": "native_chat",
+                "is_base_model": False,
+                "prefill_user_stub": "Continue.",
+            }
+        )
         request = build_request(generator, SAMPLING, prompt="abc", max_tokens=16, seed=1)
-        assert request.messages is not None
-        assert request.messages[-1] == {"role": "assistant", "content": "abc"}
+        assert request.prompt is None
+        assert request.messages == (
+            {"role": "user", "content": "Continue."},
+            {"role": "assistant", "content": "abc"},
+        )
 
     def test_chat_instructed_includes_the_instruction(self) -> None:
         generator = GENERATOR.model_copy(
             update={
                 "continuation": "chat_instructed",
                 "continuation_instruction": "Continue the text.",
+                "serialization": "native_chat",
+                "is_base_model": False,
             }
         )
         request = build_request(generator, SAMPLING, prompt="abc", max_tokens=16, seed=1)
-        assert request.messages is not None
-        assert "Continue the text." in request.messages[-1]["content"]
+        assert request.prompt is None
+        assert request.messages == ({"role": "user", "content": "Continue the text.\n\nabc"},)
 
     def test_system_prompt_marks_the_run_as_forced(self) -> None:
-        unforced = GENERATOR.model_copy(update={"continuation": "assistant_prefill"})
+        unforced = GENERATOR.model_copy(
+            update={
+                "continuation": "assistant_prefill",
+                "serialization": "native_chat",
+                "is_base_model": False,
+            }
+        )
         forced = unforced.model_copy(update={"system_prompt": "You are helpful."})
         assert unforced.forcing == "unforced"
         assert forced.forcing == "fixed"
         request = build_request(forced, SAMPLING, prompt="abc", max_tokens=16, seed=1)
-        assert request.messages is not None
-        assert request.messages[0]["role"] == "system"
+        assert request.prompt is None
+        assert request.messages == (
+            {"role": "system", "content": "You are helpful."},
+            {"role": "assistant", "content": "abc"},
+        )
 
 
 class TestStepSeed:

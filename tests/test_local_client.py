@@ -19,6 +19,7 @@ from semantic_afterlife.generation.trajectory import TrajectoryRunner, build_req
 from semantic_afterlife.ledger import Ledger
 from semantic_afterlife.logging_utils import EventLogger
 from semantic_afterlife.paths import RunPaths
+from semantic_afterlife.providers.base import EmbeddingRequest
 from semantic_afterlife.providers.cache import ResponseCache
 from semantic_afterlife.providers.local import (
     LocalClient,
@@ -26,6 +27,7 @@ from semantic_afterlife.providers.local import (
     _eos_token_ids,
     strip_eos,
 )
+from semantic_afterlife.providers.local_embed import LocalEmbedClient, ScriptedEmbedBackend
 from semantic_afterlife.providers.registry import build_client
 from semantic_afterlife.tokenization import WhitespaceTokenizer
 
@@ -173,13 +175,26 @@ async def test_local_replay_hits_cache_without_calling_backend(tmp_path: Path) -
 
 
 @pytest.mark.asyncio
-async def test_local_embed_is_refused(tmp_path: Path) -> None:
-    from semantic_afterlife.errors import ProviderError
-    from semantic_afterlife.providers.base import EmbeddingRequest
+async def test_local_embed_delegates_to_injected_backend_without_generation(tmp_path: Path) -> None:
+    generation_backend = ScriptedBackend([1])
+    client = _client(tmp_path, WhitespaceTokenizer(), generation_backend)
+    client._embed_client = LocalEmbedClient(backend=ScriptedEmbedBackend(dim=8))
+    request = EmbeddingRequest(model_id="local/test-embed", inputs=("alpha", "beta", "alpha"))
 
-    client = _client(tmp_path, WhitespaceTokenizer(), ScriptedBackend([1]))
-    with pytest.raises(ProviderError, match="embeddings are not implemented"):
-        await client.embed(EmbeddingRequest(model_id="local/test", inputs=("x",)))
+    first = await client.embed(request)
+    second = await client.embed(request)
+
+    assert first.model_returned == request.model_id
+    assert len(first.vectors) == len(request.inputs)
+    assert all(len(vector) == 8 for vector in first.vectors)
+    assert first.vectors == second.vectors
+    assert first.vectors[0] == first.vectors[2]
+    assert first.vectors[0] != first.vectors[1]
+    assert all(sum(value**2 for value in vector) == pytest.approx(1.0) for vector in first.vectors)
+    assert first.usage.cost_usd == 0.0
+    assert first.usage.prompt_tokens == 0
+    assert first.usage.completion_tokens == 0
+    assert generation_backend.calls == []
 
 
 def test_build_client_local_in_live_mode(

@@ -3,7 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-p = Path(r"c:/projects/llm-semantic-afterlife/runs/s9/s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498/events.jsonl")
+p = Path(
+    r"c:/projects/llm-semantic-afterlife/runs/s9/s9-paperb-qwen-instruct-int8-20260912T180435Z-e9c7d498/events.jsonl"
+)
 rows = []
 bad = 0
 for raw in p.read_text(encoding="utf-8").splitlines():

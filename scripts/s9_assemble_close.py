@@ -20,9 +20,13 @@ import yaml
 from semantic_afterlife.analysis.rates import quarter_diagnostics
 from semantic_afterlife.config import get_settings
 from semantic_afterlife.reporting.tables import save_table
-from semantic_afterlife.viz.export import FigureMeta, save_matplotlib_figure, write_index
+from semantic_afterlife.viz.export import (
+    FigureMeta,
+    save_matplotlib_figure,
+    save_plotly_figure,
+    write_index,
+)
 from semantic_afterlife.viz.figures import persistence_gt_figure
-from semantic_afterlife.viz.export import save_plotly_figure
 from semantic_afterlife.viz.theme import PALETTE, ROLE_COLORS, apply_seaborn_theme
 
 GENERATE = {
@@ -108,7 +112,11 @@ def main() -> None:
     status_rows: list[dict[str, Any]] = []
     for run_dir in sorted(p for p in runs.iterdir() if p.is_dir()):
         man_path = run_dir / "manifest.json"
-        status_file = (run_dir / "STATUS").read_text(encoding="utf-8").strip() if (run_dir / "STATUS").is_file() else ""
+        status_file = (
+            (run_dir / "STATUS").read_text(encoding="utf-8").strip()
+            if (run_dir / "STATUS").is_file()
+            else ""
+        )
         man_status = ""
         if man_path.is_file():
             man_status = str(_read_json(man_path).get("status") or "")
@@ -129,13 +137,16 @@ def main() -> None:
         man = _read_json(embed_dir / "manifest.json")
         cfg = man.get("config_resolved") or {}
         if not cfg and (embed_dir / "config.resolved.yaml").is_file():
-            cfg = yaml.safe_load((embed_dir / "config.resolved.yaml").read_text(encoding="utf-8")) or {}
+            cfg = (
+                yaml.safe_load((embed_dir / "config.resolved.yaml").read_text(encoding="utf-8"))
+                or {}
+            )
         src = str(cfg.get("source_run_id") or cfg.get("run") or "")
         if not src:
             # embed configs pin the generate run in the command / events
             for ev in _load_events(embed_dir):
                 if ev.get("event") == "run.started":
-                    src = str((ev.get("source_run_id") or ev.get("run") or ""))
+                    src = str(ev.get("source_run_id") or ev.get("run") or "")
                     if src:
                         break
         gen_cell = next((k for k, v in GENERATE.items() if v == src), "")
@@ -147,7 +158,11 @@ def main() -> None:
                     gen_cell = k
                     src = v
                     break
-        space = "qwen3-embed-8b" if "qwen-hosted" in embed_dir.name or "qwen3-embed" in embed_dir.name else "local-bge-m3"
+        space = (
+            "qwen3-embed-8b"
+            if "qwen-hosted" in embed_dir.name or "qwen3-embed" in embed_dir.name
+            else "local-bge-m3"
+        )
         if "embed-bge" in embed_dir.name or "embed-bge" in str(man.get("command") or ""):
             space = "local-bge-m3"
         if "qwen-hosted" in embed_dir.name:
@@ -164,7 +179,9 @@ def main() -> None:
     for persist_dir in sorted(runs.glob("s9-persistence-*")):
         src_embed = _source_embed(persist_dir)
         cell = embed_to_cell.get(src_embed, "")
-        space = embed_to_space.get(src_embed, persist_dir.name.split("persistence-")[-1].rsplit("-2026", 1)[0])
+        space = embed_to_space.get(
+            src_embed, persist_dir.name.split("persistence-")[-1].rsplit("-2026", 1)[0]
+        )
         if "local-bge-m3" in persist_dir.name:
             space = "local-bge-m3"
         elif "qwen3-embed-8b" in persist_dir.name:
@@ -179,7 +196,7 @@ def main() -> None:
         loo = pd.read_parquet(loo_path) if loo_path.is_file() else pd.DataFrame()
         n_lock = int(locks["confirmed_lock"].sum()) if not locks.empty else 0
         n_esc = int(locks["confirmed_escape"].sum()) if not locks.empty else 0
-        n_traj = int(len(locks)) if not locks.empty else 0
+        n_traj = len(locks) if not locks.empty else 0
         persist_rows.append(
             {
                 "cell": cell,
@@ -297,7 +314,7 @@ def main() -> None:
         cfg = man.get("config_resolved") or {}
         src = str(cfg.get("source_run_id") or cfg.get("run") or "")
         if not src:
-            for k, v in GENERATE.items():
+            for _k, v in GENERATE.items():
                 if v in cmd:
                     src = v
                     break
@@ -343,7 +360,9 @@ def main() -> None:
                     "seed_id": parsed["seed_id"],
                     "stochastic": parsed["stochastic"],
                     "status": ev.get("status"),
-                    "error": str(ev.get("error") or ev.get("reason") or ev.get("detail") or "")[:400],
+                    "error": str(ev.get("error") or ev.get("reason") or ev.get("detail") or "")[
+                        :400
+                    ],
                     "generated_tokens": ev.get("generated_tokens"),
                 }
             )
@@ -409,7 +428,7 @@ def main() -> None:
                     {
                         "cell": cell,
                         "seed_id": seed,
-                        "n_traj": int(len(sblock)),
+                        "n_traj": len(sblock),
                         "n_lock": int(sblock["confirmed_lock"].sum()),
                         "n_escape": int(sblock["confirmed_escape"].sum()),
                         "has_lock": bool(sblock["confirmed_lock"].any()),
@@ -445,11 +464,17 @@ def main() -> None:
         )
 
     # Write artifacts
-    all_run_ids = list(GENERATE.values()) + last_band["embed_run_id"].tolist() + last_band["persistence_run_id"].tolist()
+    all_run_ids = (
+        list(GENERATE.values())
+        + last_band["embed_run_id"].tolist()
+        + last_band["persistence_run_id"].tolist()
+    )
     if not degeneracy.empty:
         all_run_ids.extend(sorted(set(degeneracy["degeneracy_run_id"])))
 
-    def _meta(name: str, caption: str, limitations: str, extra_runs: list[str] | None = None) -> FigureMeta:
+    def _meta(
+        name: str, caption: str, limitations: str, extra_runs: list[str] | None = None
+    ) -> FigureMeta:
         ids = extra_runs if extra_runs is not None else all_run_ids
         return FigureMeta(
             name=name,
@@ -535,7 +560,9 @@ def main() -> None:
                 "Degeneracy is a surface-form measure. Lexical variety can coexist with "
                 "semantic stasis. This table is why G_t is not read as confinement without "
                 "a lock label.",
-                extra_runs=sorted(set(degeneracy["generate_run_id"]) | set(degeneracy["degeneracy_run_id"])),
+                extra_runs=sorted(
+                    set(degeneracy["generate_run_id"]) | set(degeneracy["degeneracy_run_id"])
+                ),
             ),
         )
     save_table(
@@ -592,7 +619,11 @@ def main() -> None:
     import matplotlib.pyplot as plt
 
     plot = last_band.copy()
-    plot["label"] = plot["cell"] + " / " + plot["embedding"].str.replace("local-", "").str.replace("qwen3-embed-8b", "qwen-embed")
+    plot["label"] = (
+        plot["cell"]
+        + " / "
+        + plot["embedding"].str.replace("local-", "").str.replace("qwen3-embed-8b", "qwen-embed")
+    )
     fig, ax = plt.subplots(figsize=(10.5, 5.2))
     xs = range(len(plot))
     colors = [PALETTE[i % len(PALETTE)] for i in xs]
@@ -634,8 +665,21 @@ def main() -> None:
         fig, ax = plt.subplots(figsize=(9.5, 5.0))
         for i, (cell, block) in enumerate(sub.groupby("cell")):
             style = "-" if "nf4" in cell else "--"
-            ax.plot(block["band_mid"], block["G"], style, color=PALETTE[i % len(PALETTE)], label=cell, linewidth=2.0)
-            ax.fill_between(block["band_mid"], block["G_lo"], block["G_hi"], color=PALETTE[i % len(PALETTE)], alpha=0.12)
+            ax.plot(
+                block["band_mid"],
+                block["G"],
+                style,
+                color=PALETTE[i % len(PALETTE)],
+                label=cell,
+                linewidth=2.0,
+            )
+            ax.fill_between(
+                block["band_mid"],
+                block["G_lo"],
+                block["G_hi"],
+                color=PALETTE[i % len(PALETTE)],
+                alpha=0.12,
+            )
         ax.axhline(0.0, color=ROLE_COLORS["baseline"], linestyle="--", linewidth=1.0)
         ax.axvline(1.0, color=ROLE_COLORS["horizon"], linewidth=1.4)
         ax.set_xlabel("window turnovers t/W")
@@ -672,10 +716,14 @@ def main() -> None:
         "last_band": last_band.to_dict(orient="records"),
         "generate_status": generate_status.to_dict(orient="records"),
         "failed": failed.to_dict(orient="records") if not failed.empty else [],
-        "protocol_quarter": protocol_quarter.to_dict(orient="records") if not protocol_quarter.empty else [],
+        "protocol_quarter": protocol_quarter.to_dict(orient="records")
+        if not protocol_quarter.empty
+        else [],
         "seed_locks": seed_locks.to_dict(orient="records") if not seed_locks.empty else [],
-        "degeneracy_n": int(len(degeneracy)),
-        "degeneracy_n_true": int(degeneracy["degenerate"].sum()) if not degeneracy.empty and "degenerate" in degeneracy.columns else None,
+        "degeneracy_n": len(degeneracy),
+        "degeneracy_n_true": int(degeneracy["degenerate"].sum())
+        if not degeneracy.empty and "degenerate" in degeneracy.columns
+        else None,
         "samples": samples,
         "embed_map": embed_to_cell,
         "incomplete_runs": status_frame.loc[
@@ -690,7 +738,17 @@ def main() -> None:
         (artifacts / "_close_summary.json").write_text(
             json.dumps(summary, indent=2, default=str), encoding="utf-8"
         )
-    print(json.dumps({"wrote": str(artifacts), "n_last_band": len(last_band), "n_failed": len(failed), "n_samples": len(samples)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "wrote": str(artifacts),
+                "n_last_band": len(last_band),
+                "n_failed": len(failed),
+                "n_samples": len(samples),
+            },
+            indent=2,
+        )
+    )
     print("--- LAST BAND ---")
     print(last_band.to_string(index=False))
     print("--- GENERATE ---")

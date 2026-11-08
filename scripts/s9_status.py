@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 RID = "s9-paperb-qwen-instruct-nf4-20260911T054758Z-c54e2ab6"
@@ -20,7 +20,9 @@ def parse_ts(raw: str) -> datetime:
 
 def main() -> None:
     events_path = RUN / "events.jsonl"
-    status = (RUN / "STATUS").read_text(encoding="utf-8").strip() if (RUN / "STATUS").is_file() else "?"
+    status = (
+        (RUN / "STATUS").read_text(encoding="utf-8").strip() if (RUN / "STATUS").is_file() else "?"
+    )
     steps: list[dict] = []
     finished: list[dict] = []
     fails: list[dict] = []
@@ -34,7 +36,9 @@ def main() -> None:
             steps.append(event)
         elif name == "generation.trajectory.finished":
             finished.append(event)
-        elif name in {"generation.trajectory.failed", "run.failed"} or event.get("level") == "ERROR":
+        elif (
+            name in {"generation.trajectory.failed", "run.failed"} or event.get("level") == "ERROR"
+        ):
             fails.append(event)
         elif name == "local.generate.completed":
             gens.append(event)
@@ -81,7 +85,7 @@ def main() -> None:
 
     last = steps[-1] if steps else {}
     first = steps[0] if steps else {}
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     started = parse_ts(first["ts"]) if first.get("ts") else None
     last_ts = parse_ts(last["ts"]) if last.get("ts") else None
     stall_s = (now - last_ts).total_seconds() if last_ts else None
@@ -113,15 +117,19 @@ def main() -> None:
     if tok:
         print(f"tok_s_n={len(tok)} tok_s_mean={round(sum(tok) / len(tok), 3)} tok_s_last={tok[-1]}")
     if elapsed_s is not None:
-        print(f"elapsed_h={round(elapsed_s / 3600, 3)} stall_s={None if stall_s is None else round(stall_s, 1)}")
+        print(
+            f"elapsed_h={round(elapsed_s / 3600, 3)} stall_s={None if stall_s is None else round(stall_s, 1)}"
+        )
     if eta_s is not None:
         print(
             f"eta_this_run_h={round(eta_s / 3600, 2)} "
-            f"eta_finish_utc={datetime.fromtimestamp(now.timestamp() + eta_s, timezone.utc).isoformat()}"
+            f"eta_finish_utc={datetime.fromtimestamp(now.timestamp() + eta_s, UTC).isoformat()}"
         )
         # After this run: Base 40 + INT8 20. INT8 latency unknown; use same median as sketch.
         after = (40 + 20) * STEPS_PER * (median or 0)
-        print(f"sketch_remaining_after_this_run_h={round(after / 3600, 2)} (Base+INT8 at same median)")
+        print(
+            f"sketch_remaining_after_this_run_h={round(after / 3600, 2)} (Base+INT8 at same median)"
+        )
     print("per_traj:")
     for tid, row in by_traj.items():
         mean_lat = sum(row["lats"]) / len(row["lats"]) if row["lats"] else None
@@ -146,7 +154,13 @@ def main() -> None:
     if fails:
         print("FAILS:")
         for event in fails[-8]:
-            print(" ", event.get("ts"), event.get("event"), event.get("level"), str(event.get("error") or event.get("message") or "")[:200])
+            print(
+                " ",
+                event.get("ts"),
+                event.get("event"),
+                event.get("level"),
+                str(event.get("error") or event.get("message") or "")[:200],
+            )
     sys.exit(0)
 
 

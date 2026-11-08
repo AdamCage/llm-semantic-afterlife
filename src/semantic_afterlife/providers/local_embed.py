@@ -42,7 +42,9 @@ class ScriptedEmbedBackend:
 class SentenceTransformersBackend:
     """Lazy sentence-transformers wrapper (BGE-M3 and friends)."""
 
-    def __init__(self, model_id: str, *, device: str = "cpu", trust_remote_code: bool = False) -> None:
+    def __init__(
+        self, model_id: str, *, device: str = "cpu", trust_remote_code: bool = False
+    ) -> None:
         self.model_id = model_id
         self.device = device
         self.trust_remote_code = trust_remote_code
@@ -55,8 +57,7 @@ class SentenceTransformersBackend:
             from sentence_transformers import SentenceTransformer
         except ImportError as exc:
             raise ProviderError(
-                "local embeddings require sentence-transformers "
-                "(uv sync --extra local)"
+                "local embeddings require sentence-transformers (uv sync --extra local)"
             ) from exc
         logger.info("loading local embedder %s device=%s", self.model_id, self.device)
         self._model = SentenceTransformer(
