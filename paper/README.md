@@ -1,40 +1,64 @@
 # Manuscript
 
-English source of record: [`main.tex`](main.tex) plus [`refs.bib`](refs.bib).
-That file is the assembled narrative (repetition, seed dependence,
-family heterogeneity; ADR-0030). [`main.ru.tex`](main.ru.tex) has not
-been realigned to it. On disagreement, numbers and `run_id`s in the
-English file win. A PDF built from the Russian file is not a
-translation of the assembled paper.
+The canonical manuscript is [`main.tex`](main.tex), with bibliography
+[`refs.bib`](refs.bib). [`main.ru.tex`](main.ru.tex) is its complete Russian
+mirror: the same sections, equations, tables, figures, claims, and sources.
+The publication assembly is [ADR-0031](../docs/decisions/ADR-0031-publication-assembly.md).
+It is editorial work on closed stages, with no new generation or estimates.
 
-Figures are included from `../artifacts/` (see `\graphicspath`).
-Do not redraw them for the paper.
+The paper separates textual repetition, reaching the planned horizon,
+and initial-text dependence. Families remain separate. The independent
+occupancy replication is the primary occupancy evidence; the earlier
+panel is explicitly archival because its source vectors are not recoverable.
+The selected long continuations remain a separate censored observation.
 
-Compile both PDFs (TeX Live: `texlive-latex-recommended`,
-`texlive-latex-extra`, `texlive-fonts-recommended`, `texlive-bibtex-extra`,
-`texlive-lang-cyrillic`, `cm-super`, `lmodern`):
+## Build
+
+Use TeX Live with `texlive-latex-extra`, `texlive-fonts-recommended`,
+`texlive-lang-cyrillic`, `cm-super`, `lmodern`, and `librsvg2-bin`. On Windows, the same
+commands can run in WSL from this checkout.
 
 ```bash
-bash paper/compile.sh          # both
-bash paper/compile.sh en       # English only
-bash paper/compile.sh ru       # Russian only
+bash paper/compile.sh all        # identified English and Russian
+bash paper/compile.sh anonymous  # anonymous English
 ```
 
-Released PDFs (committed) predate the assembled `main.tex`:
+Individual builds use `en` or `ru`. Auxiliary files go to the ignored
+`paper/build/` directory. Rebuild after changing a source or bibliography.
 
-- [`releases/semantic-afterlife-en.pdf`](releases/semantic-afterlife-en.pdf)
-- [`releases/semantic-afterlife-ru.pdf`](releases/semantic-afterlife-ru.pdf)
+The releases are:
 
-The next English build needs the `underscore` package (`paper/compile.sh en`).
-No engine was available in this workspace when the narrative was assembled,
-so those release files were not regenerated.
+- [`English`](releases/semantic-afterlife-en.pdf)
+- [`Russian`](releases/semantic-afterlife-ru.pdf)
+- [`Anonymous English`](releases/semantic-afterlife-anonymous.pdf)
 
-Auxiliary files go to `paper/build/` (gitignored).
+Identified versions use the TMLR `preprint` option. The anonymous version
+uses the official submission option and contains no author identity in
+its visible text or PDF author metadata. Preparing it is not a submission
+to a venue.
 
-Every quantitative sentence in both TeX files carries a same-line
-comment with an artifact path and `run_id`. Cite only `VERIFIED`
-entries from `docs/literature/related-work.md`. Stage 7 minted no
-generate `run_id`. `main.ru.tex` still tracks the pre-assembly ADR-0019 English
-rewrite (blockwise kernel, `B=1024`, Clopper–Pearson intervals,
-H1 unsupported / H5 absent / F6 not a headline). It is not the
-assembled narrative.
+## Style provenance
+
+The unmodified `tmlr.sty`, `tmlr.bst`, and `fancyhdr.sty` come from
+[JmlrOrg/tmlr-style-file](https://github.com/JmlrOrg/tmlr-style-file/tree/7bf90efe3a0debbba703c05c43f3ff7e4d4a2992),
+revision `7bf90efe3a0debbba703c05c43f3ff7e4d4a2992`.
+The upstream licence is retained as [`tmlr-LICENSE`](tmlr-LICENSE).
+Do not modify the venue style to force a layout.
+
+## Evidence and verification
+
+Figures use the closed bundles in `../artifacts/`. The family plot is
+included directly. The S12 SVG is composed into a vector PDF under
+`paper/build/figures/` by [`figure-layout.sed`](figure-layout.sed): only
+the complete legend group is translated into empty space so that it does
+not cover markers. No plotted values, paths, labels, or experimental
+artifacts are changed. `compile.sh` reproduces this display-only copy.
+Quantitative findings retain artifact paths and run
+identifiers in their LaTeX source comments. Experiment configurations
+supply protocol settings. Cite verified primary sources from
+[`related-work.md`](../docs/literature/related-work.md).
+
+The final publication reading and build checks are recorded in
+[`PUBLICATION_REVIEW.md`](PUBLICATION_REVIEW.md). The existing
+`afterlife review --stage s13` gate checks the synthesis record; it
+does not certify scientific validity or recover the archival vectors.

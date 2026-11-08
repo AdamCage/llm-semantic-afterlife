@@ -15,7 +15,7 @@ F4 remains an ensemble last-band domain gap, not recovered prompt
 memory (H2). Occupancy protocol is P1 `raw_completion` served by
 Alibaba, `B=1024`. H1 unsupported; H5 absent.
 
-**Paper B is open** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
+**Paper B is closed** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 stages **S8–S13**. S8 harness and **S9 Qwen 12W are closed**
 (2026-09-16). **S10 OLMo 12W is closed** (2026-09-19). **S11 Ministral+Gemma 12W is closed** (2026-09-26). **S12 horizon
 ladder is closed** (2026-11-07): 0/8 confirmed escape through
@@ -25,7 +25,12 @@ family-wise; the Gemma positive gap did not replicate; S12 remains
 a separate censored count. There is no S14.
 S9–S11 is the complete Paper B story. Local generate is $0 ledger; project ceiling
 **$200** ([ADR-0013](decisions/ADR-0013-project-ceiling-200.md))
-still binds any hosted Gemini subset. Last revised 2026-11-07.
+still binds any hosted Gemini subset. Last revised 2026-11-08.
+
+Publication assembly is editorial work on this closed record
+([ADR-0031](decisions/ADR-0031-publication-assembly.md)): one English
+manuscript, a complete Russian mirror, and rebuilt identified/anonymous
+PDFs. No research stage is opened and no new generation is authorised.
 
 ---
 
@@ -573,7 +578,7 @@ fill=1 print / $8 YAML refuse
 S7 closed 2026-09-06. Review APPROVED WITH CHANGES; manuscript
 assembled from S0–S6 artifacts; F4 is a domain gap, not H2.
 Human authorised `--no-ff` close. Paper A planned stages are
-complete. Paper B S8+ is open (ADR-0023); local generate is $0
+complete. Paper B S8–S13 is closed; publication assembly is ADR-0031. Local generate is $0
 ledger. Any hosted Gemini subset still needs estimate + human yes.
 Full risk register:
 [`risks.md`](risks.md).

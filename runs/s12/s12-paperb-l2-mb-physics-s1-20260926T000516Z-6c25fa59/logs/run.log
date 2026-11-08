@@ -1,0 +1,387 @@
+2026-09-26 03:06:17,323 INFO     semantic_afterlife.events run s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-09-26 03:06:18,386 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-26 03:06:22,800 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-09-26 03:06:32,646 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 9.769s
+2026-09-30 19:00:09,233 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-09-30 19:00:22,916 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1237 (1266688 tokens)
+2026-09-30 19:00:22,917 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-30 19:00:26,025 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-09-30 19:00:30,384 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.303s
+2026-10-01 00:35:00,148 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 00:35:14,176 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1285 (1315840 tokens)
+2026-10-01 00:35:14,178 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 00:35:16,864 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 00:35:25,885 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 8.961s
+2026-10-01 04:30:52,019 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 04:31:06,532 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1333 (1364992 tokens)
+2026-10-01 04:31:06,534 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 04:31:10,033 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 04:31:13,961 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.874s
+2026-10-01 08:31:44,046 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 08:32:09,181 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1381 (1414144 tokens)
+2026-10-01 08:32:09,182 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 08:32:12,818 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 08:37:44,244 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 331.371s
+2026-10-01 12:54:37,968 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 12:54:53,609 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1429 (1463296 tokens)
+2026-10-01 12:54:53,611 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 12:54:56,375 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 12:55:09,659 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 13.209s
+2026-10-01 16:50:46,017 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 16:51:04,344 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1477 (1512448 tokens)
+2026-10-01 16:51:04,346 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 16:51:07,455 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 16:51:11,091 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.574s
+2026-10-01 20:46:53,199 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-01 20:47:10,172 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1525 (1561600 tokens)
+2026-10-01 20:47:10,174 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 20:47:12,755 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-01 20:47:17,970 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.153s
+2026-10-02 00:44:16,269 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 00:44:33,647 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1573 (1610752 tokens)
+2026-10-02 00:44:33,648 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 00:44:36,158 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 00:44:39,884 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.67s
+2026-10-02 04:41:09,525 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 04:41:27,081 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1621 (1659904 tokens)
+2026-10-02 04:41:27,083 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 04:41:29,715 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 04:41:35,626 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.838s
+2026-10-02 08:38:18,424 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 08:38:38,614 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1669 (1709056 tokens)
+2026-10-02 08:38:38,616 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 08:38:42,438 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 08:38:47,780 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.281s
+2026-10-02 12:33:27,160 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 12:33:45,681 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1717 (1758208 tokens)
+2026-10-02 12:33:45,683 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 12:33:49,181 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 12:33:53,830 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.592s
+2026-10-02 16:27:20,589 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 16:27:39,393 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1765 (1807360 tokens)
+2026-10-02 16:27:39,395 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 16:27:42,796 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 16:27:49,054 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.181s
+2026-10-02 20:21:14,895 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-02 20:21:34,138 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1813 (1856512 tokens)
+2026-10-02 20:21:34,140 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 20:21:37,497 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-02 20:21:44,950 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.399s
+2026-10-03 00:19:24,539 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-03 00:19:45,180 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1861 (1905664 tokens)
+2026-10-03 00:19:45,181 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 00:19:48,685 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-03 00:19:56,238 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.494s
+2026-10-03 04:18:34,243 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-03 04:18:56,423 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1909 (1954816 tokens)
+2026-10-03 04:18:56,424 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 04:18:59,741 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-03 04:19:11,471 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 11.66s
+2026-10-03 08:17:59,790 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-03 08:18:21,456 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 1957 (2003968 tokens)
+2026-10-03 08:18:21,457 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 08:18:24,070 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-03 08:18:31,054 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.917s
+2026-10-03 12:16:25,568 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-03 12:16:47,857 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2005 (2053120 tokens)
+2026-10-03 12:16:47,858 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 12:16:50,601 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-03 12:16:57,178 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.424s
+2026-10-03 16:12:06,577 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-03 16:12:29,501 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2053 (2102272 tokens)
+2026-10-03 16:12:29,503 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 16:12:32,116 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-03 16:12:39,055 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.883s
+2026-10-04 02:16:33,454 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-04 02:16:56,181 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2101 (2151424 tokens)
+2026-10-04 02:16:56,183 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 02:16:58,845 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-04 02:17:06,185 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.267s
+2026-10-04 06:12:44,522 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-04 06:13:07,320 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2149 (2200576 tokens)
+2026-10-04 06:13:07,322 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 06:13:10,755 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-04 06:13:14,737 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.915s
+2026-10-04 10:09:25,678 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-04 10:09:49,094 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2197 (2249728 tokens)
+2026-10-04 10:09:49,096 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 10:09:52,507 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-04 10:09:56,394 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.816s
+2026-10-04 14:07:53,113 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-04 14:08:19,906 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2245 (2298880 tokens)
+2026-10-04 14:08:19,907 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 14:08:23,374 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-04 14:08:28,539 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.093s
+2026-10-05 01:07:43,866 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 01:08:10,380 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2293 (2348032 tokens)
+2026-10-05 01:08:10,382 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 01:08:12,962 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 01:08:19,129 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.106s
+2026-10-05 05:05:12,612 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 05:05:38,298 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2341 (2397184 tokens)
+2026-10-05 05:05:38,299 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 05:05:40,816 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 05:05:43,965 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.091s
+2026-10-05 09:04:11,086 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 09:04:37,080 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2389 (2446336 tokens)
+2026-10-05 09:04:37,082 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 09:04:40,536 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 09:04:44,677 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.088s
+2026-10-05 13:01:08,004 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 13:01:35,040 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2437 (2495488 tokens)
+2026-10-05 13:01:35,041 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 13:01:38,429 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 13:01:54,238 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 15.754s
+2026-10-05 16:59:51,138 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 17:00:18,110 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2485 (2544640 tokens)
+2026-10-05 17:00:18,112 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 17:00:21,389 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 17:00:25,086 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.626s
+2026-10-05 20:58:49,722 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-05 20:59:17,654 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2533 (2593792 tokens)
+2026-10-05 20:59:17,656 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 20:59:21,163 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-05 20:59:24,998 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.78s
+2026-10-06 00:57:18,871 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 00:57:51,129 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2581 (2642944 tokens)
+2026-10-06 00:57:51,131 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 00:57:53,984 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 00:57:59,334 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.283s
+2026-10-06 04:57:18,903 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 04:57:48,844 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2629 (2692096 tokens)
+2026-10-06 04:57:48,846 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 04:57:51,316 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 04:57:54,820 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.451s
+2026-10-06 08:58:33,010 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 08:59:02,823 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2677 (2741248 tokens)
+2026-10-06 08:59:02,824 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 08:59:05,391 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 08:59:10,580 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.129s
+2026-10-06 12:57:47,647 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 12:58:18,134 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2725 (2790400 tokens)
+2026-10-06 12:58:18,135 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 12:58:20,711 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 12:58:26,589 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.81s
+2026-10-06 16:58:47,210 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 16:59:17,478 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2773 (2839552 tokens)
+2026-10-06 16:59:17,479 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 16:59:20,029 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 16:59:25,159 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.074s
+2026-10-06 20:58:32,917 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-06 20:59:05,168 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2821 (2888704 tokens)
+2026-10-06 20:59:05,169 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 20:59:08,628 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-06 20:59:16,741 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 8.035s
+2026-10-07 00:56:33,309 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 00:57:05,576 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2869 (2937856 tokens)
+2026-10-07 00:57:05,578 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 00:57:08,088 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 00:57:13,766 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.614s
+2026-10-07 04:52:19,253 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 04:52:51,095 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2917 (2987008 tokens)
+2026-10-07 04:52:51,097 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 04:52:54,539 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 04:52:58,908 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.299s
+2026-10-07 08:49:04,846 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 08:49:37,258 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 2965 (3036160 tokens)
+2026-10-07 08:49:37,260 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 08:49:39,753 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 08:49:45,266 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.459s
+2026-10-07 12:48:35,680 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 12:49:09,525 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3013 (3085312 tokens)
+2026-10-07 12:49:09,527 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 12:49:12,914 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 12:49:17,554 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.587s
+2026-10-07 16:50:37,770 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 16:51:13,001 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3061 (3134464 tokens)
+2026-10-07 16:51:13,003 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 16:51:16,416 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 16:51:20,902 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.428s
+2026-10-07 20:51:53,783 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-07 20:52:28,273 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3109 (3183616 tokens)
+2026-10-07 20:52:28,274 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 20:52:30,772 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-07 20:52:35,605 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.78s
+2026-10-12 12:25:31,959 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-12 12:26:04,942 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3157 (3232768 tokens)
+2026-10-12 12:26:04,944 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 12:26:07,426 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-12 12:26:12,396 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 4.915s
+2026-10-12 16:22:28,384 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-12 16:23:03,010 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3205 (3281920 tokens)
+2026-10-12 16:23:03,011 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 16:23:05,434 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-12 16:23:08,675 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.187s
+2026-10-12 20:18:30,336 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-12 20:19:05,915 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3253 (3331072 tokens)
+2026-10-12 20:19:05,917 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 20:19:08,428 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-12 20:19:11,891 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.401s
+2026-10-13 00:14:20,631 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 00:14:56,434 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3301 (3380224 tokens)
+2026-10-13 00:14:56,436 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 00:14:59,030 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 00:15:13,905 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 14.819s
+2026-10-13 04:09:54,055 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 04:10:30,731 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3349 (3429376 tokens)
+2026-10-13 04:10:30,733 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 04:10:33,251 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 04:10:37,112 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.805s
+2026-10-13 08:06:43,540 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 08:07:22,096 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3397 (3478528 tokens)
+2026-10-13 08:07:22,098 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 08:07:24,573 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 08:07:28,395 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.768s
+2026-10-13 12:03:48,762 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 12:04:25,614 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3445 (3527680 tokens)
+2026-10-13 12:04:25,615 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 12:04:28,133 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 12:04:31,938 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.745s
+2026-10-13 13:23:22,854 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 13:23:59,592 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3458 (3540992 tokens)
+2026-10-13 13:23:59,594 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 13:24:02,168 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 13:24:08,945 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.719s
+2026-10-13 17:18:26,618 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 17:19:04,963 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3506 (3590144 tokens)
+2026-10-13 17:19:04,965 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 17:19:07,478 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 17:19:12,995 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.447s
+2026-10-13 21:14:01,000 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-13 21:14:40,249 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3554 (3639296 tokens)
+2026-10-13 21:14:40,250 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 21:14:42,729 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-13 21:14:48,554 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.766s
+2026-10-14 01:07:52,103 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-14 01:08:34,783 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3602 (3688448 tokens)
+2026-10-14 01:08:34,784 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-14 01:08:37,594 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-14 01:08:44,021 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.058s
+2026-10-25 02:31:46,979 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-25 02:32:30,240 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3650 (3737600 tokens)
+2026-10-25 02:32:30,243 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 02:32:32,750 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-25 02:32:55,204 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 21.853s
+2026-10-25 16:17:11,450 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-25 16:17:53,654 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3698 (3786752 tokens)
+2026-10-25 16:17:53,655 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 16:17:56,101 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-25 16:18:21,945 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 25.762s
+2026-10-25 20:05:56,469 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-25 20:06:36,896 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3746 (3835904 tokens)
+2026-10-25 20:06:36,897 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 20:06:39,330 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-25 20:06:47,276 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.878s
+2026-10-26 00:27:42,462 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-26 00:28:48,733 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3794 (3885056 tokens)
+2026-10-26 00:28:48,736 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 00:28:54,376 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-26 00:30:06,822 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 72.326s
+2026-10-26 10:45:52,819 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-26 10:46:35,597 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3842 (3934208 tokens)
+2026-10-26 10:46:35,599 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 10:46:38,312 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-26 10:46:41,541 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.17s
+2026-10-26 14:31:49,772 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-26 14:32:31,669 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3890 (3983360 tokens)
+2026-10-26 14:32:31,670 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 14:32:34,409 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-26 14:32:41,140 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.65s
+2026-10-26 18:16:11,167 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-26 18:16:50,664 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3938 (4032512 tokens)
+2026-10-26 18:16:50,665 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 18:16:53,258 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-26 18:16:56,362 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 3.051s
+2026-10-29 11:17:47,744 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-29 11:18:31,564 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 3986 (4081664 tokens)
+2026-10-29 11:18:31,566 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 11:18:34,025 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-29 11:18:40,662 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.573s
+2026-10-29 15:06:17,801 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-29 15:07:01,484 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4034 (4130816 tokens)
+2026-10-29 15:07:01,485 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 15:07:03,929 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-29 15:07:09,553 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.565s
+2026-10-29 18:56:43,602 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-29 18:57:29,609 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4082 (4179968 tokens)
+2026-10-29 18:57:29,611 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 18:57:32,098 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-29 18:57:38,962 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.772s
+2026-10-29 22:46:50,681 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-29 22:47:35,873 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4130 (4229120 tokens)
+2026-10-29 22:47:35,874 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 22:47:38,379 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-29 22:47:55,507 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 17.069s
+2026-10-30 02:33:32,400 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-30 02:34:16,812 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4178 (4278272 tokens)
+2026-10-30 02:34:16,814 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 02:34:19,226 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-30 02:34:26,237 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.939s
+2026-10-30 06:19:34,102 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-30 06:20:20,564 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4226 (4327424 tokens)
+2026-10-30 06:20:20,565 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 06:20:23,007 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-30 06:20:29,848 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.779s
+2026-10-30 10:07:14,740 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-30 10:08:01,891 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4274 (4376576 tokens)
+2026-10-30 10:08:01,892 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 10:08:04,421 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-30 10:08:12,405 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.918s
+2026-10-30 13:57:26,120 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-30 13:58:12,860 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4322 (4425728 tokens)
+2026-10-30 13:58:12,862 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 13:58:15,412 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-30 13:58:23,785 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 8.288s
+2026-10-30 17:49:20,823 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-10-30 17:50:08,731 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4370 (4474880 tokens)
+2026-10-30 17:50:08,733 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 17:50:11,407 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-10-30 17:50:18,706 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.104s
+2026-11-03 09:07:11,939 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-03 09:07:59,690 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4418 (4524032 tokens)
+2026-11-03 09:07:59,692 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 09:08:02,239 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-03 09:08:08,784 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.491s
+2026-11-03 12:53:50,591 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-03 12:54:37,232 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4466 (4573184 tokens)
+2026-11-03 12:54:37,234 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 12:54:39,742 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-03 12:54:45,515 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.714s
+2026-11-03 16:37:26,531 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-03 16:38:17,590 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4514 (4622336 tokens)
+2026-11-03 16:38:17,591 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 16:38:20,120 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-03 16:38:26,048 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.871s
+2026-11-03 20:22:15,760 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-03 20:23:04,585 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4562 (4671488 tokens)
+2026-11-03 20:23:04,587 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 20:23:07,006 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-03 20:23:12,850 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 5.782s
+2026-11-04 18:38:15,527 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-04 18:39:20,591 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4610 (4720640 tokens)
+2026-11-04 18:39:20,592 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-04 18:39:23,381 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-04 18:39:32,449 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 8.988s
+2026-11-04 22:43:16,687 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-04 22:44:10,968 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4658 (4769792 tokens)
+2026-11-04 22:44:10,970 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-04 22:44:13,526 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-04 22:44:20,017 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 6.427s
+2026-11-06 00:14:03,958 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-06 00:15:02,696 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4706 (4818944 tokens)
+2026-11-06 00:15:02,698 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-06 00:15:07,594 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-06 00:15:16,507 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 8.844s
+2026-11-06 05:26:12,268 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-06 05:27:46,806 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4754 (4868096 tokens)
+2026-11-06 05:27:46,808 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-06 05:27:50,598 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-06 05:27:58,001 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 7.296s
+2026-11-06 10:48:09,723 INFO     semantic_afterlife.events resume s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 (live)
+2026-11-06 10:49:29,595 INFO     semantic_afterlife.events resuming pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1 at step 4802 (4917248 tokens)
+2026-11-06 10:49:29,597 INFO     semantic_afterlife.events start pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-06 10:49:33,384 INFO     semantic_afterlife.providers.local loading local model mistralai/Ministral-3-8B-Base-2512 device=cuda dtype=bfloat16 attn=sdpa loader=Mistral3ForConditionalGeneration
+2026-11-06 10:49:44,888 INFO     semantic_afterlife.events loaded mistralai/Ministral-3-8B-Base-2512 Mistral3ForConditionalGeneration via Mistral3ForConditionalGeneration rev=d4883f9b36aa2e5d775730d3fdba3d30de51a8ef peak_vram_mib=6425.2 in 11.378s
+2026-11-06 11:13:15,352 INFO     semantic_afterlife.events completed pb-ministral-8b-base__W4096__T0p3__mb-physics-s1__s1: 4834 steps, 4950016 tokens, 4834 chunks, $0.0000
+2026-11-06 11:13:15,360 INFO     semantic_afterlife.events unloaded mistralai/Ministral-3-8B-Base-2512 peak_vram_mib=6939.3
+2026-11-06 11:13:23,182 INFO     semantic_afterlife.events completed s12-paperb-l2-mb-physics-s1-20260926T000516Z-6c25fa59 — spent $0.0000 (project $10.54 of $200.00)

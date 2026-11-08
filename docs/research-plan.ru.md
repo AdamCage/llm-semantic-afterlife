@@ -15,7 +15,7 @@ S0–S7. F4 Paper A — ансамблевый last-band domain gap, не recove
 prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 `B=1024`. H1 не поддержан; H5 нет.
 
-**Paper B открыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
+**Paper B закрыта** ([ADR-0023](decisions/ADR-0023-paper-b-local-four-family.md)):
 этапы **S8–S13**. S8 harness и **S9 Qwen 12W закрыты** (2026-09-16).
 **S10 OLMo 12W закрыт** (2026-09-19). **S11 Ministral+Gemma 12W закрыт** (2026-09-26). **S12 закрыт**
 (2026-11-07): 0/8 подтверждённых выходов через 4 999 168 исходных
@@ -26,10 +26,15 @@ prompt memory (H2). Occupancy — P1 `raw_completion` у Alibaba,
 законченная история Paper B.
 Локальный generate — $0 в ledger; потолок проекта **$200**
 (ADR-0013) по-прежнему держит любой hosted Gemini. Последняя правка
-2026-11-07. Канонический текст — английский
+2026-11-08. Канонический текст — английский
 [`research-plan.md`](research-plan.md).
 
 ---
+
+Публикационная сборка — редакционная работа по закрытым результатам
+([ADR-0031](decisions/ADR-0031-publication-assembly.md)): единая английская
+рукопись, полный русский перевод и пересобранные именные и анонимный PDF.
+Новый исследовательский этап и новая генерация не открываются.
 
 ## 1. Вопрос
 
@@ -457,8 +462,8 @@ Hosted Stage 5 **$1.3385** против оценки fill=1 $1.06 / YAML $8
 ([ADR-0016](decisions/ADR-0016-s5-lock-occupancy-on-seed-bank-v1.md)).
 S7 закрыт 2026-09-06. Рецензия APPROVED WITH CHANGES; рукопись из
 артефактов S0–S6; F4 — domain gap, не H2. Человек разрешил
-`--no-ff` close. Этапы Paper A завершены. Paper B S8+ открыта
-(ADR-0023); локальный generate — $0 в ledger.
+`--no-ff` close. Этапы Paper A завершены. Paper B S8–S13 закрыта; публикационная сборка — ADR-0031.
+Локальный generate — $0 в ledger.
 Полный реестр рисков:
 [`risks.md`](risks.md).
 

@@ -14,6 +14,14 @@
 *.csv  text eol=lf
 *.tex  text eol=lf
 *.sh   text eol=lf
+*.sty  text eol=lf
+*.bst  text eol=lf
+*.sed  text eol=lf
+paper/tmlr-LICENSE text eol=lf
+
+# Raw computational records must keep their exact bytes for manifest hashes.
+# In particular, generated .text streams are not ordinary editable prose.
+runs/** -text
 
 # Binary artifacts: never diffed, never line-ending-converted.
 *.png     binary

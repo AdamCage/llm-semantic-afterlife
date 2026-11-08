@@ -14,6 +14,13 @@ unverified citation in a submission is worse than a missing one.
 say what the notes claimed — but three of them say *more* than the notes
 recorded, in ways that change our framing. Those changes are flagged below.
 
+**Publication update, 2026-11-08.** The Geng et al. entry now follows the
+published EMNLP Findings paper and arXiv v2 (2026-10-22). StreamingLLM is
+included as a direct neighbour for finite-window operation. This is a targeted
+primary-source update, not a completed systematic search or a priority claim.
+The contribution statements below describe the closed computational record;
+planned half-life, semantic-state, and current measurements are not results.
+
 ---
 
 ## 1. The theoretical frame
@@ -21,8 +28,9 @@ recorded, in ways that change our framing. Those changes are flagged below.
 ### `VERIFIED` Zekri et al., *Large Language Models as Markov Chains*, arXiv:2410.02724
 
 Draws an equivalence between an autoregressive LM with vocabulary `T` and context
-window `K` and a Markov chain on a finite state space of size `O(T^K)`. Proves
-the chain is an **ergodic unichain with a unique stationary distribution**,
+window `K` and a Markov chain on a finite state space of size `O(T^K)`. For
+their positive-temperature, full-support softmax kernel, proves the chain is an
+**ergodic unichain with a unique stationary distribution**,
 derives its convergence rate and the influence of temperature on that rate, and
 relates the formalism to pathological behaviour — repetition, incoherence at high
 temperature. Validated on Llama and Gemma families.
@@ -31,25 +39,29 @@ temperature. Validated on Llama and Gemma families.
 phrase H1.** The scoping notes recorded only "formalisation exists". What they
 missed matters:
 
-- A **unique** stationary distribution is proved to exist. So we must not claim
-  "multiple attractors" in the sense of multiple stationary distributions — that
-  would contradict established theory, and a reviewer will say so.
+- A **unique** stationary distribution is proved for that kernel. Top-p
+  truncation can assign zero mass to tokens, so the proof is not automatically
+  a theorem about our sampled kernel. Neither uniqueness nor multiple
+  stationary distributions has been established empirically here.
 - Our H1 is nonetheless compatible with it: **metastability is about timescale
   separation on the way to the stationary distribution**, not about several
   stationary distributions. A unichain can have long-lived almost-invariant sets
   whose escape times exceed any feasible observation window. That is exactly what
   an MSM macrostate decomposition measures.
-- Consequence for wording: our claim is about the *structure of the approach* to
-  the stationary regime and the *timescales* involved, and about the fact that
-  those timescales exceed the observation horizon. Phrasing it as "the model has
-  several stationary states" would be wrong.
+- Consequence for wording: our finite observation of repetition locks is not a
+  measurement of stationarity or a validated semantic metastable state. A
+  censored escape time does not establish that a lock is permanent.
 - Their temperature result is a direct predecessor to our H5, so H5 must be
   positioned as an empirical, semantic-space counterpart to their theoretical
   convergence-rate result, not as a new discovery that temperature matters.
 
 **Our delta:** they characterise the chain and its asymptotics analytically in
-token space; we measure the *approach* empirically in semantic space, past the
-eviction of the initial condition, as a function of an imposed `W`.
+token space. We measure textual repetition, seed-conditioned embedding-space
+gaps, completion, and censored escape after explicit seed eviction under an
+imposed finite-tail re-prompt protocol. These measurements do not recover the
+stationary distribution or a semantic-memory half-life.
+
+Primary source: [paper and proof](https://arxiv.org/html/2410.02724v2).
 
 ## 2. Iterated-transformation dynamics — the closest work by mechanism
 
@@ -63,19 +75,18 @@ textual forms it already favours. Robust across models, languages, text types,
 prompts, **and increasing temperature**; they propose maximum-perplexity
 selection as an intervention.
 
-**The temperature robustness is a problem for our H5 and we should say so up
-front.** They found cycles that temperature does not break. We predict a
-temperature-driven confinement→diffusion transition. Either the regimes differ
-(meaning-preserving transformation versus free continuation) or our prediction is
-wrong. Registering this tension before running S4 is the honest move.
+**Relation to the original H5.** Their cycles survive increased generation
+randomness. Our pre-registered temperature-transition prediction was therefore
+not licensed by their result; the closed Stage 4 record did not establish a
+semantic confinement-to-diffusion boundary
+([Stage 4 artifacts](../../artifacts/stage-4/INDEX.md)).
 
-**Our delta:** paraphrasing is a *meaning-preserving* map with a fixed target, so
-convergence is partly by design pressure; free continuation has no such pressure
-and no target. Their state is the whole previous output; ours is a sliding tail of
-the model's own generation with an imposed `W`. Their metric is surface-level
-(Levenshtein); ours is semantic (embedding geometry, MSM).
+**Our delta:** their instruction asks for meaning-preserving paraphrasing of
+the previous output. Our next block extends a finite tail without a recurring
+transformation instruction. We report a calibrated textual-repetition flag and
+an embedding-space ensemble gap; neither licenses a semantic-state claim.
 
-### `VERIFIED` Geng, Mohamed, Shang, Vazirgiannis, Poibeau, *Markovian Generation Chains in Large Language Models*, arXiv:2603.11228
+### `VERIFIED` Geng, Mohamed, Shang, Vazirgiannis, Poibeau, *Markovian Generation Chains in Large Language Models*, Findings of EMNLP 2026 (`2026.findings-emnlp.2188`, pp. 46847–46865; arXiv:2603.11228v2)
 
 Defines iterative inference where each step sees only a fixed prompt template
 plus the previous output — **no prior memory**. Experiments on iterative
@@ -84,7 +95,10 @@ recurrence (fixed point or short cycle), or long pre-recurrence transients
 producing novel surface forms. Introduces recurrence time as the key metric.
 Greedy decoding accelerates recurrence; **higher temperature lengthens transients
 and increases diversity**. Explicitly distinguished from training-time model
-collapse (Shumailov et al.).
+collapse (Shumailov et al.). The 2026-10-22 revision also measures lexical and
+semantic drift, including BERTScore and anchor preservation, and estimates
+core-and-tail transition kernels with held-out checks. It is not a
+strings-only study.
 
 **Note the tension with the paraphrasing paper**: here temperature *does* extend
 transients; there it did not break cycles. Two adjacent regimes, opposite
@@ -92,12 +106,34 @@ temperature effects. Our regime is a third one, which makes the comparison
 interesting rather than redundant — and means neither result licenses a
 prediction for ours.
 
-**Our delta:** their state is a *complete replacement* of the text at every step
-under a transformation instruction; ours is *accretion with eviction* — the state
-is the last `W` tokens of a continuously growing stream, and `W` is the
-experimental variable. Their recurrence is exact string matching; ours is
-semantic near-recurrence in embedding space, with RQA and MSM machinery. They
-have no analogue of the context horizon.
+**Our delta:** their state is replaced at each step under a transformation
+instruction. Ours accrues generated blocks while evicting old tokens from an
+imposed tail. Our evidence concerns repetition and seed-conditioned ensemble
+gaps after that explicit eviction, checkpoint and family heterogeneity, and
+censored continuation of selected locks. Semantic metrics and Markov modelling
+are not a novelty distinction between the papers.
+
+Primary sources: [published record](https://aclanthology.org/2026.findings-emnlp.2188/),
+[v2 methods and results](https://arxiv.org/html/2603.11228v2).
+
+### `VERIFIED` Xiao, Tian, Chen, Han, Lewis, *Efficient Streaming Language Models with Attention Sinks*, ICLR 2024 (arXiv:2309.17453v4)
+
+StreamingLLM studies operation beyond a fixed KV-cache window. It compares
+recent-window eviction with sliding-window recomputation and retains initial
+attention-sink tokens to stabilise the cache. Its long language-modelling
+experiment evaluates perplexity on a concatenated external PG19 corpus through
+more than four million tokens; it is not a four-million-token self-generated
+trajectory.
+
+**Our delta:** multi-million-token operation with finite memory is prior work.
+We measure the model's own generated continuation after complete seed eviction,
+using blockwise re-prompting rather than persistent sink KVs. The long-horizon
+result is censored persistence of selected repetition locks, not an inference
+efficiency improvement or evidence about native sliding attention.
+
+Primary sources: [paper, especially sections 3 and 4.1](https://arxiv.org/html/2309.17453v4),
+[publication record](https://arxiv.org/abs/2309.17453).
+Bibliography key: `streamingllm2024`.
 
 ### `VERIFIED` Heng Wang, Qiu, Zhao, Qian, Yang, Han, Ji, Savarese, Heinecke, Huan Wang, *Random Attention: Rethinking KV Cache Eviction for Efficient Reasoning*, arXiv:2609.03430 (3 Sep 2026)
 
@@ -208,24 +244,24 @@ trajectory tracking as new.
    asymmetric-influence result is *about* that interaction. Ours is a single
    model conditioned only on its own output, so any structure found is a property
    of one model rather than of a pair.
-2. **The window is the experimental variable.** They use the models' native
-   growing conversation context. We impose `W` and vary it while holding `θ`
-   fixed, which is what converts "models differ" into "memory size controls
-   dynamics".
+2. **The window is imposed.** Their debate protocol has growing conversation
+   history and role instructions. We define an explicit finite-tail kernel.
+   Holding its window fixed in the four-family comparison does not establish a
+   general window-scaling law or a causal architectural effect.
 3. **The regime begins after eviction.** Their conversations retain the whole
    history within context; nothing in their setup studies what happens once the
    initial condition has physically left the state. That period is our entire
    object.
-4. **Dynamics-grade measurement.** They report endpoint regions and pull
-   coefficients. We report MSD scaling exponents, non-reversible MSM transition
-   matrices with probability currents, Markovianity validation (implied
-   timescales, Chapman–Kolmogorov), semantic half-life, and order parameters
-   across `temperature × W`.
-5. **A convergent detail worth citing.** Their strongest attractor trait is
-   *meta-commentary*. Our own S0 audit found that suppressed reasoning traces are
-   meta-commentary about the task. If our macrostate decomposition also surfaces
-   a meta-textual state, their result is independent corroboration — and a reason
-   to treat that state carefully rather than as an artifact.
+4. **Different measured outcomes.** They report endpoint regions and pull
+   coefficients. Our headline outcomes are textual repetition, seed-conditioned
+   ensemble gaps, completion, and finite-horizon escape. The attempted Stage 3
+   state model did not validate semantic macrostates; semantic-memory half-life
+   and macrostate probability currents are not achieved contributions
+   ([Stage 3 report](../stages/stage-3/REPORT.md)).
+5. **A convergent detail.** Their meta-commentary trait resembles surface
+   registers observed here. That resemblance motivates caution about treating
+   embedding-space separation as recovered semantic memory; it is not an
+   independent validation of a macrostate in our data.
 
 ## 4. Applied motivation
 
@@ -251,11 +287,12 @@ long-context generation alone**, with no retrieval, no scratchpad, no memory
 harness — purely because the model re-emits information faster than the window
 evicts it. That is a cleaner statement of the contribution than "semantic
 half-life exceeds the context window", and it connects directly to a named open
-problem. Cite for motivation and framing, not for method.
+problem. The closed record does not estimate that half-life or establish H2.
+Cite for motivation and framing, not for an achieved memory result.
 
 ## 5. Methods we borrow rather than invent
 
-### `VERIFIED` Wu & Noé, *Variational Approach for Learning Markov Processes from Time Series Data*, arXiv:1707.04659 (J. Nonlinear Sci. 2019, doi:10.1007/s00332-019-09567-y)
+### `VERIFIED` Wu & Noé, *Variational Approach for Learning Markov Processes from Time Series Data*, arXiv:1707.04659 (J. Nonlinear Sci. 30:23–66, 2020; doi:10.1007/s00332-019-09567-y)
 
 Introduces VAMP. The best linear model comes from the top singular components of
 the Koopman operator, giving the VAMP-`r` score family plus VAMP-E for
@@ -312,37 +349,53 @@ Sentences that **cannot** appear in the paper:
   2025, Ko & Geiping 2026.
 - "We are the first to track embeddings over the course of generation." — Ko &
   Geiping 2026.
-- "LLMs have multiple stationary distributions / multiple attractors." — Zekri
-  et al. prove a **unique** stationary distribution. Say *metastable states* and
-  mean timescale separation.
+- "We established several stationary distributions or semantic metastable
+  states." — neither was established here. Zekri et al.'s uniqueness result
+  applies to their full-support kernel; it does not validate our state model.
 - "We show that temperature controls exploration." — Zekri et al. derive it
   theoretically; Geng et al. observe it; Wang et al. find cycles that survive it.
 - "Runtime lock is model collapse." — Shumailov et al. is
   *training-time* recursive training. We never retrain.
+- "We are the first to operate a finite-memory LLM for millions of tokens." —
+  StreamingLLM already studies that length regime. Distinguish its external-text
+  perplexity experiment from our self-generated continuation.
+- "Prior chain studies measure only exact strings, while we measure semantics."
+  — Geng et al. v2 also reports semantic-drift metrics.
 
 ## 7. The one-sentence delta
 
-> Finite-tail self-conditioning after explicit prompt eviction, over many
-> turnovers of an imposed `W`, with stochastic replicas, a post-eviction
-> domain-occupancy test, and protocol diagnostics (block fill, stop,
-> degeneracy). Not “we discovered attractors.”
+> We characterise repetition and seed-conditioned ensemble separation after
+> explicit eviction under finite-tail self-conditioning, compare completion and
+> persistence within four model families, and report censored continuation of
+> selected existing locks, with protocol diagnostics and reproducible artifacts.
 
-No verified paper occupies that sentence. Telephone-game papers keep the whole
-previous text and an instruction (Perez et al.; Mohamed et al.). Paraphrase
-and Markovian chains replace the state under a transform (Wang et al.; Geng
-et al.). Multi-agent attractors keep an interlocutor and the growing history
-(Ko & Geiping). Holtzman and Xu describe in-window degeneration; Shumailov
-is training-time collapse. Zekri et al. work analytically in token space.
+Among the primary sources inspected here, the closest protocols differ in
+what is fed back: an instructed replacement text (Wang, Geng, Perez, Mohamed),
+a debate history with an interlocutor (Ko & Geiping), or an external text
+stream with persistent sink KVs (StreamingLLM). Holtzman and Xu establish
+degeneration and self-reinforcement; those are alternative explanations, not
+new mechanisms claimed here. This comparison supports a specific protocol and
+measurement contribution, not an exhaustive first-in-literature claim.
+
+The actual synthesis is in
+[`artifacts/stage-13/`](../../artifacts/stage-13/INDEX.md). Families are not
+pooled. The long-horizon table records 0/8 confirmed escapes through 4,999,168
+original tokens for the selected continuations
+([S12 artifact](../../artifacts/stage-12/tau_escape/tau_escape.meta.json));
+it does not estimate an unconditional escape rate or permanence.
 
 ## 8. Remaining verification queue
 
 Telephone / degeneration / training-time collapse entries above were verified
 2026-09-06 for the TMLR correctness pass (ADR-0019). Random Attention
-(arXiv:2609.03430) was verified 2026-09-07 (ADR-0020). Still outstanding:
+(arXiv:2609.03430) was verified 2026-09-07 (ADR-0020). Geng v2 and
+StreamingLLM received the targeted publication update on 2026-11-08. The
+items below document limits of the literature check; they do not open another
+research stage or authorise new generation.
 
 | Item | Action | Owner stage |
 | --- | --- | --- |
-| Systematic search | arXiv/ACL/Semantic Scholar for: free-running generation, self-conditioned generation, sliding-window generation dynamics, unbounded/open-ended generation degeneration | parked with Paper B |
+| Systematic search | No exhaustive search completed. The targeted primary-source comparison above does not establish priority over all free-running or streaming generation studies. | Publication limitation |
 | Metastability estimation | PCCA+ and non-reversible MSM literature, for the estimator we actually use in S3 | S3 (closed: `validated=0`) |
 | Semantic-drift measurement | existing definitions of semantic drift in generation, to avoid reinventing a metric under a new name | S2 |
 | “Execution Horizon Laws / 31-model census” | **Not found** under that title (search 2026-09-07: arXiv, web). A lookalike, *The Illusion of Diminishing Returns: Measuring Long Horizon Execution in LLMs* (arXiv:2509.09677), is a multi-turn *task-execution* benchmark with the prompt retained. It is **not** a substitute; do not cite it as this project's neighbour without a written delta, and do not cite it at all until VERIFIED for a reason other than the missing title. | ADR-0020 |

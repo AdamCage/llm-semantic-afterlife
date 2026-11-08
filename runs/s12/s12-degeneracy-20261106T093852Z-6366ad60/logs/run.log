@@ -1,0 +1,3 @@
+2026-11-06 12:39:54,123 INFO     semantic_afterlife.events run s12-degeneracy-20261106T093852Z-6366ad60 (live)
+2026-11-06 12:39:59,718 INFO     semantic_afterlife.reporting table degeneracy_verdicts -> /mnt/c/projects/llm-semantic-afterlife/artifacts/stage-12/degeneracy
+2026-11-06 12:39:59,747 INFO     semantic_afterlife.events completed s12-degeneracy-20261106T093852Z-6366ad60 — spent $0.0000 (project $10.54 of $200.00)

@@ -1,0 +1,512 @@
+2026-09-26 15:57:08,411 INFO     semantic_afterlife.events run s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-26 15:57:08,819 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-26 15:57:11,449 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-26 15:57:20,103 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 8.587s
+2026-09-26 18:55:21,884 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-26 18:55:22,772 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 48 (49152 tokens)
+2026-09-26 18:55:22,774 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-26 18:55:25,736 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-26 18:55:32,625 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.814s
+2026-09-26 22:08:22,411 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-26 22:08:23,953 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 96 (98304 tokens)
+2026-09-26 22:08:23,954 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-26 22:08:26,966 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-26 22:08:32,472 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.385s
+2026-09-27 02:17:22,170 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 02:17:24,091 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 144 (147456 tokens)
+2026-09-27 02:17:24,092 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 02:17:26,627 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 02:17:32,519 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.839s
+2026-09-27 05:45:18,313 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 05:45:20,604 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 192 (196608 tokens)
+2026-09-27 05:45:20,605 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 05:45:23,082 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 05:45:28,870 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.714s
+2026-09-27 09:10:14,777 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 09:10:17,575 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 240 (245760 tokens)
+2026-09-27 09:10:17,576 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 09:10:20,040 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 09:10:24,327 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.237s
+2026-09-27 12:37:41,818 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 12:37:45,577 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 288 (294912 tokens)
+2026-09-27 12:37:45,578 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 12:37:48,241 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 12:38:14,063 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 25.758s
+2026-09-27 16:08:23,981 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 16:08:28,061 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 336 (344064 tokens)
+2026-09-27 16:08:28,062 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 16:08:30,569 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 16:08:41,572 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 10.947s
+2026-09-27 19:35:51,201 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 19:35:55,383 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 384 (393216 tokens)
+2026-09-27 19:35:55,385 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 19:35:57,838 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 19:36:04,209 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.31s
+2026-09-27 23:01:18,452 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-27 23:01:23,180 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 432 (442368 tokens)
+2026-09-27 23:01:23,182 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-27 23:01:25,635 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-27 23:01:31,109 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.411s
+2026-09-28 02:27:46,537 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 02:27:51,842 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 480 (491520 tokens)
+2026-09-28 02:27:51,844 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 02:27:54,250 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 02:28:00,365 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.042s
+2026-09-28 05:56:44,609 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 05:56:50,367 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 528 (540672 tokens)
+2026-09-28 05:56:50,369 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 05:56:52,868 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 05:56:58,746 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.807s
+2026-09-28 09:24:27,979 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 09:24:34,059 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 576 (589824 tokens)
+2026-09-28 09:24:34,060 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 09:24:36,523 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 09:24:42,989 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.408s
+2026-09-28 12:53:56,170 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 12:54:02,775 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 624 (638976 tokens)
+2026-09-28 12:54:02,776 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 12:54:05,239 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 12:54:11,688 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.377s
+2026-09-28 16:22:09,724 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 16:22:16,779 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 672 (688128 tokens)
+2026-09-28 16:22:16,780 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 16:22:19,259 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 16:22:25,267 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.946s
+2026-09-28 19:49:53,968 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 19:50:02,644 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 720 (737280 tokens)
+2026-09-28 19:50:02,646 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 19:50:05,501 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 19:50:31,730 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 26.157s
+2026-09-28 23:19:08,218 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-28 23:19:16,413 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 768 (786432 tokens)
+2026-09-28 23:19:16,415 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-28 23:19:18,886 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-28 23:19:25,904 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.944s
+2026-09-29 02:45:53,335 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 02:46:02,843 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 816 (835584 tokens)
+2026-09-29 02:46:02,845 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 02:46:05,544 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 02:46:34,935 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 29.31s
+2026-09-29 06:18:23,249 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 06:18:33,148 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 864 (884736 tokens)
+2026-09-29 06:18:33,149 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 06:18:35,663 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 06:18:44,802 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 9.064s
+2026-09-29 09:48:08,275 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 09:48:18,087 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 912 (933888 tokens)
+2026-09-29 09:48:18,089 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 09:48:20,490 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 09:48:27,629 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.064s
+2026-09-29 13:19:23,820 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 13:19:35,513 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 960 (983040 tokens)
+2026-09-29 13:19:35,517 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 13:19:38,496 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 13:19:45,727 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.078s
+2026-09-29 16:49:54,626 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 16:50:05,545 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1008 (1032192 tokens)
+2026-09-29 16:50:05,547 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 16:50:08,044 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 16:50:15,928 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.807s
+2026-09-29 20:19:40,642 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-29 20:19:52,059 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1056 (1081344 tokens)
+2026-09-29 20:19:52,060 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-29 20:19:54,544 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-29 20:20:00,952 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.352s
+2026-09-30 09:30:28,360 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-30 09:30:39,704 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1104 (1130496 tokens)
+2026-09-30 09:30:39,706 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-30 09:30:42,162 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-30 09:30:49,545 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.327s
+2026-09-30 12:57:44,765 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-30 12:57:56,549 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1152 (1179648 tokens)
+2026-09-30 12:57:56,550 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-30 12:57:59,024 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-30 12:58:06,180 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.08s
+2026-09-30 16:25:45,922 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-30 16:25:58,603 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1200 (1228800 tokens)
+2026-09-30 16:25:58,604 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-30 16:26:01,129 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-30 16:26:06,869 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.667s
+2026-09-30 20:21:37,403 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-09-30 20:21:51,666 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1248 (1277952 tokens)
+2026-09-30 20:21:51,667 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-09-30 20:21:54,283 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-09-30 20:22:00,996 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.637s
+2026-10-01 01:56:28,506 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 01:56:42,011 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1296 (1327104 tokens)
+2026-10-01 01:56:42,013 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 01:56:44,497 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 01:57:01,185 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 16.632s
+2026-10-01 05:52:50,417 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 05:53:04,267 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1344 (1376256 tokens)
+2026-10-01 05:53:04,268 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 05:53:06,840 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 05:53:13,252 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.338s
+2026-10-01 10:10:43,560 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 10:11:07,387 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1392 (1425408 tokens)
+2026-10-01 10:11:07,388 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 10:11:11,009 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 10:16:41,617 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 330.55s
+2026-10-01 14:15:51,485 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 14:16:06,331 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1440 (1474560 tokens)
+2026-10-01 14:16:06,333 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 14:16:08,863 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 14:16:38,494 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 29.563s
+2026-10-01 18:12:14,201 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 18:12:30,348 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1488 (1523712 tokens)
+2026-10-01 18:12:30,350 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 18:12:32,843 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 18:12:38,327 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.425s
+2026-10-01 22:09:21,948 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-01 22:09:38,445 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1536 (1572864 tokens)
+2026-10-01 22:09:38,446 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-01 22:09:40,917 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-01 22:09:47,499 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.529s
+2026-10-02 02:06:00,186 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 02:06:16,887 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1584 (1622016 tokens)
+2026-10-02 02:06:16,888 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 02:06:19,384 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 02:06:24,795 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.339s
+2026-10-02 06:03:08,605 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 06:03:25,480 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1632 (1671168 tokens)
+2026-10-02 06:03:25,481 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 06:03:27,981 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 06:03:32,938 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.883s
+2026-10-02 09:58:47,173 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 09:59:04,127 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1680 (1720320 tokens)
+2026-10-02 09:59:04,128 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 09:59:06,606 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 09:59:36,153 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 29.487s
+2026-10-02 13:54:41,194 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 13:54:58,843 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1728 (1769472 tokens)
+2026-10-02 13:54:58,845 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 13:55:01,277 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 13:55:08,638 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.291s
+2026-10-02 17:47:49,472 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 17:48:07,734 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1776 (1818624 tokens)
+2026-10-02 17:48:07,735 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 17:48:10,104 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 17:48:24,421 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 14.247s
+2026-10-02 21:42:58,843 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-02 21:43:18,109 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1824 (1867776 tokens)
+2026-10-02 21:43:18,110 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-02 21:43:20,528 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-02 21:43:26,669 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.089s
+2026-10-03 01:41:53,793 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-03 01:42:13,535 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1872 (1916928 tokens)
+2026-10-03 01:42:13,537 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 01:42:15,988 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-03 01:42:21,529 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.486s
+2026-10-03 05:41:03,842 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-03 05:41:24,513 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1920 (1966080 tokens)
+2026-10-03 05:41:24,514 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 05:41:27,014 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-03 05:41:42,162 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 15.081s
+2026-10-03 09:40:29,635 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-03 09:40:51,037 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 1968 (2015232 tokens)
+2026-10-03 09:40:51,039 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 09:40:53,705 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-03 09:41:09,051 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 15.235s
+2026-10-03 13:38:10,580 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-03 13:38:30,905 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2016 (2064384 tokens)
+2026-10-03 13:38:30,909 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 13:38:33,386 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-03 13:38:39,801 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.353s
+2026-10-03 17:33:21,466 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-03 17:33:42,610 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2064 (2113536 tokens)
+2026-10-03 17:33:42,612 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-03 17:33:45,024 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-03 17:33:51,564 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.475s
+2026-10-04 03:38:33,325 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-04 03:38:54,847 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2112 (2162688 tokens)
+2026-10-04 03:38:54,848 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 03:38:57,326 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-04 03:39:03,827 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.43s
+2026-10-04 07:34:29,174 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-04 07:34:50,666 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2160 (2211840 tokens)
+2026-10-04 07:34:50,668 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 07:34:53,165 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-04 07:35:00,021 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.778s
+2026-10-04 11:31:25,494 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-04 11:31:47,641 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2208 (2260992 tokens)
+2026-10-04 11:31:47,643 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 11:31:50,111 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-04 11:31:56,918 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.737s
+2026-10-04 22:06:11,607 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-04 22:06:37,770 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2256 (2310144 tokens)
+2026-10-04 22:06:37,771 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-04 22:06:40,481 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-04 22:06:47,954 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.382s
+2026-10-05 02:02:09,351 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 02:02:33,341 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2304 (2359296 tokens)
+2026-10-05 02:02:33,343 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 02:02:35,867 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 02:03:07,432 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 31.512s
+2026-10-05 06:00:08,142 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 06:00:32,390 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2352 (2408448 tokens)
+2026-10-05 06:00:32,391 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 06:00:34,792 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 06:00:41,321 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.476s
+2026-10-05 09:58:36,095 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 09:59:00,893 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2400 (2457600 tokens)
+2026-10-05 09:59:00,895 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 09:59:03,405 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 09:59:10,868 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.384s
+2026-10-05 13:56:18,564 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 13:56:43,614 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2448 (2506752 tokens)
+2026-10-05 13:56:43,616 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 13:56:46,141 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 13:56:52,747 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.538s
+2026-10-05 17:55:01,767 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 17:55:29,832 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2496 (2555904 tokens)
+2026-10-05 17:55:29,834 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 17:55:32,437 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 17:55:39,096 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.589s
+2026-10-05 21:53:59,919 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-05 21:54:26,385 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2544 (2605056 tokens)
+2026-10-05 21:54:26,386 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-05 21:54:28,814 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-05 21:54:34,790 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.903s
+2026-10-06 01:51:30,403 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 01:51:58,757 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2592 (2654208 tokens)
+2026-10-06 01:51:58,759 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 01:52:01,339 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 01:52:28,673 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 27.257s
+2026-10-06 05:52:44,440 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 05:53:12,878 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2640 (2703360 tokens)
+2026-10-06 05:53:12,879 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 05:53:15,328 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 05:53:29,340 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 13.952s
+2026-10-06 09:53:58,912 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 09:54:26,819 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2688 (2752512 tokens)
+2026-10-06 09:54:26,821 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 09:54:29,294 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 09:54:36,160 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.797s
+2026-10-06 13:53:13,537 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 13:53:42,162 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2736 (2801664 tokens)
+2026-10-06 13:53:42,164 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 13:53:44,645 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 13:53:52,235 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.528s
+2026-10-06 17:53:58,225 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 17:54:27,914 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2784 (2850816 tokens)
+2026-10-06 17:54:27,915 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 17:54:30,363 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 17:54:37,799 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.353s
+2026-10-06 21:54:13,678 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-06 21:54:44,078 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2832 (2899968 tokens)
+2026-10-06 21:54:44,080 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-06 21:54:46,536 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-06 21:54:56,461 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 9.848s
+2026-10-07 01:50:44,551 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-07 01:51:15,169 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2880 (2949120 tokens)
+2026-10-07 01:51:15,170 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 01:51:17,654 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-07 01:51:25,899 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 8.169s
+2026-10-07 05:46:45,134 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-07 05:47:15,876 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2928 (2998272 tokens)
+2026-10-07 05:47:15,878 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 05:47:18,328 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-07 05:47:25,304 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.915s
+2026-10-07 09:44:45,951 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-07 09:45:17,067 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 2976 (3047424 tokens)
+2026-10-07 09:45:17,069 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 09:45:19,529 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-07 09:45:26,757 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.16s
+2026-10-07 13:44:02,099 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-07 13:44:34,523 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3024 (3096576 tokens)
+2026-10-07 13:44:34,524 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 13:44:37,015 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-07 13:44:43,566 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.488s
+2026-10-07 17:46:18,877 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-07 17:46:52,211 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3072 (3145728 tokens)
+2026-10-07 17:46:52,212 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-07 17:46:54,693 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-07 17:47:01,594 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.833s
+2026-10-12 08:55:26,015 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-12 08:55:58,794 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3120 (3194880 tokens)
+2026-10-12 08:55:58,796 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 08:56:03,074 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-12 08:56:10,796 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.644s
+2026-10-12 12:52:53,911 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-12 12:53:25,295 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3168 (3244032 tokens)
+2026-10-12 12:53:25,297 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 12:53:27,732 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-12 12:53:54,914 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 27.126s
+2026-10-12 16:49:35,416 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-12 16:50:08,559 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3216 (3293184 tokens)
+2026-10-12 16:50:08,560 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 16:50:11,001 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-12 16:50:20,028 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 8.034s
+2026-10-12 20:45:51,283 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-12 20:46:24,603 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3264 (3342336 tokens)
+2026-10-12 20:46:24,606 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-12 20:46:27,101 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-12 20:46:31,773 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.606s
+2026-10-13 00:41:42,479 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 00:42:15,994 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3312 (3391488 tokens)
+2026-10-13 00:42:15,995 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 00:42:18,486 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 00:42:27,611 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 9.05s
+2026-10-13 04:37:00,096 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 04:37:35,110 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3360 (3440640 tokens)
+2026-10-13 04:37:35,112 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 04:37:37,740 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 04:37:42,990 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.183s
+2026-10-13 08:34:19,459 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 08:34:54,720 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3408 (3489792 tokens)
+2026-10-13 08:34:54,721 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 08:34:57,199 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 08:35:03,332 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.077s
+2026-10-13 12:20:10,572 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 12:20:45,539 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3456 (3538944 tokens)
+2026-10-13 12:20:45,541 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 12:20:49,681 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 12:20:56,604 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.868s
+2026-10-13 16:15:14,197 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 16:15:49,209 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3504 (3588096 tokens)
+2026-10-13 16:15:49,210 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 16:15:51,750 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 16:15:56,866 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.053s
+2026-10-13 20:09:48,157 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-13 20:10:24,301 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3552 (3637248 tokens)
+2026-10-13 20:10:24,302 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-13 20:10:26,769 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-13 20:10:34,108 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.27s
+2026-10-14 00:05:22,398 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-14 00:05:58,935 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3600 (3686400 tokens)
+2026-10-14 00:05:58,936 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-14 00:06:01,365 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-14 00:06:06,701 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.265s
+2026-10-25 01:28:08,812 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-25 01:28:50,057 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3648 (3735552 tokens)
+2026-10-25 01:28:50,059 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 01:28:53,199 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-25 01:29:06,837 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 13.573s
+2026-10-25 15:16:39,834 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-25 15:17:23,533 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3696 (3784704 tokens)
+2026-10-25 15:17:23,535 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 15:17:26,376 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-25 15:17:53,192 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 26.715s
+2026-10-25 19:05:11,405 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-25 19:05:48,044 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3744 (3833856 tokens)
+2026-10-25 19:05:48,045 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 19:05:51,613 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-25 19:05:59,727 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.402s
+2026-10-25 22:55:21,141 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-25 22:56:02,125 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3792 (3883008 tokens)
+2026-10-25 22:56:02,126 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-25 22:56:05,158 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-25 22:56:30,797 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 24.75s
+2026-10-26 10:15:32,409 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-26 10:16:11,535 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3840 (3932160 tokens)
+2026-10-26 10:16:11,537 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 10:16:14,013 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-26 10:16:19,660 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.02s
+2026-10-26 14:01:28,267 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-26 14:02:07,574 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3888 (3981312 tokens)
+2026-10-26 14:02:07,575 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 14:02:10,514 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-26 14:02:14,863 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.285s
+2026-10-26 17:45:37,168 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-26 17:46:16,469 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3936 (4030464 tokens)
+2026-10-26 17:46:16,470 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-26 17:46:18,884 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-26 17:46:23,478 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.523s
+2026-10-29 10:47:11,194 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-29 10:47:51,820 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 3984 (4079616 tokens)
+2026-10-29 10:47:51,822 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 10:47:54,501 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-29 10:47:57,592 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.042s
+2026-10-29 14:35:30,152 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-29 14:36:11,371 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4032 (4128768 tokens)
+2026-10-29 14:36:11,374 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 14:36:14,144 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-29 14:36:17,555 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.353s
+2026-10-29 18:25:35,502 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-29 18:26:17,361 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4080 (4177920 tokens)
+2026-10-29 18:26:17,363 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 18:26:21,398 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-29 18:26:25,116 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.659s
+2026-10-29 22:15:57,248 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-29 22:16:40,271 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4128 (4227072 tokens)
+2026-10-29 22:16:40,273 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-29 22:16:43,764 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-29 22:16:47,924 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.102s
+2026-10-30 02:03:12,692 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 02:03:54,289 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4176 (4276224 tokens)
+2026-10-30 02:03:54,290 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 02:03:57,606 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 02:04:01,974 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.317s
+2026-10-30 05:49:12,168 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 05:49:54,222 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4224 (4325376 tokens)
+2026-10-30 05:49:54,224 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 05:49:56,897 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 05:50:02,294 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.33s
+2026-10-30 09:36:22,402 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 09:37:05,272 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4272 (4374528 tokens)
+2026-10-30 09:37:05,274 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 09:37:07,986 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 09:37:12,802 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.739s
+2026-10-30 13:26:34,055 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 13:27:18,005 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4320 (4423680 tokens)
+2026-10-30 13:27:18,007 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 13:27:20,731 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 13:27:25,140 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.339s
+2026-10-30 17:18:28,816 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 17:19:12,207 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4368 (4472832 tokens)
+2026-10-30 17:19:12,208 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 17:19:14,952 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 17:19:20,945 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 5.927s
+2026-10-30 21:10:24,456 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-10-30 21:11:08,634 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4416 (4521984 tokens)
+2026-10-30 21:11:08,635 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-10-30 21:11:11,588 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-10-30 21:11:18,667 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.016s
+2026-11-03 08:36:50,686 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-03 08:37:38,621 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4417 (4523008 tokens)
+2026-11-03 08:37:38,623 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 08:37:42,916 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-03 08:37:49,675 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.682s
+2026-11-03 12:23:43,512 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-03 12:24:27,079 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4465 (4572160 tokens)
+2026-11-03 12:24:27,080 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 12:24:29,808 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-03 12:24:33,529 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.67s
+2026-11-03 16:07:13,979 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-03 16:07:58,404 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4513 (4621312 tokens)
+2026-11-03 16:07:58,405 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 16:08:01,211 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-03 16:08:04,546 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.266s
+2026-11-03 19:52:08,786 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-03 19:52:53,322 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4561 (4670464 tokens)
+2026-11-03 19:52:53,324 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-03 19:52:56,889 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-03 19:53:00,750 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 3.807s
+2026-11-04 18:03:10,392 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-04 18:04:09,938 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4609 (4719616 tokens)
+2026-11-04 18:04:09,940 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-04 18:04:12,818 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-04 18:04:19,538 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 6.604s
+2026-11-04 22:12:24,070 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-04 22:13:19,586 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4657 (4768768 tokens)
+2026-11-04 22:13:19,587 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-04 22:13:23,199 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-04 22:13:32,645 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 9.39s
+2026-11-05 02:09:11,240 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-05 02:10:03,647 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4705 (4817920 tokens)
+2026-11-05 02:10:03,649 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-05 02:10:07,192 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-05 02:10:14,331 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 7.08s
+2026-11-06 04:39:59,827 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-06 04:41:28,005 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4745 (4858880 tokens)
+2026-11-06 04:41:28,007 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-06 04:41:33,473 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-06 04:41:38,397 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 4.816s
+2026-11-06 10:12:17,573 INFO     semantic_afterlife.events resume s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 (live)
+2026-11-06 10:13:26,457 INFO     semantic_afterlife.events resuming pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1 at step 4793 (4908032 tokens)
+2026-11-06 10:13:26,459 INFO     semantic_afterlife.events start pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: W=4096 T=4950016 (1208.5 turnovers)
+2026-11-06 10:13:29,884 INFO     semantic_afterlife.providers.local loading local model Qwen/Qwen3-8B device=cuda dtype=bfloat16 attn=sdpa loader=Qwen3ForCausalLM
+2026-11-06 10:13:42,519 INFO     semantic_afterlife.events loaded Qwen/Qwen3-8B Qwen3ForCausalLM via Qwen3ForCausalLM rev=b968826d9c46dd6066d109eabc6255188de91218 peak_vram_mib=5887.6 in 12.55s
+2026-11-06 10:48:01,676 INFO     semantic_afterlife.events completed pb-qwen3-8b-instruct__W4096__T0p3__qi-physics-s1__s1: 4834 steps, 4950016 tokens, 4834 chunks, $0.0000
+2026-11-06 10:48:01,679 INFO     semantic_afterlife.events unloaded Qwen/Qwen3-8B peak_vram_mib=6814.5
+2026-11-06 10:48:02,363 INFO     semantic_afterlife.events completed s12-paperb-l2-qi-physics-s1-20260926T125607Z-b0af1ba5 — spent $0.0000 (project $10.54 of $200.00)
