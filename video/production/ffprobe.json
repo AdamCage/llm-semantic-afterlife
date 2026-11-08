@@ -1,0 +1,443 @@
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.640028",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "has_b_frames": 2,
+      "sample_aspect_ratio": "1:1",
+      "display_aspect_ratio": "16:9",
+      "pix_fmt": "yuvj420p",
+      "level": 40,
+      "color_range": "pc",
+      "color_space": "bt470bg",
+      "chroma_location": "center",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/90000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 70286400,
+      "duration": "780.960000",
+      "bit_rate": "398384",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "19524",
+      "extradata_size": 51,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler"
+      },
+      "side_data_list": [
+        {
+          "side_data_type": "ICC Profile"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "mime_codec_string": "mp4a.40.2",
+      "sample_fmt": "fltp",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/48000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 37488000,
+      "duration": "781.000000",
+      "bit_rate": "194041",
+      "nb_frames": "36609",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "rus",
+        "handler_name": "SoundHandler"
+      }
+    },
+    {
+      "index": 2,
+      "codec_name": "mov_text",
+      "codec_long_name": "MOV text",
+      "codec_type": "subtitle",
+      "codec_tag_string": "tx3g",
+      "codec_tag": "0x67337874",
+      "id": "0x3",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/1000000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 779500000,
+      "duration": "779.500000",
+      "bit_rate": "230",
+      "nb_frames": "365",
+      "extradata_size": 68,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "rus",
+        "handler_name": "SubtitleHandler"
+      }
+    },
+    {
+      "index": 3,
+      "codec_name": "bin_data",
+      "codec_long_name": "binary data",
+      "codec_type": "data",
+      "codec_tag_string": "text",
+      "codec_tag": "0x74786574",
+      "id": "0x4",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/1000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 780960,
+      "duration": "780.960000",
+      "bit_rate": "12",
+      "nb_frames": "19",
+      "extradata_size": 63,
+      "disposition": {
+        "default": 0,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "eng",
+        "handler_name": "SubtitleHandler"
+      }
+    }
+  ],
+  "chapters": [
+    {
+      "id": 0,
+      "time_base": "1/1000",
+      "start": 0,
+      "start_time": "0.000000",
+      "end": 40760,
+      "end_time": "40.760000",
+      "tags": {
+        "title": "Запрос исчез. Что осталось?"
+      }
+    },
+    {
+      "id": 1,
+      "time_base": "1/1000",
+      "start": 40760,
+      "start_time": "40.760000",
+      "end": 82200,
+      "end_time": "82.200000",
+      "tags": {
+        "title": "Длинный текст ≠ долгая память"
+      }
+    },
+    {
+      "id": 2,
+      "time_base": "1/1000",
+      "start": 82200,
+      "start_time": "82.200000",
+      "end": 121400,
+      "end_time": "121.400000",
+      "tags": {
+        "title": "Память как движущееся окно"
+      }
+    },
+    {
+      "id": 3,
+      "time_base": "1/1000",
+      "start": 121400,
+      "start_time": "121.400000",
+      "end": 163120,
+      "end_time": "163.120000",
+      "tags": {
+        "title": "Как именно продолжался текст"
+      }
+    },
+    {
+      "id": 4,
+      "time_base": "1/1000",
+      "start": 163120,
+      "start_time": "163.120000",
+      "end": 200400,
+      "end_time": "200.400000",
+      "tags": {
+        "title": "Три разных вопроса"
+      }
+    },
+    {
+      "id": 5,
+      "time_base": "1/1000",
+      "start": 200400,
+      "start_time": "200.400000",
+      "end": 242120,
+      "end_time": "242.120000",
+      "tags": {
+        "title": "Неподвижность бывает обманчивой"
+      }
+    },
+    {
+      "id": 6,
+      "time_base": "1/1000",
+      "start": 242120,
+      "start_time": "242.120000",
+      "end": 283840,
+      "end_time": "283.840000",
+      "tags": {
+        "title": "След начала — на уровне групп"
+      }
+    },
+    {
+      "id": 7,
+      "time_base": "1/1000",
+      "start": 283840,
+      "start_time": "283.840000",
+      "end": 327200,
+      "end_time": "327.200000",
+      "tags": {
+        "title": "Тема и факт — разные вещи"
+      }
+    },
+    {
+      "id": 8,
+      "time_base": "1/1000",
+      "start": 327200,
+      "start_time": "327.200000",
+      "end": 369280,
+      "end_time": "369.280000",
+      "tags": {
+        "title": "Результаты зависят от семейства"
+      }
+    },
+    {
+      "id": 9,
+      "time_base": "1/1000",
+      "start": 369280,
+      "start_time": "369.280000",
+      "end": 409080,
+      "end_time": "409.080000",
+      "tags": {
+        "title": "Кто дошёл до конца?"
+      }
+    },
+    {
+      "id": 10,
+      "time_base": "1/1000",
+      "start": 409080,
+      "start_time": "409.080000",
+      "end": 450200,
+      "end_time": "450.200000",
+      "tags": {
+        "title": "Положительный разрыв не универсален"
+      }
+    },
+    {
+      "id": 11,
+      "time_base": "1/1000",
+      "start": 450200,
+      "start_time": "450.200000",
+      "end": 489080,
+      "end_time": "489.080000",
+      "tags": {
+        "title": "А если продолжать намного дольше?"
+      }
+    },
+    {
+      "id": 12,
+      "time_base": "1/1000",
+      "start": 489080,
+      "start_time": "489.080000",
+      "end": 527320,
+      "end_time": "527.320000",
+      "tags": {
+        "title": "До почти пяти миллионов токенов"
+      }
+    },
+    {
+      "id": 13,
+      "time_base": "1/1000",
+      "start": 527320,
+      "start_time": "527.320000",
+      "end": 568760,
+      "end_time": "568.760000",
+      "tags": {
+        "title": "Слова идут. История стоит"
+      }
+    },
+    {
+      "id": 14,
+      "time_base": "1/1000",
+      "start": 568760,
+      "start_time": "568.760000",
+      "end": 611800,
+      "end_time": "611.800000",
+      "tags": {
+        "title": "Что мы не установили"
+      }
+    },
+    {
+      "id": 15,
+      "time_base": "1/1000",
+      "start": 611800,
+      "start_time": "611.800000",
+      "end": 651000,
+      "end_time": "651.000000",
+      "tags": {
+        "title": "Проверять цель отдельно от темы"
+      }
+    },
+    {
+      "id": 16,
+      "time_base": "1/1000",
+      "start": 651000,
+      "start_time": "651.000000",
+      "end": 695600,
+      "end_time": "695.600000",
+      "tags": {
+        "title": "Повторы — отдельный сигнал"
+      }
+    },
+    {
+      "id": 17,
+      "time_base": "1/1000",
+      "start": 695600,
+      "start_time": "695.600000",
+      "end": 738280,
+      "end_time": "738.280000",
+      "tags": {
+        "title": "От вывода — к исходным данным"
+      }
+    },
+    {
+      "id": 18,
+      "time_base": "1/1000",
+      "start": 738280,
+      "start_time": "738.280000",
+      "end": 780960,
+      "end_time": "780.960000",
+      "tags": {
+        "title": "След может жить дольше запроса"
+      }
+    }
+  ],
+  "format": {
+    "filename": "C:\\projects\\llm-semantic-afterlife\\video\\output\\semantic-afterlife.ru.mp4",
+    "nb_streams": 4,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "781.000000",
+    "size": "58464460",
+    "bit_rate": "598867",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "title": "Семантическое послесвечение: что остаётся, когда ИИ забывает запрос",
+      "artist": "Semantic Afterlife",
+      "encoder": "Lavf62.12.100"
+    }
+  }
+}

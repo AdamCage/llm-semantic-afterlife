@@ -1,0 +1,10 @@
+production/raw/
+film/public/voice/
+film/public/score.wav
+film/public/*.mp3
+film/public/*.wav
+output/
+*.mp4
+*.m4a
+*.wav
+*.mp3

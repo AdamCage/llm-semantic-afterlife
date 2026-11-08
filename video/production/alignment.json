@@ -1,0 +1,179 @@
+{
+  "model": "faster-whisper/base",
+  "device": "cpu",
+  "compute_type": "int8",
+  "method": "exact normalised word anchors; unmatched script words interpolated",
+  "scenes": [
+    {
+      "scene": "01",
+      "script_words": 84,
+      "recognised_words": 86,
+      "exact_word_anchor_fraction": 0.8928571428571429,
+      "interpolated_word_count": 9,
+      "last_recognised_end": 38.6,
+      "speech_duration": 38.76
+    },
+    {
+      "scene": "02",
+      "script_words": 85,
+      "recognised_words": 86,
+      "exact_word_anchor_fraction": 0.9529411764705882,
+      "interpolated_word_count": 4,
+      "last_recognised_end": 39.02,
+      "speech_duration": 39.44
+    },
+    {
+      "scene": "03",
+      "script_words": 81,
+      "recognised_words": 80,
+      "exact_word_anchor_fraction": 0.9506172839506173,
+      "interpolated_word_count": 4,
+      "last_recognised_end": 36.74,
+      "speech_duration": 37.2
+    },
+    {
+      "scene": "04",
+      "script_words": 85,
+      "recognised_words": 82,
+      "exact_word_anchor_fraction": 0.8823529411764706,
+      "interpolated_word_count": 10,
+      "last_recognised_end": 39.52,
+      "speech_duration": 39.72
+    },
+    {
+      "scene": "05",
+      "script_words": 82,
+      "recognised_words": 84,
+      "exact_word_anchor_fraction": 0.9390243902439024,
+      "interpolated_word_count": 5,
+      "last_recognised_end": 35.04,
+      "speech_duration": 35.28
+    },
+    {
+      "scene": "06",
+      "script_words": 83,
+      "recognised_words": 81,
+      "exact_word_anchor_fraction": 0.891566265060241,
+      "interpolated_word_count": 9,
+      "last_recognised_end": 39.52,
+      "speech_duration": 39.72
+    },
+    {
+      "scene": "07",
+      "script_words": 84,
+      "recognised_words": 82,
+      "exact_word_anchor_fraction": 0.9642857142857143,
+      "interpolated_word_count": 3,
+      "last_recognised_end": 39.48,
+      "speech_duration": 39.72
+    },
+    {
+      "scene": "08",
+      "script_words": 84,
+      "recognised_words": 85,
+      "exact_word_anchor_fraction": 0.9404761904761905,
+      "interpolated_word_count": 5,
+      "last_recognised_end": 40.94,
+      "speech_duration": 41.36
+    },
+    {
+      "scene": "09",
+      "script_words": 78,
+      "recognised_words": 82,
+      "exact_word_anchor_fraction": 0.9487179487179487,
+      "interpolated_word_count": 4,
+      "last_recognised_end": 39.64,
+      "speech_duration": 40.08
+    },
+    {
+      "scene": "10",
+      "script_words": 86,
+      "recognised_words": 85,
+      "exact_word_anchor_fraction": 0.9418604651162791,
+      "interpolated_word_count": 5,
+      "last_recognised_end": 37.3,
+      "speech_duration": 37.8
+    },
+    {
+      "scene": "11",
+      "script_words": 88,
+      "recognised_words": 84,
+      "exact_word_anchor_fraction": 0.875,
+      "interpolated_word_count": 11,
+      "last_recognised_end": 38.88,
+      "speech_duration": 39.12
+    },
+    {
+      "scene": "12",
+      "script_words": 82,
+      "recognised_words": 78,
+      "exact_word_anchor_fraction": 0.8292682926829268,
+      "interpolated_word_count": 14,
+      "last_recognised_end": 36.42,
+      "speech_duration": 36.88
+    },
+    {
+      "scene": "13",
+      "script_words": 84,
+      "recognised_words": 82,
+      "exact_word_anchor_fraction": 0.8571428571428571,
+      "interpolated_word_count": 12,
+      "last_recognised_end": 35.98,
+      "speech_duration": 36.24
+    },
+    {
+      "scene": "14",
+      "script_words": 82,
+      "recognised_words": 80,
+      "exact_word_anchor_fraction": 0.9146341463414634,
+      "interpolated_word_count": 7,
+      "last_recognised_end": 38.92,
+      "speech_duration": 39.44
+    },
+    {
+      "scene": "15",
+      "script_words": 86,
+      "recognised_words": 87,
+      "exact_word_anchor_fraction": 0.9418604651162791,
+      "interpolated_word_count": 5,
+      "last_recognised_end": 40.56,
+      "speech_duration": 41.04
+    },
+    {
+      "scene": "16",
+      "script_words": 83,
+      "recognised_words": 79,
+      "exact_word_anchor_fraction": 0.9397590361445783,
+      "interpolated_word_count": 5,
+      "last_recognised_end": 36.9,
+      "speech_duration": 37.2
+    },
+    {
+      "scene": "17",
+      "script_words": 84,
+      "recognised_words": 83,
+      "exact_word_anchor_fraction": 0.8571428571428571,
+      "interpolated_word_count": 12,
+      "last_recognised_end": 42.24,
+      "speech_duration": 42.6
+    },
+    {
+      "scene": "18",
+      "script_words": 82,
+      "recognised_words": 82,
+      "exact_word_anchor_fraction": 0.9512195121951219,
+      "interpolated_word_count": 4,
+      "last_recognised_end": 40.28,
+      "speech_duration": 40.68
+    },
+    {
+      "scene": "19",
+      "script_words": 96,
+      "recognised_words": 94,
+      "exact_word_anchor_fraction": 0.9270833333333334,
+      "interpolated_word_count": 7,
+      "last_recognised_end": 40.5,
+      "speech_duration": 40.68
+    }
+  ]
+}

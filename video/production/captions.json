@@ -1,0 +1,1598 @@
+[
+  {
+    "text": "Представьте: вы даёте языковой модели начало истории и позволяете",
+    "startMs": 720.0,
+    "endMs": 5380.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "ей писать дальше.",
+    "startMs": 5380.0,
+    "endMs": 6399.999999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Страницу за страницей.",
+    "startMs": 6899.999999999999,
+    "endMs": 8260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но у модели есть ограничение: она видит только последний фрагмент",
+    "startMs": 8580.0,
+    "endMs": 12500.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "текста.",
+    "startMs": 12500.0,
+    "endMs": 13040.000000000002,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Рано или поздно ваши первые слова полностью исчезнут из её поля зрения.",
+    "startMs": 13640.0,
+    "endMs": 18060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Что произойдёт после этого?",
+    "startMs": 18640.0,
+    "endMs": 20060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Продолжит ли история нести след своего начала?",
+    "startMs": 20640.0,
+    "endMs": 23060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Сойдутся ли разные истории к одному и тому же?",
+    "startMs": 23680.0,
+    "endMs": 26099.999999999996,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Или текст начнёт бесконечно блуждать?",
+    "startMs": 26480.0,
+    "endMs": 28680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы назвали этот вопрос семантическим послесвечением.",
+    "startMs": 28680.0,
+    "endMs": 32680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "И оказалось, что самый интересный результат здесь — различие между",
+    "startMs": 32680.0,
+    "endMs": 36600.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "сохранением следа и настоящей памятью.",
+    "startMs": 36600.0,
+    "endMs": 39480.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это важно не только для бесконечных рассказов.",
+    "startMs": 41480.0,
+    "endMs": 44019.99999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Разработчики хотят, чтобы модели долго работали над задачей, сохраняли",
+    "startMs": 44419.99999999999,
+    "endMs": 48440.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "цель, не теряли существенные факты и не застревали в повторениях.",
+    "startMs": 48440.0,
+    "endMs": 52480.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но сначала нужно понять более простой случай: что модель делает,",
+    "startMs": 52819.99999999999,
+    "endMs": 56660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "когда продолжает только собственный текст?",
+    "startMs": 56739.99999999999,
+    "endMs": 58780.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В нашем эксперименте нет поиска по базе знаний, отдельного блокнота",
+    "startMs": 59199.99999999999,
+    "endMs": 63260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "или периодического напоминания задачи.",
+    "startMs": 63260.0,
+    "endMs": 65479.99999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому он позволяет изучить самоподдерживающееся продолжение.",
+    "startMs": 65800.0,
+    "endMs": 69340.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Перенос на реального агента потребует отдельной проверки: агент с",
+    "startMs": 69340.0,
+    "endMs": 73880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "инструментами и внешней памятью устроен сложнее.",
+    "startMs": 73880.0,
+    "endMs": 76699.99999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Здесь мы исследуем один из его возможных режимов отказа.",
+    "startMs": 77280.0,
+    "endMs": 80919.99999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Представим контекст модели как окно.",
+    "startMs": 82920.0,
+    "endMs": 85060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Внутри — последние слова, точнее токены: небольшие элементы, на которые",
+    "startMs": 85660.0,
+    "endMs": 90060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "разбивается текст.",
+    "startMs": 90060.0,
+    "endMs": 91200.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Модель получает содержимое окна и дописывает очередной блок.",
+    "startMs": 91640.0,
+    "endMs": 95060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы добавляем этот блок справа, а старый текст убираем слева.",
+    "startMs": 95600.0,
+    "endMs": 99260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Размер окна остаётся ограниченным.",
+    "startMs": 99760.0,
+    "endMs": 101660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Время удобно измерять оборотами окна: сколько текста сгенерировано",
+    "startMs": 102200.0,
+    "endMs": 106260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "по отношению к его размеру.",
+    "startMs": 106260.0,
+    "endMs": 107760.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Когда исходный текст полностью вытеснен, он больше не передаётся",
+    "startMs": 108120.0,
+    "endMs": 111760.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "модели напрямую.",
+    "startMs": 111760.0,
+    "endMs": 112740.00000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Однако модель всё ещё может видеть его отголоски в собственных продолжениях.",
+    "startMs": 113160.0,
+    "endMs": 117240.00000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Именно их судьбу мы и пытаемся понять.",
+    "startMs": 117640.0,
+    "endMs": 119660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Здесь есть существенная техническая оговорка.",
+    "startMs": 122120.0,
+    "endMs": 124880.00000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы не измеряли непрерывную генерацию с настоящим удалением старых",
+    "startMs": 125400.0,
+    "endMs": 129180.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "элементов из внутреннего кэша внимания.",
+    "startMs": 129180.0,
+    "endMs": 131320.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы снова отправляли модели последний хвост текста.",
+    "startMs": 131940.0,
+    "endMs": 134580.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "После полного блока — новый вызов.",
+    "startMs": 135140.00000000003,
+    "endMs": 137060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "После ранней остановки — тоже новый вызов из текущего хвоста.",
+    "startMs": 137460.0,
+    "endMs": 141000.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Попытки модели закончить текст мы регистрировали.",
+    "startMs": 141600.0,
+    "endMs": 144220.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому результат относится к конкретному протоколу повторных запросов.",
+    "startMs": 144600.0,
+    "endMs": 148440.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Он не описывает автоматически любой чат или любую реализацию внимания.",
+    "startMs": 148440.0,
+    "endMs": 153100.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Эта деталь меняет смысл вывода: мы наблюдаем модель в определённых",
+    "startMs": 153100.0,
+    "endMs": 157520.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "условиях, а не обнаруживаем универсальный закон всех языковых моделей.",
+    "startMs": 157520.0,
+    "endMs": 161640.00000000003,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Чтобы не смешать разные явления, мы разделили три вопроса.",
+    "startMs": 163840.0,
+    "endMs": 167180.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Первый: дойдёт ли модель до запланированной длины?",
+    "startMs": 167560.0,
+    "endMs": 170300.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Второй: не превратится ли продолжение в повторяющуюся петлю?",
+    "startMs": 170780.0,
+    "endMs": 174120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "И третий: отличаются ли тексты, выросшие из разных начал, сильнее,",
+    "startMs": 174540.0,
+    "endMs": 178400.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "чем повторные запуски из одного начала?",
+    "startMs": 178400.0,
+    "endMs": 180540.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Эти измерения не взаимозаменяемы.",
+    "startMs": 181060.0,
+    "endMs": 183420.00000000003,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Модель может исправно выдавать токены и при этом повторять одно предложение.",
+    "startMs": 183420.00000000003,
+    "endMs": 187540.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Может закончить раньше и вообще не дать материала для последнего",
+    "startMs": 187860.0,
+    "endMs": 191060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "измерения.",
+    "startMs": 191060.0,
+    "endMs": 191700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "А различия между группами могут сохраниться даже тогда, когда содержание",
+    "startMs": 191700.0,
+    "endMs": 196100.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "каждой отдельной истории почти перестало развиваться.",
+    "startMs": 196100.0,
+    "endMs": 198880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Вот главная ловушка.",
+    "startMs": 201120.0,
+    "endMs": 202380.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Допустим, мы переводим каждый фрагмент текста в числовое представление",
+    "startMs": 202960.0,
+    "endMs": 206620.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "и измеряем расстояния между фрагментами.",
+    "startMs": 206620.0,
+    "endMs": 208940.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Если модель снова и снова повторяет одно и то же, точки окажутся",
+    "startMs": 209540.0,
+    "endMs": 213380.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "рядом.",
+    "startMs": 213380.0,
+    "endMs": 213660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "График будет выглядеть очень устойчивым.",
+    "startMs": 214240.0,
+    "endMs": 216320.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Возникает соблазн сказать: мы нашли смысловой аттрактор.",
+    "startMs": 216800.0,
+    "endMs": 220540.00000000003,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но устойчивость здесь может объясняться обычной текстовой петлёй.",
+    "startMs": 220540.00000000003,
+    "endMs": 223980.00000000003,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Такой результат сам по себе не показывает ни сложного устойчивого",
+    "startMs": 224480.00000000003,
+    "endMs": 227880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "смыслового состояния, ни сохранения исходных фактов.",
+    "startMs": 227880.0,
+    "endMs": 231260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому проверка повторяемости должна предшествовать красивым рассуждениям",
+    "startMs": 231700.0,
+    "endMs": 235593.33333333334,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "о геометрии.",
+    "startMs": 235593.33333333334,
+    "endMs": 236860.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В этом исследовании она действительно изменила интерпретацию результатов.",
+    "startMs": 236860.0,
+    "endMs": 240640.00000000003,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Как тогда искать след начального текста?",
+    "startMs": 242840.0,
+    "endMs": 245120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы сравниваем два расстояния.",
+    "startMs": 245620.0,
+    "endMs": 247300.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Между продолжениями из разных начал — и между разными запусками из",
+    "startMs": 247700.00000000003,
+    "endMs": 251940.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "одного начала.",
+    "startMs": 251940.0,
+    "endMs": 252720.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Если первое больше второго, происхождение всё ещё влияет на распределение",
+    "startMs": 253280.0,
+    "endMs": 257560.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "текстов.",
+    "startMs": 257560.0,
+    "endMs": 258140.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В независимой повторной проверке этот разрыв оставался положительным",
+    "startMs": 258640.0,
+    "endMs": 262620.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "в использованных пространствах представления.",
+    "startMs": 262620.0,
+    "endMs": 264740.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "На экране — реальные оценки и интервалы неопределённости.",
+    "startMs": 265260.0,
+    "endMs": 268900.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но слова здесь нужно выбирать точно.",
+    "startMs": 269260.0,
+    "endMs": 271160.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это различимость групп.",
+    "startMs": 271160.0,
+    "endMs": 272700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Она может отражать тему, стиль или семейство повторяющихся фраз.",
+    "startMs": 273260.0,
+    "endMs": 276980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Она не означает, что из текста можно восстановить конкретное утверждение",
+    "startMs": 277500.0,
+    "endMs": 281200.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "исходного запроса.",
+    "startMs": 281200.0,
+    "endMs": 282320.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Представьте две истории об одном реакторе.",
+    "startMs": 284560.0,
+    "endMs": 286980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В одной исходная ситуация одна, в другой — контрфактическая.",
+    "startMs": 287520.0,
+    "endMs": 291360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Обе могут надолго сохранить технический словарь, но потерять различие",
+    "startMs": 291920.0,
+    "endMs": 295980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "между исходными ситуациями.",
+    "startMs": 295980.0,
+    "endMs": 297580.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому в исследовании были отдельные контрфактические пары.",
+    "startMs": 298060.0,
+    "endMs": 301520.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Их результат нельзя подменять разницей между совершенно разными темами.",
+    "startMs": 302020.0,
+    "endMs": 305680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Отсутствие обнаруженной разницы тоже не доказывает, что истории стали",
+    "startMs": 306180.0,
+    "endMs": 309920.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "идентичными: измерение имеет ограниченную чувствительность.",
+    "startMs": 309920.0,
+    "endMs": 313520.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Честный вывод уже: восстановленная память об исходных фактах не установлена.",
+    "startMs": 313520.0,
+    "endMs": 318380.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Сохранение группового следа — интересный эффект, но более слабый,",
+    "startMs": 318940.0,
+    "endMs": 322700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "чем то, что обычно подразумевают под словом память.",
+    "startMs": 322720.0,
+    "endMs": 325500.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Дальше мы расширили сравнение: несколько семейств, базовые модели",
+    "startMs": 327920.0,
+    "endMs": 332400.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "и варианты после дополнительного обучения.",
+    "startMs": 332400.00000000006,
+    "endMs": 334700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В локальной части использовалась одна схема четырёхбитного квантования.",
+    "startMs": 335200.0,
+    "endMs": 339240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это делает условия яснее, но не превращает все модели в одну общую",
+    "startMs": 339740.0,
+    "endMs": 344060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "выборку.",
+    "startMs": 344060.0,
+    "endMs": 344580.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Основная матрица ограничена двенадцатью оборотами окна.",
+    "startMs": 345120.0,
+    "endMs": 348360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы отдельно рассматриваем завершение генерации и свойства доступных",
+    "startMs": 348840.00000000006,
+    "endMs": 352580.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "продолжений.",
+    "startMs": 352580.00000000006,
+    "endMs": 353240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Такой подход важен: если некоторый вариант почти всегда прекращает",
+    "startMs": 353240.0,
+    "endMs": 357660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "выдавать текст, нельзя сравнить только немногочисленные выжившие",
+    "startMs": 357660.0,
+    "endMs": 361160.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "истории и объявить их типичным поведением всей модели.",
+    "startMs": 361160.0,
+    "endMs": 364460.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Неудачные запуски остаются частью результата.",
+    "startMs": 364920.0,
+    "endMs": 367560.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Посмотрите на доли завершённых траекторий.",
+    "startMs": 370000.0,
+    "endMs": 372360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Здесь один столбик — один конкретный вариант модели в заданном режиме.",
+    "startMs": 372800.0,
+    "endMs": 376780.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В семействе Министрал оба варианта дошли до цели во всех сорока запусках.",
+    "startMs": 377140.0,
+    "endMs": 381320.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "У ОЛМо завершение заметно различается по ступеням дополнительного",
+    "startMs": 381680.0,
+    "endMs": 385260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "обучения.",
+    "startMs": 385260.0,
+    "endMs": 385860.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "У инструкционного варианта Джеммы ни один из сорока запусков не завершил",
+    "startMs": 386300.0,
+    "endMs": 390400.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "целевую длину.",
+    "startMs": 390400.0,
+    "endMs": 391200.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это не рейтинг моделей для повседневного использования.",
+    "startMs": 391660.0,
+    "endMs": 394260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы не давали им обычные пользовательские задачи.",
+    "startMs": 394720.0,
+    "endMs": 397260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это результат стрессового режима продолжения собственного хвоста.",
+    "startMs": 397260.0,
+    "endMs": 400980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Он показывает, почему итог нельзя выразить одной общей фразой про",
+    "startMs": 401460.0,
+    "endMs": 405060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "пользу или вред дополнительного обучения.",
+    "startMs": 405060.0,
+    "endMs": 407300.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Теперь другой результат: разрыв между продолжениями из разных начал.",
+    "startMs": 409800.0,
+    "endMs": 414120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "У Квен и Министрал в показанных условиях он положителен в обоих пространствах",
+    "startMs": 414460.00000000006,
+    "endMs": 418800.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "представления.",
+    "startMs": 418800.0,
+    "endMs": 419520.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но Джемма не воспроизводит эту картину.",
+    "startMs": 420100.0,
+    "endMs": 422160.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Для базовой Джеммы одно пространство даёт установленный отрицательный",
+    "startMs": 422720.0,
+    "endMs": 426580.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "разрыв, а в другом интервал включает ноль.",
+    "startMs": 426580.00000000006,
+    "endMs": 429260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это не доказанное расхождение двух противоположных знаков: во втором",
+    "startMs": 429780.00000000006,
+    "endMs": 433900.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "случае знак просто не установлен.",
+    "startMs": 433900.00000000006,
+    "endMs": 435720.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Некоторые варианты вообще не дают определённой оценки последней полосы.",
+    "startMs": 435720.0,
+    "endMs": 440120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы не рисуем их как ноль.",
+    "startMs": 440640.0,
+    "endMs": 441880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Такая неоднородность — часть научного вывода, а не неудобная деталь,",
+    "startMs": 442280.00000000006,
+    "endMs": 446260.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "которую можно убрать ради стройного рассказа.",
+    "startMs": 446340.00000000006,
+    "endMs": 448680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Возникает естественный вопрос: может быть, двенадцати оборотов просто",
+    "startMs": 450920.0,
+    "endMs": 455000.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "мало?",
+    "startMs": 455000.0,
+    "endMs": 455360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому для отдельной небольшой группы уже зациклившихся траекторий",
+    "startMs": 455780.00000000006,
+    "endMs": 459500.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "наблюдение продлили намного дальше.",
+    "startMs": 459500.0,
+    "endMs": 461680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это восемь выбранных продолжений из двух конкретных вариантов Квен",
+    "startMs": 462200.0,
+    "endMs": 465900.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "и Министрал, при низкой температуре и окне в четыре тысячи девяносто",
+    "startMs": 465900.00000000006,
+    "endMs": 470151.4285714286,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "шесть токенов.",
+    "startMs": 470151.4285714286,
+    "endMs": 470940.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это не случайная выборка всех моделей и не новая оценка частоты зацикливания.",
+    "startMs": 470940.0,
+    "endMs": 475440.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Мы задаём другой вопрос: выйдут ли именно эти уже возникшие петли",
+    "startMs": 475960.00000000006,
+    "endMs": 480100.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "из своего режима за доступное время?",
+    "startMs": 480100.0,
+    "endMs": 482060.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Такой дизайн изучает длительность наблюдаемого режима, а не распространённость",
+    "startMs": 482560.0,
+    "endMs": 486900.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "явления.",
+    "startMs": 486900.00000000006,
+    "endMs": 487800.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Каждая из восьми траекторий дошла почти до пяти миллионов исходных",
+    "startMs": 489800.0,
+    "endMs": 493700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "сгенерированных токенов, считая от начала серии.",
+    "startMs": 493700.0,
+    "endMs": 496620.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "До этого общего горизонта подтверждённого выхода не обнаружено ни",
+    "startMs": 497200.0,
+    "endMs": 500700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "в одной.",
+    "startMs": 500700.0,
+    "endMs": 501020.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Выход определялся заранее зафиксированным правилом по текстовым фрагментам,",
+    "startMs": 501560.0,
+    "endMs": 505660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "а не визуальным впечатлением.",
+    "startMs": 505940.0,
+    "endMs": 507280.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "На графике линии заканчиваются на границе наблюдения.",
+    "startMs": 507280.00000000006,
+    "endMs": 510720.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это называется правым цензурированием: мы знаем, что событие не произошло",
+    "startMs": 511260.0,
+    "endMs": 515440.00000000006,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "до остановки, но не знаем, случилось бы оно позже.",
+    "startMs": 515440.00000000006,
+    "endMs": 518400.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Ноль из восьми здесь не означает нулевую вероятность выхода вообще.",
+    "startMs": 518400.0,
+    "endMs": 522299.99999999994,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "И почти пять миллионов токенов — ещё не бесконечность.",
+    "startMs": 522720.0,
+    "endMs": 525780.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Посмотрим, что скрывается за этими длинными линиями.",
+    "startMs": 528040.0,
+    "endMs": 530920.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В опубликованных примерах одного продолжения Министрал повторяется",
+    "startMs": 530920.0,
+    "endMs": 535040.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "фраза о петле Полякова и алгоритме Метрополиса.",
+    "startMs": 535040.0,
+    "endMs": 538219.9999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Ранний фрагмент, середина, поздний фрагмент — снова тот же оборот.",
+    "startMs": 538860.0,
+    "endMs": 542880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это цитата вывода модели, а не физическое утверждение авторов исследования.",
+    "startMs": 542880.0,
+    "endMs": 547660.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Другой запуск повторяет другую формулировку о вакууме.",
+    "startMs": 548240.0,
+    "endMs": 551520.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "По таким примерам нельзя судить обо всех восьми текстах.",
+    "startMs": 552040.0,
+    "endMs": 554980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но они хорошо показывают саму проблему: огромный объём продолжения",
+    "startMs": 555319.9999999999,
+    "endMs": 559360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "может быть почти неподвижным по содержанию.",
+    "startMs": 559360.0,
+    "endMs": 561760.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Считать только количество выданных токенов для оценки длительной",
+    "startMs": 562319.9999999999,
+    "endMs": 565540.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "работы недостаточно.",
+    "startMs": 565540.0,
+    "endMs": 566959.9999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Вернёмся к исходной гипотезе.",
+    "startMs": 569480.0,
+    "endMs": 571240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Хотелось проверить существование устойчивых смысловых состояний и",
+    "startMs": 571680.0000000001,
+    "endMs": 575420.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "переходов между ними.",
+    "startMs": 575420.0000000001,
+    "endMs": 576540.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но валидированных смысловых макросостояний на этих данных не получили.",
+    "startMs": 576940.0,
+    "endMs": 580940.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Повторяющиеся фразы не заменяют такую проверку.",
+    "startMs": 581440.0,
+    "endMs": 584140.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Не установлена и восстановленная память об исходных фактах.",
+    "startMs": 584620.0,
+    "endMs": 587800.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Нельзя сделать общий причинный вывод о роли схемы внимания, объявить",
+    "startMs": 588180.0000000001,
+    "endMs": 592380.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "петли вечными или перенести результат на любую языковую модель.",
+    "startMs": 592380.0,
+    "endMs": 595980.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Более того, представления текста зависят от выбранной модели эмбеддингов,",
+    "startMs": 595980.0,
+    "endMs": 601060.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "а часть длинных запусков не завершается.",
+    "startMs": 601060.0000000001,
+    "endMs": 603240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Эти ограничения задают точный масштаб результата.",
+    "startMs": 603740.0,
+    "endMs": 606500.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Они не исчезают от того, что картинка получилась убедительной.",
+    "startMs": 606880.0,
+    "endMs": 610040.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Какая отсюда практическая ценность?",
+    "startMs": 612520.0,
+    "endMs": 614720.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Первый инженерный урок — разделять похожие на слух свойства.",
+    "startMs": 615180.0,
+    "endMs": 618520.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Текст остаётся о программировании — это ещё не значит, что он помнит",
+    "startMs": 619020.0,
+    "endMs": 622880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "требования к программе.",
+    "startMs": 622880.0,
+    "endMs": 624120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Продолжает звучать технически — это ещё не значит, что выполняет",
+    "startMs": 624579.9999999999,
+    "endMs": 628280.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "задачу.",
+    "startMs": 628280.0,
+    "endMs": 628819.9999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому длительные системы полезно проверять отдельными вопросами",
+    "startMs": 629240.0,
+    "endMs": 632740.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "о фактах, цели и прогрессе.",
+    "startMs": 632740.0,
+    "endMs": 634880.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это рекомендация к проектированию проверок, вытекающая из наблюдаемого",
+    "startMs": 635220.0,
+    "endMs": 639420.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "различия между темой и памятью.",
+    "startMs": 639420.0,
+    "endMs": 641439.9999999999,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "В самом эксперименте мы не сравнивали готовые агентные системы и",
+    "startMs": 641439.9999999999,
+    "endMs": 645720.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "не измеряли, насколько конкретная такая проверка улучшает их работу.",
+    "startMs": 645720.0,
+    "endMs": 649420.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Второй урок — наблюдать за процессом, а не только за последним ответом.",
+    "startMs": 651720.0,
+    "endMs": 655660.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Повторяемость, попытки остановиться и исчезновение нового содержания",
+    "startMs": 656080.0,
+    "endMs": 660020.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "могут быть полезными сигналами.",
+    "startMs": 660020.0,
+    "endMs": 662040.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Однако порог повторяемости нужно калибровать: в коде, стихах и технических",
+    "startMs": 662500.0,
+    "endMs": 667160.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "описаниях повторы бывают нормальны.",
+    "startMs": 667160.0000000001,
+    "endMs": 670000.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Третий урок — хранить действительно важные сведения явно и проверять",
+    "startMs": 670000.0,
+    "endMs": 674240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "их использование, если система должна работать долго.",
+    "startMs": 674240.0,
+    "endMs": 677220.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Внешняя память, напоминания и контрольные точки здесь выглядят разумными",
+    "startMs": 677900.0,
+    "endMs": 682460.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "направлениями для испытаний.",
+    "startMs": 682460.0,
+    "endMs": 683960.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но наше исследование не доказывает превосходство конкретной архитектуры",
+    "startMs": 684360.0,
+    "endMs": 688080.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "памяти.",
+    "startMs": 688080.0,
+    "endMs": 688560.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Оно показывает, почему рассчитывать только на самоподдерживающееся",
+    "startMs": 689100.0,
+    "endMs": 692293.3333333334,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "продолжение рискованно.",
+    "startMs": 692293.3333333334,
+    "endMs": 694320.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "У работы есть и методическая ценность.",
+    "startMs": 696320.0,
+    "endMs": 698700.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Каждый численный результат связан с запуском, конфигурацией, версией",
+    "startMs": 699060.0000000001,
+    "endMs": 703300.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "кода и журналами.",
+    "startMs": 703300.0000000001,
+    "endMs": 704440.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Графики сопровождаются таблицами и оговорками.",
+    "startMs": 705020.0000000001,
+    "endMs": 707640.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Неудачные запуски не исчезают из знаменателя.",
+    "startMs": 708200.0,
+    "endMs": 711200.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Разные семейства не усредняются в один удобный показатель, а пропущенная",
+    "startMs": 711200.0,
+    "endMs": 715640.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "оценка не превращается в ноль.",
+    "startMs": 715640.0000000001,
+    "endMs": 717360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Это позволяет спорить с интерпретацией на уровне проверяемых свидетельств.",
+    "startMs": 717840.0,
+    "endMs": 721760.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "И воспроизводимость здесь тоже имеет границы: у внешних провайдеров",
+    "startMs": 722100.0,
+    "endMs": 726100.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "возможна недетерминированность.",
+    "startMs": 726100.0,
+    "endMs": 728120.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Поэтому сохранённый вычислительный след важен не меньше, чем инструкция",
+    "startMs": 728120.0,
+    "endMs": 731920.0000000001,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "повторить запрос.",
+    "startMs": 731920.0000000001,
+    "endMs": 732740.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Источники показанных графиков перечислены вместе с этим видео.",
+    "startMs": 733280.0000000001,
+    "endMs": 736600.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Итак, исходный запрос может исчезнуть из окна, а зависимость продолжений",
+    "startMs": 739000.0,
+    "endMs": 743560.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "от их происхождения — остаться.",
+    "startMs": 743560.0,
+    "endMs": 745240.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Но этот след не обязан быть памятью в привычном смысле.",
+    "startMs": 745820.0,
+    "endMs": 748780.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Он может жить в стиле, теме или устойчивой текстовой петле.",
+    "startMs": 749260.0,
+    "endMs": 752900.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Некоторые выбранные петли пережили почти пять миллионов токенов наблюдения",
+    "startMs": 753440.0,
+    "endMs": 757360.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "без подтверждённого выхода.",
+    "startMs": 757360.0,
+    "endMs": 759140.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Другие модели и варианты ведут себя иначе.",
+    "startMs": 759640.0,
+    "endMs": 762040.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Получилась история о том, как важно различать производство текста,",
+    "startMs": 762500.0,
+    "endMs": 766100.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "сохранение информации и движение к цели.",
+    "startMs": 766100.0,
+    "endMs": 768940.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Модель может продолжать говорить очень долго.",
+    "startMs": 769480.0,
+    "endMs": 771680.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Научный вопрос — что именно продолжает жить в её словах.",
+    "startMs": 772180.0,
+    "endMs": 775500.0,
+    "timestampMs": null,
+    "confidence": null
+  },
+  {
+    "text": "Все данные и границы этих выводов доступны по ссылкам к выпуску.",
+    "startMs": 775900.0,
+    "endMs": 779500.0,
+    "timestampMs": null,
+    "confidence": null
+  }
+]

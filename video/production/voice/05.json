@@ -1,0 +1,16 @@
+{
+  "scene_id": "05",
+  "request_sha256": "2df02e7077e6e8c1db56932a6c8a2a6e13df94345acda2ccc154db0de21058de",
+  "audio_sha256": "a37cd984356e82369d40c0714de42626185fce7aafdfc191b592a6343a36ad5a",
+  "model": "x-ai/grok-voice-tts-1.0",
+  "voice": "eve",
+  "characters": 591,
+  "cost_rub": 0.9466062957,
+  "cost_usd": 0.01183257869625,
+  "accounting_basis": "catalog_character_charge",
+  "response_headers": {
+    "content-type": "audio/mpeg",
+    "x-generation-id": "rai-tts-1794172781-56jigYXbanG6HtvS1xXo"
+  },
+  "timestamp": "2026-11-08T21:19:45.542719+00:00"
+}

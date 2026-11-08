@@ -4,6 +4,8 @@
 
 [English version](README.md) · [План исследования](docs/research-plan.ru.md) · [Методология](docs/methodology.md) · [Контракт для агентов](AGENTS.md)
 
+**Научно-популярное видео (13 минут):** [смотреть / скачать выпуск](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [сценарий и источники](video/SCRIPT.ru.md).
+
 ---
 
 ## Вопрос

@@ -1,0 +1,25 @@
+{
+  "git_sha": "9b9136f31e14ca329a30e737357dd5942b86294e",
+  "input_sha256": {
+    "video/episode.json": "367afaf26574efb1f9f784c3ba4e78bbe1eb52001b4caeb4e04eb75d0dc11975",
+    "docs/research-plan.md": "1e43d3642a69eff01ca241882efd09d64b01fe173abad99084c6222dc44a1a2a",
+    "paper/PUBLICATION_REVIEW.md": "e1ffd7204e381345f8495584dbf3d364183d22951c379ce9dc3f8ee4664d695b",
+    "docs/methodology.md": "9828291869e34810ca4e524a2c2ef2ae5ecb9792d644e7ae369df53aa922f47f",
+    "docs/stages/stage-13/REPORT.md": "8c925cfb276298501fdedb04d110512f22582ae3533d97eb6d515e9f5499a4bb",
+    "docs/stages/stage-1/REPORT.md": "bc508889a08a8d984ead4b7b3eb1c78564a005612bbd6a36af4aa34b904dd7dc",
+    "docs/stages/stage-3/REPORT.md": "fd03d081ff76a44e599c5967a747951e4194c692ed7cc95997f698842f50f204",
+    "AGENTS.md": "e922a3f1f84223dc2ac6dcd76d147fc470452f944fe730fb27e12433278cf217",
+    "artifacts/occupancy-replication/domain_separation_last_band.csv": "13e784835305421fa56ee8104a0cc9309e07a328e08f7b280041a7cb9cdb20c9",
+    "artifacts/occupancy-replication/domain_separation_last_band.meta.json": "e9dea5cc8623604ff3ed864cd5741b021c29d2dea367cae96fe6ce86f83c952c",
+    "artifacts/stage-13/completion/completion.csv": "da4a9ab9d8a98967d57c84ae487677c3f3c3e567737e78ff90c8ba4fb17ecf14",
+    "artifacts/stage-13/gt_nf4/gt_nf4.data.parquet": "266a81d6284c54c56c4e5db0f94e2614c601c84a35f33eb6daa26bb64a2652e2",
+    "artifacts/stage-13/gt_nf4/gt_nf4.meta.json": "24ee599de4dfa1dd8b1b3daa768e31aa836603c197dd4042d85ffdd3ddcf0708",
+    "docs/stages/stage-12/REPORT.md": "153693409e8d004565c2700dd0e3d47de9f5daee6c6f8719c70c615d0054056f",
+    "artifacts/stage-12/tau_escape/tau_escape.meta.json": "177f123e966dc19868887026bb049944689fd841f61d3f3b44eed42e3fab9d13",
+    "artifacts/stage-13/tau_escape_s12/tau_escape_s12.data.parquet": "fce94bfaaccf8a7bcfd8eecaca0da9402f8d5c0b8e37858e8db387081aadf719",
+    "artifacts/stage-13/tau_escape_s12/tau_escape_s12.meta.json": "c57663b4ae1ff7c91d42140e8393ab881653d7adfdfea1a36cbfb159c40936d9",
+    "artifacts/stage-13/INDEX.md": "f84b691bfcbab57109a24344666c9c4c0fc4aaa34788398b7f14769644836ec9"
+  },
+  "duration_seconds": 780.96,
+  "narration_complete": true
+}

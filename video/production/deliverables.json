@@ -1,0 +1,22 @@
+{
+  "semantic-afterlife.ru.mp4": {
+    "sha256": "b1dfd4426f948929556e0fd30893cea31ac7fe4aaa26e977bd4ebf9ee9cb653a",
+    "bytes": 58464460
+  },
+  "semantic-afterlife.ru.mp3": {
+    "sha256": "b3e3fa1a6825fb55a2ef4237f97855fa1b40be50b96ad84029702bf849f3ce10",
+    "bytes": 18746971
+  },
+  "semantic-afterlife.ru.srt": {
+    "sha256": "6d4e47a7edb4f8ebee9e90dd55e694248a6b87a18b862c41348d2dce2c136de1",
+    "bytes": 30708
+  },
+  "semantic-afterlife.ru.vtt": {
+    "sha256": "d7516c64938d717d519c0a2e8768ad378f0a24a8aec64eff7a3b87cdb41b79a0",
+    "bytes": 29686
+  },
+  "media-assets.zip": {
+    "sha256": "57f0612bc64367533882b2b84b85de958ca92e73b32b12a91c69508ecd576ebe",
+    "bytes": 30388176
+  }
+}

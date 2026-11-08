@@ -1,0 +1,29 @@
+{
+  "id": "x-ai/grok-voice-tts-1.0",
+  "name": "SpaceXAI: Grok Voice TTS 1.0",
+  "created": 1778805456,
+  "description": "Grok Voice TTS 1.0 — это модель преобразования текста в речь от xAI. Она преобразует текст в аудио на более чем 20 языках с автоматическим определением языка и предлагает пять встроенных голосов (Eve, Ara, Rex, Sal, Leo), охватывающих различные тона. Встроенные теги речи позволяют управлять паузами, акцентами, высотой тона, скоростью и стилем голоса. Выходные данные доступны в форматах MP3, WAV, PCM, μ-law и A-law с частотой дискретизации от 8 кГц до 48 кГц, с возможностью обработки до 15 000 символов за запрос.",
+  "context_length": 15000,
+  "architecture": {
+    "modality": "text->speech",
+    "tokenizer": null,
+    "instruct_type": null,
+    "input_modalities": [
+      "text"
+    ],
+    "output_modalities": [
+      "speech"
+    ]
+  },
+  "pricing": {
+    "prompt": 0.0016017027,
+    "completion": 0.0
+  },
+  "pricing_units": {
+    "prompt": "token",
+    "completion": "token"
+  },
+  "per_request_limits": null,
+  "supported_parameters": [],
+  "default_parameters": null
+}
