@@ -4,9 +4,19 @@
 
 [Русская версия](README.ru.md) · [Research plan](docs/research-plan.md) · [Methodology](docs/methodology.md) · [Agent contract](AGENTS.md)
 
-**Public science video (Russian, 13 min):** [watch/download the episode](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [script and sources](video/SCRIPT.ru.md).
+## Read the paper
 
-**Reuse this workflow:** [portable research video skills and installation](skills/README.md).
+**[English manuscript (PDF)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-en.pdf)**
+
+[Russian translation (PDF)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-ru.pdf) · [Anonymous English (PDF)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-anonymous.pdf) · [Publication release](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/publication-2026-11-09)
+
+The completed manuscript studies textual repetition and initial-text dependence
+after prompt eviction under blockwise re-prompting. Findings are conditional on
+the studied models and finite horizons; they do not establish recovered semantic
+memory or validated metastable semantic states. This is a manuscript release,
+not a claim of external peer review or venue acceptance.
+
+[Source and build instructions](paper/README.md) · [Publication review](paper/PUBLICATION_REVIEW.md) · [Synthesis artifacts](artifacts/stage-13/INDEX.md)
 
 ---
 
@@ -237,6 +247,12 @@ by a human as an **immutable** tag (do not move `state-latest` to stand in for
 a DOI). Cloud agents cannot cut GitHub releases (`gh` is read-only). The
 snapshot restored here is dated 2026-09-01T01:35Z and does **not** contain
 Stage 5–6 occupancy embeddings.
+
+## Video and reusable workflow
+
+**Public science video (Russian, 13 min):** [watch/download the episode](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [script and sources](video/SCRIPT.ru.md).
+
+**Reuse this workflow:** [portable research video skills and installation](skills/README.md).
 
 ## Licence
 

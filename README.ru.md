@@ -4,9 +4,19 @@
 
 [English version](README.md) · [План исследования](docs/research-plan.ru.md) · [Методология](docs/methodology.md) · [Контракт для агентов](AGENTS.md)
 
-**Научно-популярное видео (13 минут):** [смотреть / скачать выпуск](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [сценарий и источники](video/SCRIPT.ru.md).
+## Читать статью
 
-**Для других исследований:** [переносимые скиллы и установка](skills/README.md).
+**[Английская рукопись (PDF)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-en.pdf)**
+
+[Русский перевод (PDF)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-ru.pdf) · [Анонимная версия (PDF, EN)](https://github.com/AdamCage/llm-semantic-afterlife/releases/download/publication-2026-11-09/semantic-afterlife-anonymous.pdf) · [Публикационный релиз](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/publication-2026-11-09)
+
+Готовая рукопись исследует текстовые повторы и зависимость от исходного текста
+после вытеснения промпта при блочном повторном промптинге. Наблюдения ограничены
+исследованными моделями и конечными горизонтами; они не устанавливают
+восстановленную семантическую память или подтверждённые метастабильные состояния.
+Рукопись не заявлена как прошедшая внешнее рецензирование или принятая в журнал.
+
+[Исходники и сборка](paper/README.md) · [Публикационная проверка](paper/PUBLICATION_REVIEW.md) · [Итоговые артефакты](artifacts/stage-13/INDEX.md)
 
 ---
 
@@ -238,6 +248,12 @@ paper/             рукопись (английский канон, русск
 `cache/`, не цитируемый архивный объект. Снимок после этого correctness pass
 должен выложить человек как **неизменяемый** тег. Агент не может создать GitHub
 release.
+
+## Видео и переносимый процесс
+
+**Научно-популярное видео (13 минут):** [смотреть / скачать выпуск](https://github.com/AdamCage/llm-semantic-afterlife/releases/tag/video-2026-11-09) · [сценарий и источники](video/SCRIPT.ru.md).
+
+**Для других исследований:** [переносимые скиллы и установка](skills/README.md).
 
 ## Лицензия
 
